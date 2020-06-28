@@ -1,12 +1,13 @@
 import os
 
+from dotenv import load_dotenv
 from telegram import Bot
 
 from api import get_matches, get_website_of_match
 from classes import Game
 from database import DatabaseConnector
 from regex_operations import RegexOperator
-
+load_dotenv(os.path.join(os.getcwd(), '.env'))
 database = DatabaseConnector()
 
 
@@ -36,10 +37,7 @@ def _main():
     # team_id = sys.argv[1]
     # chat_id = sys.argv[2]
     for team_id, chat_id in [
-        ("105959", "***REMOVED***"),
-        ("105878", "-1001492173687"),
-        ("93008", "-1001360890758"),
-        ("111914", "-1001188217113"),
+        (os.getenv("TEAM_ID"), os.getenv("TG_CHAT_ID")),
     ]:
         main(team_id, chat_id)
     database.close_connection()

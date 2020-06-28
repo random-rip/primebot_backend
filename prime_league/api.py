@@ -1,3 +1,5 @@
+import os
+
 import requests
 
 BASE_URI = "https://www.primeleague.gg/de/leagues/"
@@ -7,6 +9,7 @@ api = {
     "matches": {
         "method": requests.get,
         "path": {
+            os.getenv("TEAM_ID"): os.getenv("TEAM_ID"),
             "105959": "prm/1504-summer-split-2020/group/509-gruppenphase/5743-division-4-25",
             "105878": "prm/1504-summer-split-2020/group/509-gruppenphase/5591-division-4-17",
             "93008": "prm/1504-summer-split-2020/group/509-gruppenphase/5576-division-4-12",
