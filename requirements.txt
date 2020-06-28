@@ -1,0 +1,14 @@
+certifi==2020.6.20
+chardet==3.0.4
+dnspython==1.16.0
+idna==2.10
+mysql-connector-python==8.0.20
+protobuf==3.12.2
+pytz==2020.1
+requests==2.24.0
+six==1.15.0
+urllib3==1.25.9
+python-telegram-bot
+telepot~=12.7
+Babel~=2.8.0
+python-dotenv~=0.13.0
