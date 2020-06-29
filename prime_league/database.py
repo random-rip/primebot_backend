@@ -6,9 +6,6 @@ import mysql.connector
 class DatabaseConnector:
     class __DatabaseConnector:
         def __init__(self):
-            print(os.getenv("DB_HOST"))
-            print(os.getenv("DB_PASSWORD"))
-            print(os.getenv("DB_PORT"))
             self.connection = mysql.connector.connect(
                 host=os.getenv("DB_HOST"),
                 db=os.getenv("DB_NAME"),
