@@ -5,7 +5,7 @@
 4. Git Repository klonen SSH ``git@gitlab.com:Grayknife/prime_league_bot.git`` oder HTTPS ``https://gitlab.com/Grayknife/prime_league_bot.git``
 5. ``cd prime_league_bot``
 6. Erstelle virtuelle environment``virtualenv venv``
-7. Installiere requirements ``pip intall -r requirements.txt``
+7. Installiere requirements ``pip install -r requirements.txt``
 8. Erstelle ``.env`` File aus der ``.env.example`` und setze Variablen
 9. Erstelle ggfs. die angegebene Datenbank
 10. Fülle Datenbank mit Initialdaten aus (bereitgestellt durch ``.env``)     ``python prime_league/new_season``
