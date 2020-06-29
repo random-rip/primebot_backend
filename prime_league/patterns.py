@@ -5,4 +5,5 @@ ENEMY_TEAM_ID = r"(?:teams/)(?P<id>\d*)-(?!leipzig)"
 GAME_DAY = r"(?:Spieltag )(?P<game_day>\d*)"
 TEAM_NAME = r"(?:<h1>.*?: (?P<name>.*?)(?= vs. (?:Leipzig|LES)))|(?:(?:<h1>.*?vs. )(?P<name_2>.*)(?=</h1>))"
 
+
 # https://www.primeleague.gg/de/leagues/prm/1457-spring-split-2020/
