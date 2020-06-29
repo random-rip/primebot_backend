@@ -7,10 +7,10 @@ def main():
     website = get_website_of_match(game_id)
     game_day = RegexOperator.get_game_day(website)
     print("gameday " + game_day)
-    # logs = RegexOperator.get_logs(website)
-    # print(logs)
+    logs = RegexOperator.get_logs(website)
+    print(logs)
     sumNames = RegexOperator.get_summoner_names("91700")  # 596848
-    #print(sumNames)
+    # print(sumNames)
     print(RegexOperator.get_enemy_team_id("597508"))
 
 
