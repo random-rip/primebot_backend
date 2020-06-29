@@ -6,10 +6,15 @@ import mysql.connector
 class DatabaseConnector:
     class __DatabaseConnector:
         def __init__(self):
+            print(os.getenv("DB_HOST"))
+            print(os.getenv("DB_PASSWORD"))
+            print(os.getenv("DB_PORT"))
             self.connection = mysql.connector.connect(
+                host=os.getenv("DB_HOST"),
                 db=os.getenv("DB_NAME"),
                 user=os.getenv("DB_USER"),
-                passwd=os.getenv("DB_PASSWORD")
+                passwd=os.getenv("DB_PASSWORD"),
+                port=os.getenv("DB_PORT"),
             )
 
     instance = None
@@ -19,9 +24,11 @@ class DatabaseConnector:
             DatabaseConnector.instance = DatabaseConnector.__DatabaseConnector()
         else:
             self.connection = mysql.connector.connect(
+                host=os.getenv("DB_HOST"),
                 db=os.getenv("DB_NAME"),
                 user=os.getenv("DB_USER"),
-                passwd=os.getenv("DB_PASSWORD")
+                passwd=os.getenv("DB_PASSWORD"),
+                port=os.getenv("DB_PORT"),
             )
 
     def __getattr__(self, name):
