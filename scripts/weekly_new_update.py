@@ -1,23 +1,10 @@
-import os
-
-from dotenv import load_dotenv
-from telepot import Bot
-
-from api import get_website_of_match
-from classes import Game
-from database import DatabaseConnector
-from regex_operations import RegexOperator
-
-load_dotenv(os.path.join(os.getcwd(), '.env'))
-database = DatabaseConnector()
-bot = Bot(token=os.getenv("TELEGRAM_BOT_API_KEY"))
+from app_prime_league.models import Team
 
 
 def main():
-    team_ids = database.get_current_team_ids()
-    team_ids = [x[0] for x in team_ids]
+    teams = Team.objects.all()
 
-    for i in team_ids:
+    for i in teams:
         game = database.get_next_uncompleted_game(i)
         if game == None:
             continue

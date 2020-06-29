@@ -67,7 +67,7 @@ def check_uncompleted_games():
             bot.sendMessage(chat_id=chat_id, text=text, parse_mode="Markdown")
 
         database.delete_game(game_id)
-        query = "INSERT INTO prime_league (id, json, game_closed, game_day, enemy_team_id, chat_id, team_id) VALUES ({},'{}',{}, {},{}, {}, {})" \
+        query = "INSERT INTO prime_leagues (id, json, game_closed, game_day, enemy_team_id, chat_id, team_id) VALUES ({},'{}',{}, {},{}, {}, {})" \
             .format(game_id, new_game.serialize(), new_game.match_ended, game_day, enemy_team_id, chat_id, team_id)
         database.insert_to_db(query)
 
