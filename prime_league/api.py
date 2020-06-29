@@ -70,7 +70,7 @@ def get_website_of_match(match, local=False):
 
 
 def get_website_of_team(_id):
-    web_site = api_handler("team", _id).text
+    web_site = "https://www.primeleague.gg/de/leagues/teams/"+_id
     return web_site
 
 

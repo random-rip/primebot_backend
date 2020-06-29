@@ -24,7 +24,7 @@ def new_season(ids, chat_id, team_id):
     for i in ids:
         website = get_website_of_match(i)
         game_day = RegexOperator.get_game_day(website)
-        enemy_team_id = RegexOperator.get_enemy_team_id(website)
+        enemy_team_id = RegexOperator.get_enemy_team_id(i)
         game = Game(i, [], game_day,
                     enemy_team_id)
         dump = game.serialize()
