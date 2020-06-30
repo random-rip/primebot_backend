@@ -35,7 +35,6 @@ class RegexOperator:
         # print(team_url.find_all("ul")[4])
         # TODO WICHTIG! check auf "richtige" Liste und anschließende Neuauswahl
         team_li = team_url.find_all("ul")[4].find_all("li");
-        names = []
         names = [i.span.contents[0] for i in team_li]
             names.append(li.span.contents[0])
         return names
