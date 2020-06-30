@@ -69,7 +69,7 @@ class RegexOperator:
         return name
 
     @staticmethod
-    def get_team_name(website):  # of team
+    def get_team_name(website):
         team_url = BeautifulSoup(website, 'html.parser')
         page_title_div = team_url.find_all("div", class_="page-title")[0]
         team_name = page_title_div.h1.contents[0]
@@ -84,5 +84,10 @@ class RegexOperator:
 
     @staticmethod
     def get_matches(website):
-        game_ids = list(dict.fromkeys([x[1] for x in re.findall(MATCH_IDS, website)]))
+        team_url = BeautifulSoup(website, 'html.parser')
+        games_table = team_url.find_all("ul", class_="league-stage-matches")
+        games = games_table[len(games_table)-1].find_all("td", class_="col-2 col-text-center")
+        # games = [table.find_all("td", class_="col-2 col-text-center") for table in games_table] --> evtl dann mit Kalibrierung
+        game_ids = [td.a.get("href").split("/matches/")[1].split("-")[0] for td in games]
+        # game_ids = list(dict.fromkeys([x[1] for x in re.findall(MATCH_IDS, website)]))
         return game_ids

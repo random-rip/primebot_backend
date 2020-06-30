@@ -10,10 +10,11 @@ def main():
     # print(sumNames)
     # print(RegexOperator.get_enemy_team_id(get_website_of_match("597508")))
     # print(RegexOperator.get_summoner_names(get_website_of_team("91700")))
-    print(RegexOperator.get_game_day(get_website_of_match("597508")))
-    print(RegexOperator.get_team_name(get_website_of_team("105878")))
+    # print(RegexOperator.get_game_day(get_website_of_match("597508")))
+    # print(RegexOperator.get_team_name(get_website_of_team("105878")))
     # print(RegexOperator.get_enemy_team_name(get_website_of_match("597508")))
-    print(RegexOperator.get_team_tag(get_website_of_team("105878")))
+    # print(RegexOperator.get_team_tag(get_website_of_team("105878")))
+    print(RegexOperator.get_matches(get_website_of_team("105878")))
 
 
 if __name__ == '__main__':
