@@ -52,10 +52,12 @@ class RegexOperator:
             return -1
 
     @staticmethod
-    def get_game_day(website):
-        day = re.finditer(GAME_DAY, website)
-        results = [x.group("game_day") for x in day]
-        return results[0]
+    def get_game_day(website): #of match
+        match_url = BeautifulSoup(website, 'html.parser')
+        match_info_div = match_url.find_all("div", class_="content-match-subtitles")[0]
+        game_day_div = match_info_div.find_all("div", class_="txt-subtitle")[1]
+        game_day = game_day_div.contents[0].split(" ")[1]
+        return game_day
 
     @staticmethod
     def get_enemy_team_name(website):
