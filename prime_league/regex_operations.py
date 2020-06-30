@@ -29,9 +29,8 @@ class RegexOperator:
         return logs
 
     @staticmethod
-    def get_summoner_names(_id):
-        req = requests.get(TEAMS_URL + _id, headers)
-        team_url = BeautifulSoup(req.content, 'html.parser')
+    def get_summoner_names(website):
+        team_url = BeautifulSoup(website, 'html.parser')
         # print(team_url.find_all("ul")[4])
         # TODO WICHTIG! check auf "richtige" Liste und anschließende Neuauswahl
         team_li = team_url.find_all("ul")[4].find_all("li");
@@ -39,9 +38,8 @@ class RegexOperator:
         return names
 
     @staticmethod
-    def get_enemy_team_id(match_id):
-        req = requests.get(MATCHES_URL + match_id, headers)
-        match_url = BeautifulSoup(req.content, 'html.parser')
+    def get_enemy_team_id(website):
+        match_url = BeautifulSoup(website, 'html.parser')
         team_1_div = match_url.find_all("div", class_="content-match-head-team content-match-head-team1")[0]
         team_2_div = match_url.find_all("div", class_="content-match-head-team content-match-head-team2")[0]
         team_1_id = team_1_div.contents[1].contents[1].get("href").split("/teams/")[1].split("-")[0]
@@ -50,6 +48,8 @@ class RegexOperator:
             return team_1_id
         elif team_2_id != os.getenv("TEAM_ID"):
             return team_2_id
+        else:
+            return -1
 
     @staticmethod
     def get_game_day(website):

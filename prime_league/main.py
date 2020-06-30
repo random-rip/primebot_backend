@@ -30,7 +30,7 @@ def check_uncompleted_games():
         chat_id = record[6]
         website = get_website_of_match(game_id)
         game_day = RegexOperator.get_game_day(website)
-        enemy_team_id = RegexOperator.get_enemy_team_id(game_id)
+        enemy_team_id = RegexOperator.get_enemy_team_id(website)
         enemy_team_name = RegexOperator.get_enemy_team_name(website)
         new_game = Game(game_id, RegexOperator.get_logs(website), game_day,
                         enemy_team_id)

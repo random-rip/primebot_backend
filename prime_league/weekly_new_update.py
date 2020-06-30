@@ -28,7 +28,7 @@ def main():
         game_day = RegexOperator.get_game_day(match_website)
         enemy_team_name = RegexOperator.get_enemy_team_name(match_website)
         new_game = Game(_id, RegexOperator.get_logs(match_website), RegexOperator.get_game_day(match_website),
-                        RegexOperator.get_enemy_team_id(_id))
+                        RegexOperator.get_enemy_team_id(match_website))
         op_link = new_game.create_general_op_link_of_enemies()
         bot.sendMessage(chat_id=chat_id,
                         text="Spieltag {} gegen [{}](https://www.primeleague.gg/de/leagues/matches/{}):"
