@@ -52,7 +52,7 @@ class RegexOperator:
             return -1
 
     @staticmethod
-    def get_game_day(website): #of match
+    def get_game_day(website):
         match_url = BeautifulSoup(website, 'html.parser')
         match_info_div = match_url.find_all("div", class_="content-match-subtitles")[0]
         game_day_div = match_info_div.find_all("div", class_="txt-subtitle")[1]
@@ -67,6 +67,20 @@ class RegexOperator:
         if name is None:
             name = [x.group("name_2") for x in results][0]
         return name
+
+    @staticmethod
+    def get_team_name(website):  # of team
+        team_url = BeautifulSoup(website, 'html.parser')
+        page_title_div = team_url.find_all("div", class_="page-title")[0]
+        team_name = page_title_div.h1.contents[0]
+        return team_name
+
+    @staticmethod
+    def get_team_tag(website):
+        team_url = BeautifulSoup(website, 'html.parser')
+        page_title_div = team_url.find_all("div", class_="page-title")[0]
+        team_tag = page_title_div.h1.contents[0].split("(")[1].replace(')', '')
+        return team_tag
 
     @staticmethod
     def get_matches(website):
