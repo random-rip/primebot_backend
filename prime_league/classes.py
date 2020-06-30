@@ -121,7 +121,7 @@ class Game:
         return None
 
     def create_general_op_link_of_enemies(self):
-        names = RegexOperator.get_summoner_names(get_website_of_team(self.enemy_team))
+        names = RegexOperator.get_summoner_names((get_website_of_team(self.enemy_team)))
         url = "%2C".join(names)
         return "https://euw.op.gg/multi/query={}".format(url)
 
