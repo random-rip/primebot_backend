@@ -9,7 +9,7 @@ def main():
     teams = Team.objects.get_watched_teams()
     # TODO add Players to DB
     for i in teams:
-        match_ids = HTMLParser(crawler.get_matches_website(i)).get_matches()
+        match_ids = HTMLParser(crawler.get_team_website(i.id)).get_matches()
         for j in match_ids:
             website = crawler.get_match_website(j)
             gmd = GameMetaData.create_game_meta_data_from_website(team=i, game_id=j, website=website)
