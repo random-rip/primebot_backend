@@ -7,10 +7,27 @@ class HTMLParser:
 
     def __init__(self, website):
         self.website = website
+        self.logs = None
 
     def get_logs(self):
-        logs = re.finditer(LOGS, self.website)
-        return logs
+        self.logs = re.finditer(LOGS, self.website)
+        return self.logs
+
+    def get_enemy_lineup(self):
+        # TODO
+        pass
+
+    def get_game_closed(self):
+        # TODO
+        pass
+
+    def get_latest_suggestion(self):
+        # TODO
+        pass
+
+    def get_suggestion_confirmed(self):
+        # TODO
+        pass
 
     def get_summoner_names(self):
         names = re.finditer(SUMMONER_NAMES, self.website)

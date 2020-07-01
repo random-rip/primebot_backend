@@ -1,19 +1,6 @@
-from babel.dates import format_datetime
-from telepot import Bot
-import os
-from api import get_website_of_match
-from classes import Game, Comparer, LogSchedulingAutoConfirmation
-from database import DatabaseConnector
-from emoji_constants import EMOJI_ONE, EMOJI_TWO, EMOJI_THREE, EMOJI_ARROW, EMOJI_SUCCESS
-from regex_operations import RegexOperator
-from dotenv import load_dotenv
-
-load_dotenv(os.path.join(os.getcwd(), '.env'))
-database = DatabaseConnector()
-
-bot = Bot(token=os.getenv("TELEGRAM_BOT_API_KEY"))
-
-emoji_numbers = [EMOJI_ONE, EMOJI_TWO, EMOJI_THREE]
+from app_prime_league.models import Game
+from comparing.game_comparer import GameMetaData, GameComparer
+from data_crawling.api import Crawler
 
 
 def main():
@@ -73,8 +60,18 @@ def check_uncompleted_games():
 
 
 def _main():
-    main()
-    database.close_connection()
+    # main()
+
+    crawler = Crawler(local=False)
+    uncompleted_games = Game.objects.get_uncompleted_games()
+    for i in uncompleted_games:
+        game_id = i.game_id
+        team_id = i.team.id
+        website = crawler.get_match_website(i)
+        gmd = GameMetaData.create_game_meta_data_from_website(team=team_id, game_id=game_id, website=website)
+        cmp = GameComparer(i, gmd)
+        if cmp.compare_new_suggestion_of_enemy():
+            print("new suggestion")
 
 
 if __name__ == '__main__':

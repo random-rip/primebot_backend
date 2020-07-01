@@ -133,3 +133,4 @@ BASE_URI_AJAX = "https://www.primeleague.gg/ajax/"
 
 DEFAULT_TEAM_ID = env.int("TEAM_ID")
 DEFAULT_GROUP_LINK = env.str("GROUP_LINK")
+DEFAULT_TELEGRAM_CHANNEL_ID = env.str("TG_CHAT_ID")

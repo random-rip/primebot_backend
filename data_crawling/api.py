@@ -87,12 +87,12 @@ class Crawler:
                 requests.get).text
 
     def get_team_website(self, _id):
-        web_site = api_handler("team", _id).text if not self.local else get_local_response(
+        web_site = self.api.html_handler("team", _id).text if not self.local else get_local_response(
             os.path.join(os.path.dirname(settings.BASE_DIR), "static", f"team_{_id}.txt"))
         return web_site
 
     def get_details_json(self, match):
-        json = api_json_handler(
+        json = self.api.json_handler(
             "match_details",
             {"id": match, "action": "init"}
         ).text if not self.local else get_local_response(

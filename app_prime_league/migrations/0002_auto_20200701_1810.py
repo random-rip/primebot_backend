@@ -12,7 +12,7 @@ def add_seeds(apps, schema_editor):
 
     if settings.DEFAULT_TEAM_ID is not None:
         Team = apps.get_model('app_prime_league', 'Team')
-        team = Team(id=settings.DEFAULT_TEAM_ID, group_link=settings.DEFAULT_GROUP_LINK)
+        team = Team(id=settings.DEFAULT_TEAM_ID, group_link=settings.DEFAULT_GROUP_LINK, telegram_channel_id=settings.DEFAULT_GROUP_LINK)
         team.save()
 
 

@@ -6,13 +6,22 @@ from django.db import models
 class TeamManager(models.Manager):
 
     def get_watched_teams(self):
-        return self.model.objects.filter(watch=True)
+        return self.model.objects.filter(telegram_channel_id__isnull=False)
+
+
+class GameManager(models.Manager):
+
+    def get_uncompleted_games(self):
+        return self.model.objects.filter(game_closed=False)
+
+    def get_latest_suggestion_log(self):
+        return self.model.objects.log_set.filter(action="suggestion").order("-timestamp").first()
 
 
 class Team(models.Model):
     name = models.CharField(max_length=50, null=True)
     group_link = models.CharField(max_length=300, null=True)
-    watch = models.BooleanField(default=True)
+    telegram_channel_id = models.CharField(max_length=50, null=True)
 
     objects = TeamManager()
 
@@ -26,6 +35,7 @@ class Team(models.Model):
 class Player(models.Model):
     name = models.CharField(max_length=50)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, null=True)
+    is_leader = models.BooleanField(default=False)
 
     class Meta:
         db_table = "players"
@@ -41,11 +51,20 @@ class Game(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="games_against")
     enemy_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="games_as_enemy_team")
 
+    enemy_lineup = models.ManyToManyField(Player, )
+    game_closed = models.BooleanField()
+
+    objects = GameManager()
+
     class Meta:
         db_table = "games"
 
     def __repr__(self):
         return f"{self.game_id}"
+
+    def save_or_update(self, gmd):
+        print(gmd)
+        # TODO gmd -> Game
 
 
 class Log(models.Model):
