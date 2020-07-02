@@ -1,12 +1,14 @@
-from api import get_website_of_match, get_website_of_team
-from regex_operations import RegexOperator
+from data_crawling.api import Crawler
+from parsing.regex_operations import MatchHTMLParser, TeamHTMLParser
 
 
 def main():
-    game_id = 597478
-    website = get_website_of_match(game_id)
-    logs = RegexOperator.get_logs(website)
-    sumNames = RegexOperator.get_summoner_names(get_website_of_team("91700"))
+    match_id = 597478
+    crawler = Crawler(local=True)
+    match_parser = MatchHTMLParser(crawler.get_match_website(match_id))
+    team_parser = TeamHTMLParser(crawler.get_team_website("91700"))
+    logs = match_parser.get_logs()
+    sumNames = team_parser.get_summoner_names()
     # print(sumNames)
     # print(RegexOperator.get_enemy_team_id(get_website_of_match("597508")))
     # print(RegexOperator.get_summoner_names(get_website_of_team("91700")))
@@ -14,8 +16,10 @@ def main():
     # print(RegexOperator.get_team_name(get_website_of_team("105878")))
     # print(RegexOperator.get_enemy_team_name(get_website_of_match("597508")))
     # print(RegexOperator.get_team_tag(get_website_of_team("105878")))
-    print(RegexOperator.get_matches(get_website_of_team("105878")))
+    # print(RegexOperator.get_matches(get_website_of_team("105878")))
 
 
-if __name__ == '__main__':
+# Command to run this file:
+# python manage.py runscript debug
+def run():
     main()

@@ -1,4 +1,5 @@
 import os
+import pickle
 
 import requests
 
@@ -36,11 +37,18 @@ from prime_league_bot.settings import BASE_URI_AJAX, BASE_URI
 #     }
 # }
 
-
 def get_local_response(file_path):
-    with open(file_path) as file:
-        website = file.read()
-    return website
+    with open(file_path, 'rb') as f:
+        text = pickle.load(f)
+    print("Object loaded from: {}".format(file_path))
+    return text
+
+
+def save_object_to_file(obj, file_name):
+    file_path = os.path.join(settings.STORAGE_DIR, file_name)
+    with open(file_path, 'wb') as f:
+        pickle.dump(obj, f)
+    print("Object saved into: {} ".format(file_path))
 
 
 class Api:
@@ -69,28 +77,48 @@ class Api:
 class Crawler:
 
     def __init__(self, local: bool = False):
+        """
+
+        :param local Boolean: If local is True, the crawler is using text documents from storage folder.
+        """
         self.local = local
         self.api = Api()
+        self.save_requests = settings.DEBUG and not local
+        if self.save_requests:
+            print("Please use the local file system in development for reducing requests.")
 
     def get_matches_website(self, team: Team):
         if self.local:
             return get_local_response(
-                os.path.join(os.path.dirname(settings.BASE_DIR), "static", f"matches_{team.id}.txt"))
-        return self.api.html_handler(team.group_link, requests.get).text
+                os.path.join(settings.STORAGE_DIR, f"matches_{team.id}.txt"))
+        text = self.api.html_handler(team.group_link, requests.get).text
+        if self.save_requests:
+            save_object_to_file(text, f"matches_{team.id}.txt")
+        return text
 
     def get_match_website(self, match_id):
         if self.local:
             return get_local_response(
-                os.path.join(os.path.dirname(settings.BASE_DIR), "static", f"match_{match_id}.txt"))
-        return self.api.html_handler(f"matches/{match_id}", ).text
+                os.path.join(settings.STORAGE_DIR, f"match_{match_id}.txt"))
+        text = self.api.html_handler(f"matches/{match_id}", ).text
+        if self.save_requests:
+            save_object_to_file(text, f"match_{match_id}.txt")
+        return text
 
     def get_team_website(self, _id):
-        web_site = self.api.html_handler(f"teams/{_id}").text if not self.local else get_local_response(
-            os.path.join(os.path.dirname(settings.BASE_DIR), "static", f"team_{_id}.txt"))
-        return web_site
+        if self.local:
+            return get_local_response(
+                os.path.join(settings.STORAGE_DIR, f"team_{_id}.txt"))
+        text = self.api.html_handler(f"teams/{_id}").text
+        if self.save_requests:
+            save_object_to_file(text, f"team_{_id}.txt")
+        return text
 
     def get_details_json(self, match):
         if self.local:
             return get_local_response(
-                os.path.join(os.path.dirname(settings.BASE_DIR), "static", f"match_details_json_{match}.txt"))
-        return self.api.json_handler("leagues_match/", post_params={"id": match, "action": "init"}).text
+                os.path.join(settings.STORAGE_DIR, f"match_details_json_{match}.txt"))
+        text = self.api.json_handler("leagues_match/", post_params={"id": match, "action": "init"}).text
+        if self.save_requests:
+            save_object_to_file(text, f"match_details_json_{match}.txt")
+        return text

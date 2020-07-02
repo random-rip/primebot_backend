@@ -27,7 +27,7 @@ environ.Env.read_env()  # reading .env file
 SECRET_KEY = env.str('DJANGO_SECRET_KEY', default="")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool('DEBUG', default=False)
+DEBUG = env.bool('DJANGO_DEBUG', default=False)
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", cast=str, default=[])
 
 # Application definition
@@ -134,3 +134,5 @@ BASE_URI_AJAX = "https://www.primeleague.gg/ajax/"
 DEFAULT_TEAM_ID = env.int("TEAM_ID")
 DEFAULT_GROUP_LINK = env.str("GROUP_LINK")
 DEFAULT_TELEGRAM_CHANNEL_ID = env.str("TG_CHAT_ID")
+
+STORAGE_DIR = os.path.join(BASE_DIR, "storage", )
