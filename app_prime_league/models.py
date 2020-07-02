@@ -1,7 +1,7 @@
 from django.db import models
 
 # Create your models here.
-from parsing.regex_operations import HTMLParser
+from parsing.regex_operations import MatchHTMLParser
 
 
 class TeamManager(models.Manager):
@@ -70,7 +70,7 @@ class GameMetaData:
     @staticmethod
     def create_game_meta_data_from_website(team: Team, game_id, website, ):
         gmd = GameMetaData()
-        parser = HTMLParser(website)
+        parser = MatchHTMLParser(website)
 
         gmd.game_id = game_id
         gmd.game_day = parser.get_game_day()

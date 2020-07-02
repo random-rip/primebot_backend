@@ -1,6 +1,6 @@
 from typing import Union
 
-from app_prime_league.models import Team, Game, GameMetaData
+from app_prime_league.models import Game, GameMetaData
 
 
 class GameComparer:
@@ -10,6 +10,12 @@ class GameComparer:
         self.game_new = game_new
 
     def compare_new_suggestion(self, of_enemy_team=False):
+        """
+        Comparing a the latest suggestions of game_old and game_new and returns True if a new suggestion was made.
+        If of_enemy_team is True, checks if the new suggestion was made by the enemy team.
+        :param of_enemy_team:
+        :return boolean: True if new suggestion else False
+        """
         if self.game_new.latest_suggestion is None:
             return False
 
