@@ -16,7 +16,7 @@ def main():
             gmd = GameMetaData.create_game_meta_data_from_website(team=i, game_id=j, website=website)
             Game().save_or_update(gmd)
 
-    send_message(chat_id=***REMOVED***, msg="test")
+    send_message(chat_id=123, msg="test")
 
 
 def run():
