@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 from parsing.regex_operations import MatchHTMLParser
 
 
@@ -80,7 +79,6 @@ class GameMetaData:
         gmd.game_closed = parser.get_game_closed()
         gmd.latest_suggestion = parser.get_latest_suggestion()
         gmd.suggestion_confirmed = parser.get_suggestion_confirmed()
-
         return gmd
 
 

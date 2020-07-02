@@ -41,7 +41,7 @@ HEADERS = {
 
 
 def get_local_response(file_path):
-    with open(file_path, 'r') as f:
+    with open(file_path, 'r', encoding='utf8') as f:
         text = f.read()
     print("Object loaded from: {}".format(file_path))
     return text
@@ -49,7 +49,7 @@ def get_local_response(file_path):
 
 def save_object_to_file(obj, file_name):
     file_path = os.path.join(settings.STORAGE_DIR, file_name)
-    with open(file_path, 'w') as f:
+    with open(file_path, 'w', encoding='utf8') as f:
         f.write(obj)
     print("Object saved into: {} ".format(file_path))
 
@@ -88,7 +88,7 @@ class Crawler:
         self.api = Api()
         self.save_requests = settings.DEBUG and not local
         if self.save_requests:
-            print("Consider using the local file system in development to reduce the requests.")
+            print("Consider using the local file system in development to reduce the number of requests.")
 
     def get_matches_website(self, team: Team):
         if self.local:
