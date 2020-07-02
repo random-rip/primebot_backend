@@ -59,6 +59,7 @@ def run():
     # main()
 
     crawler = Crawler(local=False)
+    # uncompleted_games = Game.objects.get_uncompleted_games()
     uncompleted_games = Game.objects.filter(game_id=597478)
     print(uncompleted_games)
     for i in uncompleted_games:

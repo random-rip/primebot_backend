@@ -7,7 +7,6 @@ from app_prime_league.models import Team
 from prime_league_bot import settings
 from prime_league_bot.settings import BASE_URI_AJAX, BASE_URI
 
-
 # api = {
 #     "matches": {
 #         "method": requests.get,
@@ -37,17 +36,21 @@ from prime_league_bot.settings import BASE_URI_AJAX, BASE_URI
 #     }
 # }
 
+HEADERS = {
+}
+
+
 def get_local_response(file_path):
-    with open(file_path, 'rb') as f:
-        text = pickle.load(f)
+    with open(file_path, 'r') as f:
+        text = f.read()
     print("Object loaded from: {}".format(file_path))
     return text
 
 
 def save_object_to_file(obj, file_name):
     file_path = os.path.join(settings.STORAGE_DIR, file_name)
-    with open(file_path, 'wb') as f:
-        pickle.dump(obj, f)
+    with open(file_path, 'w') as f:
+        f.write(obj)
     print("Object saved into: {} ".format(file_path))
 
 
@@ -61,7 +64,7 @@ class Api:
             raise Exception("Endpoint not found")
 
         path = f"{self.base_uri}{endpoint}/"
-        response = request(path, data=post_params)
+        response = request(path, data=post_params, headers=HEADERS)
         return response
 
     def html_handler(self, endpoint, request=requests.get, query_params=None, team_id=None):
@@ -85,7 +88,7 @@ class Crawler:
         self.api = Api()
         self.save_requests = settings.DEBUG and not local
         if self.save_requests:
-            print("Please use the local file system in development for reducing requests.")
+            print("Consider using the local file system in development to reduce the requests.")
 
     def get_matches_website(self, team: Team):
         if self.local:
