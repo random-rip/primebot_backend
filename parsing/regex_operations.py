@@ -16,8 +16,24 @@ class BaseHTMLParser:
         self.bs4 = BeautifulSoup(website, 'html.parser')
 
     def get_logs(self):
-        self.logs = re.finditer(LOGS, self.website)
-        return self.logs
+        log_table = self.bs4.find_all("div", class_="content-subsection-container")[-1]
+        log_trs = log_table.find("tbody").find_all("tr")
+        logs = []
+        for tr in log_trs:
+            time = tr.find("span", class_="itime").get('data-time')
+            user = tr.find_all("span", class_="table-cell-container")[1].contents[-1]
+            action = tr.find_all("span", class_="table-cell-container")[2].contents[-1]
+            if len(tr.find_all("span", class_="table-cell-container")[-1].contents)>0:
+                details = tr.find_all("span", class_="table-cell-container")[3].contents[0]
+            else:
+                details = ""
+            logs.append([
+                time,
+                user,
+                action,
+                details,
+            ])
+        return logs
 
 
 class TeamHTMLParser(BaseHTMLParser):

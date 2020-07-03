@@ -6,9 +6,10 @@ def main():
     match_id = 597478
     crawler = Crawler(local=True)
     match_parser = MatchHTMLParser(crawler.get_match_website(match_id))
-    team_parser = TeamHTMLParser(crawler.get_team_website("91700"))
+    # team_parser = TeamHTMLParser(crawler.get_team_website("91700"))
     logs = match_parser.get_logs()
-    sumNames = team_parser.get_summoner_names()
+    print(logs)
+    # sumNames = team_parser.get_summoner_names()
     # print(sumNames)
     # print(RegexOperator.get_enemy_team_id(get_website_of_match("597508")))
     # print(RegexOperator.get_summoner_names(get_website_of_team("91700")))
@@ -17,6 +18,7 @@ def main():
     # print(RegexOperator.get_enemy_team_name(get_website_of_match("597508")))
     # print(RegexOperator.get_team_tag(get_website_of_team("105878")))
     # print(RegexOperator.get_matches(get_website_of_team("105878")))
+    pass
 
 
 # Command to run this file:
