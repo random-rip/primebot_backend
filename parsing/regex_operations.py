@@ -98,6 +98,7 @@ class MatchHTMLParser(BaseHTMLParser):
         return False
 
     def get_latest_suggestion(self):
+        # Anderung erwünscht.... fühlt sich komisch an... :)
         for log in self.logs:
             if not (log["user"].split(" ")[-1] == "1)" and self.team_is_team_1) or (
                     log["user"].split(" ")[-1] == "2)" and not self.team_is_team_1):
