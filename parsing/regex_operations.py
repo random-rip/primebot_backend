@@ -81,7 +81,6 @@ class MatchHTMLParser(BaseHTMLParser):
         self.team_is_team_1 = team_1_id != team.id
 
     def get_enemy_lineup(self):
-        # TODO
         for log in self.logs:
             if log["action"] == "lineup_submit":
 
@@ -91,6 +90,19 @@ class MatchHTMLParser(BaseHTMLParser):
         return None
 
     def get_game_closed(self):
+        # action = obj.group("action") if not isinstance(obj, dict) else obj["action"]
+        # if action == "scheduling_suggest":
+        #     return LogSuggestion
+        # elif action == "scheduling_confirm":
+        #     return LogSchedulingConfirmation
+        # elif action == "lineup_submit":
+        #     return LogLineupSubmit
+        # elif action == "played" or action == "lineup_missing" or action == "lineup_notready":
+        #     return LogGamesPlayed
+        # elif action == "scheduling_autoconfirm":
+        #     return LogSchedulingAutoConfirmation
+        # return Log
+
         # TODO
 
         return False

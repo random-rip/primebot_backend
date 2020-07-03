@@ -20,7 +20,7 @@ class GameManager(models.Manager):
 
 class Team(models.Model):
     name = models.CharField(max_length=50, null=True)
-    group_link = models.CharField(max_length=300, null=True)
+    division = models.CharField(max_length=5, null=True)
     telegram_channel_id = models.CharField(max_length=50, null=True)
 
     objects = TeamManager()
