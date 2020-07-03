@@ -26,7 +26,7 @@ class BaseHTMLParser:
             action = tr.find_all("span", class_="table-cell-container")[2].contents[-1]
             content = tr.find_all("span", class_="table-cell-container")[-1].contents
             if len(content) > 0:
-                details = content[0]
+                details = content
             else:
                 details = None
             self.logs.append({
@@ -90,30 +90,34 @@ class MatchHTMLParser(BaseHTMLParser):
         return None
 
     def get_game_closed(self):
-        # action = obj.group("action") if not isinstance(obj, dict) else obj["action"]
-        # if action == "scheduling_suggest":
-        #     return LogSuggestion
-        # elif action == "scheduling_confirm":
-        #     return LogSchedulingConfirmation
-        # elif action == "lineup_submit":
-        #     return LogLineupSubmit
-        # elif action == "played" or action == "lineup_missing" or action == "lineup_notready":
-        #     return LogGamesPlayed
-        # elif action == "scheduling_autoconfirm":
-        #     return LogSchedulingAutoConfirmation
-        # return Log
-
-        # TODO
+        closed = ["played", "lineup_missing", "lineup_notready", "disqualify"]
+        for log in self.logs:
+            if log["action"] in closed:
+                return True
 
         return False
 
     def get_latest_suggestion(self):
-        # TODO
-        pass
+        for log in self.logs:
+            if not (log["user"].split(" ")[-1] == "1)" and self.team_is_team_1) or (
+                    log["user"].split(" ")[-1] == "2)" and not self.team_is_team_1):
+                details = log["details"]
+                if log["action"] == "scheduling_suggest":
+                    if len(details) == 3:
+                        details.pop(1)
+                    elif len(details) == 5:
+                        details.pop(1)
+                        details.pop(2)
+                    return details
+        return None
 
     def get_suggestion_confirmed(self):
-        # TODO
-        pass
+        confirmed = ["scheduling_autoconfirm", "scheduling_confirm"]
+        for log in self.logs:
+            if log["action"] in confirmed:
+                return True
+
+        return False
 
     def get_enemy_team_name(self):
         results = re.finditer(TEAM_NAME, self.website)
