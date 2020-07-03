@@ -14,26 +14,30 @@ class BaseHTMLParser:
         self.website = website
         self.logs = None
         self.bs4 = BeautifulSoup(website, 'html.parser')
+        self._parse_logs()
 
-    def get_logs(self):
+    def _parse_logs(self):
         log_table = self.bs4.find_all("div", class_="content-subsection-container")[-1]
         log_trs = log_table.find("tbody").find_all("tr")
-        logs = []
+        self.logs = []
         for tr in log_trs:
             time = tr.find("span", class_="itime").get('data-time')
             user = tr.find_all("span", class_="table-cell-container")[1].contents[-1]
             action = tr.find_all("span", class_="table-cell-container")[2].contents[-1]
-            if len(tr.find_all("span", class_="table-cell-container")[-1].contents)>0:
-                details = tr.find_all("span", class_="table-cell-container")[3].contents[0]
+            content = tr.find_all("span", class_="table-cell-container")[-1].contents
+            if len(content) > 0:
+                details = content[0]
             else:
-                details = ""
-            logs.append([
-                time,
-                user,
-                action,
-                details,
-            ])
-        return logs
+                details = None
+            self.logs.append({
+                "timestamp": time,
+                "user": user,
+                "action": action,
+                "details": details,
+            })
+
+    def get_logs(self):
+        return self.logs
 
 
 class TeamHTMLParser(BaseHTMLParser):
@@ -69,12 +73,26 @@ class MatchHTMLParser(BaseHTMLParser):
     ParserClass for a match website.
     """
 
+    def __init__(self, website, team):
+        super().__init__(website)
+
+        team_1_div = self.bs4.find_all("div", class_="content-match-head-team content-match-head-team1")[0]
+        team_1_id = team_1_div.contents[1].contents[1].get("href").split("/teams/")[1].split("-")[0]
+        self.team_is_team_1 = team_1_id != team.id
+
     def get_enemy_lineup(self):
         # TODO
-        return []
+        for log in self.logs:
+            if log["action"] == "lineup_submit":
+
+                team = "1)" if not self.team_is_team_1 else "2)"
+                if log["user"].split(" ")[-1] == team:
+                    return [(*x.split(":"),) for x in log["details"].split(", ")]
+        return None
 
     def get_game_closed(self):
         # TODO
+
         return False
 
     def get_latest_suggestion(self):
@@ -93,17 +111,12 @@ class MatchHTMLParser(BaseHTMLParser):
             name = [x.group("name_2") for x in results][0]
         return name
 
-    def get_enemy_team_id(self, own_team_id):
+    def get_enemy_team_id(self):
         team_1_div = self.bs4.find_all("div", class_="content-match-head-team content-match-head-team1")[0]
         team_2_div = self.bs4.find_all("div", class_="content-match-head-team content-match-head-team2")[0]
         team_1_id = team_1_div.contents[1].contents[1].get("href").split("/teams/")[1].split("-")[0]
         team_2_id = team_2_div.contents[1].contents[1].get("href").split("/teams/")[1].split("-")[0]
-        if team_1_id != own_team_id:
-            return team_1_id
-        elif team_2_id != own_team_id:
-            return team_2_id
-        else:
-            return -1
+        return team_2_id if self.team_is_team_1 else team_1_id
 
     def get_game_day(self):
         match_info_div = self.bs4.find_all("div", class_="content-match-subtitles")[0]
