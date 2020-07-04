@@ -10,8 +10,8 @@ def main():
     team, _ = Team.objects.get_or_create(id=team_id)
     match_parser = MatchHTMLParser(crawler.get_match_website(match_id), team)
     team_parser = TeamHTMLParser(crawler.get_team_website(team_id))
-    # logs = match_parser.get_logs()
-    # print(logs)
+    logs = match_parser.get_logs()
+    [print(x) for x in logs]
     print(team_parser.get_members())
     # print(match_parser.get_suggestion_confirmed())
     # sumNames = team_parser.get_summoner_names()

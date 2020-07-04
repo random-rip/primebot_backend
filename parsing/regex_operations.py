@@ -29,7 +29,7 @@ class BaseHTMLParser:
             details = [x.extract() for x in tr.find_all("span", class_="table-cell-container")[-1]]
             log = BaseLog.return_specified_log(
                 timestamp=time,
-                user=user,
+                user=user.split(" ")[0],
                 action=action,
                 details=details if len(details) > 0 else None,
             )
@@ -90,12 +90,16 @@ class MatchHTMLParser(BaseHTMLParser):
         team_1_div = self.bs4.find_all("div", class_="content-match-head-team content-match-head-team1")[0]
         team_1_id = team_1_div.contents[1].contents[1].get("href").split("/teams/")[1].split("-")[0]
         self.team_is_team_1 = team_1_id != team.id
+        self.team = team
 
     def get_enemy_lineup(self):
+        team_leader = self.team.player_set.all().filter(is_leader=True).values("name")
+        print(team_leader)
         for log in self.logs:
             if isinstance(log, LogLineupSubmit):
-                team = "1)" if not self.team_is_team_1 else "2)"
-                if log.user.split(" ")[-1] == team:
+
+                # team = "1)" if not self.team_is_team_1 else "2)"
+                # if log.user.split(" ")[-1] == team:
                     return log.details
         return None
 
