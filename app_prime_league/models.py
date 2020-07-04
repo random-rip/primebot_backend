@@ -14,9 +14,6 @@ class GameManager(models.Manager):
     def get_uncompleted_games(self):
         return self.model.objects.filter(game_closed=False)
 
-    def get_latest_suggestion_log(self):
-        return self.model.objects.log_set.filter(action="suggestion").order("-timestamp").first()
-
 
 class Team(models.Model):
     name = models.CharField(max_length=50, null=True)
@@ -35,6 +32,7 @@ class Team(models.Model):
 class Player(models.Model):
     name = models.CharField(max_length=50)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, null=True)
+    summoner_name = models.CharField(max_length=30, null=True)
     is_leader = models.BooleanField(default=False)
 
     class Meta:
@@ -69,12 +67,12 @@ class GameMetaData:
     @staticmethod
     def create_game_meta_data_from_website(team: Team, game_id, website, ):
         gmd = GameMetaData()
-        parser = MatchHTMLParser(website)
+        parser = MatchHTMLParser(website, team)
 
         gmd.game_id = game_id
         gmd.game_day = parser.get_game_day()
         gmd.team = team
-        gmd.enemy_team = parser.get_enemy_team_id(team.id)
+        gmd.enemy_team = parser.get_enemy_team_id()
         gmd.enemy_lineup = parser.get_enemy_lineup()
         gmd.game_closed = parser.get_game_closed()
         gmd.latest_suggestion = parser.get_latest_suggestion()
@@ -100,6 +98,9 @@ class Game(models.Model):
     def __repr__(self):
         return f"{self.game_id}"
 
+    def __str__(self):
+        return self.__repr__()
+
     def save_or_update(self, gmd: GameMetaData):
         self.game_id = gmd.game_id
         self.game_day = gmd.game_day
@@ -115,12 +116,20 @@ class Game(models.Model):
         # TODO gmd -> Game
 
 
+class LogManager(models.Manager):
+
+    def get_latest_suggestion_log(self, match):
+        return self.model.objects.filter(game=match, action="suggestion").order_by("-timestamp").first()
+
+
 class Log(models.Model):
     timestamp = models.DateTimeField()
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
     user = models.ForeignKey(Player, on_delete=models.CASCADE)
     action = models.CharField(max_length=30)
     details = models.TextField(null=True)
+
+    objects = LogManager()
 
     class Meta:
         db_table = "logs"

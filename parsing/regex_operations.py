@@ -1,4 +1,5 @@
 import re
+from typing import Union
 
 from bs4 import BeautifulSoup
 
@@ -50,6 +51,10 @@ class TeamHTMLParser(BaseHTMLParser):
         names = [i.span.contents[0] for i in team_li]
         return names
 
+    def get_members(self):
+        # TODO
+        pass
+
     def get_matches(self):
         games_table = self.bs4.find_all("ul", class_="league-stage-matches")
         games = games_table[-1].find_all("td", class_="col-2 col-text-center")
@@ -81,25 +86,28 @@ class MatchHTMLParser(BaseHTMLParser):
 
     def get_enemy_lineup(self):
         for log in self.logs:
-            if log["action"] == "lineup_submit":
-
+            if isinstance(log, LogLineupSubmit):
                 team = "1)" if not self.team_is_team_1 else "2)"
-                if log["user"].split(" ")[-1] == team:
-                    return [(*x.split(":"),) for x in log["details"].split(", ")]
+                if log.user.split(" ")[-1] == team:
+                    return log.details
         return None
 
     def get_game_closed(self):
-        closed = ["played", "lineup_missing", "lineup_notready", "disqualify"]
+        closed = Union[LogPlayed, LogLineupMissing, LogLineupNotReady, LogDisqualified]
         for log in self.logs:
-            if log["action"] in closed:
+            if isinstance(log, closed.__args__):  # very hacky way here
                 return True
-
+            # if isinstance(log, LogPlayed) or \
+            #         isinstance(log, LogLineupMissing) or \
+            #         isinstance(log, LogLineupNotReady) or \
+            #         isinstance(log, LogDisqualified):
+            #     return True
         return False
 
     def get_latest_suggestion(self):
         for log in self.logs:
             if isinstance(log, LogSuggestion):
-                return log.details
+                return log
         return None
 
     def get_suggestion_confirmed(self):
@@ -157,7 +165,7 @@ class BaseLog:
         elif action == "lineup_submit":
             return LogLineupSubmit(*log)
         elif action == "played" or action == "lineup_missing" or action == "lineup_notready":
-            return LogGamePlayed(*log)
+            return LogPlayed(*log)
         elif action == "scheduling_autoconfirm":
             return LogSchedulingAutoConfirmation(*log)
         return None
@@ -184,7 +192,25 @@ class LogSchedulingAutoConfirmation(BaseLog):
         super().__init__(timestamp, user, details)
 
 
-class LogGamePlayed(BaseLog):
+class LogPlayed(BaseLog):
+
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+
+
+class LogLineupMissing(BaseLog):
+
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+
+
+class LogLineupNotReady(BaseLog):
+
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+
+
+class LogDisqualified(BaseLog):
 
     def __init__(self, timestamp, user, details):
         super().__init__(timestamp, user, details)

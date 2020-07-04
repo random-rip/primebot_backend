@@ -54,20 +54,25 @@ from data_crawling.api import Crawler
 #             .format(game_id, new_game.serialize(), new_game.match_ended, game_day, enemy_team_id, chat_id, team_id)
 #         database.insert_to_db(query)
 
+def check():
+    games = Game.objects.get_uncompleted_games()
+
+    for i in games:
+        print(i)
+
 
 def run():
     # main()
 
-    crawler = Crawler(local=False)
+    crawler = Crawler(local=True)
     # uncompleted_games = Game.objects.get_uncompleted_games()
     uncompleted_games = Game.objects.filter(game_id=597478)
-    print(uncompleted_games)
     for i in uncompleted_games:
-        print(i)
+        print("Game ", i)
         game_id = i.game_id
-        team_id = i.team.id
+        team = i.team
         website = crawler.get_match_website(i)
-        gmd = GameMetaData.create_game_meta_data_from_website(team=team_id, game_id=game_id, website=website)
+        gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=game_id, website=website)
         cmp = GameComparer(i, gmd)
         if cmp.compare_new_suggestion(of_enemy_team=True):
             print("new suggestion")

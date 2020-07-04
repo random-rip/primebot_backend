@@ -1,6 +1,6 @@
 from typing import Union
 
-from app_prime_league.models import Game, GameMetaData
+from app_prime_league.models import Game, GameMetaData, Log, Player
 
 
 class GameComparer:
@@ -19,8 +19,19 @@ class GameComparer:
         if self.game_new.latest_suggestion is None:
             return False
 
-        user = self.game_new.latest_suggestion["user"]
-        if user == self.game_old.objects.get_latest_suggestion_log().name:
+        new_suggestion_user = Player.objects.get(name=self.game_new.latest_suggestion.user)
+
+        old_suggestion = Log.objects.get_latest_suggestion_log(self.game_old)
+        if old_suggestion is None:
+            team_leaders = self.game_old.team.player_set.all().filter(is_leader=True)
+            print(team_leaders)
+            if (of_enemy_team and new_suggestion_user in team_leaders) or (
+                    not of_enemy_team and new_suggestion_user not in team_leaders):
+                return True
+            else:
+                return False
+
+        if old_suggestion.timestamp == self.game_new.latest_suggestion.timestamp:
             return False
 
         team_leaders = self.game_old.player_set.filter(is_leader=True).values("name", flat=True)
