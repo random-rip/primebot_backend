@@ -6,7 +6,7 @@ from telegram import send_message
 
 
 def main():
-    crawler = Crawler(local=False)
+    crawler = Crawler(local=True)
     teams = Team.objects.get_watched_teams()
     # TODO add Players to DB
     for i in teams:
@@ -17,14 +17,14 @@ def main():
             gmd = GameMetaData.create_game_meta_data_from_website(team=i, game_id=j, website=website)
             # Game().save_or_update(gmd)
 
-        members = parser.get_summoner_names()
-        for i in members:
-            player, created = Player.objects.get_or_create(summoner_name=i, defaults={
-
+        members = parser.get_members()
+        for (id_, name, summoner_name, is_leader,) in members:
+            player, _ = Player.objects.get_or_create(id=id_, defaults={
+                "name": name,
+                "team":  i,
+                "summoner_name": summoner_name,
+                "is_leader": is_leader,
             })
-        print(members)
-
-    send_message(chat_id=123, msg="test")
 
 
 def run():

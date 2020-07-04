@@ -19,6 +19,7 @@ class GameComparer:
         if self.game_new.latest_suggestion is None:
             return False
 
+        print(self.game_new.latest_suggestion.user)
         new_suggestion_user = Player.objects.get(name=self.game_new.latest_suggestion.user)
 
         old_suggestion = Log.objects.get_latest_suggestion_log(self.game_old)
@@ -35,10 +36,10 @@ class GameComparer:
             return False
 
         team_leaders = self.game_old.player_set.filter(is_leader=True).values("name", flat=True)
-        if of_enemy_team and user in team_leaders:
-            return False
-        if not of_enemy_team and user not in team_leaders:
-            return False
+        # if of_enemy_team and user in team_leaders:
+        #     return False
+        # if not of_enemy_team and user not in team_leaders:
+        #     return False
         return True
 
     def compare_scheduling_confirmation(self):
