@@ -2,7 +2,8 @@ import re
 
 from bs4 import BeautifulSoup
 
-from utils.patterns import LOGS, SUMMONER_NAMES, ENEMY_TEAM_ID, GAME_DAY, TEAM_NAME, MATCH_IDS
+from utils.patterns import TEAM_NAME
+from utils.utils import timestamp_to_datetime, string_to_datetime
 
 
 class BaseHTMLParser:
@@ -24,17 +25,15 @@ class BaseHTMLParser:
             time = tr.find("span", class_="itime").get('data-time')
             user = tr.find_all("span", class_="table-cell-container")[1].contents[-1]
             action = tr.find_all("span", class_="table-cell-container")[2].contents[-1]
-            content = tr.find_all("span", class_="table-cell-container")[-1].contents
-            if len(content) > 0:
-                details = content
-            else:
-                details = None
-            self.logs.append({
-                "timestamp": time,
-                "user": user,
-                "action": action,
-                "details": details,
-            })
+            details = [x.extract() for x in tr.find_all("span", class_="table-cell-container")[-1]]
+            log = BaseLog.return_specified_log(
+                timestamp=time,
+                user=user,
+                action=action,
+                details=details if len(details) > 0 else None,
+            )
+            if log is not None:
+                self.logs.append(log)
 
     def get_logs(self):
         return self.logs
@@ -98,25 +97,21 @@ class MatchHTMLParser(BaseHTMLParser):
         return False
 
     def get_latest_suggestion(self):
-        # Anderung erwünscht.... fühlt sich komisch an... :)
         for log in self.logs:
-            if not (log["user"].split(" ")[-1] == "1)" and self.team_is_team_1) or (
-                    log["user"].split(" ")[-1] == "2)" and not self.team_is_team_1):
-                details = log["details"]
-                if log["action"] == "scheduling_suggest":
-                    if len(details) == 3:
-                        details.pop(1)
-                    elif len(details) == 5:
-                        details.pop(1)
-                        details.pop(2)
-                    return details
+            if isinstance(log, LogSuggestion):
+                return log.details
         return None
 
     def get_suggestion_confirmed(self):
-        confirmed = ["scheduling_autoconfirm", "scheduling_confirm"]
-        for log in self.logs:
-            if log["action"] in confirmed:
-                return True
+        # Soll hier ein Boolean zurückgegeben werden, oder der Ausgewählte Spieltermin?
+        timestamp = None
+        for log in reversed(self.logs):
+            if isinstance(log, LogSuggestion):
+                timestamp = log.details[0]
+            if isinstance(log, LogSchedulingConfirmation):
+                return log.details
+            if isinstance(log, LogSchedulingAutoConfirmation):
+                return timestamp
 
         return False
 
@@ -140,3 +135,63 @@ class MatchHTMLParser(BaseHTMLParser):
         game_day_div = match_info_div.find_all("div", class_="txt-subtitle")[1]
         game_day = game_day_div.contents[0].split(" ")[1]
         return game_day
+
+
+class BaseLog:
+
+    def __init__(self, timestamp, user, details):
+        self.timestamp = timestamp_to_datetime(timestamp)
+        self.user = user
+        self.details = details
+
+    def __repr__(self):
+        return f"{self.__class__.__name__} von {self.user} um {self.timestamp} === Details: {self.details}"
+
+    @staticmethod
+    def return_specified_log(timestamp, user, action, details):
+        log = (timestamp, user, details)
+        if action == "scheduling_suggest":
+            return LogSuggestion(*log)
+        elif action == "scheduling_confirm":
+            return LogSchedulingConfirmation(*log)
+        elif action == "lineup_submit":
+            return LogLineupSubmit(*log)
+        elif action == "played" or action == "lineup_missing" or action == "lineup_notready":
+            return LogGamePlayed(*log)
+        elif action == "scheduling_autoconfirm":
+            return LogSchedulingAutoConfirmation(*log)
+        return None
+
+
+class LogSuggestion(BaseLog):
+
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+        print(len(self.details))
+        self.details = [string_to_datetime(x[3:]) for x in self.details]
+
+
+class LogSchedulingConfirmation(BaseLog):
+
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+        self.details = string_to_datetime(self.details)
+
+
+class LogSchedulingAutoConfirmation(BaseLog):
+
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+
+
+class LogGamePlayed(BaseLog):
+
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+
+
+class LogLineupSubmit(BaseLog):
+
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+        self.details = [(*x.split(":"),) for x in self.details[0].split(", ")]

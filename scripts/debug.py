@@ -11,6 +11,7 @@ def main():
     # team_parser = TeamHTMLParser(crawler.get_team_website("91700"))
     # logs = match_parser.get_logs()
     # print(logs)
+    print(match_parser.get_latest_suggestion())
     print(match_parser.get_suggestion_confirmed())
     # sumNames = team_parser.get_summoner_names()
     # print(sumNames)
