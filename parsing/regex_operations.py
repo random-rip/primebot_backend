@@ -78,6 +78,12 @@ class TeamHTMLParser(BaseHTMLParser):
         team_tag = page_title_div.h1.contents[0].split("(")[1].replace(')', '')
         return team_tag
 
+    def get_logo(self):
+        logo_box = self.bs4.find("div", class_="content-portrait-head")
+        logo_div = logo_box.find("div", class_="image-present")
+        logo = logo_div.img
+        logo_url = logo.get("src")
+        return logo_url
 
 class MatchHTMLParser(BaseHTMLParser):
     """
