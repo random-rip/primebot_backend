@@ -2,7 +2,7 @@ from app_prime_league.models import Team, Game, Player
 from comparing.game_comparer import GameMetaData
 from data_crawling.api import Crawler
 from parsing.regex_operations import TeamHTMLParser
-from telegram import send_message
+from telegram_interface import send_message
 
 
 def main():
