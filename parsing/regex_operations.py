@@ -52,8 +52,15 @@ class TeamHTMLParser(BaseHTMLParser):
         return names
 
     def get_members(self):
-        # TODO
-        pass
+        team_li = self.bs4.find_all("ul")[4].find_all("li")
+        is_leader = ["Leader", "Captain"]
+        members = [(
+            i.a.get("href").split("/users/")[-1].split("-")[0],
+            i.h3.contents[0],
+            i.span.contents[0],
+            i.find("div", class_="txt-subtitle").contents[0] in is_leader,
+        ) for i in team_li]
+        return members
 
     def get_matches(self):
         games_table = self.bs4.find_all("ul", class_="league-stage-matches")
@@ -114,8 +121,7 @@ class MatchHTMLParser(BaseHTMLParser):
                 return log.details
             if isinstance(log, LogSchedulingAutoConfirmation):
                 return timestamp
-
-        return False
+        return None
 
     def get_enemy_team_name(self):
         results = re.finditer(TEAM_NAME, self.website)
@@ -177,7 +183,7 @@ class LogSchedulingConfirmation(BaseLog):
 
     def __init__(self, timestamp, user, details):
         super().__init__(timestamp, user, details)
-        self.details = string_to_datetime(self.details)
+        self.details = string_to_datetime(self.details[0])
 
 
 class LogSchedulingAutoConfirmation(BaseLog):
