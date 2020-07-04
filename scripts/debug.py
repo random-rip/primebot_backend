@@ -4,15 +4,13 @@ from parsing.regex_operations import MatchHTMLParser, TeamHTMLParser
 
 
 def main():
-    match_id = 596848
-    team_id = 105878
+    match_id = 597487
+    team_id = 105959
     crawler = Crawler(local=True)
     team, _ = Team.objects.get_or_create(id=team_id)
     match_parser = MatchHTMLParser(crawler.get_match_website(match_id), team)
     team_parser = TeamHTMLParser(crawler.get_team_website(team_id))
-    logs = match_parser.get_logs()
-    [print(x) for x in logs]
-    print(team_parser.get_members())
+    match_parser.get_enemy_lineup()
     # print(match_parser.get_suggestion_confirmed())
     # sumNames = team_parser.get_summoner_names()
     # print(sumNames)

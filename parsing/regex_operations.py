@@ -93,13 +93,12 @@ class MatchHTMLParser(BaseHTMLParser):
         self.team = team
 
     def get_enemy_lineup(self):
-        team_leader = self.team.player_set.all().filter(is_leader=True).values("name")
+        team_leader = self.team.player_set.all().filter(is_leader=True).values_list("name", flat=True)
         print(team_leader)
         for log in self.logs:
             if isinstance(log, LogLineupSubmit):
-
-                # team = "1)" if not self.team_is_team_1 else "2)"
-                # if log.user.split(" ")[-1] == team:
+                if log.user not in team_leader:
+                    print(log.details)
                     return log.details
         return None
 

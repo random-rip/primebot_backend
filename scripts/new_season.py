@@ -19,12 +19,16 @@ def main():
 
         members = parser.get_members()
         for (id_, name, summoner_name, is_leader,) in members:
-            player, _ = Player.objects.get_or_create(id=id_, defaults={
+            player, created = Player.objects.get_or_create(id=id_, defaults={
                 "name": name,
                 "team":  i,
                 "summoner_name": summoner_name,
                 "is_leader": is_leader,
             })
+            if not created:
+                player.is_leader = is_leader
+                player.summoner_name = summoner_name
+                player.save()
 
 
 def run():
