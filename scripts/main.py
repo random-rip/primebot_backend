@@ -81,4 +81,8 @@ def run():
         if cmp.compare_scheduling_confirmation():
             print("Termin wurde festgelegt")
         if cmp.compare_lineup_confirmation():
-            print("Neues Lineup eines Teams")
+            print("Neues Lineup des gegnerischen Teams")
+        if cmp.compare_game_played():
+            print("Spiel wurde gepielt")
+
+        i.update_from_gmd(gmd)

@@ -1,6 +1,7 @@
 from django.db import models
 
 from parsing.regex_operations import MatchHTMLParser
+from utils.utils import timestamp_to_datetime
 
 
 class TeamManager(models.Manager):
@@ -52,7 +53,7 @@ class GameMetaData:
         self.enemy_lineup = None
         self.game_closed = None
         self.latest_suggestion = None
-        self.suggestion_confirmed = None
+        self.game_begin = None
 
     def __repr__(self):
         return f"GameID: {self.game_id}" \
@@ -62,7 +63,7 @@ class GameMetaData:
                f"\nEnemyLineup: {self.enemy_lineup}, " \
                f"\nGameClosed: {self.game_closed}, " \
                f"\nLatestSuggestion: {self.latest_suggestion}, " \
-               f"\nSuggestionConfirmed: {self.suggestion_confirmed}, "
+               f"\nSuggestionConfirmed: {self.game_begin}, "
 
     @staticmethod
     def create_game_meta_data_from_website(team: Team, game_id, website, ):
@@ -76,7 +77,7 @@ class GameMetaData:
         gmd.enemy_lineup = parser.get_enemy_lineup()
         gmd.game_closed = parser.get_game_closed()
         gmd.latest_suggestion = parser.get_latest_suggestion()
-        gmd.suggestion_confirmed = parser.get_suggestion_confirmed()
+        gmd.game_begin = parser.get_game_begin()
         return gmd
 
 
@@ -87,6 +88,7 @@ class Game(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="games_against")
     enemy_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="games_as_enemy_team")
 
+    game_begin = models.DateTimeField(null=True)
     enemy_lineup = models.ManyToManyField(Player, )
     game_closed = models.BooleanField()
 
@@ -101,35 +103,39 @@ class Game(models.Model):
     def __str__(self):
         return self.__repr__()
 
-    def save_or_update(self, gmd: GameMetaData):
+    @property
+    def get_first_suggested_game_begin(self):
+        suggestion = self.suggestion_set.all().order_by("created_at").first()
+        return None if suggestion is None else suggestion.game_begin
+
+    def update_from_gmd(self, gmd: GameMetaData):
         self.game_id = gmd.game_id
         self.game_day = gmd.game_day
         self.team = gmd.team
+        self.game_begin = gmd.game_begin
         enemy_team, _ = Team.objects.get_or_create(id=gmd.enemy_team)
         self.enemy_team = enemy_team
-        self.enemy_lineup.clear()
-        for i in gmd.enemy_lineup:
-            player, _ = Player.objects.get_or_create(name=i)
-            self.enemy_lineup.add(player)
+        if gmd.enemy_lineup is not None:
+            self.enemy_lineup.clear()
+            for id_, name in gmd.enemy_lineup:
+                player, _ = Player.objects.get_or_create(id=id_, defaults={
+                    "name": name,
+                    "team": enemy_team,
+                    "summoner_name": None,
+                })
+                self.enemy_lineup.add(player)
         self.game_closed = gmd.game_closed
+        if gmd.latest_suggestion is not None:
+            self.suggestion_set.all().delete()
+            for timestamp in gmd.latest_suggestion.details:
+                self.suggestion_set.add(Suggestion(game=self, game_begin=timestamp), bulk=False)
         self.save()
-        # TODO gmd -> Game
 
 
-class LogManager(models.Manager):
-
-    def get_latest_suggestion_log(self, match):
-        return self.model.objects.filter(game=match, action="suggestion").order_by("-timestamp").first()
-
-
-class Log(models.Model):
-    timestamp = models.DateTimeField()
+class Suggestion(models.Model):
+    game_begin = models.DateTimeField()
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
-    user = models.ForeignKey(Player, on_delete=models.CASCADE)
-    action = models.CharField(max_length=30)
-    details = models.TextField(null=True)
-
-    objects = LogManager()
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        db_table = "logs"
+        db_table = "suggestion"
