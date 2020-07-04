@@ -47,12 +47,12 @@ class TeamHTMLParser(BaseHTMLParser):
 
     def get_summoner_names(self):
         # TODO WICHTIG! check auf "richtige" Liste und anschließende Neuauswahl
-        team_li = self.bs4.find_all("ul")[4].find_all("li")
+        team_li = self.bs4.find_all("ul", class_="content-portrait-grid-l")[0].find_all("li")
         names = [i.span.contents[0] for i in team_li]
         return names
 
     def get_members(self):
-        team_li = self.bs4.find_all("ul")[4].find_all("li")
+        team_li = self.bs4.find_all("ul", class_="content-portrait-grid-l")[0].find_all("li")
         is_leader = ["Leader", "Captain"]
         members = [(
             i.a.get("href").split("/users/")[-1].split("-")[0],
