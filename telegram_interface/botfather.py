@@ -4,7 +4,8 @@ from telegram.ext.filters import Filters
 from prime_league_bot import settings
 from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandler, Dispatcher, ConversationHandler
 
-from telegram_interface.messages import START, HELP, OPTION1, OPTION1_AUSWAHL, OPTION2, OPTION2_AUSWAHL, FINISH
+from telegram_interface.messages import START, HELP, OPTION1, OPTION1_AUSWAHL, OPTION2, OPTION2_AUSWAHL, FINISH, ISSUE, \
+    FEEDBACK
 
 TEAM_ID, SETTING1, SETTING2, = range(3)
 
@@ -50,6 +51,18 @@ def cancel(update: Update, context: CallbackContext):
     return ConversationHandler.END
 
 
+def helpcommand(update: Update, context: CallbackContext):
+    update.message.reply_text(HELP, markdown=True)
+
+
+def issue(update: Update, context: CallbackContext):
+    update.message.reply_text(ISSUE, markdown=True)
+
+
+def feedback(update: Update, context: CallbackContext):
+    update.message.reply_text(FEEDBACK, markdown=True)
+
+
 class BotFather:
     """
     Botfather Class. Provides Communication with Bot(Telegram API) and Client
@@ -79,5 +92,8 @@ class BotFather:
         )
 
         dp.add_handler(conv_handler)
+        dp.add_handler(CommandHandler("help", helpcommand))
+        dp.add_handler(CommandHandler("issue", issue))
+        dp.add_handler(CommandHandler("feedback", feedback))
         updater.start_polling()
         updater.idle()

@@ -1,5 +1,9 @@
 # Start Message
-HELP = "HILFE! \n"
+HELP = "Hier ein kleiner Überblick: \n" \
+       "/issue - um zu Erfahren wie Ihr eine Störung melden könnt\n" \
+       "/start - um euer Team zu registieren\n" \
+        "/feedback - um uns euer Feedback mitzuteilen"
+
 START = "Ahoi, \n" \
         "Hier könnte ein Sehr Kreativer Text Stehen... tut er aber nicht \n" + \
         HELP + \
@@ -13,4 +17,7 @@ OPTION1_AUSWAHL = ["LineUp", "Komplettes Team", "Beides"]
 OPTION2 = "COMING Soon"
 OPTION2_AUSWAHL = ["Coming", "Soon"]
 
-FINISH= "Danke für eure Registierung...lol"
+ISSUE = "Habt Ihr einen Fehler bemerkt? Bitte schreibt uns gern ein Ticket (Screenshots,...) https://gitlab.com/Grayknife/prime_league_bot/-/issues"
+
+FEEDBACK = "Send Cash"
+FINISH = "Danke für eure Registierung...lol"
