@@ -75,4 +75,10 @@ def run():
         gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=game_id, website=website)
         cmp = GameComparer(i, gmd)
         if cmp.compare_new_suggestion(of_enemy_team=True):
-            print("new suggestion")
+            print("Neuer Zeitvorschlag der Gegner")
+        if cmp.compare_new_suggestion():
+            print("Eigener neuer Zeitvorschlag")
+        if cmp.compare_scheduling_confirmation():
+            print("Termin wurde festgelegt")
+        if cmp.compare_lineup_confirmation():
+            print("Neues Lineup eines Teams")
