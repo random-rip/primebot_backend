@@ -1,5 +1,4 @@
 import re
-from typing import Union
 
 from bs4 import BeautifulSoup
 
@@ -94,11 +93,9 @@ class MatchHTMLParser(BaseHTMLParser):
 
     def get_enemy_lineup(self):
         team_leader = self.team.player_set.all().filter(is_leader=True).values_list("name", flat=True)
-        print(team_leader)
         for log in self.logs:
             if isinstance(log, LogLineupSubmit):
                 if log.user not in team_leader:
-                    print(log.details)
                     return log.details
         return None
 
@@ -115,7 +112,7 @@ class MatchHTMLParser(BaseHTMLParser):
                 return log
         return None
 
-    def get_suggestion_confirmed(self):
+    def get_game_begin(self):
         timestamp = None
         for log in reversed(self.logs):
             if isinstance(log, LogSuggestion):
@@ -178,7 +175,6 @@ class LogSuggestion(BaseLog):
 
     def __init__(self, timestamp, user, details):
         super().__init__(timestamp, user, details)
-        print(len(self.details))
         self.details = [string_to_datetime(x[3:]) for x in self.details]
 
 
@@ -224,3 +220,4 @@ class LogLineupSubmit(BaseLog):
     def __init__(self, timestamp, user, details):
         super().__init__(timestamp, user, details)
         self.details = [(*x.split(":"),) for x in self.details[0].split(", ")]
+        self.details = [(int(id_), name) for id_, name in self.details]
