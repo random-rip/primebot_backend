@@ -93,15 +93,10 @@ class MatchHTMLParser(BaseHTMLParser):
         return None
 
     def get_game_closed(self):
-        closed = Union[LogPlayed, LogLineupMissing, LogLineupNotReady, LogDisqualified]
         for log in self.logs:
-            if isinstance(log, closed.__args__):  # very hacky way here
+            if isinstance(log, LogPlayed) or isinstance(log, LogLineupMissing) or \
+                    isinstance(log, LogLineupNotReady) or isinstance(log, LogDisqualified):
                 return True
-            # if isinstance(log, LogPlayed) or \
-            #         isinstance(log, LogLineupMissing) or \
-            #         isinstance(log, LogLineupNotReady) or \
-            #         isinstance(log, LogDisqualified):
-            #     return True
         return False
 
     def get_latest_suggestion(self):
@@ -111,7 +106,6 @@ class MatchHTMLParser(BaseHTMLParser):
         return None
 
     def get_suggestion_confirmed(self):
-        # Soll hier ein Boolean zurückgegeben werden, oder der Ausgewählte Spieltermin?
         timestamp = None
         for log in reversed(self.logs):
             if isinstance(log, LogSuggestion):
