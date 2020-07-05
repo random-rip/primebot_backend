@@ -1,5 +1,6 @@
 from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext.filters import Filters
+import requests
 
 from data_crawling.api import Crawler
 from parsing.regex_operations import TeamHTMLParser
@@ -21,6 +22,14 @@ def start(update: Update, context: CallbackContext):
     else:
         update.message.reply_text(START_CHAT)
         return ConversationHandler.END
+
+def bop(update: Update, context: CallbackContext):
+    contents = requests.get('https://random.dog/woof.json').json()
+    url = contents['url']
+    chat_id = update.message.chat_id
+    bot = context.bot
+    bot.send_photo(chat_id=chat_id, photo=url)
+
 
 
 def get_team_id(update: Update, context: CallbackContext):
@@ -118,5 +127,6 @@ class BotFather:
         dp.add_handler(CommandHandler("help", helpcommand))
         dp.add_handler(CommandHandler("issue", issue))
         dp.add_handler(CommandHandler("feedback", feedback))
+        dp.add_handler(CommandHandler("bop", bop))
         updater.start_polling()
         updater.idle()
