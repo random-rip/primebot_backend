@@ -14,7 +14,6 @@ def add_seeds(apps, schema_editor):
         Team = apps.get_model('app_prime_league', 'Team')
         team = Team(
             id=settings.DEFAULT_TEAM_ID,
-            group_link=settings.DEFAULT_GROUP_LINK,
             telegram_channel_id=settings.DEFAULT_TELEGRAM_CHANNEL_ID
         )
         team.save()

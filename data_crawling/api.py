@@ -1,43 +1,9 @@
 import os
-import pickle
 
 import requests
 
 from app_prime_league.models import Team
 from prime_league_bot import settings
-from prime_league_bot.settings import BASE_URI_AJAX, BASE_URI
-
-# api = {
-#     "matches": {
-#         "method": requests.get,
-#         "path": {
-#             settings.DEFAULT_TEAM_ID: settings.DEFAULT_GROUP_LINK,
-#             "105959": "prm/1504-summer-split-2020/group/509-gruppenphase/5743-division-4-25",
-#             "105878": "prm/1504-summer-split-2020/group/509-gruppenphase/5591-division-4-17",
-#             "93008": "prm/1504-summer-split-2020/group/509-gruppenphase/5576-division-4-12",
-#             "111914": "prm/1504-summer-split-2020/group/509-gruppenphase/5734-division-4-22",
-#
-#         }
-#     },
-#     "match_details": {
-#         "method": requests.get,
-#         "path": "matches/",
-#     },
-#     "team": {
-#         "method": requests.get,
-#         "path": "teams/",
-#     },
-# }
-
-# api_json = {
-#     "match_details": {
-#         "method": requests.post,
-#         "path": "leagues_match/",
-#     }
-# }
-
-HEADERS = {
-}
 
 
 def get_local_response(file_path):
@@ -90,14 +56,6 @@ class Crawler:
         if self.save_requests:
             print("Consider using the local file system in development to reduce the number of requests.")
 
-    def get_matches_website(self, team: Team):
-        if self.local:
-            return get_local_response(
-                os.path.join(settings.STORAGE_DIR, f"matches_{team.id}.txt"))
-        text = self.api.html_handler(team.group_link, requests.get).text
-        if self.save_requests:
-            save_object_to_file(text, f"matches_{team.id}.txt")
-        return text
 
     def get_match_website(self, match_id):
         if self.local:
@@ -125,3 +83,6 @@ class Crawler:
         if self.save_requests:
             save_object_to_file(text, f"match_details_json_{match}.txt")
         return text
+
+
+crawler = Crawler(local=False)

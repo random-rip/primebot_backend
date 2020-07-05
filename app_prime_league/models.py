@@ -15,9 +15,16 @@ class GameManager(models.Manager):
     def get_uncompleted_games(self):
         return self.model.objects.filter(game_closed=False)
 
+    def get_game_by_team(self, game_id, team):
+        try:
+            return self.model.objects.get(game_id=game_id, team=team)
+        except self.model.DoesNotExist:
+            return None
+
 
 class Team(models.Model):
     name = models.CharField(max_length=50, null=True)
+    short_name = models.CharField(max_length=10, null=True)
     division = models.CharField(max_length=5, null=True)
     telegram_channel_id = models.CharField(max_length=50, null=True)
 
@@ -82,8 +89,7 @@ class GameMetaData:
 
 
 class Game(models.Model):
-    game_id = models.BigIntegerField(primary_key=True)
-
+    game_id = models.IntegerField()
     game_day = models.IntegerField()
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="games_against")
     enemy_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="games_as_enemy_team")
@@ -96,6 +102,7 @@ class Game(models.Model):
 
     class Meta:
         db_table = "games"
+        unique_together = [("game_id", "team")]
 
     def __repr__(self):
         return f"{self.game_id}"
@@ -115,6 +122,8 @@ class Game(models.Model):
         self.game_begin = gmd.game_begin
         enemy_team, _ = Team.objects.get_or_create(id=gmd.enemy_team)
         self.enemy_team = enemy_team
+        self.game_closed = gmd.game_closed
+        self.save()
         if gmd.enemy_lineup is not None:
             self.enemy_lineup.clear()
             for id_, name in gmd.enemy_lineup:
@@ -124,12 +133,22 @@ class Game(models.Model):
                     "summoner_name": None,
                 })
                 self.enemy_lineup.add(player)
-        self.game_closed = gmd.game_closed
+
         if gmd.latest_suggestion is not None:
             self.suggestion_set.all().delete()
             for timestamp in gmd.latest_suggestion.details:
                 self.suggestion_set.add(Suggestion(game=self, game_begin=timestamp), bulk=False)
         self.save()
+
+    def get_op_link_of_enemies(self, only_lineup=True):
+        if only_lineup:
+            names = list(self.enemy_lineup.all().values_list("summoner_name", flat=True))
+            if len(names) == 0:
+                return None
+        else:
+            names = list(self.enemy_team.player_set.all().values_list("summoner_name", flat=True))
+        url = "%2C".join(names)
+        return "https://euw.op.gg/multi/query={}".format(url)
 
 
 class Suggestion(models.Model):
