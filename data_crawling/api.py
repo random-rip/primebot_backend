@@ -25,12 +25,12 @@ class Api:
         self.base_uri = settings.BASE_URI
         self.base_uri_ajax = settings.BASE_URI_AJAX
 
-    def json_handler(self, endpoint, request=requests.get, post_params=None):
+    def json_handler(self, endpoint, request=requests.post, post_params=None):
         if endpoint is None:
             raise Exception("Endpoint not found")
 
-        path = f"{self.base_uri}{endpoint}/"
-        response = request(path, data=post_params, )
+        path = f"{self.base_uri_ajax}{endpoint}/"
+        response = request(url=path, data=post_params, )
         return response
 
     def html_handler(self, endpoint, request=requests.get, query_params=None, team_id=None):
@@ -48,7 +48,7 @@ class Crawler:
     def __init__(self, local: bool = False):
         """
 
-        :param local Boolean: If local is True, the crawler is using text documents from storage folder.
+        :param local: If local is True, the crawler is using text documents from storage folder.
         """
         self.local = local
         self.api = Api()
@@ -59,27 +59,33 @@ class Crawler:
     def get_match_website(self, match_id):
         if self.local:
             return get_local_response(f"match_{match_id}.txt")
-        text = self.api.html_handler(f"matches/{match_id}", ).text
+        resp = self.api.html_handler(f"matches/{match_id}", )
+        if resp.status_code == 404:
+            return None
         if self.save_requests:
-            save_object_to_file(text, f"match_{match_id}.txt")
-        return text
+            save_object_to_file(resp.text, f"match_{match_id}.txt")
+        return resp.text
 
     def get_team_website(self, _id):
         if self.local:
             text = get_local_response(f"team_{_id}.txt")
             return text
-        text = self.api.html_handler(f"teams/{_id}").text
+        resp = self.api.html_handler(f"teams/{_id}")
+        if resp.status_code == 404:
+            return None
         if self.save_requests:
-            save_object_to_file(text, f"team_{_id}.txt")
-        return text
+            save_object_to_file(resp.text, f"team_{_id}.txt")
+        return resp.text
 
     def get_details_json(self, match):
         if self.local:
             return get_local_response(f"match_details_json_{match}.txt")
-        text = self.api.json_handler("leagues_match/", post_params={"id": match, "action": "init"}).text
+        resp = self.api.json_handler(f"leagues_match", post_params={"id": match, "action": "init", "language": "de"})
+        if resp.status_code == 404:
+            return None
         if self.save_requests:
-            save_object_to_file(text, f"match_details_json_{match}.txt")
-        return text
+            save_object_to_file(resp.text, f"match_details_json_{match}.txt")
+        return resp.text
 
 
 crawler = Crawler(local=True)

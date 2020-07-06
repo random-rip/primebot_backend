@@ -1,22 +1,22 @@
 from app_prime_league.models import Team, Player, Game, GameMetaData
 from data_crawling.api import crawler
-from parsing.regex_operations import TeamHTMLParser
+from parsing.regex_operations import TeamHTMLParser, TeamWrapper
 
 
 def register_team(team_id, tg_group_id):
     team = add_team(team_id, tg_group_id)
     if team is not None:
-        parser = TeamHTMLParser(crawler.get_team_website(team.id))
+        parser = TeamWrapper(team_id=team.id).parser
         add_players(parser, team)
         add_games(parser, team)
 
 
 def add_team(team_id, tg_group_id):
-    team_website = crawler.get_team_website(team_id)
-    parser = TeamHTMLParser(team_website)
-    if not parser.is_valid_website:
+    wrapper = TeamWrapper(team_id=team_id)
+    if wrapper is None:
         print("Dieses Team wurde nicht gefunden")
         return
+    parser = wrapper.parser
 
     if Team.objects.filter(id=team_id, telegram_channel_id__isnull=False).exists():
         print("Das Team existiert bereits und eine Telegram Chat ID ist schon hinterlegt")
@@ -58,8 +58,7 @@ def add_games(parser: TeamHTMLParser, team: Team):
     game_ids = parser.get_matches()
     game_ids = ["597478"]
     for j in game_ids:
-        website = crawler.get_match_website(j)
-        gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=j, website=website)
+        gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=j,)
         game = Game.objects.get_game_by_team(game_id=j, team=team)
         if game is None:
             game = Game()

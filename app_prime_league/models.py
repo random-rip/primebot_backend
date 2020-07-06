@@ -1,7 +1,7 @@
 from django.db import models
 
 from data_crawling.api import crawler
-from parsing.regex_operations import MatchHTMLParser, TeamHTMLParser
+from parsing.regex_operations import TeamHTMLParser, MatchWrapper, TeamWrapper
 
 
 class TeamManager(models.Manager):
@@ -31,11 +31,14 @@ class PlayerManager(models.Manager):
                 "name": name,
                 "team": team,
                 "summoner_name": summoner_name,
+                "is_leader": False if is_leader is None else is_leader
             })
             if not created:
                 player.name = name
                 player.team = team
                 player.summoner_name = summoner_name
+                if is_leader is not None:
+                    player.is_leader = is_leader
                 player.save()
             players.append(player)
         return players
@@ -95,9 +98,9 @@ class GameMetaData:
                f"\nSuggestionConfirmed: {self.game_begin}, "
 
     @staticmethod
-    def create_game_meta_data_from_website(team: Team, game_id, website, ):
+    def create_game_meta_data_from_website(team: Team, game_id):
         gmd = GameMetaData()
-        match_parser = MatchHTMLParser(website, team)
+        match_parser = MatchWrapper(game_id, team).parser
 
         gmd.game_id = game_id
         gmd.game_day = match_parser.get_game_day()
@@ -109,8 +112,7 @@ class GameMetaData:
         if gmd.enemy_lineup is not None:
             enemy_tuples = []
             for i in gmd.enemy_lineup:
-                enemy_tuples.append((*i, ))
-            gmd.enemy_lineup = TeamHTMLParser(crawler.get_team_website(gmd.enemy_team["id"])).get_members()
+                enemy_tuples.append((*i,))
             gmd.enemy_lineup = enemy_tuples
         gmd.game_closed = match_parser.get_game_closed()
         gmd.latest_suggestion = match_parser.get_latest_suggestion()
@@ -121,7 +123,7 @@ class GameMetaData:
         if self.enemy_team is None:
             print("GMD is not initialized yet. Aborting...")
             return
-        enemy_team_parser = TeamHTMLParser(crawler.get_team_website(self.enemy_team["id"]))
+        enemy_team_parser = TeamWrapper(team_id=self.enemy_team["id"]).parser
         self.enemy_team["members"] = enemy_team_parser.get_members()
         self.enemy_team["name"] = enemy_team_parser.get_team_name()
         self.enemy_team["tag"] = enemy_team_parser.get_team_tag()
@@ -170,7 +172,6 @@ class Game(models.Model):
         self.save()
 
     def update_enemy_team(self, gmd):
-        print(gmd)
         team_dict = gmd.enemy_team
         enemy_team, created = Team.objects.get_or_create(id=self.enemy_team.id, defaults={
             "name": team_dict["name"],

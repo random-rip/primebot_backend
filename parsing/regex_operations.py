@@ -1,9 +1,28 @@
+import json
 import re
 
 from bs4 import BeautifulSoup
 
+from data_crawling.api import crawler
 from utils.patterns import TEAM_NAME
 from utils.utils import timestamp_to_datetime, string_to_datetime
+
+
+class MatchWrapper:
+
+    def __init__(self, match_id, team):
+        website = crawler.get_match_website(match_id)
+        json_match = crawler.get_details_json(match_id)
+        self.parser = MatchHTMLParser(website, team, json_match)
+
+
+class TeamWrapper:
+
+    def __init__(self, team_id):
+        website = crawler.get_team_website(team_id)
+        if website is None:
+            return
+        self.parser = TeamHTMLParser(website, )
 
 
 class BaseHTMLParser:
@@ -12,16 +31,9 @@ class BaseHTMLParser:
     """
 
     def __init__(self, website):
-        if self.is_valid_website:
-            self.website = website
-            self.logs = None
-            self.bs4 = BeautifulSoup(website, 'html.parser')
-            self._parse_logs()
-
-    @property
-    def is_valid_website(self):
-        # TODO: Check if website content exists. If not: dont initialize
-        return True
+        self.bs4 = BeautifulSoup(website, 'html.parser')
+        self.logs = None
+        self._parse_logs()
 
     def _parse_logs(self):
         log_table = self.bs4.find_all("div", class_="content-subsection-container")[-1]
@@ -99,23 +111,19 @@ class MatchHTMLParser(BaseHTMLParser):
     ParserClass for a match website.
     """
 
-    def __init__(self, website, team):
+    def __init__(self, website, team, json_match):
         super().__init__(website)
-
+        self.json_match = json.loads(json_match)
         team_1_div = self.bs4.find_all("div", class_="content-match-head-team content-match-head-team1")[0]
         team_1_id = int(team_1_div.contents[1].contents[1].get("href").split("/teams/")[1].split("-")[0])
         self.team_is_team_1 = team_1_id == team.id
         self.team = team
+        self.website = website
 
     def get_enemy_lineup(self):
-        # TODO: das muss aus der Übersicht geladen werden, da wir den Summonername für den OP.gg link brauchen und
-        #  aufgrund von Standins nicht von der Teamseite genommen werden kann
-        team_leader = self.team.player_set.all().filter(is_leader=True).values_list("name", flat=True)
-        for log in self.logs:
-            if isinstance(log, LogLineupSubmit):
-                if log.user not in team_leader:
-                    return log.details
-        return None
+        lineup = self.json_match["lineups"]["1"] if not self.team_is_team_1 else self.json_match["lineups"]["2"]
+        members = [(x["id"], x["name"], x["gameaccounts"][0], None ) for x in lineup]
+        return None if len(members) == 0 else members
 
     def get_game_closed(self):
         for log in self.logs:

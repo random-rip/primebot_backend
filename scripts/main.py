@@ -1,19 +1,18 @@
+import time
+
 from app_prime_league.models import Game
 from comparing.game_comparer import GameMetaData, GameComparer
-from data_crawling.api import crawler
 from telegram_interface.tg_singleton import TelegramMessagesWrapper
 
 
 def run():
-    # TODO: in threads auslagern
+    start_time = time.time()
     uncompleted_games = Game.objects.get_uncompleted_games()
-    # uncompleted_games = Game.objects.filter(game_id=597478)
     for i in uncompleted_games:
         print("Game ", i)
         game_id = i.game_id
         team = i.team
-        website = crawler.get_match_website(i)
-        gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=game_id, website=website)
+        gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=game_id,)
         cmp = GameComparer(i, gmd)
         if i.game_begin is None:
             if cmp.compare_new_suggestion(of_enemy_team=True):
@@ -36,3 +35,6 @@ def run():
             TelegramMessagesWrapper.send_new_lineup_of_enemies(i)
 
         i.update_from_gmd(gmd)
+
+    duration = time.time() - start_time
+    print(f"Check all {len(uncompleted_games)} in {duration} seconds")

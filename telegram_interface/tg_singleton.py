@@ -1,6 +1,5 @@
 import telepot
-from babel.dates import format_datetime
-
+from babel import dates as babel
 from app_prime_league.models import Team, Game
 from prime_league_bot import settings
 from utils.constants import EMOJI_THREE, EMOJI_ONE, EMOJI_TWO, EMOJI_SUCCESS, EMOJI_ARROW
@@ -22,6 +21,11 @@ def send_message(msg: str, chat_id: int = None):
     bot.sendMessage(chat_id=chat_id, text=msg, parse_mode="Markdown", disable_web_page_preview=True)
 
 
+def format_datetime(x):
+    return babel.format_datetime(x, "EEEE, d. MMM y H:mm'Uhr'", locale="de",
+                                 tzinfo=babel.get_timezone(settings.TIME_ZONE))
+
+
 class TelegramMessagesWrapper:
 
     @staticmethod
@@ -30,10 +34,10 @@ class TelegramMessagesWrapper:
         prefix = f"{'Neuer Zeitvorschlag' if len(details) == 1 else 'Neue Zeitvorschläge'} von " \
                  f"{game.enemy_team.team_tag} für Spieltag {game.game_day}:\n"
 
-        times = [format_datetime(x, "EEEE, d. MMM y H:mm'Uhr'", locale="de") for x in details]
+        times = [format_datetime(x) for x in details]
         for i, val in enumerate(times):
             times[i] = f"{emoji_numbers[i]}{val}"
-        text = prefix + "\n".join([format_datetime(x, "EEEE, d. MMM y H:mm'Uhr'", locale="de") for x in details])
+        text = prefix + "\n".join([format_datetime(x) for x in details])
 
         text += "\nHier ist der [Link](https://www.primeleague.gg/de/leagues/matches/{}) zur Seite.".format(
             game.game_id)
@@ -48,7 +52,7 @@ class TelegramMessagesWrapper:
 
     @staticmethod
     def send_scheduling_confirmation(game: Game, auto_confirm):
-        time = format_datetime(game.game_begin, "EEEE, d. MMM y H:mm'Uhr'", locale="de")
+        time = format_datetime(game.game_begin)
         if auto_confirm:
             text = f"Das Team {game.enemy_team.team_tag} hat für Spieltag {game.game_day} weder die vorgeschlagene " \
                    f"Zeit angenommen, noch eine andere vorgeschlagen. Damit ist der Spieltermin\n{EMOJI_ARROW}" + \
