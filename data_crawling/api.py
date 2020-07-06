@@ -2,11 +2,11 @@ import os
 
 import requests
 
-from app_prime_league.models import Team
 from prime_league_bot import settings
 
 
-def get_local_response(file_path):
+def get_local_response(file_name):
+    file_path = os.path.join(settings.STORAGE_DIR, file_name)
     with open(file_path, 'r', encoding='utf8') as f:
         text = f.read()
     print("Object loaded from: {}".format(file_path))
@@ -30,7 +30,7 @@ class Api:
             raise Exception("Endpoint not found")
 
         path = f"{self.base_uri}{endpoint}/"
-        response = request(path, data=post_params, headers=HEADERS)
+        response = request(path, data=post_params, )
         return response
 
     def html_handler(self, endpoint, request=requests.get, query_params=None, team_id=None):
@@ -56,11 +56,9 @@ class Crawler:
         if self.save_requests:
             print("Consider using the local file system in development to reduce the number of requests.")
 
-
     def get_match_website(self, match_id):
         if self.local:
-            return get_local_response(
-                os.path.join(settings.STORAGE_DIR, f"match_{match_id}.txt"))
+            return get_local_response(f"match_{match_id}.txt")
         text = self.api.html_handler(f"matches/{match_id}", ).text
         if self.save_requests:
             save_object_to_file(text, f"match_{match_id}.txt")
@@ -68,8 +66,8 @@ class Crawler:
 
     def get_team_website(self, _id):
         if self.local:
-            return get_local_response(
-                os.path.join(settings.STORAGE_DIR, f"team_{_id}.txt"))
+            text = get_local_response(f"team_{_id}.txt")
+            return text
         text = self.api.html_handler(f"teams/{_id}").text
         if self.save_requests:
             save_object_to_file(text, f"team_{_id}.txt")
@@ -77,8 +75,7 @@ class Crawler:
 
     def get_details_json(self, match):
         if self.local:
-            return get_local_response(
-                os.path.join(settings.STORAGE_DIR, f"match_details_json_{match}.txt"))
+            return get_local_response(f"match_details_json_{match}.txt")
         text = self.api.json_handler("leagues_match/", post_params={"id": match, "action": "init"}).text
         if self.save_requests:
             save_object_to_file(text, f"match_details_json_{match}.txt")

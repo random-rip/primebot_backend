@@ -12,10 +12,16 @@ class BaseHTMLParser:
     """
 
     def __init__(self, website):
-        self.website = website
-        self.logs = None
-        self.bs4 = BeautifulSoup(website, 'html.parser')
-        self._parse_logs()
+        if self.is_valid_website:
+            self.website = website
+            self.logs = None
+            self.bs4 = BeautifulSoup(website, 'html.parser')
+            self._parse_logs()
+
+    @property
+    def is_valid_website(self):
+        # TODO: Check if website content exists. If not: dont initialize
+        return True
 
     def _parse_logs(self):
         log_table = self.bs4.find_all("div", class_="content-subsection-container")[-1]
@@ -77,12 +83,16 @@ class TeamHTMLParser(BaseHTMLParser):
         team_tag = page_title_div.h1.contents[0].split("(")[1].replace(')', '')
         return team_tag
 
+    def get_current_division(self):
+        return None
+
     def get_logo(self):
         logo_box = self.bs4.find("div", class_="content-portrait-head")
         logo_div = logo_box.find("div", class_="image-present")
         logo = logo_div.img
         logo_url = logo.get("src")
         return logo_url
+
 
 class MatchHTMLParser(BaseHTMLParser):
     """
@@ -93,8 +103,8 @@ class MatchHTMLParser(BaseHTMLParser):
         super().__init__(website)
 
         team_1_div = self.bs4.find_all("div", class_="content-match-head-team content-match-head-team1")[0]
-        team_1_id = team_1_div.contents[1].contents[1].get("href").split("/teams/")[1].split("-")[0]
-        self.team_is_team_1 = team_1_id != team.id
+        team_1_id = int(team_1_div.contents[1].contents[1].get("href").split("/teams/")[1].split("-")[0])
+        self.team_is_team_1 = team_1_id == team.id
         self.team = team
 
     def get_enemy_lineup(self):
@@ -170,10 +180,18 @@ class BaseLog:
             return LogSchedulingConfirmation(*log)
         elif action == "lineup_submit":
             return LogLineupSubmit(*log)
-        elif action == "played" or action == "lineup_missing" or action == "lineup_notready":
+        elif action == "played":
             return LogPlayed(*log)
         elif action == "scheduling_autoconfirm":
             return LogSchedulingAutoConfirmation(*log)
+        elif action == "disqualify":
+            return LogDisqualified(*log)
+        elif action == "lineup_missing":
+            return LogLineupMissing(*log)
+        elif action == "lineup_not_ready":
+            return LogLineupNotReady(*log)
+        elif action == "change_time":
+            return LogChangeTime(*log)
         return None
 
 
@@ -227,3 +245,9 @@ class LogLineupSubmit(BaseLog):
         super().__init__(timestamp, user, details)
         self.details = [(*x.split(":"),) for x in self.details[0].split(", ")]
         self.details = [(int(id_), name) for id_, name in self.details]
+
+
+class LogChangeTime(BaseLog):
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+        self.details = string_to_datetime(self.details[0])

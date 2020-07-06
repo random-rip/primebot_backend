@@ -38,7 +38,7 @@ class GameComparer:
             return False
         old_lineup = list(self.game_old.enemy_lineup.all().values_list("id", flat=True))
 
-        new_lineup = [x[0] for x in self.game_new.enemy_lineup]
+        new_lineup = [int(x[0]) for x in self.game_new.enemy_lineup]
         for i in new_lineup:
             if i in old_lineup:
                 continue

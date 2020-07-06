@@ -1,7 +1,7 @@
 from django.db import models
 
-from parsing.regex_operations import MatchHTMLParser
-from utils.utils import timestamp_to_datetime
+from data_crawling.api import crawler
+from parsing.regex_operations import MatchHTMLParser, TeamHTMLParser
 
 
 class TeamManager(models.Manager):
@@ -22,9 +22,30 @@ class GameManager(models.Manager):
             return None
 
 
+class PlayerManager(models.Manager):
+
+    def create_or_update_players(self, players_list: list, team):
+        players = []
+        for (id_, name, summoner_name, is_leader,) in players_list:
+            player, created = Player.objects.get_or_create(id=id_, defaults={
+                "name": name,
+                "team": team,
+                "is_leader": is_leader,
+                "summoner_name": summoner_name,
+            })
+            if not created:
+                player.name = name
+                player.team = team
+                player.is_leader = is_leader
+                player.summoner_name = summoner_name
+                player.save()
+            players.append(player)
+        return players
+
+
 class Team(models.Model):
-    name = models.CharField(max_length=50, null=True)
-    short_name = models.CharField(max_length=10, null=True)
+    name = models.CharField(max_length=100, null=True)
+    team_tag = models.CharField(max_length=10, null=True)
     division = models.CharField(max_length=5, null=True)
     telegram_channel_id = models.CharField(max_length=50, null=True)
 
@@ -42,6 +63,8 @@ class Player(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE, null=True)
     summoner_name = models.CharField(max_length=30, null=True)
     is_leader = models.BooleanField(default=False)
+
+    objects = PlayerManager()
 
     class Meta:
         db_table = "players"
@@ -75,17 +98,31 @@ class GameMetaData:
     @staticmethod
     def create_game_meta_data_from_website(team: Team, game_id, website, ):
         gmd = GameMetaData()
-        parser = MatchHTMLParser(website, team)
+        match_parser = MatchHTMLParser(website, team)
 
         gmd.game_id = game_id
-        gmd.game_day = parser.get_game_day()
+        gmd.game_day = match_parser.get_game_day()
         gmd.team = team
-        gmd.enemy_team = parser.get_enemy_team_id()
-        gmd.enemy_lineup = parser.get_enemy_lineup()
-        gmd.game_closed = parser.get_game_closed()
-        gmd.latest_suggestion = parser.get_latest_suggestion()
-        gmd.game_begin = parser.get_game_begin()
+        gmd.enemy_team = {
+            "id": match_parser.get_enemy_team_id(),
+        }
+        gmd.enemy_lineup = match_parser.get_enemy_lineup()
+        if gmd.enemy_lineup is not None:
+            gmd.enemy_lineup = TeamHTMLParser(crawler.get_team_website(gmd.enemy_team["id"])).get_members()
+        gmd.game_closed = match_parser.get_game_closed()
+        gmd.latest_suggestion = match_parser.get_latest_suggestion()
+        gmd.game_begin = match_parser.get_game_begin()
         return gmd
+
+    def get_enemy_team_data(self):
+        if self.enemy_team is None:
+            print("GMD is not initialized yet. Aborting...")
+            return
+        enemy_team_parser = TeamHTMLParser(crawler.get_team_website(self.enemy_team["id"]))
+        self.enemy_team["members"] = enemy_team_parser.get_members()
+        self.enemy_team["name"] = enemy_team_parser.get_team_name()
+        self.enemy_team["tag"] = enemy_team_parser.get_team_tag()
+        self.enemy_team["division"] = enemy_team_parser.get_current_division()
 
 
 class Game(models.Model):
@@ -120,24 +157,37 @@ class Game(models.Model):
         self.game_day = gmd.game_day
         self.team = gmd.team
         self.game_begin = gmd.game_begin
-        enemy_team, _ = Team.objects.get_or_create(id=gmd.enemy_team)
+        enemy_team, _ = Team.objects.get_or_create(id=gmd.enemy_team["id"])
         self.enemy_team = enemy_team
         self.game_closed = gmd.game_closed
         self.save()
-        if gmd.enemy_lineup is not None:
-            self.enemy_lineup.clear()
-            for id_, name in gmd.enemy_lineup:
-                player, _ = Player.objects.get_or_create(id=id_, defaults={
-                    "name": name,
-                    "team": enemy_team,
-                    "summoner_name": None,
-                })
-                self.enemy_lineup.add(player)
 
+    def update_enemy_team(self, gmd):
+        team_dict = gmd.enemy_team
+        enemy_team, created = Team.objects.get_or_create(id=self.enemy_team.id, defaults={
+            "name": team_dict["name"],
+            "team_tag": team_dict["tag"],
+            "division": team_dict["division"],
+        })
+        if not created:
+            enemy_team.name = team_dict["name"]
+            enemy_team.team_tag = team_dict["tag"]
+            enemy_team.division = team_dict["division"]
+            enemy_team.save()
+        _ = Player.objects.create_or_update_players(team_dict["members"], enemy_team)
+
+    def update_latest_suggestion(self, gmd):
         if gmd.latest_suggestion is not None:
             self.suggestion_set.all().delete()
             for timestamp in gmd.latest_suggestion.details:
                 self.suggestion_set.add(Suggestion(game=self, game_begin=timestamp), bulk=False)
+        self.save()
+
+    def update_enemy_lineup(self, gmd: GameMetaData):
+        if gmd.enemy_lineup is not None:
+            self.enemy_lineup.clear()
+            players = Player.objects.create_or_update_players(gmd.enemy_lineup, self.enemy_team)
+            self.enemy_lineup.add(*players)
         self.save()
 
     def get_op_link_of_enemies(self, only_lineup=True):

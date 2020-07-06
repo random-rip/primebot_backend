@@ -29,8 +29,8 @@ class Migration(migrations.Migration):
             name='Team',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50, null=True)),
-                ('short_name', models.CharField(max_length=10, null=True)),
+                ('name', models.CharField(max_length=100, null=True)),
+                ('team_tag', models.CharField(max_length=10, null=True)),
                 ('division', models.CharField(max_length=5, null=True)),
                 ('telegram_channel_id', models.CharField(max_length=50, null=True)),
             ],

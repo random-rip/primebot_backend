@@ -12,6 +12,6 @@ telepot~=12.7
 Babel~=2.8.0
 beautifulsoup4==4.9.1
 django~=3.0.8
-mysqlclient
-django-extensions
-django-environ
+mysqlclient==2.0.1
+django-extensions==3.0.2
+django-environ==0.4.5
