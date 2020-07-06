@@ -108,6 +108,8 @@ class MatchHTMLParser(BaseHTMLParser):
         self.team = team
 
     def get_enemy_lineup(self):
+        # TODO: das muss aus der Übersicht geladen werden, da wir den Summonername für den OP.gg link brauchen und
+        #  aufgrund von Standins nicht von der Teamseite genommen werden kann
         team_leader = self.team.player_set.all().filter(is_leader=True).values_list("name", flat=True)
         for log in self.logs:
             if isinstance(log, LogLineupSubmit):
@@ -128,16 +130,20 @@ class MatchHTMLParser(BaseHTMLParser):
                 return log
         return None
 
-    def get_game_begin(self):
+    def get_game_begin(self) -> tuple:
+        """
+        Returns game begin timestamp if it is in logs
+        :return Tuple: First argument: confirmed timestamp, second argument: boolean if its an auto confirmation
+        """
         timestamp = None
         for log in reversed(self.logs):
             if isinstance(log, LogSuggestion):
                 timestamp = log.details[0]
             if isinstance(log, LogSchedulingConfirmation):
-                return log.details
+                return log.details, False
             if isinstance(log, LogSchedulingAutoConfirmation):
-                return timestamp
-        return None
+                return timestamp, True
+        return None, False
 
     def get_enemy_team_name(self):
         results = re.finditer(TEAM_NAME, self.website)

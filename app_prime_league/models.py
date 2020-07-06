@@ -27,16 +27,14 @@ class PlayerManager(models.Manager):
     def create_or_update_players(self, players_list: list, team):
         players = []
         for (id_, name, summoner_name, is_leader,) in players_list:
-            player, created = Player.objects.get_or_create(id=id_, defaults={
+            player, created = self.model.objects.get_or_create(id=id_, defaults={
                 "name": name,
                 "team": team,
-                "is_leader": is_leader,
                 "summoner_name": summoner_name,
             })
             if not created:
                 player.name = name
                 player.team = team
-                player.is_leader = is_leader
                 player.summoner_name = summoner_name
                 player.save()
             players.append(player)
@@ -84,6 +82,7 @@ class GameMetaData:
         self.game_closed = None
         self.latest_suggestion = None
         self.game_begin = None
+        self.auto_confirmation = None
 
     def __repr__(self):
         return f"GameID: {self.game_id}" \
@@ -108,10 +107,14 @@ class GameMetaData:
         }
         gmd.enemy_lineup = match_parser.get_enemy_lineup()
         if gmd.enemy_lineup is not None:
+            enemy_tuples = []
+            for i in gmd.enemy_lineup:
+                enemy_tuples.append((*i, ))
             gmd.enemy_lineup = TeamHTMLParser(crawler.get_team_website(gmd.enemy_team["id"])).get_members()
+            gmd.enemy_lineup = enemy_tuples
         gmd.game_closed = match_parser.get_game_closed()
         gmd.latest_suggestion = match_parser.get_latest_suggestion()
-        gmd.game_begin = match_parser.get_game_begin()
+        gmd.game_begin, gmd.auto_confirmation = match_parser.get_game_begin()
         return gmd
 
     def get_enemy_team_data(self):
@@ -162,7 +165,12 @@ class Game(models.Model):
         self.game_closed = gmd.game_closed
         self.save()
 
+    def update_game_begin(self, gmd):
+        self.game_begin = gmd.game_begin
+        self.save()
+
     def update_enemy_team(self, gmd):
+        print(gmd)
         team_dict = gmd.enemy_team
         enemy_team, created = Team.objects.get_or_create(id=self.enemy_team.id, defaults={
             "name": team_dict["name"],

@@ -56,6 +56,7 @@ def add_players(parser: TeamHTMLParser, team: Team):
 
 def add_games(parser: TeamHTMLParser, team: Team):
     game_ids = parser.get_matches()
+    game_ids = ["597478"]
     for j in game_ids:
         website = crawler.get_match_website(j)
         gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=j, website=website)
@@ -64,8 +65,8 @@ def add_games(parser: TeamHTMLParser, team: Team):
             game = Game()
         else:
             print("Spiel existiert bereits in der Datenbank und wird geupdated")
+        gmd.get_enemy_team_data()
         game.update_from_gmd(gmd)
+        game.update_enemy_team(gmd)
         game.update_enemy_lineup(gmd)
         game.update_latest_suggestion(gmd)
-        gmd.get_enemy_team_data()
-        game.update_enemy_team(gmd)

@@ -27,13 +27,13 @@ class TelegramMessagesWrapper:
     @staticmethod
     def send_new_suggestion_of_enemies(game: Game):
         details = list(game.suggestion_set.all().values_list("game_begin", flat=True))
-        prefix = "Neuer Zeitvorschlag" if len(details) == 1 else "Neue Zeitvorschläge"
-        text = prefix + " von " + game.enemy_team.team_tag + " für Spieltag " + game.game_day + ":\n"
+        prefix = f"{'Neuer Zeitvorschlag' if len(details) == 1 else 'Neue Zeitvorschläge'} von " \
+                 f"{game.enemy_team.team_tag} für Spieltag {game.game_day}:\n"
 
         times = [format_datetime(x, "EEEE, d. MMM y H:mm'Uhr'", locale="de") for x in details]
         for i, val in enumerate(times):
-            times[i] = emoji_numbers[i] + val
-        text = text + "\n".join([format_datetime(x, "EEEE, d. MMM y H:mm'Uhr'", locale="de") for x in details])
+            times[i] = f"{emoji_numbers[i]}{val}"
+        text = prefix + "\n".join([format_datetime(x, "EEEE, d. MMM y H:mm'Uhr'", locale="de") for x in details])
 
         text += "\nHier ist der [Link](https://www.primeleague.gg/de/leagues/matches/{}) zur Seite.".format(
             game.game_id)
@@ -42,22 +42,23 @@ class TelegramMessagesWrapper:
 
     @staticmethod
     def send_new_suggestion(game: Game):
-        msg = "Neuer [Zeitvorschlag von uns](https://www.primeleague.gg/de/leagues/matches/{}) für Spieltag ".format(
-            game.game_id) + \
-              game.game_day + " gegen " + game.enemy_team.team_tag + ". " + EMOJI_SUCCESS
+        msg = f"Neuer [Zeitvorschlag von uns](https://www.primeleague.gg/de/leagues/matches/{game.game_id}) " \
+              f"für Spieltag {game.game_day} gegen {game.enemy_team.team_tag}. {EMOJI_SUCCESS}"
         send_message(msg=msg, chat_id=game.team.telegram_channel_id)
 
     @staticmethod
     def send_scheduling_confirmation(game: Game, auto_confirm):
+        time = format_datetime(game.game_begin, "EEEE, d. MMM y H:mm'Uhr'", locale="de")
         if auto_confirm:
-            text = "Das Team " + game.enemy_team.team_tag + " hat für Spieltag " + game.game_day + " weder die vorgeschlagene Zeit angenommen, " + \
-                   "noch eine andere vorgeschlagen. Damit ist der Spieltermin\n" + EMOJI_ARROW + \
-                   format_datetime(game.game_begin, "EEEE, d. MMM y H:mm'Uhr'", locale="de") + " bestätigt."
+            text = f"Das Team {game.enemy_team.team_tag} hat für Spieltag {game.game_day} weder die vorgeschlagene " \
+                   f"Zeit angenommen, noch eine andere vorgeschlagen. Damit ist der Spieltermin\n{EMOJI_ARROW}" + \
+                   f"{time} bestätigt."
+
         else:
-            text = "Spielbestätigung von " + game.enemy_team.team_tag + " für Spieltag " + game.game_day + ":\n" + EMOJI_ARROW + \
-                   format_datetime(game.game_begin, "EEEE, d. MMM y H:mm'Uhr'", locale="de")
-        text += "\nHier ist der [Link](https://www.primeleague.gg/de/leagues/matches/{}) zur Seite.".format(
-            game.game_id)
+            text = f"Spielbestätigung von {game.enemy_team.team_tag} für Spieltag {game.game_day}:\n{EMOJI_ARROW}" \
+                   f"{time}"
+
+        text += f"\nHier ist der [Link](https://www.primeleague.gg/de/leagues/matches/{game.game_id}) zur Seite."
         send_message(msg=text, chat_id=game.team.telegram_channel_id)
 
     @staticmethod
@@ -65,7 +66,7 @@ class TelegramMessagesWrapper:
         op_link = game.get_op_link_of_enemies(only_lineup=True)
         if op_link is None:
             raise Exception()
-        text = game.enemy_team.team_tag + " hat ein neues [Lineup]({}) aufgestellt.".format(op_link)
+        text = f"{game.enemy_team.team_tag} hat ein neues [Lineup]({op_link}) aufgestellt."
         send_message(msg=text, chat_id=game.team.telegram_channel_id)
 
     @staticmethod

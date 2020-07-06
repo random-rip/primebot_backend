@@ -1,6 +1,7 @@
 from app_prime_league.models import Game
 from comparing.game_comparer import GameMetaData, GameComparer
 from data_crawling.api import crawler
+from telegram_interface.tg_singleton import TelegramMessagesWrapper
 
 
 def run():
@@ -17,15 +18,21 @@ def run():
         if i.game_begin is None:
             if cmp.compare_new_suggestion(of_enemy_team=True):
                 print("Neuer Zeitvorschlag der Gegner")
-                i.update_latest_suggestion()
+                i.update_latest_suggestion(gmd)
+                TelegramMessagesWrapper.send_new_suggestion_of_enemies(i)
             if cmp.compare_new_suggestion():
                 print("Eigener neuer Zeitvorschlag")
-                i.update_latest_suggestion()
+                i.update_latest_suggestion(gmd)
+                TelegramMessagesWrapper.send_new_suggestion(i)
         if cmp.compare_scheduling_confirmation():
             print("Termin wurde festgelegt")
+            i.update_game_begin(gmd)
+            TelegramMessagesWrapper.send_scheduling_confirmation(i, gmd.auto_confirmation)
         if cmp.compare_lineup_confirmation():
             print("Neues Lineup des gegnerischen Teams")
+            gmd.get_enemy_team_data()
             i.update_enemy_team(gmd)
             i.update_enemy_lineup(gmd)
+            TelegramMessagesWrapper.send_new_lineup_of_enemies(i)
 
         i.update_from_gmd(gmd)
