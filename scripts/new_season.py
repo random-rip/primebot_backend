@@ -1,22 +1,18 @@
-from app_prime_league.models import Team, Game
+from app_prime_league.models import Team, Game, Player
+from app_prime_league.teams import add_players, add_games
 from comparing.game_comparer import GameMetaData
-from data_crawling.api import Crawler
+from data_crawling.api import Crawler, crawler
 from parsing.regex_operations import TeamHTMLParser
+from telegram_interface import send_message
 
 
 def main():
-    crawler = Crawler(local=False)
     teams = Team.objects.get_watched_teams()
-    # TODO add Players to DB
     for i in teams:
-        match_ids = TeamHTMLParser(crawler.get_team_website(i.id)).get_matches()
-        for j in match_ids:
-            website = crawler.get_match_website(j)
-            gmd = GameMetaData.create_game_meta_data_from_website(team=i, game_id=j, website=website)
-            Game().save_or_update(gmd)
+        parser = TeamHTMLParser(crawler.get_team_website(i.id))
 
-    # bot = Bot(token=os.getenv("TELEGRAM_BOT_API_KEY"))
-    # bot.sendMessage(chat_id=chat_id, text="Added Games for team {}".format(team_id), parse_mode="Markdown")
+        add_players(parser, i)
+        add_games(parser, i)
 
 
 def run():

@@ -2,7 +2,8 @@ import re
 
 from bs4 import BeautifulSoup
 
-from utils.patterns import LOGS, SUMMONER_NAMES, ENEMY_TEAM_ID, GAME_DAY, TEAM_NAME, MATCH_IDS
+from utils.patterns import TEAM_NAME
+from utils.utils import timestamp_to_datetime, string_to_datetime
 
 
 class BaseHTMLParser:
@@ -14,10 +15,57 @@ class BaseHTMLParser:
         self.website = website
         self.logs = None
         self.bs4 = BeautifulSoup(website, 'html.parser')
+        self._parse_logs()
+
+    def _parse_logs(self):
+        log_table = self.bs4.find_all("div", class_="content-subsection-container")[-1]
+        log_trs = log_table.find("tbody").find_all("tr")
+        self.logs = []
+        for tr in log_trs:
+            time = tr.find("span", class_="itime").get('data-time')
+            user = tr.find_all("span", class_="table-cell-container")[1].contents[-1]
+            action = tr.find_all("span", class_="table-cell-container")[2].contents[-1]
+            details = [x.extract() for x in tr.find_all("span", class_="table-cell-container")[-1]]
+            log = BaseLog.return_specified_log(
+                timestamp=time,
+                user=user.split(" ")[0],
+                action=action,
+                details=details if len(details) > 0 else None,
+            )
+            if log is not None:
+                self.logs.append(log)
 
     def get_logs(self):
-        self.logs = re.finditer(LOGS, self.website)
         return self.logs
+
+
+class TeamHTMLParser(BaseHTMLParser):
+    """
+    ParserClass for a team website.
+    """
+
+    def get_summoner_names(self):
+        # TODO WICHTIG! check auf "richtige" Liste und anschließende Neuauswahl
+        team_li = self.bs4.find_all("ul", class_="content-portrait-grid-l")[0].find_all("li")
+        names = [i.span.contents[0] for i in team_li]
+        return names
+
+    def get_members(self):
+        team_li = self.bs4.find_all("ul", class_="content-portrait-grid-l")[0].find_all("li")
+        is_leader = ["Leader", "Captain"]
+        members = [(
+            i.a.get("href").split("/users/")[-1].split("-")[0],
+            i.h3.contents[0],
+            i.span.contents[0],
+            i.find("div", class_="txt-subtitle").contents[0] in is_leader,
+        ) for i in team_li]
+        return members
+
+    def get_matches(self):
+        games_table = self.bs4.find_all("ul", class_="league-stage-matches")
+        games = games_table[-1].find_all("td", class_="col-2 col-text-center")
+        game_ids = [td.a.get("href").split("/matches/")[1].split("-")[0] for td in games]
+        return game_ids
 
     def get_team_name(self):
         page_title_div = self.bs4.find_all("div", class_="page-title")[0]
@@ -29,47 +77,57 @@ class BaseHTMLParser:
         team_tag = page_title_div.h1.contents[0].split("(")[1].replace(')', '')
         return team_tag
 
-
-class TeamHTMLParser(BaseHTMLParser):
-    """
-    ParserClass for a team website.
-    """
-
-    def get_summoner_names(self):
-        # TODO WICHTIG! check auf "richtige" Liste und anschließende Neuauswahl
-        team_li = self.bs4.find_all("ul")[4].find_all("li")
-        names = [i.span.contents[0] for i in team_li]
-        return names
-
-    def get_matches(self):
-        games_table = self.bs4.find_all("ul", class_="league-stage-matches")
-        games = games_table[-1].find_all("td", class_="col-2 col-text-center")
-        # games = [table.find_all("td", class_="col-2 col-text-center") for table in games_table] --> evtl dann mit Kalibrierung
-        game_ids = [td.a.get("href").split("/matches/")[1].split("-")[0] for td in games]
-        # game_ids = list(dict.fromkeys([x[1] for x in re.findall(MATCH_IDS, website)]))
-        return game_ids
-
+    def get_logo(self):
+        logo_box = self.bs4.find("div", class_="content-portrait-head")
+        logo_div = logo_box.find("div", class_="image-present")
+        logo = logo_div.img
+        logo_url = logo.get("src")
+        return logo_url
 
 class MatchHTMLParser(BaseHTMLParser):
     """
     ParserClass for a match website.
     """
 
+    def __init__(self, website, team):
+        super().__init__(website)
+
+        team_1_div = self.bs4.find_all("div", class_="content-match-head-team content-match-head-team1")[0]
+        team_1_id = team_1_div.contents[1].contents[1].get("href").split("/teams/")[1].split("-")[0]
+        self.team_is_team_1 = team_1_id != team.id
+        self.team = team
+
     def get_enemy_lineup(self):
-        # TODO
-        return []
+        team_leader = self.team.player_set.all().filter(is_leader=True).values_list("name", flat=True)
+        for log in self.logs:
+            if isinstance(log, LogLineupSubmit):
+                if log.user not in team_leader:
+                    return log.details
+        return None
 
     def get_game_closed(self):
-        # TODO
+        for log in self.logs:
+            if isinstance(log, LogPlayed) or isinstance(log, LogLineupMissing) or \
+                    isinstance(log, LogLineupNotReady) or isinstance(log, LogDisqualified):
+                return True
         return False
 
     def get_latest_suggestion(self):
-        # TODO
-        pass
+        for log in self.logs:
+            if isinstance(log, LogSuggestion):
+                return log
+        return None
 
-    def get_suggestion_confirmed(self):
-        # TODO
-        pass
+    def get_game_begin(self):
+        timestamp = None
+        for log in reversed(self.logs):
+            if isinstance(log, LogSuggestion):
+                timestamp = log.details[0]
+            if isinstance(log, LogSchedulingConfirmation):
+                return log.details
+            if isinstance(log, LogSchedulingAutoConfirmation):
+                return timestamp
+        return None
 
     def get_enemy_team_name(self):
         results = re.finditer(TEAM_NAME, self.website)
@@ -79,20 +137,93 @@ class MatchHTMLParser(BaseHTMLParser):
             name = [x.group("name_2") for x in results][0]
         return name
 
-    def get_enemy_team_id(self, own_team_id):
+    def get_enemy_team_id(self):
         team_1_div = self.bs4.find_all("div", class_="content-match-head-team content-match-head-team1")[0]
         team_2_div = self.bs4.find_all("div", class_="content-match-head-team content-match-head-team2")[0]
         team_1_id = team_1_div.contents[1].contents[1].get("href").split("/teams/")[1].split("-")[0]
         team_2_id = team_2_div.contents[1].contents[1].get("href").split("/teams/")[1].split("-")[0]
-        if team_1_id != own_team_id:
-            return team_1_id
-        elif team_2_id != own_team_id:
-            return team_2_id
-        else:
-            return -1
+        return team_2_id if self.team_is_team_1 else team_1_id
 
     def get_game_day(self):
         match_info_div = self.bs4.find_all("div", class_="content-match-subtitles")[0]
         game_day_div = match_info_div.find_all("div", class_="txt-subtitle")[1]
         game_day = game_day_div.contents[0].split(" ")[1]
         return game_day
+
+
+class BaseLog:
+
+    def __init__(self, timestamp, user, details):
+        self.timestamp = timestamp_to_datetime(timestamp)
+        self.user = user
+        self.details = details
+
+    def __repr__(self):
+        return f"{self.__class__.__name__} von {self.user} um {self.timestamp} === Details: {self.details}"
+
+    @staticmethod
+    def return_specified_log(timestamp, user, action, details):
+        log = (timestamp, user, details)
+        if action == "scheduling_suggest":
+            return LogSuggestion(*log)
+        elif action == "scheduling_confirm":
+            return LogSchedulingConfirmation(*log)
+        elif action == "lineup_submit":
+            return LogLineupSubmit(*log)
+        elif action == "played" or action == "lineup_missing" or action == "lineup_notready":
+            return LogPlayed(*log)
+        elif action == "scheduling_autoconfirm":
+            return LogSchedulingAutoConfirmation(*log)
+        return None
+
+
+class LogSuggestion(BaseLog):
+
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+        self.details = [string_to_datetime(x[3:]) for x in self.details]
+
+
+class LogSchedulingConfirmation(BaseLog):
+
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+        self.details = string_to_datetime(self.details[0])
+
+
+class LogSchedulingAutoConfirmation(BaseLog):
+
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+
+
+class LogPlayed(BaseLog):
+
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+
+
+class LogLineupMissing(BaseLog):
+
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+
+
+class LogLineupNotReady(BaseLog):
+
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+
+
+class LogDisqualified(BaseLog):
+
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+
+
+class LogLineupSubmit(BaseLog):
+
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+        self.details = [(*x.split(":"),) for x in self.details[0].split(", ")]
+        self.details = [(int(id_), name) for id_, name in self.details]

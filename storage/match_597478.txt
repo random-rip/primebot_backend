@@ -7,7 +7,7 @@
 <meta name="copyright" content="Freaks 4U Gaming GmbH, freaks4u.com">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Prime League ist die offizielle Liga von Riot Games für Deutschland, Österreich und die Schweiz. Melde dein Team an und werde ein Champion!">
+<meta name="description" content="Prime League ist die offizielle Liga von Riot Games fÃ¼r Deutschland, Ã–sterreich und die Schweiz. Melde dein Team an und werde ein Champion!">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" property="og:title" content="PRM Summer Split 2020: LES B-W vs. FVS &raquo; League">
 <meta property="og:site_name" content="Prime League">
@@ -163,13 +163,13 @@
 			<div class="submatch-lol-team-name">LES B-W</div>
 			<div class="submatch-lol-team-result win">Sieg</div>
 			<div class="submatch-lol-team-stats submatch-lol-team-kda"><i class="icon-lol_kda" title="Team-K/D/A"></i><span>30/12/46</span></div>
-			<div class="submatch-lol-team-stats submatch-lol-team-networth"><i class="icon-lol_gold" title="Team-Vermögen"></i><span>44.3k</span></div>
+			<div class="submatch-lol-team-stats submatch-lol-team-networth"><i class="icon-lol_gold" title="Team-VermÃ¶gen"></i><span>44.3k</span></div>
 		</div>
-		<div class="submatch-lol-head-icons"><i class="icon-lol_gold" title="Team-Vermögen"></i><i class="icon-lol_kda" title="Team-K/D/A"></i></div>				<div class="submatch-lol-head-side side-2 color-r">
+		<div class="submatch-lol-head-icons"><i class="icon-lol_gold" title="Team-VermÃ¶gen"></i><i class="icon-lol_kda" title="Team-K/D/A"></i></div>				<div class="submatch-lol-head-side side-2 color-r">
 			<div class="submatch-lol-team-name">FVS</div>
 			<div class="submatch-lol-team-resultloss">Niederlage</div>
 			<div class="submatch-lol-team-stats submatch-lol-team-kda"><i class="icon-lol_kda" title="Team-K/D/A"></i><span>12/30/11</span></div>
-			<div class="submatch-lol-team-stats submatch-lol-team-networth"><i class="icon-lol_gold" title="Team-Vermögen"></i><span>32.2k</span></div>
+			<div class="submatch-lol-team-stats submatch-lol-team-networth"><i class="icon-lol_gold" title="Team-VermÃ¶gen"></i><span>32.2k</span></div>
 		</div>
 				
 	</div>
@@ -186,11 +186,11 @@
 				
 			</div>
 			<div class="submatch-lol-objectives">
-				<i class="icon-lol_tower" title="Türme zerstört"></i><span>7</span>
-				<i class="icon-lol_inhibitor" title="Inhibitoren zerstört"></i><span>1</span>
-				<i class="icon-lol_baron" title="Barons getötet"></i><span>0</span>
-				<i class="icon-lol_dragon" title="Drachen getötet"></i><span>3</span>
-				<i class="icon-lol_riftherald" title="Rift Heralds getötet"></i><span>1</span>
+				<i class="icon-lol_tower" title="TÃ¼rme zerstÃ¶rt"></i><span>7</span>
+				<i class="icon-lol_inhibitor" title="Inhibitoren zerstÃ¶rt"></i><span>1</span>
+				<i class="icon-lol_baron" title="Barons getÃ¶tet"></i><span>0</span>
+				<i class="icon-lol_dragon" title="Drachen getÃ¶tet"></i><span>3</span>
+				<i class="icon-lol_riftherald" title="Rift Heralds getÃ¶tet"></i><span>1</span>
 			</div>
 		</div>
 				<div class="submatch-lol-base-side side-2 color-r">
@@ -204,11 +204,11 @@
 				
 			</div>
 			<div class="submatch-lol-objectives">
-				<i class="icon-lol_tower" title="Türme zerstört"></i><span>2</span>
-				<i class="icon-lol_inhibitor" title="Inhibitoren zerstört"></i><span>0</span>
-				<i class="icon-lol_baron" title="Barons getötet"></i><span>0</span>
-				<i class="icon-lol_dragon" title="Drachen getötet"></i><span>0</span>
-				<i class="icon-lol_riftherald" title="Rift Heralds getötet"></i><span>1</span>
+				<i class="icon-lol_tower" title="TÃ¼rme zerstÃ¶rt"></i><span>2</span>
+				<i class="icon-lol_inhibitor" title="Inhibitoren zerstÃ¶rt"></i><span>0</span>
+				<i class="icon-lol_baron" title="Barons getÃ¶tet"></i><span>0</span>
+				<i class="icon-lol_dragon" title="Drachen getÃ¶tet"></i><span>0</span>
+				<i class="icon-lol_riftherald" title="Rift Heralds getÃ¶tet"></i><span>1</span>
 			</div>
 		</div>
 		
@@ -222,8 +222,8 @@
 				<div class="submatch-lol-player-more">
 					<i class="submatch-lol-player-items icon-lol_item" title="Items"></i>
 					<i class="submatch-lol-player-kda icon-lol_kda" title="Spieler-K/D/A"></i>
-					<i class="submatch-lol-player-minions icon-lol_minions" title="Minions getötet"></i>
-					<i class="submatch-lol-player-networth icon-lol_gold" title="Spieler-Vermögen"></i>
+					<i class="submatch-lol-player-minions icon-lol_minions" title="Minions getÃ¶tet"></i>
+					<i class="submatch-lol-player-networth icon-lol_gold" title="Spieler-VermÃ¶gen"></i>
 				</div>
 			</div>
 					<div class="submatch-lol-thead-side side-2 color-r">
@@ -233,8 +233,8 @@
 				<div class="submatch-lol-player-more">
 					<i class="submatch-lol-player-items icon-lol_item" title="Items"></i>
 					<i class="submatch-lol-player-kda icon-lol_kda" title="Spieler-K/D/A"></i>
-					<i class="submatch-lol-player-minions icon-lol_minions" title="Minions getötet"></i>
-					<i class="submatch-lol-player-networth icon-lol_gold" title="Spieler-Vermögen"></i>
+					<i class="submatch-lol-player-minions icon-lol_minions" title="Minions getÃ¶tet"></i>
+					<i class="submatch-lol-player-networth icon-lol_gold" title="Spieler-VermÃ¶gen"></i>
 				</div>
 			</div>
 		
@@ -359,7 +359,7 @@
 							<img src="https://cdn0.gamesports.net/heroes/565.jpg?1593137290" alt="Kai'Sa" title="Kai'Sa" class="img-player-hero">
 							<span class="player-hero-level">11</span>
 						</div>
-						<div class="submatch-lol-player-name">LiebesWölkchen</div>
+						<div class="submatch-lol-player-name">LiebesWÃ¶lkchen</div>
 					</div>
 					<div class="submatch-lol-player-more-container"><div class="submatch-lol-player-more">
 						<div class="submatch-lol-player-networth">8.7k</div>
@@ -596,13 +596,13 @@
 			<div class="submatch-lol-team-name">LES B-W</div>
 			<div class="submatch-lol-team-result win">Sieg</div>
 			<div class="submatch-lol-team-stats submatch-lol-team-kda"><i class="icon-lol_kda" title="Team-K/D/A"></i><span>29/14/43</span></div>
-			<div class="submatch-lol-team-stats submatch-lol-team-networth"><i class="icon-lol_gold" title="Team-Vermögen"></i><span>46k</span></div>
+			<div class="submatch-lol-team-stats submatch-lol-team-networth"><i class="icon-lol_gold" title="Team-VermÃ¶gen"></i><span>46k</span></div>
 		</div>
-		<div class="submatch-lol-head-icons"><i class="icon-lol_gold" title="Team-Vermögen"></i><i class="icon-lol_kda" title="Team-K/D/A"></i></div>				<div class="submatch-lol-head-side side-2 color-b">
+		<div class="submatch-lol-head-icons"><i class="icon-lol_gold" title="Team-VermÃ¶gen"></i><i class="icon-lol_kda" title="Team-K/D/A"></i></div>				<div class="submatch-lol-head-side side-2 color-b">
 			<div class="submatch-lol-team-name">FVS</div>
 			<div class="submatch-lol-team-resultloss">Niederlage</div>
 			<div class="submatch-lol-team-stats submatch-lol-team-kda"><i class="icon-lol_kda" title="Team-K/D/A"></i><span>14/29/14</span></div>
-			<div class="submatch-lol-team-stats submatch-lol-team-networth"><i class="icon-lol_gold" title="Team-Vermögen"></i><span>37.2k</span></div>
+			<div class="submatch-lol-team-stats submatch-lol-team-networth"><i class="icon-lol_gold" title="Team-VermÃ¶gen"></i><span>37.2k</span></div>
 		</div>
 				
 	</div>
@@ -619,11 +619,11 @@
 				
 			</div>
 			<div class="submatch-lol-objectives">
-				<i class="icon-lol_tower" title="Türme zerstört"></i><span>8</span>
-				<i class="icon-lol_inhibitor" title="Inhibitoren zerstört"></i><span>1</span>
-				<i class="icon-lol_baron" title="Barons getötet"></i><span>1</span>
-				<i class="icon-lol_dragon" title="Drachen getötet"></i><span>3</span>
-				<i class="icon-lol_riftherald" title="Rift Heralds getötet"></i><span>2</span>
+				<i class="icon-lol_tower" title="TÃ¼rme zerstÃ¶rt"></i><span>8</span>
+				<i class="icon-lol_inhibitor" title="Inhibitoren zerstÃ¶rt"></i><span>1</span>
+				<i class="icon-lol_baron" title="Barons getÃ¶tet"></i><span>1</span>
+				<i class="icon-lol_dragon" title="Drachen getÃ¶tet"></i><span>3</span>
+				<i class="icon-lol_riftherald" title="Rift Heralds getÃ¶tet"></i><span>2</span>
 			</div>
 		</div>
 				<div class="submatch-lol-base-side side-2 color-b">
@@ -637,11 +637,11 @@
 				
 			</div>
 			<div class="submatch-lol-objectives">
-				<i class="icon-lol_tower" title="Türme zerstört"></i><span>1</span>
-				<i class="icon-lol_inhibitor" title="Inhibitoren zerstört"></i><span>0</span>
-				<i class="icon-lol_baron" title="Barons getötet"></i><span>0</span>
-				<i class="icon-lol_dragon" title="Drachen getötet"></i><span>0</span>
-				<i class="icon-lol_riftherald" title="Rift Heralds getötet"></i><span>0</span>
+				<i class="icon-lol_tower" title="TÃ¼rme zerstÃ¶rt"></i><span>1</span>
+				<i class="icon-lol_inhibitor" title="Inhibitoren zerstÃ¶rt"></i><span>0</span>
+				<i class="icon-lol_baron" title="Barons getÃ¶tet"></i><span>0</span>
+				<i class="icon-lol_dragon" title="Drachen getÃ¶tet"></i><span>0</span>
+				<i class="icon-lol_riftherald" title="Rift Heralds getÃ¶tet"></i><span>0</span>
 			</div>
 		</div>
 		
@@ -655,8 +655,8 @@
 				<div class="submatch-lol-player-more">
 					<i class="submatch-lol-player-items icon-lol_item" title="Items"></i>
 					<i class="submatch-lol-player-kda icon-lol_kda" title="Spieler-K/D/A"></i>
-					<i class="submatch-lol-player-minions icon-lol_minions" title="Minions getötet"></i>
-					<i class="submatch-lol-player-networth icon-lol_gold" title="Spieler-Vermögen"></i>
+					<i class="submatch-lol-player-minions icon-lol_minions" title="Minions getÃ¶tet"></i>
+					<i class="submatch-lol-player-networth icon-lol_gold" title="Spieler-VermÃ¶gen"></i>
 				</div>
 			</div>
 					<div class="submatch-lol-thead-side side-2 color-b">
@@ -666,8 +666,8 @@
 				<div class="submatch-lol-player-more">
 					<i class="submatch-lol-player-items icon-lol_item" title="Items"></i>
 					<i class="submatch-lol-player-kda icon-lol_kda" title="Spieler-K/D/A"></i>
-					<i class="submatch-lol-player-minions icon-lol_minions" title="Minions getötet"></i>
-					<i class="submatch-lol-player-networth icon-lol_gold" title="Spieler-Vermögen"></i>
+					<i class="submatch-lol-player-minions icon-lol_minions" title="Minions getÃ¶tet"></i>
+					<i class="submatch-lol-player-networth icon-lol_gold" title="Spieler-VermÃ¶gen"></i>
 				</div>
 			</div>
 		
@@ -792,7 +792,7 @@
 							<img src="https://cdn0.gamesports.net/heroes/449.jpg?1593137289" alt="Jhin" title="Jhin" class="img-player-hero">
 							<span class="player-hero-level">13</span>
 						</div>
-						<div class="submatch-lol-player-name">LiebesWölkchen</div>
+						<div class="submatch-lol-player-name">LiebesWÃ¶lkchen</div>
 					</div>
 					<div class="submatch-lol-player-more-container"><div class="submatch-lol-player-more">
 						<div class="submatch-lol-player-networth">11.4k</div>
@@ -1180,10 +1180,10 @@
 				<ul>
 					<li></li>
 					<li>
-						<div class="txt-h3">Über Uns</div>
+						<div class="txt-h3">Ãœber Uns</div>
 						<a href="https://www.primeleague.gg/de/staff">Staff</a>						<a href="https://www.primeleague.gg/de/statics/impressum" target="_blank">Impressum</a>
 						<a href="https://docs.gamesports.net/tos/de" target="_blank" rel="noopener">Nutzungsbedingungen</a>
-						<a href="https://docs.gamesports.net/privacy/de" target="_blank" rel="noopener">Datenschutzerklärung</a>
+						<a href="https://docs.gamesports.net/privacy/de" target="_blank" rel="noopener">DatenschutzerklÃ¤rung</a>
 						<a href="https://www.primeleague.gg/de/users/support">Support</a>
 						<a href="https://www.primeleague.gg/de/statics/presse" target="_blank">Presse</a>
 						<div class="copyright">&copy; 2005-2020 by Freaks 4U Gaming</div>
@@ -1198,7 +1198,7 @@
 
 			<div id="footer-bottom">
 				<div id="footer-partners"><ul>
-					<li><a href="https://www.primeleague.gg/de/redirect/5051" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3827.png?1582113181" alt="R+V Versicherung" title="R+V Versicherung"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5054" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3830.png?1579256323" alt="NicNacs" title="NicNacs"></a></li><li><a href="https://www.levi.com/DE/de_DE/" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3892.png?1591696602" alt="Levi's" title="Levi's"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5063" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3842.png?1583936301" alt="Recaro" title="Recaro"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5060" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3836.png?1579274560" alt="Telekom" title="Telekom"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5192" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3845.png?1579256365" alt="Rockstar" title="Rockstar"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5048" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3833.png?1583936288" alt="Barmer" title="Barmer"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5057" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3839.png?1593180102" alt="Tchibo" title="Tchibo"></a></li>
+					<li><a href="https://www.primeleague.gg/de/redirect/5051" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3827.png?1582113181" alt="R+V Versicherung" title="R+V Versicherung"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5054" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3830.png?1579256323" alt="NicNacs" title="NicNacs"></a></li><li><a href="https://www.levi.com/DE/de_DE/" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3892.png?1591696602" alt="Levi's" title="Levi's"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5063" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3842.png?1583936301" alt="Recaro" title="Recaro"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5060" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3836.png?1579274560" alt="Telekom" title="Telekom"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5192" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3845.png?1579256365" alt="Rockstar" title="Rockstar"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5048" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3833.png?1583936288" alt="Barmer" title="Barmer"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5057" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3839.png?1593705782" alt="Tchibo" title="Tchibo"></a></li>
 				</ul></div>
 				<div id="header-socials"><ul>
 										<li><a href="https://twitter.com/primeleague" target="_blank" rel="noopener"><i class="icon-twitter"></i></a></li>					<li><a href="https://www.primeleague.gg/de/redirect/5198" target="_blank" rel="noopener"><i class="icon-instagram"></i></a></li>					<li><a href="https://youtube.com/c/PrimeLeague" target="_blank" rel="noopener"><i class="icon-youtube"></i></a></li>					<li><a href="https://www.twitch.tv/primeleague" target="_blank" rel="noopener"><i class="icon-twitch"></i></a></li>																								</ul></div>

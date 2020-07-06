@@ -113,9 +113,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'de-de'
 
-TIME_ZONE = 'CET'
+TIME_ZONE = 'Europe/Berlin'
 
 USE_I18N = True
 
@@ -136,3 +136,5 @@ DEFAULT_GROUP_LINK = env.str("GROUP_LINK")
 DEFAULT_TELEGRAM_CHANNEL_ID = env.str("TG_CHAT_ID")
 
 STORAGE_DIR = os.path.join(BASE_DIR, "storage", )
+
+TELEGRAM_BOT_KEY = env.str("TELEGRAM_BOT_API_KEY")

@@ -7,7 +7,7 @@
 <meta name="copyright" content="Freaks 4U Gaming GmbH, freaks4u.com">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Prime League ist die offizielle Liga von Riot Games f¸r Deutschland, ÷sterreich und die Schweiz. Melde dein Team an und werde ein Champion!">
+<meta name="description" content="Prime League ist die offizielle Liga von Riot Games f√ºr Deutschland, √ñsterreich und die Schweiz. Melde dein Team an und werde ein Champion!">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" property="og:title" content="The Wild Bunch &laquo; League Teams">
 <meta property="og:site_name" content="Prime League">
@@ -123,7 +123,7 @@
 				<li><div class="txt-info">Land:</div>Deutschland</li>
 				<li><div class="txt-info">Erstellt:</div><span class="tztime" data-time="1537043583" data-show-time="0" data-show-time-only="0" data-date-noyear="0" data-time-notz="0">2018-09-15</span></li>
 				<li><div class="txt-info">Kontakt:</div>
-											Sorry, Kontaktinformation nur f¸r Admins und Gegner sichtbar.
+											Sorry, Kontaktinformation nur f√ºr Admins und Gegner sichtbar.
 									</li>
 			</ul>
 			<ul class="content-icon-info">
@@ -140,14 +140,14 @@
 	<div class="section-functions">
 					</div>
 	<div class="section-content">
-		<div class="txt-content">Wechselslots ¸brig: 2</div>		<ul class="content-portrait-grid-l">
+		<div class="txt-content">Wechselslots √ºbrig: 2</div>		<ul class="content-portrait-grid-l">
 						<li>
 				<a href="https://www.primeleague.gg/de/users/1392890-nakolp" class="image-present image-present-100x100"><div style="background-image: url('https://cdn0.gamesports.net/user_pictures/default/default/128.jpg');"></div><div><img src="https://cdn0.gamesports.net/user_pictures/default/default/128.jpg" alt=""></div></a>
 				<a href="https://www.primeleague.gg/de/users/1392890-nakolp"><h3>NakoLP</h3></a>
 				<div class="txt-subtitle">Leader</div>
 				<div class="txt-info">
-									<span title="League of Legends &raquo; LoL Summoner Name (EU West)">NakoLP</span><br>
-					<span class="txt-status-positive">Best‰tigter Spieler</span>
+									<span title="League of Legends &raquo; LoL Summoner Name (EU West)">nakolp</span><br>
+					<span class="txt-status-positive">Best√§tigter Spieler</span>
 								</div>
 			</li>
 						<li>
@@ -156,7 +156,7 @@
 				<div class="txt-subtitle">Spieler</div>
 				<div class="txt-info">
 									<span title="League of Legends &raquo; LoL Summoner Name (EU West)">amunreh</span><br>
-					<span class="txt-status-positive">Best‰tigter Spieler</span>
+					<span class="txt-status-positive">Best√§tigter Spieler</span>
 								</div>
 			</li>
 						<li>
@@ -165,7 +165,7 @@
 				<div class="txt-subtitle">Spieler</div>
 				<div class="txt-info">
 									<span title="League of Legends &raquo; LoL Summoner Name (EU West)">scholli11</span><br>
-					<span class="txt-status-positive">Best‰tigter Spieler</span>
+					<span class="txt-status-positive">Best√§tigter Spieler</span>
 								</div>
 			</li>
 						<li>
@@ -174,7 +174,7 @@
 				<div class="txt-subtitle">Spieler</div>
 				<div class="txt-info">
 									<span title="League of Legends &raquo; LoL Summoner Name (EU West)">Sona with Corona</span><br>
-					<span class="txt-status-pending">Teilnahme nicht best‰tigt</span>
+					<span class="txt-status-pending">Teilnahme nicht best√§tigt</span>
 								</div>
 			</li>
 						<li>
@@ -183,7 +183,7 @@
 				<div class="txt-subtitle">Spieler</div>
 				<div class="txt-info">
 									<span title="League of Legends &raquo; LoL Summoner Name (EU West)">twb amolinetv</span><br>
-					<span class="txt-status-positive">Best‰tigter Spieler</span>
+					<span class="txt-status-positive">Best√§tigter Spieler</span>
 								</div>
 			</li>
 						<li>
@@ -191,8 +191,8 @@
 				<a href="https://www.primeleague.gg/de/users/1393880-asurai"><h3>Asurai</h3></a>
 				<div class="txt-subtitle">Spieler</div>
 				<div class="txt-info">
-									<span title="League of Legends &raquo; LoL Summoner Name (EU West)">AsuraÌ</span><br>
-					<span class="txt-status-positive">Best‰tigter Spieler</span>
+									<span title="League of Legends &raquo; LoL Summoner Name (EU West)">Asura√≠</span><br>
+					<span class="txt-status-positive">Best√§tigter Spieler</span>
 								</div>
 			</li>
 			
@@ -217,7 +217,7 @@
 			
 <tr>
 		<td class="col-3"><a class="table-cell-container" href="https://www.primeleague.gg/de/leagues/matches/589327-die-cottbuser-boellerbande-vs-the-wild-bunch">
-					<span class="table-cell-item img-portrait"><img data-src="https://cdn0.gamesports.net/league_team_logos/120000/120409.jpg?1590185132" alt="Die Cottbuser Bˆllerbande" title="Die Cottbuser Bˆllerbande"></span>
+					<span class="table-cell-item img-portrait"><img data-src="https://cdn0.gamesports.net/league_team_logos/120000/120409.jpg?1590185132" alt="Die Cottbuser B√∂llerbande" title="Die Cottbuser B√∂llerbande"></span>
 			<span class="table-cell-item">CBB</span>
 			</a></td>
 	<td class="col-2 col-text-center"><a class="table-cell-container" href="https://www.primeleague.gg/de/leagues/matches/589327-die-cottbuser-boellerbande-vs-the-wild-bunch">
@@ -795,10 +795,10 @@
 				<ul>
 					<li></li>
 					<li>
-						<div class="txt-h3">‹ber Uns</div>
+						<div class="txt-h3">√úber Uns</div>
 						<a href="https://www.primeleague.gg/de/staff">Staff</a>						<a href="https://www.primeleague.gg/de/statics/impressum" target="_blank">Impressum</a>
 						<a href="https://docs.gamesports.net/tos/de" target="_blank" rel="noopener">Nutzungsbedingungen</a>
-						<a href="https://docs.gamesports.net/privacy/de" target="_blank" rel="noopener">Datenschutzerkl‰rung</a>
+						<a href="https://docs.gamesports.net/privacy/de" target="_blank" rel="noopener">Datenschutzerkl√§rung</a>
 						<a href="https://www.primeleague.gg/de/users/support">Support</a>
 						<a href="https://www.primeleague.gg/de/statics/presse" target="_blank">Presse</a>
 						<div class="copyright">&copy; 2005-2020 by Freaks 4U Gaming</div>
@@ -813,7 +813,7 @@
 
 			<div id="footer-bottom">
 				<div id="footer-partners"><ul>
-					<li><a href="https://www.primeleague.gg/de/redirect/5051" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3827.png?1582113181" alt="R+V Versicherung" title="R+V Versicherung"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5054" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3830.png?1579256323" alt="NicNacs" title="NicNacs"></a></li><li><a href="https://www.levi.com/DE/de_DE/" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3892.png?1591696602" alt="Levi's" title="Levi's"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5063" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3842.png?1583936301" alt="Recaro" title="Recaro"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5060" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3836.png?1579274560" alt="Telekom" title="Telekom"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5192" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3845.png?1579256365" alt="Rockstar" title="Rockstar"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5048" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3833.png?1583936288" alt="Barmer" title="Barmer"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5057" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3839.png?1593180102" alt="Tchibo" title="Tchibo"></a></li>
+					<li><a href="https://www.primeleague.gg/de/redirect/5051" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3827.png?1582113181" alt="R+V Versicherung" title="R+V Versicherung"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5054" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3830.png?1579256323" alt="NicNacs" title="NicNacs"></a></li><li><a href="https://www.levi.com/DE/de_DE/" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3892.png?1591696602" alt="Levi's" title="Levi's"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5063" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3842.png?1583936301" alt="Recaro" title="Recaro"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5060" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3836.png?1579274560" alt="Telekom" title="Telekom"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5192" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3845.png?1579256365" alt="Rockstar" title="Rockstar"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5048" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3833.png?1583936288" alt="Barmer" title="Barmer"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5057" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3839.png?1593705782" alt="Tchibo" title="Tchibo"></a></li>
 				</ul></div>
 				<div id="header-socials"><ul>
 										<li><a href="https://twitter.com/primeleague" target="_blank" rel="noopener"><i class="icon-twitter"></i></a></li>					<li><a href="https://www.primeleague.gg/de/redirect/5198" target="_blank" rel="noopener"><i class="icon-instagram"></i></a></li>					<li><a href="https://youtube.com/c/PrimeLeague" target="_blank" rel="noopener"><i class="icon-youtube"></i></a></li>					<li><a href="https://www.twitch.tv/primeleague" target="_blank" rel="noopener"><i class="icon-twitch"></i></a></li>																								</ul></div>
