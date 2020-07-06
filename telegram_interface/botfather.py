@@ -23,6 +23,7 @@ def start(update: Update, context: CallbackContext):
         update.message.reply_text(START_CHAT)
         return ConversationHandler.END
 
+
 def bop(update: Update, context: CallbackContext):
     contents = requests.get('https://random.dog/woof.json').json()
     url = contents['url']
@@ -31,17 +32,11 @@ def bop(update: Update, context: CallbackContext):
     bot.send_photo(chat_id=chat_id, photo=url)
 
 
-
 def get_team_id(update: Update, context: CallbackContext):
     link = update.message.text
-    crawler = Crawler(local=False)
-    team_id = link.split("/teams/")[-1].split("-")[0]
-    team_parser = TeamHTMLParser(crawler.get_team_website(team_id))
-    team_logo_url = team_parser.get_logo()
-    print(team_id)
     reply_keyboard = [OPTION1_AUSWAHL]
     update.message.reply_text(
-        OPTION1,
+        "Erkannte TeamID: " + link.split("/teams/")[-1].split("-")[0] + "\n" + OPTION1,
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
         markdown=True
     )
@@ -55,7 +50,6 @@ def setting1(update: Update, context: CallbackContext):
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
         markdown=True
     )
-
     return SETTING2
 
 
@@ -116,11 +110,6 @@ class BotFather:
             },
 
             fallbacks=[CommandHandler('cancel', cancel)]
-            # CommandHandler("issue", issue),
-            #
-            # CommandHandler("feedback", feedback),
-            # CommandHandler("help", helpcommand),
-
         )
 
         dp.add_handler(conv_handler)
