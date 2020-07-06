@@ -85,7 +85,7 @@ class GameMetaData:
         self.game_closed = None
         self.latest_suggestion = None
         self.game_begin = None
-        self.auto_confirmation = None
+        self.latest_confirmation_log = None
 
     def __repr__(self):
         return f"GameID: {self.game_id}" \
@@ -116,7 +116,7 @@ class GameMetaData:
             gmd.enemy_lineup = enemy_tuples
         gmd.game_closed = match_parser.get_game_closed()
         gmd.latest_suggestion = match_parser.get_latest_suggestion()
-        gmd.game_begin, gmd.auto_confirmation = match_parser.get_game_begin()
+        gmd.game_begin, gmd.latest_confirmation_log = match_parser.get_game_begin()
         return gmd
 
     def get_enemy_team_data(self):

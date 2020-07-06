@@ -15,8 +15,8 @@ def serializer(obj: Union[datetime, time]):
     return obj.__dict__
 
 
-def string_to_datetime(x):
-    return datetime.strptime(x, '%a, %d %b %Y %H:%M:%S %z').astimezone(pytz.utc) \
+def string_to_datetime(x, timestamp_format='%a, %d %b %Y %H:%M:%S %z'):
+    return datetime.strptime(x, timestamp_format).astimezone(pytz.utc) \
         if isinstance(x, str) else timestamp_to_datetime(x)
 
 

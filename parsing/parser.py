@@ -109,7 +109,6 @@ class MatchHTMLParser(BaseHTMLParser):
         log_table = self.bs4.find_all("div", class_="content-subsection-container")[-1]
         log_trs = log_table.find("tbody").find_all("tr")
         self.logs = []
-        print(log_trs)
         for tr in log_trs:
             time = tr.find("span", class_="itime").get('data-time')
             user = tr.find_all("span", class_="table-cell-container")[1].contents[-1]
@@ -145,16 +144,18 @@ class MatchHTMLParser(BaseHTMLParser):
     def get_game_begin(self) -> tuple:
         """
         Returns game begin timestamp if it is in logs
-        :return Tuple: First argument: confirmed timestamp, second argument: boolean if its an auto confirmation
+        :return Tuple: First argument: confirmed timestamp, second argument: log
         """
         timestamp = None
         for log in reversed(self.logs):
             if isinstance(log, LogSuggestion):
                 timestamp = log.details[0]
             if isinstance(log, LogSchedulingConfirmation):
-                return log.details, False
+                return log.details, log
             if isinstance(log, LogSchedulingAutoConfirmation):
-                return timestamp, True
+                return timestamp, log
+            if isinstance(log, LogChangeTime):
+                return log.details, log
         return None, False
 
     def get_enemy_team_name(self):
@@ -268,4 +269,5 @@ class LogLineupSubmit(BaseLog):
 class LogChangeTime(BaseLog):
     def __init__(self, timestamp, user, details):
         super().__init__(timestamp, user, details)
-        self.details = string_to_datetime(self.details[0])
+        prefix = "Manually adjusted time to "
+        self.details = string_to_datetime(self.details[0][len(prefix):], timestamp_format="%Y-%m-%d %H:%M %z")

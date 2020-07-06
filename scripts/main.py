@@ -35,7 +35,7 @@ def check_match(match):
     if cmp.compare_scheduling_confirmation():
         print("Termin wurde festgelegt")
         match.update_game_begin(gmd)
-        TelegramMessagesWrapper.send_scheduling_confirmation(match, gmd.auto_confirmation)
+        TelegramMessagesWrapper.send_scheduling_confirmation(match, gmd.latest_confirmation_log)
     if cmp.compare_lineup_confirmation():
         print("Neues Lineup des gegnerischen Teams")
         gmd.get_enemy_team_data()

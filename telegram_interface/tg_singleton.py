@@ -1,6 +1,7 @@
 import telepot
 from babel import dates as babel
 from app_prime_league.models import Team, Game
+from parsing.parser import LogSchedulingAutoConfirmation, LogSchedulingConfirmation, LogChangeTime
 from prime_league_bot import settings
 from utils.constants import EMOJI_THREE, EMOJI_ONE, EMOJI_TWO, EMOJI_SUCCESS, EMOJI_ARROW
 
@@ -51,15 +52,19 @@ class TelegramMessagesWrapper:
         send_message(msg=msg, chat_id=game.team.telegram_channel_id)
 
     @staticmethod
-    def send_scheduling_confirmation(game: Game, auto_confirm):
+    def send_scheduling_confirmation(game: Game, latest_confirmation_log):
         time = format_datetime(game.game_begin)
-        if auto_confirm:
+        if isinstance(latest_confirmation_log, LogSchedulingAutoConfirmation):
             text = f"Das Team {game.enemy_team.team_tag} hat für Spieltag {game.game_day} weder die vorgeschlagene " \
                    f"Zeit angenommen, noch eine andere vorgeschlagen. Damit ist der Spieltermin\n{EMOJI_ARROW}" + \
                    f"{time} bestätigt."
-
-        else:
+        elif isinstance(latest_confirmation_log, LogSchedulingConfirmation):
             text = f"Spielbestätigung von {game.enemy_team.team_tag} für Spieltag {game.game_day}:\n{EMOJI_ARROW}" \
+                   f"{time}"
+        else:
+            assert isinstance(latest_confirmation_log, LogChangeTime)
+            text = f"Ein Administrator hat eine neue Zeit für das Match gegen {game.enemy_team.team_tag} " \
+                   f"(Spieltag {game.game_day}) festgelegt:\n{EMOJI_ARROW}" \
                    f"{time}"
 
         text += f"\nHier ist der [Link](https://www.primeleague.gg/de/leagues/matches/{game.game_id}) zur Seite."
