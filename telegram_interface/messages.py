@@ -17,7 +17,7 @@ START_CHAT= "Ahoi, \n"\
     "Viel Spaß"
 
 # Settings
-OPTION1 = "OP.GG Link"
+OPTION1 = "OP.GG Link?"
 OPTION1_AUSWAHL = ["LineUp", "Komplettes Team", "Beides"]
 
 OPTION2 = "COMING Soon"

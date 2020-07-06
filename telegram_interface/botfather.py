@@ -23,6 +23,7 @@ def start(update: Update, context: CallbackContext):
         update.message.reply_text(START_CHAT)
         return ConversationHandler.END
 
+
 def bop(update: Update, context: CallbackContext):
     contents = requests.get('https://random.dog/woof.json').json()
     url = contents['url']
@@ -31,17 +32,11 @@ def bop(update: Update, context: CallbackContext):
     bot.send_photo(chat_id=chat_id, photo=url)
 
 
-
 def get_team_id(update: Update, context: CallbackContext):
     link = update.message.text
-    crawler = Crawler(local=False)
-    team_id = link.split("/teams/")[-1].split("-")[0]
-    team_parser = TeamHTMLParser(crawler.get_team_website(team_id))
-    team_logo_url = team_parser.get_logo()
-    print(team_id)
     reply_keyboard = [OPTION1_AUSWAHL]
     update.message.reply_text(
-        OPTION1,
+        "Erkannte TeamID: " + link.split("/teams/")[-1].split("-")[0] + "\n" + OPTION1,
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
         markdown=True
     )
@@ -55,7 +50,6 @@ def setting1(update: Update, context: CallbackContext):
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
         markdown=True
     )
-
     return SETTING2
 
 
@@ -96,31 +90,20 @@ class BotFather:
     def run(self):
         updater = Updater(settings.TELEGRAM_BOT_KEY, use_context=True, )
         dp = updater.dispatcher
-        # Add conversation handler with the states GENDER, PHOTO, LOCATION and BIO
+        # Add conversation handler with the states TEAM_ID, SETTING1, SETTING2
         conv_handler = ConversationHandler(
             entry_points=[CommandHandler('start', start, )],
 
             states={
-                TEAM_ID: [MessageHandler(Filters.text, get_team_id),
-                          CommandHandler('cancel', cancel),
-                          ],
+                TEAM_ID: [MessageHandler(Filters.text & (~Filters.command), get_team_id), ],
 
-                SETTING1: [MessageHandler(Filters.text, setting1),
-                           CommandHandler('cancel', cancel),
-                           ],
+                SETTING1: [MessageHandler(Filters.text & (~Filters.command), setting1), ],
 
-                SETTING2: [MessageHandler(Filters.text, setting2),
-                           CommandHandler('cancel', cancel),
-                           ],
+                SETTING2: [MessageHandler(Filters.text & (~Filters.command), setting2), ],
 
             },
 
             fallbacks=[CommandHandler('cancel', cancel)]
-            # CommandHandler("issue", issue),
-            #
-            # CommandHandler("feedback", feedback),
-            # CommandHandler("help", helpcommand),
-
         )
 
         dp.add_handler(conv_handler)
