@@ -90,22 +90,16 @@ class BotFather:
     def run(self):
         updater = Updater(settings.TELEGRAM_BOT_KEY, use_context=True, )
         dp = updater.dispatcher
-        # Add conversation handler with the states GENDER, PHOTO, LOCATION and BIO
+        # Add conversation handler with the states TEAM_ID, SETTING1, SETTING2
         conv_handler = ConversationHandler(
             entry_points=[CommandHandler('start', start, )],
 
             states={
-                TEAM_ID: [MessageHandler(Filters.text, get_team_id),
-                          CommandHandler('cancel', cancel),
-                          ],
+                TEAM_ID: [MessageHandler(Filters.text & (~Filters.command), get_team_id), ],
 
-                SETTING1: [MessageHandler(Filters.text, setting1),
-                           CommandHandler('cancel', cancel),
-                           ],
+                SETTING1: [MessageHandler(Filters.text & (~Filters.command), setting1), ],
 
-                SETTING2: [MessageHandler(Filters.text, setting2),
-                           CommandHandler('cancel', cancel),
-                           ],
+                SETTING2: [MessageHandler(Filters.text & (~Filters.command), setting2), ],
 
             },
 
