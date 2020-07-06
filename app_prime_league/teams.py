@@ -58,7 +58,6 @@ def add_players(parser: TeamHTMLParser, team: Team):
 def add_games(parser: TeamHTMLParser, team: Team):
     start_time = time.time()
     game_ids = parser.get_matches()
-    game_ids = ["596851"]
     for j in game_ids:
         gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=j,)
         game = Game.objects.get_game_by_team(game_id=j, team=team)
