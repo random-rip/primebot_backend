@@ -1,6 +1,7 @@
+import time
+
 from app_prime_league.models import Team, Player, Game, GameMetaData
-from data_crawling.api import crawler
-from parsing.regex_operations import TeamHTMLParser, TeamWrapper
+from parsing.parser import TeamHTMLParser, TeamWrapper
 
 
 def register_team(team_id, tg_group_id):
@@ -55,8 +56,9 @@ def add_players(parser: TeamHTMLParser, team: Team):
 
 
 def add_games(parser: TeamHTMLParser, team: Team):
+    start_time = time.time()
     game_ids = parser.get_matches()
-    game_ids = ["597478"]
+    game_ids = ["596851"]
     for j in game_ids:
         gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=j,)
         game = Game.objects.get_game_by_team(game_id=j, team=team)
@@ -69,3 +71,5 @@ def add_games(parser: TeamHTMLParser, team: Team):
         game.update_enemy_team(gmd)
         game.update_enemy_lineup(gmd)
         game.update_latest_suggestion(gmd)
+    duration = time.time() - start_time
+    print(f"Added games ({len(game_ids)}) in {duration} seconds")

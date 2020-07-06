@@ -1,7 +1,7 @@
 from django.db import models
 
 from data_crawling.api import crawler
-from parsing.regex_operations import TeamHTMLParser, MatchWrapper, TeamWrapper
+from parsing.parser import TeamHTMLParser, MatchWrapper, TeamWrapper
 
 
 class TeamManager(models.Manager):

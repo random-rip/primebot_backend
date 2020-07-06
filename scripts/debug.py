@@ -6,7 +6,7 @@ from telegram.ext import Updater, CommandHandler
 
 from app_prime_league.models import Team
 from data_crawling.api import crawler
-from parsing.regex_operations import MatchWrapper
+from parsing.parser import MatchWrapper
 from prime_league_bot import settings
 from telegram_interface.botfather import BotFather
 

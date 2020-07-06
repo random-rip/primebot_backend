@@ -3,7 +3,7 @@ from telegram.ext.filters import Filters
 import requests
 
 from data_crawling.api import Crawler
-from parsing.regex_operations import TeamHTMLParser
+from parsing.parser import TeamHTMLParser
 from prime_league_bot import settings
 from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandler, Dispatcher, ConversationHandler
 

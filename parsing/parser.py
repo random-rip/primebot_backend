@@ -36,22 +36,7 @@ class BaseHTMLParser:
         self._parse_logs()
 
     def _parse_logs(self):
-        log_table = self.bs4.find_all("div", class_="content-subsection-container")[-1]
-        log_trs = log_table.find("tbody").find_all("tr")
-        self.logs = []
-        for tr in log_trs:
-            time = tr.find("span", class_="itime").get('data-time')
-            user = tr.find_all("span", class_="table-cell-container")[1].contents[-1]
-            action = tr.find_all("span", class_="table-cell-container")[2].contents[-1]
-            details = [x.extract() for x in tr.find_all("span", class_="table-cell-container")[-1]]
-            log = BaseLog.return_specified_log(
-                timestamp=time,
-                user=user.split(" ")[0],
-                action=action,
-                details=details if len(details) > 0 else None,
-            )
-            if log is not None:
-                self.logs.append(log)
+        pass
 
     def get_logs(self):
         return self.logs
@@ -120,9 +105,28 @@ class MatchHTMLParser(BaseHTMLParser):
         self.team = team
         self.website = website
 
+    def _parse_logs(self):
+        log_table = self.bs4.find_all("div", class_="content-subsection-container")[-1]
+        log_trs = log_table.find("tbody").find_all("tr")
+        self.logs = []
+        print(log_trs)
+        for tr in log_trs:
+            time = tr.find("span", class_="itime").get('data-time')
+            user = tr.find_all("span", class_="table-cell-container")[1].contents[-1]
+            action = tr.find_all("span", class_="table-cell-container")[2].contents[-1]
+            details = [x.extract() for x in tr.find_all("span", class_="table-cell-container")[-1]]
+            log = BaseLog.return_specified_log(
+                timestamp=time,
+                user=user.split(" ")[0],
+                action=action,
+                details=details if len(details) > 0 else None,
+            )
+            if log is not None:
+                self.logs.append(log)
+
     def get_enemy_lineup(self):
         lineup = self.json_match["lineups"]["1"] if not self.team_is_team_1 else self.json_match["lineups"]["2"]
-        members = [(x["id"], x["name"], x["gameaccounts"][0], None ) for x in lineup]
+        members = [(x["id"], x["name"], x["gameaccounts"][0], None) for x in lineup]
         return None if len(members) == 0 else members
 
     def get_game_closed(self):
