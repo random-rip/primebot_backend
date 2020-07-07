@@ -12,9 +12,7 @@ from telegram_interface.botfather import BotFather
 
 
 def main():
-    team = Team.objects.get(id=105959)
-    parser = MatchWrapper("597523", team).parser
-    parser.get_enemy_lineup()
+    BotFather().run()
 
 
 # Command to run this file:
