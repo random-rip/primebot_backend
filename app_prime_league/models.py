@@ -48,7 +48,7 @@ class Team(models.Model):
     name = models.CharField(max_length=100, null=True)
     team_tag = models.CharField(max_length=10, null=True)
     division = models.CharField(max_length=5, null=True)
-    telegram_channel_id = models.CharField(max_length=50, null=True)
+    telegram_channel_id = models.CharField(max_length=50, null=True, unique=True)
 
     objects = TeamManager()
 
@@ -217,3 +217,13 @@ class Suggestion(models.Model):
 
     class Meta:
         db_table = "suggestion"
+
+
+class Setting(models.Model):
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    attr_name = models.CharField(max_length=50)
+    attr_value = models.BooleanField()
+
+    class Meta:
+        db_table = "settings"
+        unique_together = [("team", "attr_name"), ]

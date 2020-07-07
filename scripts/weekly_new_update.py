@@ -6,7 +6,8 @@ def main():
     game_day = 6
     games = Game.objects.filter(game_day=game_day, game_closed=False)
     for i in games:
-        TelegramMessagesWrapper.send_new_game_day(i)
+        if i.team.setting_set.get("weekly_op_link", True):
+            TelegramMessagesWrapper.send_new_game_day(i)
 
 
 def run():

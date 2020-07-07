@@ -18,30 +18,34 @@ def get_session():
 
 
 def check_match(match):
-    print("Game ", match)
     game_id = match.game_id
     team = match.team
     gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=game_id, )
     cmp = GameComparer(match, gmd)
+    settings = dict(team.setting_set.all().values_list("attr_name", "attr_value"))
     if match.game_begin is None:
         if cmp.compare_new_suggestion(of_enemy_team=True):
             print("Neuer Zeitvorschlag der Gegner")
             match.update_latest_suggestion(gmd)
-            TelegramMessagesWrapper.send_new_suggestion_of_enemies(match)
+            if settings.get("scheduling_suggestion", True):
+                TelegramMessagesWrapper.send_new_suggestion_of_enemies(match)
         if cmp.compare_new_suggestion():
             print("Eigener neuer Zeitvorschlag")
             match.update_latest_suggestion(gmd)
-            TelegramMessagesWrapper.send_new_suggestion(match)
+            if settings.get("scheduling_suggestion", True):
+                TelegramMessagesWrapper.send_new_suggestion(match)
     if cmp.compare_scheduling_confirmation():
         print("Termin wurde festgelegt")
         match.update_game_begin(gmd)
-        TelegramMessagesWrapper.send_scheduling_confirmation(match, gmd.latest_confirmation_log)
+        if settings.get("scheduling_confirmation", True):
+            TelegramMessagesWrapper.send_scheduling_confirmation(match, gmd.latest_confirmation_log)
     if cmp.compare_lineup_confirmation():
         print("Neues Lineup des gegnerischen Teams")
         gmd.get_enemy_team_data()
         match.update_enemy_team(gmd)
         match.update_enemy_lineup(gmd)
-        TelegramMessagesWrapper.send_new_lineup_of_enemies(match)
+        if settings.get("lineup_op_link", True):
+            TelegramMessagesWrapper.send_new_lineup_of_enemies(match)
 
     match.update_from_gmd(gmd)
 

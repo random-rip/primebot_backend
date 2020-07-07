@@ -31,13 +31,18 @@ def add_team(team_id, tg_group_id):
     return team
 
 
-def update_team(team_id, settings: dict):
+def update_team(tg_chat_id, settings: dict):
     try:
-        team = Team.objects.get(id=team_id)
+        team = Team.objects.get(telegram_channel_id=tg_chat_id)
     except Team.DoesNotExist:
         print("Team existiert nicht")
         return
-    # TODO Sachen updaten
+    for key, value in settings.items():
+        setting, _ = team.setting_set.get_or_create(attr_name=key, defaults={
+            "attr_value": value,
+        })
+        setting.attr_value = value
+        setting.save()
 
 
 def add_players(parser: TeamHTMLParser, team: Team):
