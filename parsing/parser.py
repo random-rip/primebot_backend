@@ -21,7 +21,8 @@ class TeamWrapper:
     def __init__(self, team_id):
         website = crawler.get_team_website(team_id)
         if website is None:
-            return
+            print("Website is none")
+            raise Exception()
         self.parser = TeamHTMLParser(website, )
 
 

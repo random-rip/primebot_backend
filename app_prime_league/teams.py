@@ -7,28 +7,39 @@ from parsing.parser import TeamHTMLParser, TeamWrapper
 def register_team(team_id, tg_group_id):
     team = add_team(team_id, tg_group_id)
     if team is not None:
-        parser = TeamWrapper(team_id=team.id).parser
-        add_players(parser, team)
-        add_games(parser, team)
+        try:
+            wrapper = TeamWrapper(team_id=team.id)
+        except Exception:
+            return None
+        add_players(wrapper.parser, team)
+        add_games(wrapper.parser, team)
+        return True
+    else:
+        return None
 
 
 def add_team(team_id, tg_group_id):
-    wrapper = TeamWrapper(team_id=team_id)
-    if wrapper is None:
-        print("Dieses Team wurde nicht gefunden")
-        return
-    parser = wrapper.parser
+    if not Team.objects.filter(telegram_channel_id__isnull=tg_group_id).exists():
+        wrapper = TeamWrapper(team_id=team_id)
+        try:
+            pass
+        except Exception:
+            print("Wrapper is None")
+            return None
+        parser = wrapper.parser
 
-    if Team.objects.filter(id=team_id, telegram_channel_id__isnull=False).exists():
-        print("Das Team existiert bereits und eine Telegram Chat ID ist schon hinterlegt")
-        return None
-    team, created = Team.objects.get_or_create(id=team_id, defaults={
-        "name": parser.get_team_name(),
-        "team_tag": parser.get_team_tag(),
-        "division": parser.get_current_division(),
-        "telegram_channel_id": tg_group_id,
-    })
-    return team
+        team, created = Team.objects.get_or_create(id=team_id, defaults={
+            "name": parser.get_team_name(),
+            "team_tag": parser.get_team_tag(),
+            "division": parser.get_current_division(),
+            "telegram_channel_id": tg_group_id,
+        })
+        if not created:
+            team.telegram_channel_id = tg_group_id
+            team.save()
+        return team
+    print("Dieser Telegramgruppe ist bereits ein Team zugewiesen.")
+    return None
 
 
 def update_team(tg_chat_id, settings: dict):
@@ -64,7 +75,7 @@ def add_games(parser: TeamHTMLParser, team: Team):
     start_time = time.time()
     game_ids = parser.get_matches()
     for j in game_ids:
-        gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=j,)
+        gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=j, )
         game = Game.objects.get_game_by_team(game_id=j, team=team)
         if game is None:
             game = Game()

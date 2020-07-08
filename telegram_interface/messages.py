@@ -30,8 +30,12 @@ SCHEDULING_SUGGESTION_TEXT = "Möchtest du über neue Zeitvorschläge des Gegner
 
 SCHEDULING_CONFIRMATION_TEXT = "Möchtest du bei der Bestätigung eines Zeitvorschlags benachrichtigt werden?"
 
-
 BOOLEAN_KEYBOARD = [["Ja"], ["Nein"]]
+
+TEAM_EXISTING = "Dein Team ist bereits in registriert und mit einer anderen Gruppe verknüpft oder " \
+                "für diese Gruppe ist bereits ein Team registriert\n" \
+                "Oder die angegebene URL ist falsch. \n" \
+                "Solltet ihr Hilfe benötigen, nutzt bitte /help oder /issue"
 
 OPTION1 = "OP.GG Link: \n" \
           "Möchtet Ihr als Team einen OP.gg Link: \n" \
