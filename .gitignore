@@ -2,7 +2,7 @@
 
 .idea
 
-
+storage
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -111,7 +111,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+prime_league_bot/.env
 .venv
 env/
 venv/
