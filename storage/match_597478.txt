@@ -1,0 +1,1244 @@
+<!doctype html>
+<html lang="de">
+	<head>
+		<meta charset="utf-8">
+<meta name="generator" content="freakms by Daniel Schmitz, bashgeek.net">
+<meta name="author" content="Freaks 4U Gaming GmbH, freaks4u.com">
+<meta name="copyright" content="Freaks 4U Gaming GmbH, freaks4u.com">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Prime League ist die offizielle Liga von Riot Games für Deutschland, Österreich und die Schweiz. Melde dein Team an und werde ein Champion!">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" property="og:title" content="PRM Summer Split 2020: LES B-W vs. FVS &raquo; League">
+<meta property="og:site_name" content="Prime League">
+<meta name="twitter:image" property="og:image" content="https://cdn0.gamesports.net/league_season_headers/1000/1504.jpg?1587718423">
+<meta property="og:image" content="https://cdn1-v3.gamesports.net/img/icons/primeleague/social.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://cdn1-v3.gamesports.net/img/icons/primeleague/16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://cdn1-v3.gamesports.net/img/icons/primeleague/32.png">
+<link rel="icon" type="image/png" sizes="128x128" href="https://cdn1-v3.gamesports.net/img/icons/primeleague/128.png">
+<link rel="icon" type="image/png" sizes="192x192" href="https://cdn1-v3.gamesports.net/img/icons/primeleague/192.png">
+<link rel="apple-touch-icon" sizes="120x120" href="https://cdn1-v3.gamesports.net/img/icons/primeleague/120.png">
+<link rel="apple-touch-icon" sizes="152x152" href="https://cdn1-v3.gamesports.net/img/icons/primeleague/152.png">
+<link rel="apple-touch-icon" sizes="167x167" href="https://cdn1-v3.gamesports.net/img/icons/primeleague/167.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://cdn1-v3.gamesports.net/img/icons/primeleague/180.png">
+<link rel="stylesheet" href="https://cdn1-v3.gamesports.net/css/public/nouislider.min.529dff3419009e6b3d8cca62020d674b124fc074.css">
+<link rel="stylesheet" href="https://cdn1-v3.gamesports.net/css/public/select2.98d34bd9c14bdf7fe932482b07a8b6bf8f8e08e0.css">
+<link rel="stylesheet" href="https://cdn1-v3.gamesports.net/css/public/icons.8c3a9377a2a68f8d17d96085fe16e21d9ced3a09.css">
+<link rel="stylesheet" href="https://cdn1-v3.gamesports.net/css/public/shadowbox.56741931ac2b5e6fc423a77d9875116a92960423.css">
+<link rel="stylesheet" href="https://cdn1-v3.gamesports.net/css/public/general_primeleague.0675011fdb4daf40b84e7bfd0c29fbc84f681e10.css">
+<script src="https://cdn1-v3.gamesports.net/js/public/gsnet_popin_de.3b0d36434c17eab23f8ee3ddcce0b1ddb126a336.js"></script>
+<script src="https://cdn1-v3.gamesports.net/js/public/general_de.d6a26a2e794782a0122395b61f093b8b8dc3500e.js"></script>
+<script src="https://cdn1-v3.gamesports.net/js/public/league2_de.3b2ad06263144fce2a7b737db75ad9faf68476fa.js"></script>
+<script src="https://cdn1-v3.gamesports.net/js/public/league2_de.3b2ad06263144fce2a7b737db75ad9faf68476fa.js"></script>
+<script>freakms_network='gamesports'; freakms_network_title='GameSports Network'; freakms_language='de'; freakms_userLoggedIn=0; freakms_antispoiler=0; freakms_subsite='premiertour'; freakms_curPath='https://www.primeleague.gg/de/'; freakms_adminPath=''; freakms_url_imprint='https://docs.gamesports.net/imprint/%s'; freakms_url_tos='https://docs.gamesports.net/tos/%s'; freakms_url_privacy='https://docs.gamesports.net/privacy/%s'; freakms_gSlogo='https://cdn1-v3.gamesports.net/img/themes/general/gs_logo_red.svg'; freakms_league_rules='https://www.primeleague.gg/de/statics/rules_general'; freakms_league_preseason='https://www.primeleague.gg/de/statics/league_preseason';freakms_usercentrics='0'; freakms_usercentrics_tpls=''; </script>
+<title>PRM Summer Split 2020: LES B-W vs. FVS &raquo; League &laquo; Prime League</title>
+<script>!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?module.exports=e():"function"==typeof define&&define.amd?define(e):t.lozad=e()}(this,function(){"use strict";function t(t){t.setAttribute("data-loaded",!0)}var e=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var r=arguments[e];for(var n in r)Object.prototype.hasOwnProperty.call(r,n)&&(t[n]=r[n])}return t},r=document.documentMode,n={rootMargin:"0px",threshold:0,load:function(t){if("picture"===t.nodeName.toLowerCase()){var e=document.createElement("img");r&&t.getAttribute("data-iesrc")&&(e.src=t.getAttribute("data-iesrc")),t.appendChild(e)}t.getAttribute("data-src")&&(t.src=t.getAttribute("data-src")),t.getAttribute("data-srcset")&&(t.srcset=t.getAttribute("data-srcset")),t.getAttribute("data-background-image")&&(t.style.backgroundImage="url('"+t.getAttribute("data-background-image")+"')")},loaded:function(){}},o=function(t){return"true"===t.getAttribute("data-loaded")},a=function(e,r){return function(n,a){n.forEach(function(n){n.intersectionRatio>0&&(a.unobserve(n.target),o(n.target)||(e(n.target),t(n.target),r(n.target)))})}},i=function(t){return t instanceof Element?[t]:t instanceof NodeList?t:document.querySelectorAll(t)};return function(){var r=arguments.length>0&&void 0!==arguments[0]?arguments[0]:".lozad",d=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},u=e({},n,d),c=u.rootMargin,s=u.threshold,g=u.load,f=u.loaded,l=void 0;return window.IntersectionObserver&&(l=new IntersectionObserver(a(g,f),{rootMargin:c,threshold:s})),{observe:function(){for(var e=i(r),n=0;n<e.length;n++)o(e[n])||(l?l.observe(e[n]):(g(e[n]),t(e[n]),f(e[n])))},triggerLoad:function(e){o(e)||(g(e),t(e),f(e))}}}});</script>
+<script>const lozad_observer = lozad('[data-src]'); const lozad_observer_bg = lozad('[data-background-image]'); lozad_observer.observe(); lozad_observer_bg.observe();</script>
+<script>document.addEventListener('DOMContentLoaded', function(){ var imgs = document.querySelectorAll('img[data-src]:not([src])'), i; for (i = 0; i < imgs.length; ++i) { imgs[i].src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"; }; lozad_observer.observe(); lozad_observer_bg.observe(); });</script>
+	</head>
+	<body class="body-leagues body-matches body-597478-leipzig-esports-e-v-b-ware-vs-favious">
+		<header id="header">
+	<div id="header-container">
+		<div id="header-content">
+			<div id="header-logo" class="logo"><a href="https://www.primeleague.gg/de/" aria-label="Start"></a></div>
+			
+			<div id="header-menu" class="menu"><a id="mobile-menu"><i class="icon-list"></i></a></div>
+
+			
+							<div id="header-nav">
+					<nav class="withsubs"><ul>
+		<li>
+		<a href="https://www.primeleague.gg/de/start">Home</a>
+			</li>
+		<li>
+		<a href="https://www.primeleague.gg/de/leagues/prm">Spielen</a>
+					<i class="subnav-toggle icon-toggle"></i>
+			<ul><li><a href="https://www.primeleague.gg/de/statics/rules_general">Regelwerk</a></li><li><a href="https://www.primeleague.gg/de/statics/faq">FAQ</a></li><li><a href="https://www.primeleague.gg/de/users/support">Hilfe & Support</a></li><li><a href="https://www.primeleague.gg/de/leagues/prm/1457">Spring Split</a></li><li><a href="https://www.primeleague.gg/de/leagues/teams">Alle Teams</a></li></ul>
+			</li>
+		<li>
+		<a href="https://www.primeleague.gg/de/leagues/teamfinder">Teamsuche</a>
+			</li>
+		<li>
+		<a href="https://www.primeleague.gg/de/coverages/25312">Coverage</a>
+			</li>
+		<li class="wide">
+		<a href="https://www.primeleague.gg/de/forums">Forum</a>
+			</li>
+	
+</ul></nav>
+				</div>
+			
+							<div id="header-ucp">
+					<div>
+			<div id="ucp-left">
+			<div id="ucp-name" class="ucp-login">Login / Anmelden</div>
+					</div>
+		<div id="ucp-avatar" class="hide-avatar" style="background-image: url('https://cdn0.gamesports.net/user_pictures/default/default/64.jpg');"></div>
+	</div>
+				</div>
+			
+			
+			
+			<div id="sidebar-toggle">
+	<div id="sidebar-show" class="show">Meine Teilnahmedetails <a class="sidebar-show btn" href="#">Anzeigen</a>
+	</div>
+	<div id="sidebar-hide">Meine Teilnahmedetails <a class="sidebar-hide btn" href="#">Verstecken</a>
+	</div>
+</div>
+<div id="sidebar">
+	<div id="sidebar-container">
+		<div id="sidebar-content">
+			<div id="sidebar-logo"><a href="https://www.primeleague.gg/de/" aria-label="Start"></a></div>
+							<p class="txt-content">Bitte logge dich ein, um an der Prime League teilzunehmen!</p>
+				<a class="btn gsnet-login">Login / Anmelden</a>
+			
+					</div>
+	</div>
+	<div id="sidebar-sponsor">
+		<div>
+			<a href="https://www.primeleague.gg/de/redirect/5066" target="_blank"><img src="https://cdn1-v3.gamesports.net/img/themes/primeleague/oetker.png?4"></a>
+			<a href="https://www.primeleague.gg/de/redirect/5219" target="_blank"><img src="https://cdn1-v3.gamesports.net/img/themes/primeleague/dkb.jpg?1"></a>
+		</div>
+		<div><a href="https://www.hylo-gaming.com/" target="_blank"><img src="https://cdn1-v3.gamesports.net/img/themes/primeleague/HYLO.png?1"></a></div>
+	</div>
+</div>
+					</div>
+	</div>
+</header>
+
+		<div id="container">
+			
+			
+			<div class="page-title"><h1>PRM Summer Split 2020: LES B-W vs. FVS</h1></div>
+
+<section class="boxed-section hybrid">
+	<div class="section-content">
+		
+	<div class="content-teaser-img"><div style="background-image:url('https://cdn0.gamesports.net/league_season_headers/1000/1504.jpg?1587718423');"></div><div><img src="https://cdn0.gamesports.net/league_season_headers/1000/1504.jpg?1587718423" alt="Summer Split 2020"></div></div>
+		<div class="content-match-subtitles">
+			<div class="txt-subtitle" id="league-match-time"><span class="tztime" data-time="1592150400" data-show-time="1" data-show-time-only="0" data-date-noyear="0" data-time-notz="0">2020-06-14 18:00 CEST</span></div>
+			<div class="txt-subtitle">Spieltag 1</div>		</div>
+
+					<div class="content-match-head content-league-match-head">
+				<div class="content-match-head-team content-match-head-team1">
+					<div class="content-match-head-team-top">
+													<a href="https://www.primeleague.gg/de/leagues/prm/1504-summer-split-2020/teams/105959-leipzig-esports-e-v-b-ware" class="image-present image-present-100x100"><div style="background-image:url('https://cdn0.gamesports.net/league_team_logos/105000/105959.jpg?1569499384');"></div><div><img src="https://cdn0.gamesports.net/league_team_logos/105000/105959.jpg?1569499384" alt="Leipzig eSports e.V. B-Ware"></div></a>
+							<div class="content-match-head-team-titles">
+								<a href="https://www.primeleague.gg/de/leagues/prm/1504-summer-split-2020/teams/105959-leipzig-esports-e-v-b-ware"><h2>LES B-W</h2></a>
+								<div class="txt-subtitle"></div>
+							</div>
+											</div>
+				</div>
+
+				<div class="content-match-head-score">
+					<div class="content-match-head-status" id="league-match-status">
+													<span class="league-match-result">2:0</span>
+											</div>
+					<div class="txt-info">two games</div>
+				</div>
+
+				<div class="content-match-head-team content-match-head-team2">
+					<div class="content-match-head-team-top">
+													<a href="https://www.primeleague.gg/de/leagues/prm/1504-summer-split-2020/teams/105875-favious" class="image-present image-present-100x100"><div style="background-image:url('https://cdn0.gamesports.net/league_team_logos/105000/105875.jpg?1572177348');"></div><div><img src="https://cdn0.gamesports.net/league_team_logos/105000/105875.jpg?1572177348" alt="Favious"></div></a>
+							<div class="content-match-head-team-titles">
+								<a href="https://www.primeleague.gg/de/leagues/prm/1504-summer-split-2020/teams/105875-favious"><h2>FVS</h2></a>
+								<div class="txt-subtitle"></div>
+							</div>
+											</div>
+				</div>
+			</div>
+		
+		<div class="content-match-lineups">
+			<ul class="content-match-lineup" id="league-match-lineup1"></ul>
+			<ul class="content-match-lineup content-match-lineup-2" id="league-match-lineup2"></ul>
+		</div>
+	</div>
+</section>
+
+<section class="">
+	<div class="section-content">
+		<div class="content-match-submatch-lol">
+	<div class="submatch-lol-head">
+				<div class="submatch-lol-head-side side-1 color-b">
+			<div class="submatch-lol-team-name">LES B-W</div>
+			<div class="submatch-lol-team-result win">Sieg</div>
+			<div class="submatch-lol-team-stats submatch-lol-team-kda"><i class="icon-lol_kda" title="Team-K/D/A"></i><span>30/12/46</span></div>
+			<div class="submatch-lol-team-stats submatch-lol-team-networth"><i class="icon-lol_gold" title="Team-Vermögen"></i><span>44.3k</span></div>
+		</div>
+		<div class="submatch-lol-head-icons"><i class="icon-lol_gold" title="Team-Vermögen"></i><i class="icon-lol_kda" title="Team-K/D/A"></i></div>				<div class="submatch-lol-head-side side-2 color-r">
+			<div class="submatch-lol-team-name">FVS</div>
+			<div class="submatch-lol-team-resultloss">Niederlage</div>
+			<div class="submatch-lol-team-stats submatch-lol-team-kda"><i class="icon-lol_kda" title="Team-K/D/A"></i><span>12/30/11</span></div>
+			<div class="submatch-lol-team-stats submatch-lol-team-networth"><i class="icon-lol_gold" title="Team-Vermögen"></i><span>32.2k</span></div>
+		</div>
+				
+	</div>
+
+	<div class="submatch-lol-base">
+				<div class="submatch-lol-base-side side-1 color-b">
+			<div class="txt-info">Bans + Objectives</div>
+			<div class="submatch-lol-bans">
+									<img src="https://cdn0.gamesports.net/heroes/110.jpg?1593137286" alt="Heimerdinger" title="Heimerdinger">
+									<img src="https://cdn0.gamesports.net/heroes/136.jpg?1593220095" alt="Nautilus" title="Nautilus">
+									<img src="https://cdn0.gamesports.net/heroes/576.jpg?1593220100" alt="Pyke" title="Pyke">
+									<img src="https://cdn0.gamesports.net/heroes/411.jpg?1593133687" alt="Bard" title="Bard">
+									<img src="https://cdn0.gamesports.net/heroes/419.jpg?1593133692" alt="Ekko" title="Ekko">
+				
+			</div>
+			<div class="submatch-lol-objectives">
+				<i class="icon-lol_tower" title="Türme zerstört"></i><span>7</span>
+				<i class="icon-lol_inhibitor" title="Inhibitoren zerstört"></i><span>1</span>
+				<i class="icon-lol_baron" title="Barons getötet"></i><span>0</span>
+				<i class="icon-lol_dragon" title="Drachen getötet"></i><span>3</span>
+				<i class="icon-lol_riftherald" title="Rift Heralds getötet"></i><span>1</span>
+			</div>
+		</div>
+				<div class="submatch-lol-base-side side-2 color-r">
+			<div class="txt-info">Bans + Objectives</div>
+			<div class="submatch-lol-bans">
+									<img src="https://cdn0.gamesports.net/heroes/559.jpg?1593306495" alt="Zoe" title="Zoe">
+									<img src="https://cdn0.gamesports.net/heroes/138.jpg?1593220096" alt="Nocturne" title="Nocturne">
+									<img src="https://cdn0.gamesports.net/heroes/525.jpg?1593133688" alt="Camille" title="Camille">
+									<img src="https://cdn0.gamesports.net/heroes/124.jpg?1593220085" alt="Lee Sin" title="Lee Sin">
+									<img src="https://cdn0.gamesports.net/heroes/96.jpg?1593133690" alt="Darius" title="Darius">
+				
+			</div>
+			<div class="submatch-lol-objectives">
+				<i class="icon-lol_tower" title="Türme zerstört"></i><span>2</span>
+				<i class="icon-lol_inhibitor" title="Inhibitoren zerstört"></i><span>0</span>
+				<i class="icon-lol_baron" title="Barons getötet"></i><span>0</span>
+				<i class="icon-lol_dragon" title="Drachen getötet"></i><span>0</span>
+				<i class="icon-lol_riftherald" title="Rift Heralds getötet"></i><span>1</span>
+			</div>
+		</div>
+		
+	</div>
+
+	<div class="submatch-lol-thead">
+					<div class="submatch-lol-thead-side side-1 color-b">
+				<div class="submatch-lol-player-core">
+					<i class="submatch-lol-player-perks icon-lol_champion" title="Champion-Details"></i>
+				</div>
+				<div class="submatch-lol-player-more">
+					<i class="submatch-lol-player-items icon-lol_item" title="Items"></i>
+					<i class="submatch-lol-player-kda icon-lol_kda" title="Spieler-K/D/A"></i>
+					<i class="submatch-lol-player-minions icon-lol_minions" title="Minions getötet"></i>
+					<i class="submatch-lol-player-networth icon-lol_gold" title="Spieler-Vermögen"></i>
+				</div>
+			</div>
+					<div class="submatch-lol-thead-side side-2 color-r">
+				<div class="submatch-lol-player-core">
+					<i class="submatch-lol-player-perks icon-lol_champion" title="Champion-Details"></i>
+				</div>
+				<div class="submatch-lol-player-more">
+					<i class="submatch-lol-player-items icon-lol_item" title="Items"></i>
+					<i class="submatch-lol-player-kda icon-lol_kda" title="Spieler-K/D/A"></i>
+					<i class="submatch-lol-player-minions icon-lol_minions" title="Minions getötet"></i>
+					<i class="submatch-lol-player-networth icon-lol_gold" title="Spieler-Vermögen"></i>
+				</div>
+			</div>
+		
+	</div>
+
+	<div class="submatch-lol-main">
+									<div class="submatch-lol-player side-1 row-1 color-b">
+					<div class="submatch-lol-player-core">
+						<div class="submatch-lol-player-toggle" data-row="1"><i class="icon-toggle"></i></div>
+						<div class="submatch-lol-player-perks">
+							<img src="https://cdn0.gamesports.net/games_perks/137.png?1581521453" alt="Aftershock" title="Aftershock">
+							<img src="https://cdn0.gamesports.net/games_perkstyles/5.png?1583487542" alt="Inspiration" title="Inspiration">
+						</div>
+						<div class="submatch-lol-player-spells">
+															<img src="https://cdn0.gamesports.net/games_spells/41.jpg?1593133682" alt="Teleport" title="Teleport">
+															<img src="https://cdn0.gamesports.net/games_spells/14.jpg?1593133682" alt="Flash" title="Flash">
+							
+						</div>
+						<div class="submatch-lol-player-champion">
+							<img src="https://cdn0.gamesports.net/heroes/130.jpg?1593220090" alt="Maokai" title="Maokai" class="img-player-hero">
+							<span class="player-hero-level">14</span>
+						</div>
+						<div class="submatch-lol-player-name">UnderNexus</div>
+					</div>
+					<div class="submatch-lol-player-more-container"><div class="submatch-lol-player-more">
+						<div class="submatch-lol-player-networth">8k</div>
+						<div class="submatch-lol-player-minions">150</div>
+						<div class="submatch-lol-player-kda">3/2/9</div>
+						<div class="submatch-lol-player-items">
+															<img src="https://cdn0.gamesports.net/games_items/125.jpg?1593137299" alt="Corrupting Potion" title="Corrupting Potion">
+															<img src="https://cdn0.gamesports.net/games_items/299.jpg?1593223703" alt="Thornmail" title="Thornmail">
+															<img src="https://cdn0.gamesports.net/games_items/281.jpg?1593223702" alt="Sunfire Cape" title="Sunfire Cape">
+															<img src="https://cdn0.gamesports.net/games_items/68.jpg?1593133701" alt="Doran's Ring" title="Doran's Ring">
+															<img src="https://cdn1-v3.gamesports.net/img/themes/general/item_default.jpg">
+															<img src="https://cdn0.gamesports.net/games_items/257.jpg?1593220112" alt="Ninja Tabi" title="Ninja Tabi">
+															<img src="https://cdn0.gamesports.net/games_items/506.jpg?1593310093" alt="Warding Totem (Trinket)" title="Warding Totem (Trinket)">
+							
+						</div>
+					</div></div>
+				</div>
+							<div class="submatch-lol-player side-1 row-2 color-b">
+					<div class="submatch-lol-player-core">
+						<div class="submatch-lol-player-toggle" data-row="2"><i class="icon-toggle"></i></div>
+						<div class="submatch-lol-player-perks">
+							<img src="https://cdn0.gamesports.net/games_perks/188.png?1582596483" alt="Phase Rush" title="Phase Rush">
+							<img src="https://cdn0.gamesports.net/games_perkstyles/8.png?1583487543" alt="Precision" title="Precision">
+						</div>
+						<div class="submatch-lol-player-spells">
+															<img src="https://cdn0.gamesports.net/games_spells/14.jpg?1593133682" alt="Flash" title="Flash">
+															<img src="https://cdn0.gamesports.net/games_spells/32.jpg?1593133682" alt="Smite" title="Smite">
+							
+						</div>
+						<div class="submatch-lol-player-champion">
+							<img src="https://cdn0.gamesports.net/heroes/185.jpg?1593137286" alt="Graves" title="Graves" class="img-player-hero">
+							<span class="player-hero-level">13</span>
+						</div>
+						<div class="submatch-lol-player-name">iTz Wassereis</div>
+					</div>
+					<div class="submatch-lol-player-more-container"><div class="submatch-lol-player-more">
+						<div class="submatch-lol-player-networth">11.8k</div>
+						<div class="submatch-lol-player-minions">129</div>
+						<div class="submatch-lol-player-kda">15/1/7</div>
+						<div class="submatch-lol-player-items">
+															<img src="https://cdn0.gamesports.net/games_items/92.jpg?1593137295" alt="Enchantment: Warrior" title="Enchantment: Warrior">
+															<img src="https://cdn0.gamesports.net/games_items/287.jpg?1593223702" alt="Black Cleaver" title="Black Cleaver">
+															<img src="https://cdn0.gamesports.net/games_items/464.jpg?1593310086" alt="Umbral Glaive" title="Umbral Glaive">
+															<img src="https://cdn1-v3.gamesports.net/img/themes/general/item_default.jpg">
+															<img src="https://cdn0.gamesports.net/games_items/365.jpg?1593306496" alt="Mercury's Treads" title="Mercury's Treads">
+															<img src="https://cdn0.gamesports.net/games_items/392.jpg?1593306501" alt="Caulfield's Warhammer" title="Caulfield's Warhammer">
+															<img src="https://cdn0.gamesports.net/games_items/521.jpg?1593310095" alt="Oracle Lens" title="Oracle Lens">
+							
+						</div>
+					</div></div>
+				</div>
+							<div class="submatch-lol-player side-1 row-3 color-b">
+					<div class="submatch-lol-player-core">
+						<div class="submatch-lol-player-toggle" data-row="3"><i class="icon-toggle"></i></div>
+						<div class="submatch-lol-player-perks">
+							<img src="https://cdn0.gamesports.net/games_perks/188.png?1582596483" alt="Phase Rush" title="Phase Rush">
+							<img src="https://cdn0.gamesports.net/games_perkstyles/2.png?1583487542" alt="Domination" title="Domination">
+						</div>
+						<div class="submatch-lol-player-spells">
+															<img src="https://cdn0.gamesports.net/games_spells/5.jpg?1593133682" alt="Cleanse" title="Cleanse">
+															<img src="https://cdn0.gamesports.net/games_spells/14.jpg?1593133682" alt="Flash" title="Flash">
+							
+						</div>
+						<div class="submatch-lol-player-champion">
+							<img src="https://cdn0.gamesports.net/heroes/174.jpg?1593306488" alt="Viktor" title="Viktor" class="img-player-hero">
+							<span class="player-hero-level">14</span>
+						</div>
+						<div class="submatch-lol-player-name">Hit e and gg</div>
+					</div>
+					<div class="submatch-lol-player-more-container"><div class="submatch-lol-player-more">
+						<div class="submatch-lol-player-networth">8.5k</div>
+						<div class="submatch-lol-player-minions">167</div>
+						<div class="submatch-lol-player-kda">6/2/8</div>
+						<div class="submatch-lol-player-items">
+															<img src="https://cdn0.gamesports.net/games_items/365.jpg?1593306496" alt="Mercury's Treads" title="Mercury's Treads">
+															<img src="https://cdn0.gamesports.net/games_items/491.jpg?1593310090" alt="Perfect Hex Core" title="Perfect Hex Core">
+															<img src="https://cdn0.gamesports.net/games_items/17.jpg?1593133696" alt="Blasting Wand" title="Blasting Wand">
+															<img src="https://cdn0.gamesports.net/games_items/68.jpg?1593133701" alt="Doran's Ring" title="Doran's Ring">
+															<img src="https://cdn0.gamesports.net/games_items/668.jpg?1593396487" alt="Lost Chapter" title="Lost Chapter">
+															<img src="https://cdn0.gamesports.net/games_items/32.jpg?1593133698" alt="Null-Magic Mantle" title="Null-Magic Mantle">
+															<img src="https://cdn0.gamesports.net/games_items/518.jpg?1593310094" alt="Farsight Alteration" title="Farsight Alteration">
+							
+						</div>
+					</div></div>
+				</div>
+							<div class="submatch-lol-player side-1 row-4 color-b">
+					<div class="submatch-lol-player-core">
+						<div class="submatch-lol-player-toggle" data-row="4"><i class="icon-toggle"></i></div>
+						<div class="submatch-lol-player-perks">
+							<img src="https://cdn0.gamesports.net/games_perks/89.png?1581521403" alt="Press the Attack" title="Press the Attack">
+							<img src="https://cdn0.gamesports.net/games_perkstyles/5.png?1583487542" alt="Inspiration" title="Inspiration">
+						</div>
+						<div class="submatch-lol-player-spells">
+															<img src="https://cdn0.gamesports.net/games_spells/14.jpg?1593133682" alt="Flash" title="Flash">
+															<img src="https://cdn0.gamesports.net/games_spells/11.jpg?1593133682" alt="Exhaust" title="Exhaust">
+							
+						</div>
+						<div class="submatch-lol-player-champion">
+							<img src="https://cdn0.gamesports.net/heroes/565.jpg?1593137290" alt="Kai'Sa" title="Kai'Sa" class="img-player-hero">
+							<span class="player-hero-level">11</span>
+						</div>
+						<div class="submatch-lol-player-name">LiebesWölkchen</div>
+					</div>
+					<div class="submatch-lol-player-more-container"><div class="submatch-lol-player-more">
+						<div class="submatch-lol-player-networth">8.7k</div>
+						<div class="submatch-lol-player-minions">156</div>
+						<div class="submatch-lol-player-kda">2/6/8</div>
+						<div class="submatch-lol-player-items">
+															<img src="https://cdn0.gamesports.net/games_items/182.jpg?1593220100" alt="Manamune" title="Manamune">
+															<img src="https://cdn0.gamesports.net/games_items/389.jpg?1593306501" alt="Guinsoo's Rageblade" title="Guinsoo's Rageblade">
+															<img src="https://cdn0.gamesports.net/games_items/344.jpg?1593223710" alt="Stinger" title="Stinger">
+															<img src="https://cdn0.gamesports.net/games_items/80.jpg?1593133702" alt="Cull" title="Cull">
+															<img src="https://cdn0.gamesports.net/games_items/65.jpg?1593133701" alt="Doran's Blade" title="Doran's Blade">
+															<img src="https://cdn0.gamesports.net/games_items/185.jpg?1593220101" alt="Berserker's Greaves" title="Berserker's Greaves">
+															<img src="https://cdn0.gamesports.net/games_items/518.jpg?1593310094" alt="Farsight Alteration" title="Farsight Alteration">
+							
+						</div>
+					</div></div>
+				</div>
+							<div class="submatch-lol-player side-1 row-5 color-b">
+					<div class="submatch-lol-player-core">
+						<div class="submatch-lol-player-toggle" data-row="5"><i class="icon-toggle"></i></div>
+						<div class="submatch-lol-player-perks">
+							<img src="https://cdn0.gamesports.net/games_perks/56.png?1581521394" alt="Summon Aery" title="Summon Aery">
+							<img src="https://cdn0.gamesports.net/games_perkstyles/8.png?1583487543" alt="Precision" title="Precision">
+						</div>
+						<div class="submatch-lol-player-spells">
+															<img src="https://cdn0.gamesports.net/games_spells/8.jpg?1593133682" alt="Ignite" title="Ignite">
+															<img src="https://cdn0.gamesports.net/games_spells/44.jpg?1593133682" alt="Heal" title="Heal">
+							
+						</div>
+						<div class="submatch-lol-player-champion">
+							<img src="https://cdn0.gamesports.net/heroes/594.jpg?1593306491" alt="Yuumi" title="Yuumi" class="img-player-hero">
+							<span class="player-hero-level">11</span>
+						</div>
+						<div class="submatch-lol-player-name">iTz Gurje</div>
+					</div>
+					<div class="submatch-lol-player-more-container"><div class="submatch-lol-player-more">
+						<div class="submatch-lol-player-networth">7.1k</div>
+						<div class="submatch-lol-player-minions">11</div>
+						<div class="submatch-lol-player-kda">4/1/14</div>
+						<div class="submatch-lol-player-items">
+															<img src="https://cdn0.gamesports.net/games_items/683.jpg?1593396489" alt="Shard of True Ice" title="Shard of True Ice">
+															<img src="https://cdn0.gamesports.net/games_items/578.jpg?1593392890" alt="Ardent Censer" title="Ardent Censer">
+															<img src="https://cdn0.gamesports.net/games_items/458.jpg?1593310085" alt="Athene's Unholy Grail" title="Athene's Unholy Grail">
+															<img src="https://cdn0.gamesports.net/games_items/665.jpg?1593396487" alt="Crystalline Bracer" title="Crystalline Bracer">
+															<img src="https://cdn0.gamesports.net/games_items/140.jpg?1593137301" alt="Control Ward" title="Control Ward">
+															<img src="https://cdn0.gamesports.net/games_items/5.jpg?1593133695" alt="Faerie Charm" title="Faerie Charm">
+															<img src="https://cdn0.gamesports.net/games_items/521.jpg?1593310095" alt="Oracle Lens" title="Oracle Lens">
+							
+						</div>
+					</div></div>
+				</div>
+			
+									<div class="submatch-lol-player side-2 row-1 color-r">
+					<div class="submatch-lol-player-core">
+						<div class="submatch-lol-player-toggle" data-row="1"><i class="icon-toggle"></i></div>
+						<div class="submatch-lol-player-perks">
+							<img src="https://cdn0.gamesports.net/games_perks/74.png?1581521399" alt="Conqueror" title="Conqueror">
+							<img src="https://cdn0.gamesports.net/games_perkstyles/11.png?1583487543" alt="Resolve" title="Resolve">
+						</div>
+						<div class="submatch-lol-player-spells">
+															<img src="https://cdn0.gamesports.net/games_spells/14.jpg?1593133682" alt="Flash" title="Flash">
+															<img src="https://cdn0.gamesports.net/games_spells/8.jpg?1593133682" alt="Ignite" title="Ignite">
+							
+						</div>
+						<div class="submatch-lol-player-champion">
+							<img src="https://cdn0.gamesports.net/heroes/144.jpg?1593223686" alt="Renekton" title="Renekton" class="img-player-hero">
+							<span class="player-hero-level">12</span>
+						</div>
+						<div class="submatch-lol-player-name">Criiispy</div>
+					</div>
+					<div class="submatch-lol-player-more-container"><div class="submatch-lol-player-more">
+						<div class="submatch-lol-player-networth">6.2k</div>
+						<div class="submatch-lol-player-minions">129</div>
+						<div class="submatch-lol-player-kda">2/7/0</div>
+						<div class="submatch-lol-player-items">
+															<img src="https://cdn0.gamesports.net/games_items/365.jpg?1593306496" alt="Mercury's Treads" title="Mercury's Treads">
+															<img src="https://cdn0.gamesports.net/games_items/122.jpg?1593137299" alt="Refillable Potion" title="Refillable Potion">
+															<img src="https://cdn0.gamesports.net/games_items/437.jpg?1593306505" alt="Blade of the Ruined King" title="Blade of the Ruined King">
+															<img src="https://cdn0.gamesports.net/games_items/65.jpg?1593133701" alt="Doran's Blade" title="Doran's Blade">
+															<img src="https://cdn0.gamesports.net/games_items/8.jpg?1593133696" alt="Rejuvenation Bead" title="Rejuvenation Bead">
+															<img src="https://cdn0.gamesports.net/games_items/386.jpg?1593306501" alt="Executioner's Calling" title="Executioner's Calling">
+															<img src="https://cdn0.gamesports.net/games_items/506.jpg?1593310093" alt="Warding Totem (Trinket)" title="Warding Totem (Trinket)">
+							
+						</div>
+					</div></div>
+				</div>
+							<div class="submatch-lol-player side-2 row-2 color-r">
+					<div class="submatch-lol-player-core">
+						<div class="submatch-lol-player-toggle" data-row="2"><i class="icon-toggle"></i></div>
+						<div class="submatch-lol-player-perks">
+							<img src="https://cdn0.gamesports.net/games_perks/137.png?1581521453" alt="Aftershock" title="Aftershock">
+							<img src="https://cdn0.gamesports.net/games_perkstyles/5.png?1583487542" alt="Inspiration" title="Inspiration">
+						</div>
+						<div class="submatch-lol-player-spells">
+															<img src="https://cdn0.gamesports.net/games_spells/32.jpg?1593133682" alt="Smite" title="Smite">
+															<img src="https://cdn0.gamesports.net/games_spells/14.jpg?1593133682" alt="Flash" title="Flash">
+							
+						</div>
+						<div class="submatch-lol-player-champion">
+							<img src="https://cdn0.gamesports.net/heroes/149.jpg?1593223689" alt="Sejuani" title="Sejuani" class="img-player-hero">
+							<span class="player-hero-level">12</span>
+						</div>
+						<div class="submatch-lol-player-name">Muxell</div>
+					</div>
+					<div class="submatch-lol-player-more-container"><div class="submatch-lol-player-more">
+						<div class="submatch-lol-player-networth">8k</div>
+						<div class="submatch-lol-player-minions">129</div>
+						<div class="submatch-lol-player-kda">3/4/3</div>
+						<div class="submatch-lol-player-items">
+															<img src="https://cdn0.gamesports.net/games_items/86.jpg?1593133704" alt="Enchantment: Cinderhulk" title="Enchantment: Cinderhulk">
+															<img src="https://cdn0.gamesports.net/games_items/122.jpg?1593137299" alt="Refillable Potion" title="Refillable Potion">
+															<img src="https://cdn0.gamesports.net/games_items/257.jpg?1593220112" alt="Ninja Tabi" title="Ninja Tabi">
+															<img src="https://cdn0.gamesports.net/games_items/653.jpg?1593396486" alt="Dead Man's Plate" title="Dead Man's Plate">
+															<img src="https://cdn0.gamesports.net/games_items/665.jpg?1593396487" alt="Crystalline Bracer" title="Crystalline Bracer">
+															<img src="https://cdn0.gamesports.net/games_items/23.jpg?1593133697" alt="Ruby Crystal" title="Ruby Crystal">
+															<img src="https://cdn0.gamesports.net/games_items/521.jpg?1593310095" alt="Oracle Lens" title="Oracle Lens">
+							
+						</div>
+					</div></div>
+				</div>
+							<div class="submatch-lol-player side-2 row-3 color-r">
+					<div class="submatch-lol-player-core">
+						<div class="submatch-lol-player-toggle" data-row="3"><i class="icon-toggle"></i></div>
+						<div class="submatch-lol-player-perks">
+							<img src="https://cdn0.gamesports.net/games_perks/26.png?1581521388" alt="Electrocute" title="Electrocute">
+							<img src="https://cdn0.gamesports.net/games_perkstyles/14.png?1583487544" alt="Sorcery" title="Sorcery">
+						</div>
+						<div class="submatch-lol-player-spells">
+															<img src="https://cdn0.gamesports.net/games_spells/14.jpg?1593133682" alt="Flash" title="Flash">
+															<img src="https://cdn0.gamesports.net/games_spells/41.jpg?1593133682" alt="Teleport" title="Teleport">
+							
+						</div>
+						<div class="submatch-lol-player-champion">
+							<img src="https://cdn0.gamesports.net/heroes/160.jpg?1593223697" alt="Syndra" title="Syndra" class="img-player-hero">
+							<span class="player-hero-level">12</span>
+						</div>
+						<div class="submatch-lol-player-name">AraqZ</div>
+					</div>
+					<div class="submatch-lol-player-more-container"><div class="submatch-lol-player-more">
+						<div class="submatch-lol-player-networth">6.5k</div>
+						<div class="submatch-lol-player-minions">159</div>
+						<div class="submatch-lol-player-kda">2/6/2</div>
+						<div class="submatch-lol-player-items">
+															<img src="https://cdn0.gamesports.net/games_items/68.jpg?1593133701" alt="Doran's Ring" title="Doran's Ring">
+															<img src="https://cdn0.gamesports.net/games_items/17.jpg?1593133696" alt="Blasting Wand" title="Blasting Wand">
+															<img src="https://cdn0.gamesports.net/games_items/23.jpg?1593133697" alt="Ruby Crystal" title="Ruby Crystal">
+															<img src="https://cdn0.gamesports.net/games_items/503.jpg?1593310091" alt="Luden's Echo" title="Luden's Echo">
+															<img src="https://cdn0.gamesports.net/games_items/56.jpg?1593133701" alt="Amplifying Tome" title="Amplifying Tome">
+															<img src="https://cdn0.gamesports.net/games_items/200.jpg?1593220104" alt="Sorcerer's Shoes" title="Sorcerer's Shoes">
+															<img src="https://cdn0.gamesports.net/games_items/518.jpg?1593310094" alt="Farsight Alteration" title="Farsight Alteration">
+							
+						</div>
+					</div></div>
+				</div>
+							<div class="submatch-lol-player side-2 row-4 color-r">
+					<div class="submatch-lol-player-core">
+						<div class="submatch-lol-player-toggle" data-row="4"><i class="icon-toggle"></i></div>
+						<div class="submatch-lol-player-perks">
+							<img src="https://cdn0.gamesports.net/games_perks/227.png?1582596491" alt="Guardian" title="Guardian">
+							<img src="https://cdn0.gamesports.net/games_perkstyles/14.png?1583487544" alt="Sorcery" title="Sorcery">
+						</div>
+						<div class="submatch-lol-player-spells">
+															<img src="https://cdn0.gamesports.net/games_spells/14.jpg?1593133682" alt="Flash" title="Flash">
+															<img src="https://cdn0.gamesports.net/games_spells/41.jpg?1593133682" alt="Teleport" title="Teleport">
+							
+						</div>
+						<div class="submatch-lol-player-champion">
+							<img src="https://cdn0.gamesports.net/heroes/101.jpg?1593133693" alt="Ezreal" title="Ezreal" class="img-player-hero">
+							<span class="player-hero-level">11</span>
+						</div>
+						<div class="submatch-lol-player-name">Ayzee</div>
+					</div>
+					<div class="submatch-lol-player-more-container"><div class="submatch-lol-player-more">
+						<div class="submatch-lol-player-networth">7.7k</div>
+						<div class="submatch-lol-player-minions">149</div>
+						<div class="submatch-lol-player-kda">5/6/1</div>
+						<div class="submatch-lol-player-items">
+															<img src="https://cdn0.gamesports.net/games_items/308.jpg?1593223705" alt="Trinity Force" title="Trinity Force">
+															<img src="https://cdn0.gamesports.net/games_items/182.jpg?1593220100" alt="Manamune" title="Manamune">
+															<img src="https://cdn0.gamesports.net/games_items/449.jpg?1593306509" alt="Ionian Boots of Lucidity" title="Ionian Boots of Lucidity">
+															<img src="https://cdn0.gamesports.net/games_items/386.jpg?1593306501" alt="Executioner's Calling" title="Executioner's Calling">
+															<img src="https://cdn1-v3.gamesports.net/img/themes/general/item_default.jpg">
+															<img src="https://cdn1-v3.gamesports.net/img/themes/general/item_default.jpg">
+															<img src="https://cdn0.gamesports.net/games_items/506.jpg?1593310093" alt="Warding Totem (Trinket)" title="Warding Totem (Trinket)">
+							
+						</div>
+					</div></div>
+				</div>
+							<div class="submatch-lol-player side-2 row-5 color-r">
+					<div class="submatch-lol-player-core">
+						<div class="submatch-lol-player-toggle" data-row="5"><i class="icon-toggle"></i></div>
+						<div class="submatch-lol-player-perks">
+							<img src="https://cdn0.gamesports.net/games_perks/188.png?1582596483" alt="Phase Rush" title="Phase Rush">
+							<img src="https://cdn0.gamesports.net/games_perkstyles/5.png?1583487542" alt="Inspiration" title="Inspiration">
+						</div>
+						<div class="submatch-lol-player-spells">
+															<img src="https://cdn0.gamesports.net/games_spells/11.jpg?1593133682" alt="Exhaust" title="Exhaust">
+															<img src="https://cdn0.gamesports.net/games_spells/14.jpg?1593133682" alt="Flash" title="Flash">
+							
+						</div>
+						<div class="submatch-lol-player-champion">
+							<img src="https://cdn0.gamesports.net/heroes/611.jpg?1593223690" alt="Sett" title="Sett" class="img-player-hero">
+							<span class="player-hero-level">10</span>
+						</div>
+						<div class="submatch-lol-player-name">EloHunter</div>
+					</div>
+					<div class="submatch-lol-player-more-container"><div class="submatch-lol-player-more">
+						<div class="submatch-lol-player-networth">3.6k</div>
+						<div class="submatch-lol-player-minions">33</div>
+						<div class="submatch-lol-player-kda">0/7/5</div>
+						<div class="submatch-lol-player-items">
+															<img src="https://cdn0.gamesports.net/games_items/689.jpg?1593396490" alt="Runesteel Spaulders" title="Runesteel Spaulders">
+															<img src="https://cdn0.gamesports.net/games_items/257.jpg?1593220112" alt="Ninja Tabi" title="Ninja Tabi">
+															<img src="https://cdn0.gamesports.net/games_items/29.jpg?1593133698" alt="Chain Vest" title="Chain Vest">
+															<img src="https://cdn0.gamesports.net/games_items/11.jpg?1593133696" alt="Giant's Belt" title="Giant's Belt">
+															<img src="https://cdn0.gamesports.net/games_items/140.jpg?1593137301" alt="Control Ward" title="Control Ward">
+															<img src="https://cdn1-v3.gamesports.net/img/themes/general/item_default.jpg">
+															<img src="https://cdn0.gamesports.net/games_items/521.jpg?1593310095" alt="Oracle Lens" title="Oracle Lens">
+							
+						</div>
+					</div></div>
+				</div>
+			
+		
+	</div>
+</div>
+	</div>
+</section>
+<section class="">
+	<div class="section-content">
+		<div class="content-match-submatch-lol">
+	<div class="submatch-lol-head">
+				<div class="submatch-lol-head-side side-1 color-r">
+			<div class="submatch-lol-team-name">LES B-W</div>
+			<div class="submatch-lol-team-result win">Sieg</div>
+			<div class="submatch-lol-team-stats submatch-lol-team-kda"><i class="icon-lol_kda" title="Team-K/D/A"></i><span>29/14/43</span></div>
+			<div class="submatch-lol-team-stats submatch-lol-team-networth"><i class="icon-lol_gold" title="Team-Vermögen"></i><span>46k</span></div>
+		</div>
+		<div class="submatch-lol-head-icons"><i class="icon-lol_gold" title="Team-Vermögen"></i><i class="icon-lol_kda" title="Team-K/D/A"></i></div>				<div class="submatch-lol-head-side side-2 color-b">
+			<div class="submatch-lol-team-name">FVS</div>
+			<div class="submatch-lol-team-resultloss">Niederlage</div>
+			<div class="submatch-lol-team-stats submatch-lol-team-kda"><i class="icon-lol_kda" title="Team-K/D/A"></i><span>14/29/14</span></div>
+			<div class="submatch-lol-team-stats submatch-lol-team-networth"><i class="icon-lol_gold" title="Team-Vermögen"></i><span>37.2k</span></div>
+		</div>
+				
+	</div>
+
+	<div class="submatch-lol-base">
+				<div class="submatch-lol-base-side side-1 color-r">
+			<div class="txt-info">Bans + Objectives</div>
+			<div class="submatch-lol-bans">
+									<img src="https://cdn0.gamesports.net/heroes/110.jpg?1593137286" alt="Heimerdinger" title="Heimerdinger">
+									<img src="https://cdn0.gamesports.net/heroes/136.jpg?1593220095" alt="Nautilus" title="Nautilus">
+									<img src="https://cdn0.gamesports.net/heroes/594.jpg?1593306491" alt="Yuumi" title="Yuumi">
+									<img src="https://cdn0.gamesports.net/heroes/101.jpg?1593133693" alt="Ezreal" title="Ezreal">
+									<img src="https://cdn0.gamesports.net/heroes/92.jpg?1593133688" alt="Caitlyn" title="Caitlyn">
+				
+			</div>
+			<div class="submatch-lol-objectives">
+				<i class="icon-lol_tower" title="Türme zerstört"></i><span>8</span>
+				<i class="icon-lol_inhibitor" title="Inhibitoren zerstört"></i><span>1</span>
+				<i class="icon-lol_baron" title="Barons getötet"></i><span>1</span>
+				<i class="icon-lol_dragon" title="Drachen getötet"></i><span>3</span>
+				<i class="icon-lol_riftherald" title="Rift Heralds getötet"></i><span>2</span>
+			</div>
+		</div>
+				<div class="submatch-lol-base-side side-2 color-b">
+			<div class="txt-info">Bans + Objectives</div>
+			<div class="submatch-lol-bans">
+									<img src="https://cdn0.gamesports.net/heroes/559.jpg?1593306495" alt="Zoe" title="Zoe">
+									<img src="https://cdn0.gamesports.net/heroes/138.jpg?1593220096" alt="Nocturne" title="Nocturne">
+									<img src="https://cdn0.gamesports.net/heroes/525.jpg?1593133688" alt="Camille" title="Camille">
+									<img src="https://cdn0.gamesports.net/heroes/185.jpg?1593137286" alt="Graves" title="Graves">
+									<img src="https://cdn0.gamesports.net/heroes/90.jpg?1593133687" alt="Blitzcrank" title="Blitzcrank">
+				
+			</div>
+			<div class="submatch-lol-objectives">
+				<i class="icon-lol_tower" title="Türme zerstört"></i><span>1</span>
+				<i class="icon-lol_inhibitor" title="Inhibitoren zerstört"></i><span>0</span>
+				<i class="icon-lol_baron" title="Barons getötet"></i><span>0</span>
+				<i class="icon-lol_dragon" title="Drachen getötet"></i><span>0</span>
+				<i class="icon-lol_riftherald" title="Rift Heralds getötet"></i><span>0</span>
+			</div>
+		</div>
+		
+	</div>
+
+	<div class="submatch-lol-thead">
+					<div class="submatch-lol-thead-side side-1 color-r">
+				<div class="submatch-lol-player-core">
+					<i class="submatch-lol-player-perks icon-lol_champion" title="Champion-Details"></i>
+				</div>
+				<div class="submatch-lol-player-more">
+					<i class="submatch-lol-player-items icon-lol_item" title="Items"></i>
+					<i class="submatch-lol-player-kda icon-lol_kda" title="Spieler-K/D/A"></i>
+					<i class="submatch-lol-player-minions icon-lol_minions" title="Minions getötet"></i>
+					<i class="submatch-lol-player-networth icon-lol_gold" title="Spieler-Vermögen"></i>
+				</div>
+			</div>
+					<div class="submatch-lol-thead-side side-2 color-b">
+				<div class="submatch-lol-player-core">
+					<i class="submatch-lol-player-perks icon-lol_champion" title="Champion-Details"></i>
+				</div>
+				<div class="submatch-lol-player-more">
+					<i class="submatch-lol-player-items icon-lol_item" title="Items"></i>
+					<i class="submatch-lol-player-kda icon-lol_kda" title="Spieler-K/D/A"></i>
+					<i class="submatch-lol-player-minions icon-lol_minions" title="Minions getötet"></i>
+					<i class="submatch-lol-player-networth icon-lol_gold" title="Spieler-Vermögen"></i>
+				</div>
+			</div>
+		
+	</div>
+
+	<div class="submatch-lol-main">
+									<div class="submatch-lol-player side-1 row-1 color-r">
+					<div class="submatch-lol-player-core">
+						<div class="submatch-lol-player-toggle" data-row="1"><i class="icon-toggle"></i></div>
+						<div class="submatch-lol-player-perks">
+							<img src="https://cdn0.gamesports.net/games_perks/89.png?1581521403" alt="Press the Attack" title="Press the Attack">
+							<img src="https://cdn0.gamesports.net/games_perkstyles/2.png?1583487542" alt="Domination" title="Domination">
+						</div>
+						<div class="submatch-lol-player-spells">
+															<img src="https://cdn0.gamesports.net/games_spells/41.jpg?1593133682" alt="Teleport" title="Teleport">
+															<img src="https://cdn0.gamesports.net/games_spells/14.jpg?1593133682" alt="Flash" title="Flash">
+							
+						</div>
+						<div class="submatch-lol-player-champion">
+							<img src="https://cdn0.gamesports.net/heroes/585.jpg?1593220095" alt="Neeko" title="Neeko" class="img-player-hero">
+							<span class="player-hero-level">13</span>
+						</div>
+						<div class="submatch-lol-player-name">UnderNexus</div>
+					</div>
+					<div class="submatch-lol-player-more-container"><div class="submatch-lol-player-more">
+						<div class="submatch-lol-player-networth">7k</div>
+						<div class="submatch-lol-player-minions">145</div>
+						<div class="submatch-lol-player-kda">1/6/3</div>
+						<div class="submatch-lol-player-items">
+															<img src="https://cdn0.gamesports.net/games_items/437.jpg?1593306505" alt="Blade of the Ruined King" title="Blade of the Ruined King">
+															<img src="https://cdn0.gamesports.net/games_items/53.jpg?1593133700" alt="Recurve Bow" title="Recurve Bow">
+															<img src="https://cdn0.gamesports.net/games_items/38.jpg?1593133698" alt="Pickaxe" title="Pickaxe">
+															<img src="https://cdn0.gamesports.net/games_items/65.jpg?1593133701" alt="Doran's Blade" title="Doran's Blade">
+															<img src="https://cdn0.gamesports.net/games_items/50.jpg?1593133700" alt="Dagger" title="Dagger">
+															<img src="https://cdn0.gamesports.net/games_items/185.jpg?1593220101" alt="Berserker's Greaves" title="Berserker's Greaves">
+															<img src="https://cdn0.gamesports.net/games_items/506.jpg?1593310093" alt="Warding Totem (Trinket)" title="Warding Totem (Trinket)">
+							
+						</div>
+					</div></div>
+				</div>
+							<div class="submatch-lol-player side-1 row-2 color-r">
+					<div class="submatch-lol-player-core">
+						<div class="submatch-lol-player-toggle" data-row="2"><i class="icon-toggle"></i></div>
+						<div class="submatch-lol-player-perks">
+							<img src="https://cdn0.gamesports.net/games_perks/137.png?1581521453" alt="Aftershock" title="Aftershock">
+							<img src="https://cdn0.gamesports.net/games_perkstyles/2.png?1583487542" alt="Domination" title="Domination">
+						</div>
+						<div class="submatch-lol-player-spells">
+															<img src="https://cdn0.gamesports.net/games_spells/14.jpg?1593133682" alt="Flash" title="Flash">
+															<img src="https://cdn0.gamesports.net/games_spells/32.jpg?1593133682" alt="Smite" title="Smite">
+							
+						</div>
+						<div class="submatch-lol-player-champion">
+							<img src="https://cdn0.gamesports.net/heroes/315.jpg?1593306492" alt="Zac" title="Zac" class="img-player-hero">
+							<span class="player-hero-level">14</span>
+						</div>
+						<div class="submatch-lol-player-name">iTz Wassereis</div>
+					</div>
+					<div class="submatch-lol-player-more-container"><div class="submatch-lol-player-more">
+						<div class="submatch-lol-player-networth">9.9k</div>
+						<div class="submatch-lol-player-minions">122</div>
+						<div class="submatch-lol-player-kda">6/1/14</div>
+						<div class="submatch-lol-player-items">
+															<img src="https://cdn0.gamesports.net/games_items/95.jpg?1593137295" alt="Enchantment: Cinderhulk" title="Enchantment: Cinderhulk">
+															<img src="https://cdn0.gamesports.net/games_items/29.jpg?1593133698" alt="Chain Vest" title="Chain Vest">
+															<img src="https://cdn0.gamesports.net/games_items/257.jpg?1593220112" alt="Ninja Tabi" title="Ninja Tabi">
+															<img src="https://cdn0.gamesports.net/games_items/140.jpg?1593137301" alt="Control Ward" title="Control Ward">
+															<img src="https://cdn0.gamesports.net/games_items/431.jpg?1593306505" alt="Liandry's Torment" title="Liandry's Torment">
+															<img src="https://cdn0.gamesports.net/games_items/71.jpg?1593133702" alt="Negatron Cloak" title="Negatron Cloak">
+															<img src="https://cdn0.gamesports.net/games_items/521.jpg?1593310095" alt="Oracle Lens" title="Oracle Lens">
+							
+						</div>
+					</div></div>
+				</div>
+							<div class="submatch-lol-player side-1 row-3 color-r">
+					<div class="submatch-lol-player-core">
+						<div class="submatch-lol-player-toggle" data-row="3"><i class="icon-toggle"></i></div>
+						<div class="submatch-lol-player-perks">
+							<img src="https://cdn0.gamesports.net/games_perks/26.png?1581521388" alt="Electrocute" title="Electrocute">
+							<img src="https://cdn0.gamesports.net/games_perkstyles/14.png?1583487544" alt="Sorcery" title="Sorcery">
+						</div>
+						<div class="submatch-lol-player-spells">
+															<img src="https://cdn0.gamesports.net/games_spells/17.jpg?1593133682" alt="Ghost" title="Ghost">
+															<img src="https://cdn0.gamesports.net/games_spells/14.jpg?1593133682" alt="Flash" title="Flash">
+							
+						</div>
+						<div class="submatch-lol-player-champion">
+							<img src="https://cdn0.gamesports.net/heroes/160.jpg?1593223697" alt="Syndra" title="Syndra" class="img-player-hero">
+							<span class="player-hero-level">15</span>
+						</div>
+						<div class="submatch-lol-player-name">Hit e and gg</div>
+					</div>
+					<div class="submatch-lol-player-more-container"><div class="submatch-lol-player-more">
+						<div class="submatch-lol-player-networth">10.6k</div>
+						<div class="submatch-lol-player-minions">171</div>
+						<div class="submatch-lol-player-kda">11/1/5</div>
+						<div class="submatch-lol-player-items">
+															<img src="https://cdn0.gamesports.net/games_items/329.jpg?1593223708" alt="Rabadon's Deathcap" title="Rabadon's Deathcap">
+															<img src="https://cdn0.gamesports.net/games_items/56.jpg?1593133701" alt="Amplifying Tome" title="Amplifying Tome">
+															<img src="https://cdn1-v3.gamesports.net/img/themes/general/item_default.jpg">
+															<img src="https://cdn0.gamesports.net/games_items/728.jpg?1593479285" alt="Oblivion Orb" title="Oblivion Orb">
+															<img src="https://cdn0.gamesports.net/games_items/200.jpg?1593220104" alt="Sorcerer's Shoes" title="Sorcerer's Shoes">
+															<img src="https://cdn0.gamesports.net/games_items/503.jpg?1593310091" alt="Luden's Echo" title="Luden's Echo">
+															<img src="https://cdn0.gamesports.net/games_items/518.jpg?1593310094" alt="Farsight Alteration" title="Farsight Alteration">
+							
+						</div>
+					</div></div>
+				</div>
+							<div class="submatch-lol-player side-1 row-4 color-r">
+					<div class="submatch-lol-player-core">
+						<div class="submatch-lol-player-toggle" data-row="4"><i class="icon-toggle"></i></div>
+						<div class="submatch-lol-player-perks">
+							<img src="https://cdn0.gamesports.net/games_perks/170.png?1581521458" alt="Fleet Footwork" title="Fleet Footwork">
+							<img src="https://cdn0.gamesports.net/games_perkstyles/14.png?1583487544" alt="Sorcery" title="Sorcery">
+						</div>
+						<div class="submatch-lol-player-spells">
+															<img src="https://cdn0.gamesports.net/games_spells/14.jpg?1593133682" alt="Flash" title="Flash">
+															<img src="https://cdn0.gamesports.net/games_spells/44.jpg?1593133682" alt="Heal" title="Heal">
+							
+						</div>
+						<div class="submatch-lol-player-champion">
+							<img src="https://cdn0.gamesports.net/heroes/449.jpg?1593137289" alt="Jhin" title="Jhin" class="img-player-hero">
+							<span class="player-hero-level">13</span>
+						</div>
+						<div class="submatch-lol-player-name">LiebesWölkchen</div>
+					</div>
+					<div class="submatch-lol-player-more-container"><div class="submatch-lol-player-more">
+						<div class="submatch-lol-player-networth">11.4k</div>
+						<div class="submatch-lol-player-minions">183</div>
+						<div class="submatch-lol-player-kda">10/3/6</div>
+						<div class="submatch-lol-player-items">
+															<img src="https://cdn0.gamesports.net/games_items/50.jpg?1593133700" alt="Dagger" title="Dagger">
+															<img src="https://cdn0.gamesports.net/games_items/581.jpg?1593392890" alt="Essence Reaver" title="Essence Reaver">
+															<img src="https://cdn0.gamesports.net/games_items/65.jpg?1593133701" alt="Doran's Blade" title="Doran's Blade">
+															<img src="https://cdn0.gamesports.net/games_items/323.jpg?1593223707" alt="Zeal" title="Zeal">
+															<img src="https://cdn0.gamesports.net/games_items/227.jpg?1593220107" alt="Infinity Edge" title="Infinity Edge">
+															<img src="https://cdn0.gamesports.net/games_items/185.jpg?1593220101" alt="Berserker's Greaves" title="Berserker's Greaves">
+															<img src="https://cdn0.gamesports.net/games_items/518.jpg?1593310094" alt="Farsight Alteration" title="Farsight Alteration">
+							
+						</div>
+					</div></div>
+				</div>
+							<div class="submatch-lol-player side-1 row-5 color-r">
+					<div class="submatch-lol-player-core">
+						<div class="submatch-lol-player-toggle" data-row="5"><i class="icon-toggle"></i></div>
+						<div class="submatch-lol-player-perks">
+							<img src="https://cdn0.gamesports.net/games_perks/137.png?1581521453" alt="Aftershock" title="Aftershock">
+							<img src="https://cdn0.gamesports.net/games_perkstyles/5.png?1583487542" alt="Inspiration" title="Inspiration">
+						</div>
+						<div class="submatch-lol-player-spells">
+															<img src="https://cdn0.gamesports.net/games_spells/8.jpg?1593133682" alt="Ignite" title="Ignite">
+															<img src="https://cdn0.gamesports.net/games_spells/14.jpg?1593133682" alt="Flash" title="Flash">
+							
+						</div>
+						<div class="submatch-lol-player-champion">
+							<img src="https://cdn0.gamesports.net/heroes/130.jpg?1593220090" alt="Maokai" title="Maokai" class="img-player-hero">
+							<span class="player-hero-level">12</span>
+						</div>
+						<div class="submatch-lol-player-name">iTz Gurje</div>
+					</div>
+					<div class="submatch-lol-player-more-container"><div class="submatch-lol-player-more">
+						<div class="submatch-lol-player-networth">6.9k</div>
+						<div class="submatch-lol-player-minions">34</div>
+						<div class="submatch-lol-player-kda">1/3/15</div>
+						<div class="submatch-lol-player-items">
+															<img src="https://cdn0.gamesports.net/games_items/701.jpg?1593396492" alt="Bulwark of the Mountain" title="Bulwark of the Mountain">
+															<img src="https://cdn0.gamesports.net/games_items/479.jpg?1593310087" alt="Gargoyle Stoneplate" title="Gargoyle Stoneplate">
+															<img src="https://cdn0.gamesports.net/games_items/263.jpg?1593220113" alt="Zeke's Convergence" title="Zeke's Convergence">
+															<img src="https://cdn0.gamesports.net/games_items/194.jpg?1593220102" alt="Boots of Swiftness" title="Boots of Swiftness">
+															<img src="https://cdn1-v3.gamesports.net/img/themes/general/item_default.jpg">
+															<img src="https://cdn0.gamesports.net/games_items/140.jpg?1593137301" alt="Control Ward" title="Control Ward">
+															<img src="https://cdn0.gamesports.net/games_items/521.jpg?1593310095" alt="Oracle Lens" title="Oracle Lens">
+							
+						</div>
+					</div></div>
+				</div>
+			
+									<div class="submatch-lol-player side-2 row-1 color-b">
+					<div class="submatch-lol-player-core">
+						<div class="submatch-lol-player-toggle" data-row="1"><i class="icon-toggle"></i></div>
+						<div class="submatch-lol-player-perks">
+							<img src="https://cdn0.gamesports.net/games_perks/74.png?1581521399" alt="Conqueror" title="Conqueror">
+							<img src="https://cdn0.gamesports.net/games_perkstyles/11.png?1583487543" alt="Resolve" title="Resolve">
+						</div>
+						<div class="submatch-lol-player-spells">
+															<img src="https://cdn0.gamesports.net/games_spells/14.jpg?1593133682" alt="Flash" title="Flash">
+															<img src="https://cdn0.gamesports.net/games_spells/17.jpg?1593133682" alt="Ghost" title="Ghost">
+							
+						</div>
+						<div class="submatch-lol-player-champion">
+							<img src="https://cdn0.gamesports.net/heroes/96.jpg?1593133690" alt="Darius" title="Darius" class="img-player-hero">
+							<span class="player-hero-level">12</span>
+						</div>
+						<div class="submatch-lol-player-name">Criiispy</div>
+					</div>
+					<div class="submatch-lol-player-more-container"><div class="submatch-lol-player-more">
+						<div class="submatch-lol-player-networth">5.4k</div>
+						<div class="submatch-lol-player-minions">110</div>
+						<div class="submatch-lol-player-kda">1/6/2</div>
+						<div class="submatch-lol-player-items">
+															<img src="https://cdn0.gamesports.net/games_items/62.jpg?1593133701" alt="Doran's Shield" title="Doran's Shield">
+															<img src="https://cdn0.gamesports.net/games_items/257.jpg?1593220112" alt="Ninja Tabi" title="Ninja Tabi">
+															<img src="https://cdn0.gamesports.net/games_items/287.jpg?1593223702" alt="Black Cleaver" title="Black Cleaver">
+															<img src="https://cdn0.gamesports.net/games_items/23.jpg?1593133697" alt="Ruby Crystal" title="Ruby Crystal">
+															<img src="https://cdn0.gamesports.net/games_items/23.jpg?1593133697" alt="Ruby Crystal" title="Ruby Crystal">
+															<img src="https://cdn0.gamesports.net/games_items/122.jpg?1593137299" alt="Refillable Potion" title="Refillable Potion">
+															<img src="https://cdn0.gamesports.net/games_items/506.jpg?1593310093" alt="Warding Totem (Trinket)" title="Warding Totem (Trinket)">
+							
+						</div>
+					</div></div>
+				</div>
+							<div class="submatch-lol-player side-2 row-2 color-b">
+					<div class="submatch-lol-player-core">
+						<div class="submatch-lol-player-toggle" data-row="2"><i class="icon-toggle"></i></div>
+						<div class="submatch-lol-player-perks">
+							<img src="https://cdn0.gamesports.net/games_perks/74.png?1581521399" alt="Conqueror" title="Conqueror">
+							<img src="https://cdn0.gamesports.net/games_perkstyles/2.png?1583487542" alt="Domination" title="Domination">
+						</div>
+						<div class="submatch-lol-player-spells">
+															<img src="https://cdn0.gamesports.net/games_spells/32.jpg?1593133682" alt="Smite" title="Smite">
+															<img src="https://cdn0.gamesports.net/games_spells/14.jpg?1593133682" alt="Flash" title="Flash">
+							
+						</div>
+						<div class="submatch-lol-player-champion">
+							<img src="https://cdn0.gamesports.net/heroes/541.jpg?1593137292" alt="Kayn" title="Kayn" class="img-player-hero">
+							<span class="player-hero-level">12</span>
+						</div>
+						<div class="submatch-lol-player-name">Muxell</div>
+					</div>
+					<div class="submatch-lol-player-more-container"><div class="submatch-lol-player-more">
+						<div class="submatch-lol-player-networth">7.4k</div>
+						<div class="submatch-lol-player-minions">127</div>
+						<div class="submatch-lol-player-kda">1/5/6</div>
+						<div class="submatch-lol-player-items">
+															<img src="https://cdn0.gamesports.net/games_items/83.jpg?1593133703" alt="Enchantment: Warrior" title="Enchantment: Warrior">
+															<img src="https://cdn0.gamesports.net/games_items/122.jpg?1593137299" alt="Refillable Potion" title="Refillable Potion">
+															<img src="https://cdn0.gamesports.net/games_items/392.jpg?1593306501" alt="Caulfield's Warhammer" title="Caulfield's Warhammer">
+															<img src="https://cdn0.gamesports.net/games_items/365.jpg?1593306496" alt="Mercury's Treads" title="Mercury's Treads">
+															<img src="https://cdn0.gamesports.net/games_items/35.jpg?1593133698" alt="Long Sword" title="Long Sword">
+															<img src="https://cdn0.gamesports.net/games_items/350.jpg?1593223711" alt="Aegis of the Legion" title="Aegis of the Legion">
+															<img src="https://cdn0.gamesports.net/games_items/521.jpg?1593310095" alt="Oracle Lens" title="Oracle Lens">
+							
+						</div>
+					</div></div>
+				</div>
+							<div class="submatch-lol-player side-2 row-3 color-b">
+					<div class="submatch-lol-player-core">
+						<div class="submatch-lol-player-toggle" data-row="3"><i class="icon-toggle"></i></div>
+						<div class="submatch-lol-player-perks">
+							<img src="https://cdn0.gamesports.net/games_perks/188.png?1582596483" alt="Phase Rush" title="Phase Rush">
+							<img src="https://cdn0.gamesports.net/games_perkstyles/5.png?1583487542" alt="Inspiration" title="Inspiration">
+						</div>
+						<div class="submatch-lol-player-spells">
+															<img src="https://cdn0.gamesports.net/games_spells/14.jpg?1593133682" alt="Flash" title="Flash">
+															<img src="https://cdn0.gamesports.net/games_spells/41.jpg?1593133682" alt="Teleport" title="Teleport">
+							
+						</div>
+						<div class="submatch-lol-player-champion">
+							<img src="https://cdn0.gamesports.net/heroes/140.jpg?1593220097" alt="Orianna" title="Orianna" class="img-player-hero">
+							<span class="player-hero-level">13</span>
+						</div>
+						<div class="submatch-lol-player-name">AraqZ</div>
+					</div>
+					<div class="submatch-lol-player-more-container"><div class="submatch-lol-player-more">
+						<div class="submatch-lol-player-networth">7.8k</div>
+						<div class="submatch-lol-player-minions">153</div>
+						<div class="submatch-lol-player-kda">3/5/2</div>
+						<div class="submatch-lol-player-items">
+															<img src="https://cdn0.gamesports.net/games_items/68.jpg?1593133701" alt="Doran's Ring" title="Doran's Ring">
+															<img src="https://cdn0.gamesports.net/games_items/239.jpg?1593220109" alt="Seraph's Embrace" title="Seraph's Embrace">
+															<img src="https://cdn0.gamesports.net/games_items/446.jpg?1593306506" alt="Zhonya's Hourglass" title="Zhonya's Hourglass">
+															<img src="https://cdn1-v3.gamesports.net/img/themes/general/item_default.jpg">
+															<img src="https://cdn0.gamesports.net/games_items/200.jpg?1593220104" alt="Sorcerer's Shoes" title="Sorcerer's Shoes">
+															<img src="https://cdn1-v3.gamesports.net/img/themes/general/item_default.jpg">
+															<img src="https://cdn0.gamesports.net/games_items/518.jpg?1593310094" alt="Farsight Alteration" title="Farsight Alteration">
+							
+						</div>
+					</div></div>
+				</div>
+							<div class="submatch-lol-player side-2 row-4 color-b">
+					<div class="submatch-lol-player-core">
+						<div class="submatch-lol-player-toggle" data-row="4"><i class="icon-toggle"></i></div>
+						<div class="submatch-lol-player-perks">
+							<img src="https://cdn0.gamesports.net/games_perks/89.png?1581521403" alt="Press the Attack" title="Press the Attack">
+							<img src="https://cdn0.gamesports.net/games_perkstyles/2.png?1583487542" alt="Domination" title="Domination">
+						</div>
+						<div class="submatch-lol-player-spells">
+															<img src="https://cdn0.gamesports.net/games_spells/14.jpg?1593133682" alt="Flash" title="Flash">
+															<img src="https://cdn0.gamesports.net/games_spells/44.jpg?1593133682" alt="Heal" title="Heal">
+							
+						</div>
+						<div class="submatch-lol-player-champion">
+							<img src="https://cdn0.gamesports.net/heroes/171.jpg?1593306486" alt="Vayne" title="Vayne" class="img-player-hero">
+							<span class="player-hero-level">11</span>
+						</div>
+						<div class="submatch-lol-player-name">Ayzee</div>
+					</div>
+					<div class="submatch-lol-player-more-container"><div class="submatch-lol-player-more">
+						<div class="submatch-lol-player-networth">8.9k</div>
+						<div class="submatch-lol-player-minions">153</div>
+						<div class="submatch-lol-player-kda">4/6/2</div>
+						<div class="submatch-lol-player-items">
+															<img src="https://cdn0.gamesports.net/games_items/389.jpg?1593306501" alt="Guinsoo's Rageblade" title="Guinsoo's Rageblade">
+															<img src="https://cdn0.gamesports.net/games_items/185.jpg?1593220101" alt="Berserker's Greaves" title="Berserker's Greaves">
+															<img src="https://cdn0.gamesports.net/games_items/437.jpg?1593306505" alt="Blade of the Ruined King" title="Blade of the Ruined King">
+															<img src="https://cdn1-v3.gamesports.net/img/themes/general/item_default.jpg">
+															<img src="https://cdn0.gamesports.net/games_items/65.jpg?1593133701" alt="Doran's Blade" title="Doran's Blade">
+															<img src="https://cdn1-v3.gamesports.net/img/themes/general/item_default.jpg">
+															<img src="https://cdn0.gamesports.net/games_items/506.jpg?1593310093" alt="Warding Totem (Trinket)" title="Warding Totem (Trinket)">
+							
+						</div>
+					</div></div>
+				</div>
+							<div class="submatch-lol-player side-2 row-5 color-b">
+					<div class="submatch-lol-player-core">
+						<div class="submatch-lol-player-toggle" data-row="5"><i class="icon-toggle"></i></div>
+						<div class="submatch-lol-player-perks">
+							<img src="https://cdn0.gamesports.net/games_perks/137.png?1581521453" alt="Aftershock" title="Aftershock">
+							<img src="https://cdn0.gamesports.net/games_perkstyles/2.png?1583487542" alt="Domination" title="Domination">
+						</div>
+						<div class="submatch-lol-player-spells">
+															<img src="https://cdn0.gamesports.net/games_spells/8.jpg?1593133682" alt="Ignite" title="Ignite">
+															<img src="https://cdn0.gamesports.net/games_spells/14.jpg?1593133682" alt="Flash" title="Flash">
+							
+						</div>
+						<div class="submatch-lol-player-champion">
+							<img src="https://cdn0.gamesports.net/heroes/576.jpg?1593220100" alt="Pyke" title="Pyke" class="img-player-hero">
+							<span class="player-hero-level">10</span>
+						</div>
+						<div class="submatch-lol-player-name">EloHunter</div>
+					</div>
+					<div class="submatch-lol-player-more-container"><div class="submatch-lol-player-more">
+						<div class="submatch-lol-player-networth">7.6k</div>
+						<div class="submatch-lol-player-minions">34</div>
+						<div class="submatch-lol-player-kda">5/7/2</div>
+						<div class="submatch-lol-player-items">
+															<img src="https://cdn0.gamesports.net/games_items/689.jpg?1593396490" alt="Runesteel Spaulders" title="Runesteel Spaulders">
+															<img src="https://cdn0.gamesports.net/games_items/413.jpg?1593306503" alt="Youmuu's Ghostblade" title="Youmuu's Ghostblade">
+															<img src="https://cdn0.gamesports.net/games_items/350.jpg?1593223711" alt="Aegis of the Legion" title="Aegis of the Legion">
+															<img src="https://cdn0.gamesports.net/games_items/278.jpg?1593223701" alt="Kindlegem" title="Kindlegem">
+															<img src="https://cdn0.gamesports.net/games_items/140.jpg?1593137301" alt="Control Ward" title="Control Ward">
+															<img src="https://cdn0.gamesports.net/games_items/383.jpg?1593306500" alt="Boots of Mobility" title="Boots of Mobility">
+															<img src="https://cdn0.gamesports.net/games_items/521.jpg?1593310095" alt="Oracle Lens" title="Oracle Lens">
+							
+						</div>
+					</div></div>
+				</div>
+			
+		
+	</div>
+</div>
+	</div>
+</section>
+
+
+<div id="league-match-content" data-match-id="597478"></div>
+
+<section class="boxed-section">
+	<div class="section-content">
+		<div class="content-subsection">
+			<div class="content-subsection-toggle">Logs (20)<i class="icon-toggle"></i></div>
+			<div class="content-subsection-container">
+				<table class="table table-flex table-responsive table-static">
+					<thead>
+						<tr>
+							<th>Zeit</th>
+							<th>Nutzer</th>
+							<th>Aktion</th>
+							<th>Details</th>
+						</tr>
+					</thead>
+					<tbody>
+												<tr>
+							<td><span class="table-cell-container"><span class="itime " data-time="1592155296" data-ago="1" data-force-rel="0"></span></span></td>
+							<td><span class="table-cell-container"><i>System</i> (admin)</span></td>
+							<td><span class="table-cell-container">played</span></td>
+							<td><span class="table-cell-container">Endscore reached, match closed</span></td>
+						</tr>
+												<tr>
+							<td><span class="table-cell-container"><span class="itime " data-time="1592155295" data-ago="1" data-force-rel="0"></span></span></td>
+							<td><span class="table-cell-container"><i>System</i> (Team 1)</span></td>
+							<td><span class="table-cell-container">report</span></td>
+							<td><span class="table-cell-container">Riotgames reported match win</span></td>
+						</tr>
+												<tr>
+							<td><span class="table-cell-container"><span class="itime " data-time="1592152854" data-ago="1" data-force-rel="0"></span></span></td>
+							<td><span class="table-cell-container"><i>System</i> (Team 1)</span></td>
+							<td><span class="table-cell-container">report</span></td>
+							<td><span class="table-cell-container">Riotgames reported match win</span></td>
+						</tr>
+												<tr>
+							<td><span class="table-cell-container"><span class="itime " data-time="1592150404" data-ago="1" data-force-rel="0"></span></span></td>
+							<td><span class="table-cell-container">EloHunter (Team 105875)</span></td>
+							<td><span class="table-cell-container">hosting_request</span></td>
+							<td><span class="table-cell-container">successfully got tournament codes from Riotgames</span></td>
+						</tr>
+												<tr>
+							<td><span class="table-cell-container"><span class="itime " data-time="1592149927" data-ago="1" data-force-rel="0"></span></span></td>
+							<td><span class="table-cell-container">Ayzeecs (Team 2)</span></td>
+							<td><span class="table-cell-container">lineup_player_ready</span></td>
+							<td><span class="table-cell-container"></span></td>
+						</tr>
+												<tr>
+							<td><span class="table-cell-container"><span class="itime " data-time="1592149845" data-ago="1" data-force-rel="0"></span></span></td>
+							<td><span class="table-cell-container">Criiispy (Team 2)</span></td>
+							<td><span class="table-cell-container">lineup_player_ready</span></td>
+							<td><span class="table-cell-container"></span></td>
+						</tr>
+												<tr>
+							<td><span class="table-cell-container"><span class="itime " data-time="1592149769" data-ago="1" data-force-rel="0"></span></span></td>
+							<td><span class="table-cell-container">UnderNexus (Team 1)</span></td>
+							<td><span class="table-cell-container">lineup_player_ready</span></td>
+							<td><span class="table-cell-container"></span></td>
+						</tr>
+												<tr>
+							<td><span class="table-cell-container"><span class="itime " data-time="1592149764" data-ago="1" data-force-rel="0"></span></span></td>
+							<td><span class="table-cell-container">Gurje1 (Team 1)</span></td>
+							<td><span class="table-cell-container">lineup_player_ready</span></td>
+							<td><span class="table-cell-container"></span></td>
+						</tr>
+												<tr>
+							<td><span class="table-cell-container"><span class="itime " data-time="1592149702" data-ago="1" data-force-rel="0"></span></span></td>
+							<td><span class="table-cell-container">Hit e and gg (Team 1)</span></td>
+							<td><span class="table-cell-container">lineup_player_ready</span></td>
+							<td><span class="table-cell-container"></span></td>
+						</tr>
+												<tr>
+							<td><span class="table-cell-container"><span class="itime " data-time="1592149696" data-ago="1" data-force-rel="0"></span></span></td>
+							<td><span class="table-cell-container">Isilmacil (Team 1)</span></td>
+							<td><span class="table-cell-container">lineup_player_ready</span></td>
+							<td><span class="table-cell-container"></span></td>
+						</tr>
+												<tr>
+							<td><span class="table-cell-container"><span class="itime " data-time="1592149657" data-ago="1" data-force-rel="0"></span></span></td>
+							<td><span class="table-cell-container">LiebesWoelkchen (Team 1)</span></td>
+							<td><span class="table-cell-container">lineup_player_ready</span></td>
+							<td><span class="table-cell-container"></span></td>
+						</tr>
+												<tr>
+							<td><span class="table-cell-container"><span class="itime " data-time="1592149620" data-ago="1" data-force-rel="0"></span></span></td>
+							<td><span class="table-cell-container">AraqZ (Team 2)</span></td>
+							<td><span class="table-cell-container">lineup_player_ready</span></td>
+							<td><span class="table-cell-container"></span></td>
+						</tr>
+												<tr>
+							<td><span class="table-cell-container"><span class="itime " data-time="1592149620" data-ago="1" data-force-rel="0"></span></span></td>
+							<td><span class="table-cell-container">Muxell (Team 2)</span></td>
+							<td><span class="table-cell-container">lineup_player_ready</span></td>
+							<td><span class="table-cell-container"></span></td>
+						</tr>
+												<tr>
+							<td><span class="table-cell-container"><span class="itime " data-time="1592149611" data-ago="1" data-force-rel="0"></span></span></td>
+							<td><span class="table-cell-container">EloHunter (Team 2)</span></td>
+							<td><span class="table-cell-container">lineup_player_ready</span></td>
+							<td><span class="table-cell-container"></span></td>
+						</tr>
+												<tr>
+							<td><span class="table-cell-container"><span class="itime " data-time="1592146648" data-ago="1" data-force-rel="0"></span></span></td>
+							<td><span class="table-cell-container">Isilmacil (Team 1)</span></td>
+							<td><span class="table-cell-container">lineup_submit</span></td>
+							<td><span class="table-cell-container">677979:UnderNexus, 1450846:Isilmacil, 1502120:Hit e and gg, 1438503:LiebesWoelkchen, 1475615:Gurje1</span></td>
+						</tr>
+												<tr>
+							<td><span class="table-cell-container"><span class="itime " data-time="1592145692" data-ago="1" data-force-rel="0"></span></span></td>
+							<td><span class="table-cell-container">EloHunter (Team 2)</span></td>
+							<td><span class="table-cell-container">lineup_submit</span></td>
+							<td><span class="table-cell-container">1548071:Muxell, 991028:AraqZ, 1563863:Ayzeecs, 1498487:EloHunter, 1294130:Criiispy</span></td>
+						</tr>
+												<tr>
+							<td><span class="table-cell-container"><span class="itime " data-time="1591984330" data-ago="1" data-force-rel="0"></span></span></td>
+							<td><span class="table-cell-container">EloHunter (Team 2)</span></td>
+							<td><span class="table-cell-container">lineup_submit</span></td>
+							<td><span class="table-cell-container">1069035:Kaylid, 1548071:Muxell, 991028:AraqZ, 1563863:Ayzeecs, 1498487:EloHunter</span></td>
+						</tr>
+												<tr>
+							<td><span class="table-cell-container"><span class="itime " data-time="1591982162" data-ago="1" data-force-rel="0"></span></span></td>
+							<td><span class="table-cell-container"><i>System</i> (admin)</span></td>
+							<td><span class="table-cell-container">scheduling_autoconfirm</span></td>
+							<td><span class="table-cell-container">Suggest was made more than 48 hours ago.</span></td>
+						</tr>
+												<tr>
+							<td><span class="table-cell-container"><span class="itime " data-time="1591809332" data-ago="1" data-force-rel="0"></span></span></td>
+							<td><span class="table-cell-container">Isilmacil (Team 1)</span></td>
+							<td><span class="table-cell-container">scheduling_suggest</span></td>
+							<td><span class="table-cell-container">0: Sun, 14 Jun 2020 18:00:00 +0200</span></td>
+						</tr>
+												<tr>
+							<td><span class="table-cell-container"><span class="itime " data-time="1591807353" data-ago="1" data-force-rel="0"></span></span></td>
+							<td><span class="table-cell-container">EloHunter (Team 2)</span></td>
+							<td><span class="table-cell-container">scheduling_suggest</span></td>
+							<td><span class="table-cell-container">0: Sat, 20 Jun 2020 20:00:00 +0200</span></td>
+						</tr>
+						
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</section>
+
+	<section class="boxed-section comments">
+		<div class="section-title" id="comments-title"><h2>Kommentare</h2></div>
+		<div class="section-content" id="comments" data-comments-module="league_match" data-comments-item="597478" data-comments-official="" data-comments-amount="1"></div>
+	</section>
+
+		</div>
+
+		<footer>
+			<div id="footer-top">
+				<ul>
+					<li></li>
+					<li>
+						<div class="txt-h3">Über Uns</div>
+						<a href="https://www.primeleague.gg/de/staff">Staff</a>						<a href="https://www.primeleague.gg/de/statics/impressum" target="_blank">Impressum</a>
+						<a href="https://docs.gamesports.net/tos/de" target="_blank" rel="noopener">Nutzungsbedingungen</a>
+						<a href="https://docs.gamesports.net/privacy/de" target="_blank" rel="noopener">Datenschutzerklärung</a>
+						<a href="https://www.primeleague.gg/de/users/support">Support</a>
+						<a href="https://www.primeleague.gg/de/statics/presse" target="_blank">Presse</a>
+						<div class="copyright">&copy; 2005-2020 by Freaks 4U Gaming</div>
+					</li>
+					<li></li>
+					<li>
+						<a href="https://www.freaks4u.de" target="_blank"><img src="https://cdn1-v3.gamesports.net/img/themes/general/freaks4u_logo.svg?color=#fff" alt="Freaks 4U Gaming" width="190" height="55"></a>
+						<a href="https://www.riotgames.com/de" target="_blank"><img src="https://cdn1-v3.gamesports.net/img/themes/primeleague/riot.png" alt="Freaks 4U Gaming" width="190" height="76"></a>
+					</li>
+				</ul>
+			</div>
+
+			<div id="footer-bottom">
+				<div id="footer-partners"><ul>
+					<li><a href="https://www.primeleague.gg/de/redirect/5051" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3827.png?1582113181" alt="R+V Versicherung" title="R+V Versicherung"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5054" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3830.png?1579256323" alt="NicNacs" title="NicNacs"></a></li><li><a href="https://www.levi.com/DE/de_DE/" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3892.png?1591696602" alt="Levi's" title="Levi's"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5063" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3842.png?1583936301" alt="Recaro" title="Recaro"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5060" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3836.png?1579274560" alt="Telekom" title="Telekom"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5192" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3845.png?1579256365" alt="Rockstar" title="Rockstar"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5048" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3833.png?1583936288" alt="Barmer" title="Barmer"></a></li><li><a href="https://www.primeleague.gg/de/redirect/5057" target="_blank"><img src="https://cdn0.gamesports.net/sidebar_images/3000/3839.png?1593705782" alt="Tchibo" title="Tchibo"></a></li>
+				</ul></div>
+				<div id="header-socials"><ul>
+										<li><a href="https://twitter.com/primeleague" target="_blank" rel="noopener"><i class="icon-twitter"></i></a></li>					<li><a href="https://www.primeleague.gg/de/redirect/5198" target="_blank" rel="noopener"><i class="icon-instagram"></i></a></li>					<li><a href="https://youtube.com/c/PrimeLeague" target="_blank" rel="noopener"><i class="icon-youtube"></i></a></li>					<li><a href="https://www.twitch.tv/primeleague" target="_blank" rel="noopener"><i class="icon-twitch"></i></a></li>																								</ul></div>
+			</div>
+		</footer>
+
+		<div id="gsnet-popin"><div id="gsnet-popin-content"></div><div class="icon-close" id="gsnet-popin-close"></div></div>
+		<div id="gsnet-popin-bg"></div>
+
+		<script src="https://cdn1-v3.gamesports.net/js/public/jquery-3.3.1.min.3e9222d3577d18ee49166aebcbb65537b0b5bab5.js"></script>
+<script src="https://cdn1-v3.gamesports.net/js/public/js.cookie.7d77b5aeb10deac8605e2a209d797c658df06b4c.js"></script>
+<script src="https://cdn1-v3.gamesports.net/js/public/nouislider.min.b293c17c5775ec69756b8a3ca197503a28f29cf7.js"></script>
+<script src="https://cdn1-v3.gamesports.net/js/public/pagination.2d9e226ce0bbea2b5b3915d80dd97f20ca77b9a4.js"></script>
+<script src="https://cdn1-v3.gamesports.net/js/public/select2.0f6e26d741ea43e6ec2fbb49e1106a7fdf746489.js"></script>
+<script src="https://cdn1-v3.gamesports.net/js/public/jquery-ui.min.02056a1661720045b0e2f85f53c3dc7af33cf9b0.js"></script>
+<script src="https://cdn1-v3.gamesports.net/js/public/jquery.mousewheel.014b6de30e9e97b1db727935a4789b82a0934415.js"></script>
+<script src="https://cdn1-v3.gamesports.net/js/public/snap.svg.b6958f019239a52ebbe3e4e0d549bcf2158c7bf3.js"></script>
+<script src="https://cdn1-v3.gamesports.net/js/public/store.f78afe6de5c352b6ce6ef67cbf2befa7cba8b61c.js"></script>
+<script src="https://cdn1-v3.gamesports.net/js/public/shadowbox.60a79e7a26c69e7de658d6c3b1d6a0f60fbecbbe.js"></script>
+<script src="https://cdn1-v3.gamesports.net/js/public/moment.d8428852bac105649ae87f3abc1778abfc51b352.js"></script>
+<script src="https://cdn1-v3.gamesports.net/js/public/Chart.min.8e0fd10ae28adb70e51cb36fc138953963949217.js"></script>
+<script src="https://cdn1-v3.gamesports.net/js/public/user-consent.97e765aa86b17376eee611c10515f949b3c7c800.js"></script>
+<script src="https://cdn1-v3.gamesports.net/js/public/general.8347c0be9ec66a3891fdd3ddddc262a1d73843fc.js"></script>
+<script src="https://cdn1-v3.gamesports.net/js/public/primeleague.610dc7ca2b65cb8b20797d0cedc29a48ab6d5a4a.js"></script>
+<script src="https://cdn1-v3.gamesports.net/js/public/leagues.ea53f86cc68607bf3598be0f27920d1699e9f72c.js"></script>
+<script src="https://cdn1-v3.gamesports.net/js/public/socket.io.slim.7c4093309ccb40f8df8a7074ed64b6900d89c1ba.js"></script>
+<script type="text/javascript" data-user-consent="false" data-user-consent-type="script" data-user-consent-provider="google_analytics">(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga'); try { 
+ga('set', 'anonymizeIp', true);
+ga('create', 'UA-59441-48', 'auto', 'clientTracker0');
+ga('clientTracker0.send', 'pageview');
+ga('create', 'UA-59441-121', 'auto', 'clientTracker1');
+ga('clientTracker1.send', 'pageview');
+} catch(e) {}</script>
+<script type='text/javascript' data-user-consent='false' data-user-consent-type='script' data-user-consent-provider='google_tag_manager'>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WW46RD9');</script>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WW46RD9" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script type="text/javascript">brda=true;</script>
+<script type="text/javascript" src="https://cdn1-v3.gamesports.net/js/deliverad/fc.js"></script>
+<script>var webstat = new Image(); webstat.src='https://webstat.freaks4u.com/stat/premiertour/'+brda;</script>
+<script type="text/plain" data-user-consent="true" data-user-consent-type="script" data-user-consent-provider="twitter" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+		
+	</body>
+</html>
