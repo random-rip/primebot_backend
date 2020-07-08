@@ -6,14 +6,12 @@ import requests
 
 from app_prime_league.teams import register_team, update_team
 from prime_league_bot import settings
-from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandler, Dispatcher, ConversationHandler
+from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandler, ConversationHandler
 
 from telegram_interface.messages import START_GROUP, START_CHAT, HELP, FINISH, ISSUE, \
-    FEEDBACK, START_SETTINGS, BOOLEAN_KEYBOARD, TEAM_EXISTING, SETTINGS
+    FEEDBACK, START_SETTINGS, TEAM_EXISTING, SETTINGS, CANCEL
 
 TEAM_ID, SETTING1, SETTING2, SETTING3, SETTING4 = range(5)
-
-boolean_keyboard = ["Ja", "Nein"]
 
 
 def start(update: Update, context: CallbackContext):
@@ -62,7 +60,7 @@ def weekly_op_link(update: Update, context: CallbackContext):
         return SETTING1
 
     settings = {
-        "weekly_op_link": True if answer == "Ja" else False,
+        SETTINGS[0]["name"]: True if answer == "Ja" else False,
     }
     tg_chat_id = update["message"]["chat"]["id"]
     update_team(tg_chat_id, settings=settings)
@@ -85,7 +83,7 @@ def lineup_op_link(update: Update, context: CallbackContext):
         return SETTING2
 
     settings = {
-        "lineup_op_link": True if answer == "Ja" else False,
+        SETTINGS[1]["name"]: True if answer == "Ja" else False,
     }
     tg_chat_id = update["message"]["chat"]["id"]
     update_team(tg_chat_id, settings=settings)
@@ -107,7 +105,7 @@ def scheduling_suggestion(update: Update, context: CallbackContext):
         )
         return SETTING3
     settings = {
-        "scheduling_suggestion": True if answer == "Ja" else False,
+        SETTINGS[2]["name"]: True if answer == "Ja" else False,
     }
     tg_chat_id = update["message"]["chat"]["id"]
     update_team(tg_chat_id, settings=settings)
@@ -129,7 +127,7 @@ def scheduling_confirmation(update: Update, context: CallbackContext):
         )
         return SETTING4
     settings = {
-        "scheduling_confirmation": True if answer == "Ja" else False,
+        SETTINGS[3]["name"]: True if answer == "Ja" else False,
     }
     tg_chat_id = update["message"]["chat"]["id"]
     update_team(tg_chat_id, settings=settings)
@@ -142,7 +140,7 @@ def scheduling_confirmation(update: Update, context: CallbackContext):
 
 
 def cancel(update: Update, context: CallbackContext):
-    update.message.reply_text('Bye! I hope we can talk again some day.',
+    update.message.reply_text(CANCEL,
                               reply_markup=ReplyKeyboardRemove())
     return ConversationHandler.END
 
@@ -171,10 +169,6 @@ def start_settings(update: Update, context: CallbackContext):
     return SETTING1
 
 
-def setting(update: Update, context: CallbackContext, num):
-    print("test")
-
-
 class BotFather:
     """
     Botfather Class. Provides Communication with Bot(Telegram API) and Client
@@ -186,9 +180,6 @@ class BotFather:
     def run(self):
         updater = Updater(settings.TELEGRAM_BOT_KEY, use_context=True, )
         dp = updater.dispatcher
-        states = {}
-        # for i, set in enumerate(SETTINGS):
-        #     states.update({i: [MessageHandler(Filters.text & (~Filters.command), setting(num=i))]})
 
         states = {
             TEAM_ID: [MessageHandler(Filters.text & (~Filters.command), get_team_id), ],
@@ -202,27 +193,32 @@ class BotFather:
             SETTING4: [MessageHandler(Filters.text & (~Filters.command), scheduling_confirmation), ],
 
         }
+
+        fallbacks= [
+            CommandHandler('cancel', cancel),
+            CommandHandler("help", helpcommand),
+            CommandHandler("issue", issue),
+            CommandHandler("feedback", feedback),
+            CommandHandler("bop", bop),
+        ]
         # Add conversation handler with the states TEAM_ID, SETTING1, SETTING2
         conv_handler = ConversationHandler(
             entry_points=[CommandHandler('start', start, )],
 
             states=states,
 
-            fallbacks=[CommandHandler('cancel', cancel)]
+            fallbacks=fallbacks
         )
         conv_handler_settings = ConversationHandler(
             entry_points=[CommandHandler('settings', start_settings, )],
 
             states=states,
 
-            fallbacks=[CommandHandler('cancel', cancel)]
+            fallbacks=fallbacks
         )
-
         dp.add_handler(conv_handler)
         dp.add_handler(conv_handler_settings)
-        dp.add_handler(CommandHandler("help", helpcommand))
-        dp.add_handler(CommandHandler("issue", issue))
-        dp.add_handler(CommandHandler("feedback", feedback))
-        dp.add_handler(CommandHandler("bop", bop))
+        for cmd in fallbacks[1:]:
+            dp.add_handler(cmd)
         updater.start_polling()
         updater.idle()

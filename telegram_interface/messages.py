@@ -2,6 +2,8 @@
 FEEDBACK_MAIL = "COMING SOON"
 BOOLEAN_KEYBOARD = [["Ja"], ["Nein"], ["/cancel"]]
 FINISH = "Einstellungen wurden gespeichert"
+CANCEL = "Vorgang abgebrochen, leider. \n" \
+         "Brauchst du Hilfe nutze /help"
 
 # Antworten:
 # Antwort auf /help
@@ -42,7 +44,7 @@ START_SETTINGS = "Settings: "
 SETTINGS = [
     # 0 WEEKLY_OP_LINK
     {
-        "name": "weekly_lineup_op_link",
+        "name": "weekly_op_link",
         "text": "Möchtet ihr jede Woche eine neue Benachrichtigung für die kommende Spielwoche erhalten?",
         "keyboard": BOOLEAN_KEYBOARD,
     },
@@ -55,13 +57,13 @@ SETTINGS = [
     # 2 SCHEDULING_SUGGESTION
     {
         "name": "scheduling_suggestion",
-        "text": "Möchtest du über neue Zeitvorschläge des Gegners informiert werden?",
+        "text": "Möchtet ihr über neue Zeitvorschläge des Gegners informiert werden?",
         "keyboard": BOOLEAN_KEYBOARD,
     },
     # 3 SCHEDULING_CONFIRMATION
     {
         "name": "scheduling_confirmation",
-        "text": "Möchtest du bei der Bestätigung eines Zeitvorschlags benachrichtigt werden?",
+        "text": "Möchtet ihr bei der Bestätigung eines Zeitvorschlags benachrichtigt werden?",
         "keyboard": BOOLEAN_KEYBOARD,
     },
 ]
