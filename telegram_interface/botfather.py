@@ -38,7 +38,10 @@ def get_team_id(update: Update, context: CallbackContext):
     tg_group_id = update["message"]["chat"]["id"]
     team = register_team(team_id=team_id, tg_group_id=tg_group_id)
     if team is None:
-        update.message.reply_markdown(TEAM_EXISTING)
+        update.message.reply_markdown(
+            TEAM_EXISTING,
+            disable_web_page_preview=True,
+        )
         return TEAM_ID
     else:
         update.message.reply_markdown(

@@ -1,5 +1,6 @@
 # Variablen
 SUPPORT_GROUP_LINK = "https://t.me/joinchat/IUH8NhsKTYUtFKaqQMWhKA"
+START_LINK = "https://t.me/prime_league_bot?startgroup=start"
 YES = "Ja"
 NO = "Nein"
 SKIP = "Überspringen"
@@ -11,12 +12,11 @@ CANCEL = "Vorgang abgebrochen, leider. \n" \
 
 # Antworten:
 # Antwort auf /help
-HELP_TEXT = "Überblick:\n" \
-
+HELP_TEXT = "Überblick:\n"
 HELP_COMMAND_LIST = "/issue - um zu Erfahren wie Ihr eine Störung melden könnt\n" \
-       "/start - um euer Team zu registieren\n" \
-       "/feedback - um uns euer Feedback mitzuteilen\n" \
-       "/settings - um die Einstellungen des Bots zu bearbeiten"
+                    "/start - um euer Team zu registieren\n" \
+                    "/feedback - um uns euer Feedback mitzuteilen\n" \
+                    "/settings - um die Einstellungen des Bots zu bearbeiten"
 
 # Antwort auf /issue
 ISSUE = f"Habt Ihr einen Fehler bemerkt? Bitte schreibt uns gern eine Nachricht in unserer [Support-Gruppe]({SUPPORT_GROUP_LINK}) (inkl. Screenshots,...) "
@@ -44,7 +44,7 @@ START_GROUP = "Ahoi, \n" \
 # Antwort auf /start, wenn man command in einem 1on1 Chat aufruft
 START_CHAT = "Ahoi, \n" \
              "1. Erstelle einen Chat\n" \
-             "2. klicke [hier](https://t.me/prime_league_bot?startgroup=neu) und lade den Bot in deine Gruppe ein\n" \
+             f"2. klicke [hier]({START_LINK}) und lade den Bot in deine Gruppe ein\n" \
              "3. Beantworte die gestellten Fragen\n" \
              "Viel Spaß"
 
