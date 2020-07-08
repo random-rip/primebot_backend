@@ -19,14 +19,13 @@ def register_team(team_id, tg_group_id):
 
 
 def add_team(team_id, tg_group_id):
-    if not Team.objects.filter(telegram_channel_id__isnull=tg_group_id).exists():
+    if not Team.objects.filter(telegram_channel_id=tg_group_id).exists():
         wrapper = TeamWrapper(team_id=team_id)
         try:
-            pass
+            parser = wrapper.parser
         except Exception:
             print("Wrapper is None")
             return None
-        parser = wrapper.parser
 
         team, created = Team.objects.get_or_create(id=team_id, defaults={
             "name": parser.get_team_name(),
