@@ -8,8 +8,8 @@ from app_prime_league.teams import register_team, update_team
 from prime_league_bot import settings
 from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandler, ConversationHandler
 
-from telegram_interface.messages import START_GROUP, START_CHAT, HELP, FINISH, ISSUE, \
-    FEEDBACK, START_SETTINGS, TEAM_EXISTING, SETTINGS, CANCEL
+from telegram_interface.messages import START_GROUP, START_CHAT, HELP_COMMAND_LIST, FINISH, ISSUE, \
+    FEEDBACK, START_SETTINGS, TEAM_EXISTING, SETTINGS, CANCEL, SKIP, YES, TEAM_ID_VALID, HELP_TEXT
 
 TEAM_ID, SETTING1, SETTING2, SETTING3, SETTING4 = range(5)
 
@@ -17,10 +17,10 @@ TEAM_ID, SETTING1, SETTING2, SETTING3, SETTING4 = range(5)
 def start(update: Update, context: CallbackContext):
     chat_type = update["message"]["chat"]["type"]
     if chat_type == "group":
-        update.message.reply_text(START_GROUP)
+        update.message.reply_markdown(START_GROUP, markdown=True)
         return TEAM_ID
     else:
-        update.message.reply_text(START_CHAT)
+        update.message.reply_markdown(START_CHAT, )
         return ConversationHandler.END
 
 
@@ -38,13 +38,13 @@ def get_team_id(update: Update, context: CallbackContext):
     tg_group_id = update["message"]["chat"]["id"]
     team = register_team(team_id=team_id, tg_group_id=tg_group_id)
     if team is None:
-        update.message.reply_text(TEAM_EXISTING)
+        update.message.reply_markdown(TEAM_EXISTING)
         return TEAM_ID
     else:
-        update.message.reply_text(
-            "Erkannte TeamID: " + team_id + "\n" + SETTINGS[0]["text"],
+        update.message.reply_markdown(
+            f"{TEAM_ID_VALID} {team.name}\n{SETTINGS[0]['text']}",
             reply_markup=ReplyKeyboardMarkup(SETTINGS[0]["keyboard"], one_time_keyboard=True),
-            markdown=True,
+            disable_web_page_preview=True,
         )
         return SETTING1
 
@@ -52,22 +52,23 @@ def get_team_id(update: Update, context: CallbackContext):
 def weekly_op_link(update: Update, context: CallbackContext):
     answer = update.message.text
     if answer not in list(chain(*SETTINGS[0]["keyboard"])):
-        update.message.reply_text(
+        update.message.reply_markdown(
             SETTINGS[0]["text"],
-            markdown=True,
-            reply_markup=ReplyKeyboardMarkup(SETTINGS[0]["keyboard"], one_time_keyboard=True)
+            reply_markup=ReplyKeyboardMarkup(SETTINGS[0]["keyboard"],one_time_keyboard=True),
+            disable_web_page_preview=True,
         )
         return SETTING1
 
     settings = {
-        SETTINGS[0]["name"]: True if answer == "Ja" else False,
+        SETTINGS[0]["name"]: True if answer == YES else False,
     }
-    tg_chat_id = update["message"]["chat"]["id"]
-    update_team(tg_chat_id, settings=settings)
-    update.message.reply_text(
+    if answer != SKIP:
+        tg_chat_id = update["message"]["chat"]["id"]
+        update_team(tg_chat_id, settings=settings)
+    update.message.reply_markdown(
         SETTINGS[1]["text"],
         reply_markup=ReplyKeyboardMarkup(SETTINGS[1]["keyboard"], one_time_keyboard=True),
-        markdown=True
+        disable_web_page_preview=True,
     )
     return SETTING2
 
@@ -75,22 +76,23 @@ def weekly_op_link(update: Update, context: CallbackContext):
 def lineup_op_link(update: Update, context: CallbackContext):
     answer = update.message.text
     if answer not in list(chain(*SETTINGS[1]["keyboard"])):
-        update.message.reply_text(
+        update.message.reply_markdown(
             SETTINGS[1]["text"],
-            markdown=True,
-            reply_markup=ReplyKeyboardMarkup(SETTINGS[1]["keyboard"], one_time_keyboard=True)
+            reply_markup=ReplyKeyboardMarkup(SETTINGS[1]["keyboard"], one_time_keyboard=True),
+            disable_web_page_preview=True,
         )
         return SETTING2
 
     settings = {
-        SETTINGS[1]["name"]: True if answer == "Ja" else False,
+        SETTINGS[1]["name"]: True if answer == YES else False,
     }
-    tg_chat_id = update["message"]["chat"]["id"]
-    update_team(tg_chat_id, settings=settings)
-    update.message.reply_text(
+    if answer != SKIP:
+        tg_chat_id = update["message"]["chat"]["id"]
+        update_team(tg_chat_id, settings=settings)
+    update.message.reply_markdown(
         SETTINGS[2]["text"],
-        markdown=True,
-        reply_markup=ReplyKeyboardMarkup(SETTINGS[2]["keyboard"], one_time_keyboard=True)
+        reply_markup=ReplyKeyboardMarkup(SETTINGS[2]["keyboard"], one_time_keyboard=True),
+        disable_web_page_preview=True,
     )
     return SETTING3
 
@@ -98,21 +100,23 @@ def lineup_op_link(update: Update, context: CallbackContext):
 def scheduling_suggestion(update: Update, context: CallbackContext):
     answer = update.message.text
     if answer not in list(chain(*SETTINGS[2]["keyboard"])):
-        update.message.reply_text(
+        update.message.reply_markdown(
             SETTINGS[2]["text"],
-            markdown=True,
-            reply_markup=ReplyKeyboardMarkup(SETTINGS[2]["keyboard"], one_time_keyboard=True)
+            reply_markup=ReplyKeyboardMarkup(SETTINGS[2]["keyboard"], one_time_keyboard=True),
+            disable_web_page_preview=True,
         )
         return SETTING3
     settings = {
-        SETTINGS[2]["name"]: True if answer == "Ja" else False,
+        SETTINGS[2]["name"]: True if answer == YES else False,
     }
-    tg_chat_id = update["message"]["chat"]["id"]
-    update_team(tg_chat_id, settings=settings)
-    update.message.reply_text(
+    if answer != SKIP:
+        tg_chat_id = update["message"]["chat"]["id"]
+        update_team(tg_chat_id, settings=settings)
+
+    update.message.reply_markdown(
         SETTINGS[3]["text"],
-        markdown=True,
-        reply_markup=ReplyKeyboardMarkup(SETTINGS[3]["keyboard"], one_time_keyboard=True)
+        reply_markup=ReplyKeyboardMarkup(SETTINGS[3]["keyboard"], one_time_keyboard=True),
+        disable_web_page_preview=True,
     )
     return SETTING4
 
@@ -120,51 +124,67 @@ def scheduling_suggestion(update: Update, context: CallbackContext):
 def scheduling_confirmation(update: Update, context: CallbackContext):
     answer = update.message.text
     if answer not in list(chain(*SETTINGS[3]["keyboard"])):
-        update.message.reply_text(
+        update.message.reply_markdown(
             SETTINGS[3]["text"],
-            markdown=True,
-            reply_markup=ReplyKeyboardMarkup(SETTINGS[3]["keyboard"], one_time_keyboard=True)
+            reply_markup=ReplyKeyboardMarkup(SETTINGS[3]["keyboard"], one_time_keyboard=True),
+            disable_web_page_preview=True,
         )
         return SETTING4
     settings = {
-        SETTINGS[3]["name"]: True if answer == "Ja" else False,
+        SETTINGS[3]["name"]: True if answer == YES else False,
     }
-    tg_chat_id = update["message"]["chat"]["id"]
-    update_team(tg_chat_id, settings=settings)
-    update.message.reply_text(
+    if answer != SKIP:
+        tg_chat_id = update["message"]["chat"]["id"]
+        update_team(tg_chat_id, settings=settings)
+    update.message.reply_markdown(
         FINISH,
-        markdown=True,
         reply_markup=ReplyKeyboardRemove(),
+        disable_web_page_preview=True,
     )
     return ConversationHandler.END
 
 
 def cancel(update: Update, context: CallbackContext):
-    update.message.reply_text(CANCEL,
-                              reply_markup=ReplyKeyboardRemove())
+    update.message.reply_markdown(
+        CANCEL,
+        reply_markup=ReplyKeyboardRemove(),
+        disable_web_page_preview=True,
+    )
     return ConversationHandler.END
 
 
 def helpcommand(update: Update, context: CallbackContext):
-    update.message.reply_text(HELP, markdown=True, reply_markup=ReplyKeyboardRemove())
+    update.message.reply_markdown(
+        f"{HELP_TEXT}{HELP_COMMAND_LIST}",
+        reply_markup=ReplyKeyboardRemove(),
+        disable_web_page_preview=True,
+    )
     return ConversationHandler.END
 
 
 def issue(update: Update, context: CallbackContext):
-    update.message.reply_text(ISSUE, markdown=True, reply_markup=ReplyKeyboardRemove())
+    update.message.reply_markdown(
+        ISSUE,
+        reply_markup=ReplyKeyboardRemove(),
+        disable_web_page_preview=True,
+    )
     return ConversationHandler.END
 
 
 def feedback(update: Update, context: CallbackContext):
-    update.message.reply_text(FEEDBACK, markdown=True, reply_markup=ReplyKeyboardRemove())
+    update.message.reply_markdown(
+        FEEDBACK,
+        reply_markup=ReplyKeyboardRemove(),
+        disable_web_page_preview=True,
+    )
     return ConversationHandler.END
 
 
 def start_settings(update: Update, context: CallbackContext):
-    update.message.reply_text(
+    update.message.reply_markdown(
         START_SETTINGS + "\n" + SETTINGS[TEAM_ID]["text"],
         reply_markup=ReplyKeyboardMarkup(SETTINGS[TEAM_ID]["keyboard"], one_time_keyboard=True),
-        markdown=True
+        disable_web_page_preview=True,
     )
     return SETTING1
 
@@ -194,7 +214,7 @@ class BotFather:
 
         }
 
-        fallbacks= [
+        fallbacks = [
             CommandHandler('cancel', cancel),
             CommandHandler("help", helpcommand),
             CommandHandler("issue", issue),

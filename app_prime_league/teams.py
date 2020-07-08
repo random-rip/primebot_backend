@@ -13,7 +13,7 @@ def register_team(team_id, tg_group_id):
             return None
         add_players(wrapper.parser, team)
         add_games(wrapper.parser, team)
-        return True
+        return team
     else:
         return None
 

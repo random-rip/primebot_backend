@@ -1,41 +1,50 @@
 # Variablen
-FEEDBACK_MAIL = "COMING SOON"
-BOOLEAN_KEYBOARD = [["Ja"], ["Nein"], ["/cancel"]]
+SUPPORT_GROUP_LINK = "https://t.me/joinchat/IUH8NhsKTYUtFKaqQMWhKA"
+YES = "Ja"
+NO = "Nein"
+SKIP = "Überspringen"
+CANCEL = "/cancel"
+BOOLEAN_KEYBOARD = [[YES], [NO], [SKIP, CANCEL, ]]
 FINISH = "Einstellungen wurden gespeichert"
 CANCEL = "Vorgang abgebrochen, leider. \n" \
          "Brauchst du Hilfe nutze /help"
 
 # Antworten:
 # Antwort auf /help
-HELP = "Hier ein kleiner Überblick: \n" \
-       "/issue - um zu Erfahren wie Ihr eine Störung melden könnt\n" \
+HELP_TEXT = "Überblick:\n" \
+
+HELP_COMMAND_LIST = "/issue - um zu Erfahren wie Ihr eine Störung melden könnt\n" \
        "/start - um euer Team zu registieren\n" \
-       "/feedback - um uns euer Feedback mitzuteilen"
+       "/feedback - um uns euer Feedback mitzuteilen\n" \
+       "/settings - um die Einstellungen des Bots zu bearbeiten"
 
 # Antwort auf /issue
-ISSUE = "Habt Ihr einen Fehler bemerkt? Bitte schreibt uns gern ein Ticket (inkl. Screenshots,...) https://gitlab.com/Grayknife/prime_league_bot/-/issues"
+ISSUE = f"Habt Ihr einen Fehler bemerkt? Bitte schreibt uns gern eine Nachricht in unserer [Support-Gruppe]({SUPPORT_GROUP_LINK}) (inkl. Screenshots,...) "
 
 # Antwort auf /feedback
-FEEDBACK = "Habt ihr Feedback? Schreibt es uns gern eine Mail " + FEEDBACK_MAIL + " oder eröffnet ein Ticket https://gitlab.com/Grayknife/prime_league_bot/-/issues"
+FEEDBACK = f"Habt ihr Feedback? Schreibt es uns gern eine Nachricht in unserer [Support-Gruppe]({SUPPORT_GROUP_LINK})."
 
 # Antwort, wenn /start Team_id oder tg_id bereits vergeben
-TEAM_EXISTING = "Dein Team ist bereits in registriert und mit einer anderen Gruppe verknüpft oder " \
+TEAM_EXISTING = "Euer Team ist bereits in registriert und mit einer anderen Gruppe verknüpft oder " \
                 "für diese Gruppe ist bereits ein Team registriert\n" \
-                "Oder die angegebene URL ist falsch. \n" \
+                "oder die angegebene URL ist falsch. \n" \
                 "Solltet ihr Hilfe benötigen, nutzt bitte /help oder /issue"
+
+TEAM_ID_VALID = "Euer registriertes Team:"
 
 # Start Messages
 # Antwort auf /start, wenn man command in einer Gruppe aufruft
 START_GROUP = "Ahoi, \n" \
-              "Hier könnte ein Sehr Kreativer Text Stehen... tut er aber nicht \n" + \
-              HELP + \
-              "Bitte Schreib zunächst deine Team-URL(Format: https://www.primeleague.gg/de/leagues/teams/" \
-              "111111-XXXXX-XXXX-XXXXXXX) in den Chat, damit ich euch finden kann"
+              "du bist es Leid, jeden Tag mühselig auf der PrimeLeague-Seite nach neuen Updates zu suchen?\n" \
+              "Dann bin ich hier genau richtig! \n" \
+              "Bitte kopiere zunächst deine Team-URL (Format: https://www.primeleague.gg/de/leagues/teams/" \
+              "<TEAM ID>-<TEAM NAME>) in den Chat. \n" \
+              f"Wenn du Hilfe brauchst: \n{HELP_COMMAND_LIST}"
 
 # Antwort auf /start, wenn man command in einem 1on1 Chat aufruft
 START_CHAT = "Ahoi, \n" \
              "1. Erstelle einen Chat\n" \
-             "2. öffne https://t.me/prime_league_bot?startgroup=neu und lade den Bot in deine Gruppe ein\n" \
+             "2. klicke [hier](https://t.me/prime_league_bot?startgroup=neu) und lade den Bot in deine Gruppe ein\n" \
              "3. Beantworte die gestellten Fragen\n" \
              "Viel Spaß"
 

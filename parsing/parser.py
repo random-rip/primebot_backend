@@ -73,7 +73,7 @@ class TeamHTMLParser(BaseHTMLParser):
 
     def get_team_name(self):
         page_title_div = self.bs4.find_all("div", class_="page-title")[0]
-        team_name = page_title_div.h1.contents[0]
+        team_name = page_title_div.h1.contents[0].split(" (")[0]
         return team_name
 
     def get_team_tag(self):
