@@ -1,17 +1,15 @@
+from itertools import chain
+
 from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext.filters import Filters
 import requests
 
 from app_prime_league.teams import register_team, update_team
-from data_crawling.api import Crawler
-from parsing.parser import TeamHTMLParser
 from prime_league_bot import settings
 from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandler, Dispatcher, ConversationHandler
 
-from telegram_interface.messages import START_GROUP, START_CHAT, HELP, OPTION1, OPTION1_AUSWAHL, OPTION2, \
-    OPTION2_AUSWAHL, FINISH, ISSUE, \
-    FEEDBACK, START_SETTINGS, OPTION3, OPTION3_AUSWAHL, WEEKLY_OP_LINK_TEXT, BOOLEAN_KEYBOARD, TEAM_EXISTING, \
-    LINEUP_OP_LINK_TEXT, SCHEDULING_SUGGESTION_TEXT, SCHEDULING_CONFIRMATION_TEXT
+from telegram_interface.messages import START_GROUP, START_CHAT, HELP, FINISH, ISSUE, \
+    FEEDBACK, START_SETTINGS, BOOLEAN_KEYBOARD, TEAM_EXISTING, SETTINGS
 
 TEAM_ID, SETTING1, SETTING2, SETTING3, SETTING4 = range(5)
 
@@ -45,10 +43,9 @@ def get_team_id(update: Update, context: CallbackContext):
         update.message.reply_text(TEAM_EXISTING)
         return TEAM_ID
     else:
-        reply_keyboard = BOOLEAN_KEYBOARD
         update.message.reply_text(
-            "Erkannte TeamID: " + team_id + "\n" + WEEKLY_OP_LINK_TEXT,
-            reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
+            "Erkannte TeamID: " + team_id + "\n" + SETTINGS[0]["text"],
+            reply_markup=ReplyKeyboardMarkup(SETTINGS[0]["keyboard"], one_time_keyboard=True),
             markdown=True,
         )
         return SETTING1
@@ -56,18 +53,22 @@ def get_team_id(update: Update, context: CallbackContext):
 
 def weekly_op_link(update: Update, context: CallbackContext):
     answer = update.message.text
-    if answer not in boolean_keyboard:
+    if answer not in list(chain(*SETTINGS[0]["keyboard"])):
+        update.message.reply_text(
+            SETTINGS[0]["text"],
+            markdown=True,
+            reply_markup=ReplyKeyboardMarkup(SETTINGS[0]["keyboard"], one_time_keyboard=True)
+        )
         return SETTING1
 
     settings = {
         "weekly_op_link": True if answer == "Ja" else False,
     }
-    reply_keyboard = BOOLEAN_KEYBOARD
     tg_chat_id = update["message"]["chat"]["id"]
     update_team(tg_chat_id, settings=settings)
     update.message.reply_text(
-        LINEUP_OP_LINK_TEXT,
-        reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
+        SETTINGS[1]["text"],
+        reply_markup=ReplyKeyboardMarkup(SETTINGS[1]["keyboard"], one_time_keyboard=True),
         markdown=True
     )
     return SETTING2
@@ -75,7 +76,12 @@ def weekly_op_link(update: Update, context: CallbackContext):
 
 def lineup_op_link(update: Update, context: CallbackContext):
     answer = update.message.text
-    if answer not in boolean_keyboard:
+    if answer not in list(chain(*SETTINGS[1]["keyboard"])):
+        update.message.reply_text(
+            SETTINGS[1]["text"],
+            markdown=True,
+            reply_markup=ReplyKeyboardMarkup(SETTINGS[1]["keyboard"], one_time_keyboard=True)
+        )
         return SETTING2
 
     settings = {
@@ -83,39 +89,45 @@ def lineup_op_link(update: Update, context: CallbackContext):
     }
     tg_chat_id = update["message"]["chat"]["id"]
     update_team(tg_chat_id, settings=settings)
-    reply_keyboard = BOOLEAN_KEYBOARD
     update.message.reply_text(
-        SCHEDULING_SUGGESTION_TEXT,
+        SETTINGS[2]["text"],
         markdown=True,
-        reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
+        reply_markup=ReplyKeyboardMarkup(SETTINGS[2]["keyboard"], one_time_keyboard=True)
     )
     return SETTING3
 
 
 def scheduling_suggestion(update: Update, context: CallbackContext):
     answer = update.message.text
-    if answer not in boolean_keyboard:
+    if answer not in list(chain(*SETTINGS[2]["keyboard"])):
+        update.message.reply_text(
+            SETTINGS[2]["text"],
+            markdown=True,
+            reply_markup=ReplyKeyboardMarkup(SETTINGS[2]["keyboard"], one_time_keyboard=True)
+        )
         return SETTING3
-
     settings = {
         "scheduling_suggestion": True if answer == "Ja" else False,
     }
     tg_chat_id = update["message"]["chat"]["id"]
     update_team(tg_chat_id, settings=settings)
-    reply_keyboard = BOOLEAN_KEYBOARD
     update.message.reply_text(
-        SCHEDULING_CONFIRMATION_TEXT,
+        SETTINGS[3]["text"],
         markdown=True,
-        reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
+        reply_markup=ReplyKeyboardMarkup(SETTINGS[3]["keyboard"], one_time_keyboard=True)
     )
     return SETTING4
 
 
 def scheduling_confirmation(update: Update, context: CallbackContext):
     answer = update.message.text
-    if answer not in boolean_keyboard:
+    if answer not in list(chain(*SETTINGS[3]["keyboard"])):
+        update.message.reply_text(
+            SETTINGS[3]["text"],
+            markdown=True,
+            reply_markup=ReplyKeyboardMarkup(SETTINGS[3]["keyboard"], one_time_keyboard=True)
+        )
         return SETTING4
-
     settings = {
         "scheduling_confirmation": True if answer == "Ja" else False,
     }
@@ -151,13 +163,16 @@ def feedback(update: Update, context: CallbackContext):
 
 
 def start_settings(update: Update, context: CallbackContext):
-    reply_keyboard = BOOLEAN_KEYBOARD
     update.message.reply_text(
-        START_SETTINGS + "\n" + WEEKLY_OP_LINK_TEXT,
-        reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
+        START_SETTINGS + "\n" + SETTINGS[TEAM_ID]["text"],
+        reply_markup=ReplyKeyboardMarkup(SETTINGS[TEAM_ID]["keyboard"], one_time_keyboard=True),
         markdown=True
     )
     return SETTING1
+
+
+def setting(update: Update, context: CallbackContext, num):
+    print("test")
 
 
 class BotFather:
@@ -171,38 +186,34 @@ class BotFather:
     def run(self):
         updater = Updater(settings.TELEGRAM_BOT_KEY, use_context=True, )
         dp = updater.dispatcher
+        states = {}
+        # for i, set in enumerate(SETTINGS):
+        #     states.update({i: [MessageHandler(Filters.text & (~Filters.command), setting(num=i))]})
+
+        states = {
+            TEAM_ID: [MessageHandler(Filters.text & (~Filters.command), get_team_id), ],
+
+            SETTING1: [MessageHandler(Filters.text & (~Filters.command), weekly_op_link), ],
+
+            SETTING2: [MessageHandler(Filters.text & (~Filters.command), lineup_op_link), ],
+
+            SETTING3: [MessageHandler(Filters.text & (~Filters.command), scheduling_suggestion), ],
+
+            SETTING4: [MessageHandler(Filters.text & (~Filters.command), scheduling_confirmation), ],
+
+        }
         # Add conversation handler with the states TEAM_ID, SETTING1, SETTING2
         conv_handler = ConversationHandler(
             entry_points=[CommandHandler('start', start, )],
 
-            states={
-                TEAM_ID: [MessageHandler(Filters.text & (~Filters.command), get_team_id), ],
-
-                SETTING1: [MessageHandler(Filters.text & (~Filters.command), weekly_op_link), ],
-
-                SETTING2: [MessageHandler(Filters.text & (~Filters.command), lineup_op_link), ],
-
-                SETTING3: [MessageHandler(Filters.text & (~Filters.command), scheduling_suggestion), ],
-
-                SETTING4: [MessageHandler(Filters.text & (~Filters.command), scheduling_confirmation), ],
-
-            },
+            states=states,
 
             fallbacks=[CommandHandler('cancel', cancel)]
         )
         conv_handler_settings = ConversationHandler(
             entry_points=[CommandHandler('settings', start_settings, )],
 
-            states={
-                SETTING1: [MessageHandler(Filters.text & (~Filters.command), weekly_op_link), ],
-
-                SETTING2: [MessageHandler(Filters.text & (~Filters.command), lineup_op_link), ],
-
-                SETTING3: [MessageHandler(Filters.text & (~Filters.command), scheduling_suggestion), ],
-
-                SETTING4: [MessageHandler(Filters.text & (~Filters.command), scheduling_confirmation), ],
-
-            },
+            states=states,
 
             fallbacks=[CommandHandler('cancel', cancel)]
         )
