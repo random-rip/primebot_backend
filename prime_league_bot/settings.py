@@ -131,9 +131,7 @@ STATIC_URL = '/static/'
 BASE_URI = "https://www.primeleague.gg/de/leagues/"
 BASE_URI_AJAX = "https://www.primeleague.gg/ajax/"
 
-DEFAULT_TEAM_ID = env.int("TEAM_ID")
-
-DEFAULT_TELEGRAM_CHAT_ID = env.str("TG_CHAT_ID")
+DEFAULT_TELEGRAM_CHAT_ID = env.str("TG_CHAT_ID", None)
 
 STORAGE_DIR = os.path.join(BASE_DIR, "storage", )
 
