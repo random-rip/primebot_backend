@@ -8,8 +8,8 @@ from app_prime_league.teams import register_team, update_team
 from prime_league_bot import settings
 from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandler, ConversationHandler
 
-from telegram_interface.messages import START_GROUP, START_CHAT, HELP_COMMAND_LIST, FINISH, ISSUE, \
-    FEEDBACK, START_SETTINGS, TEAM_EXISTING, SETTINGS, CANCEL, SKIP, YES, TEAM_ID_VALID, HELP_TEXT
+from telegram_interface.messages import START_GROUP, START_CHAT, HELP_COMMAND_LIST, SETTINGS_FINISHED, ISSUE, \
+    FEEDBACK, START_SETTINGS, TEAM_EXISTING, SETTINGS, CANCEL, SKIP, YES, TEAM_ID_VALID, HELP_TEXT, REGISTRATION_FINISH
 
 TEAM_ID, SETTING1, SETTING2, SETTING3, SETTING4 = range(5)
 
@@ -45,11 +45,11 @@ def get_team_id(update: Update, context: CallbackContext):
         return TEAM_ID
     else:
         update.message.reply_markdown(
-            f"{TEAM_ID_VALID} {team.name}\n{SETTINGS[0]['text']}",
+            f"{TEAM_ID_VALID} {team.name}\n{REGISTRATION_FINISH}",
             reply_markup=ReplyKeyboardMarkup(SETTINGS[0]["keyboard"], one_time_keyboard=True),
             disable_web_page_preview=True,
         )
-        return SETTING1
+        return ConversationHandler.END
 
 
 def weekly_op_link(update: Update, context: CallbackContext):
@@ -57,7 +57,7 @@ def weekly_op_link(update: Update, context: CallbackContext):
     if answer not in list(chain(*SETTINGS[0]["keyboard"])):
         update.message.reply_markdown(
             SETTINGS[0]["text"],
-            reply_markup=ReplyKeyboardMarkup(SETTINGS[0]["keyboard"],one_time_keyboard=True),
+            reply_markup=ReplyKeyboardMarkup(SETTINGS[0]["keyboard"], one_time_keyboard=True),
             disable_web_page_preview=True,
         )
         return SETTING1
@@ -140,7 +140,7 @@ def scheduling_confirmation(update: Update, context: CallbackContext):
         tg_chat_id = update["message"]["chat"]["id"]
         update_team(tg_chat_id, settings=settings)
     update.message.reply_markdown(
-        FINISH,
+        SETTINGS_FINISHED,
         reply_markup=ReplyKeyboardRemove(),
         disable_web_page_preview=True,
     )
@@ -205,7 +205,6 @@ class BotFather:
         dp = updater.dispatcher
 
         states = {
-            TEAM_ID: [MessageHandler(Filters.text & (~Filters.command), get_team_id), ],
 
             SETTING1: [MessageHandler(Filters.text & (~Filters.command), weekly_op_link), ],
 
@@ -215,6 +214,10 @@ class BotFather:
 
             SETTING4: [MessageHandler(Filters.text & (~Filters.command), scheduling_confirmation), ],
 
+        }
+
+        start_states = {
+            TEAM_ID: [MessageHandler(Filters.text & (~Filters.command), get_team_id), ],
         }
 
         fallbacks = [
@@ -228,7 +231,7 @@ class BotFather:
         conv_handler = ConversationHandler(
             entry_points=[CommandHandler('start', start, )],
 
-            states=states,
+            states=start_states,
 
             fallbacks=fallbacks
         )

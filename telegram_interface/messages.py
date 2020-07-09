@@ -6,9 +6,18 @@ NO = "Nein"
 SKIP = "Überspringen"
 CANCEL = "/cancel"
 BOOLEAN_KEYBOARD = [[YES], [NO], [SKIP, CANCEL, ]]
-FINISH = "Einstellungen wurden gespeichert"
+SETTINGS_FINISHED = "Einstellungen wurden gespeichert"
+REGISTRATION_FINISH = "Perfekt! Du erhältst jetzt Updates von "
 CANCEL = "Vorgang abgebrochen, leider. \n" \
          "Brauchst du Hilfe nutze /help"
+
+GENERAL_MATCH_LINK = "https://www.primeleague.gg/de/leagues/matches/"
+GENERAL_TEAM_LINK = "https://www.primeleague.gg/de/leagues/teams/"
+
+US = "uns"
+FOR_GAME_DAY = "für [Spieltag] {}"
+FROM = "von {}"
+
 
 # Antworten:
 # Antwort auf /help
@@ -37,7 +46,7 @@ TEAM_ID_VALID = "Euer registriertes Team:"
 START_GROUP = "Ahoi, \n" \
               "du bist es Leid, jeden Tag mühselig auf der PrimeLeague-Seite nach neuen Updates zu suchen?\n" \
               "Dann bin ich hier genau richtig! \n" \
-              "Bitte kopiere zunächst deine Team-URL (Format: https://www.primeleague.gg/de/leagues/teams/" \
+              f"Bitte kopiere zunächst deine Team-URL (Format: {GENERAL_TEAM_LINK}" \
               "<TEAM ID>-<TEAM NAME>) in den Chat. \n" \
               f"Wenn du Hilfe brauchst: \n{HELP_COMMAND_LIST}"
 
@@ -76,3 +85,21 @@ SETTINGS = [
         "keyboard": BOOLEAN_KEYBOARD,
     },
 ]
+
+# Update Messages
+
+NEW_TIME_SUGGESTION_PREFIX = "Neuer Zeitvorschlag von [{}]({}{}) für [Spieltag {}]({}{}):\n"
+
+NEW_TIME_SUGGESTIONS_PREFIX = "Neue Zeitvorschläge von [{}]({}{}) für [Spieltag {}]({}{}):\n"
+
+SCHEDULING_AUTO_CONFIRMATION_TEXT = "[{}]({}{}) hat für [Spieltag {}]({}{}) weder die vorgeschlagene Zeit angenommen," \
+                                    "noch eine andere vorgeschlagen. Damit ist der Spieltermin\n" + \
+                                    "{}{} bestätigt."
+SCHEDULING_CONFIRMATION_TEXT = "Spielbestätigung von [{}]({}{}) für [Spieltag {}]({}{}):\n{}{}"
+
+GAME_BEGIN_CHANGE_TEXT = "Ein Administrator hat eine neue Zeit für das Match gegen {} " \
+                         "([Spieltag {}]({}{})) festgelegt:\n{}{}"
+
+NEW_LINEUP_TEXT = "[{}]({}{}) ([Spieltag {}]({}{})) hat ein neues [Lineup]({}) aufgestellt."
+
+WEEKLY_UPDATE_TEXT = "[Spieltag {}]({}{}) gegen [{}]({}{}):\nHier ist der [OP.GG Link]({}) des Teams."
