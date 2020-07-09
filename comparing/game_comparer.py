@@ -19,8 +19,7 @@ class GameComparer:
         if self.game_new.latest_suggestion is None:
             return False
 
-        new_suggestion_user = Player.objects.get(name=self.game_new.latest_suggestion.user).name
-
+        new_suggestion_user = self.game_new.latest_suggestion.user
         old_suggestion = self.game_old.get_first_suggested_game_begin
         team_leaders = list(self.game_old.team.player_set.all().filter(is_leader=True).values_list("name", flat=True))
         if old_suggestion is not None and old_suggestion == self.game_new.latest_suggestion.details[0]:

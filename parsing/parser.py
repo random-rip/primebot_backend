@@ -117,7 +117,7 @@ class MatchHTMLParser(BaseHTMLParser):
             details = [x.extract() for x in tr.find_all("span", class_="table-cell-container")[-1]]
             log = BaseLog.return_specified_log(
                 timestamp=time,
-                user=user.split(" ")[0],
+                user=user.split(" (Team")[0],
                 action=action,
                 details=details if len(details) > 0 else None,
             )
@@ -147,13 +147,14 @@ class MatchHTMLParser(BaseHTMLParser):
         Returns game begin timestamp if it is in logs
         :return Tuple: First argument: confirmed timestamp, second argument: log
         """
-        timestamp = None
-        for log in reversed(self.logs):
-            if isinstance(log, LogSuggestion):
-                timestamp = log.details[0]
+        for log in self.logs:
             if isinstance(log, LogSchedulingConfirmation):
                 return log.details, log
             if isinstance(log, LogSchedulingAutoConfirmation):
+                timestamp = None
+                for sug_log in reversed(self.logs):
+                    if isinstance(sug_log, LogSuggestion):
+                        timestamp = sug_log.details[0]
                 return timestamp, log
             if isinstance(log, LogChangeTime):
                 return log.details, log
