@@ -3,6 +3,9 @@ from babel import dates as babel
 from app_prime_league.models import Team, Game
 from parsing.parser import LogSchedulingAutoConfirmation, LogSchedulingConfirmation, LogChangeTime
 from prime_league_bot import settings
+from telegram_interface.messages import NEW_TIME_SUGGESTION_PREFIX, NEW_TIME_SUGGESTIONS_PREFIX, GENERAL_MATCH_LINK, US, \
+    SCHEDULING_AUTO_CONFIRMATION_TEXT, SCHEDULING_CONFIRMATION_TEXT, GAME_BEGIN_CHANGE_TEXT, NEW_LINEUP_TEXT, \
+    WEEKLY_UPDATE_TEXT, GENERAL_TEAM_LINK
 from utils.constants import EMOJI_THREE, EMOJI_ONE, EMOJI_TWO, EMOJI_SUCCESS, EMOJI_ARROW
 
 emoji_numbers = [
@@ -32,56 +35,81 @@ class TelegramMessagesWrapper:
     @staticmethod
     def send_new_suggestion_of_enemies(game: Game):
         details = list(game.suggestion_set.all().values_list("game_begin", flat=True))
-        prefix = f"{'Neuer Zeitvorschlag' if len(details) == 1 else 'Neue Zeitvorschläge'} von " \
-                 f"{game.enemy_team.team_tag} für Spieltag {game.game_day}:\n"
+        if len(details) == 1:
+            prefix = NEW_TIME_SUGGESTION_PREFIX
+        else:
+            prefix = NEW_TIME_SUGGESTIONS_PREFIX
+        prefix = prefix.format(game.enemy_team.team_tag, GENERAL_TEAM_LINK, game.enemy_team.id, game.game_day,
+                               GENERAL_MATCH_LINK, game.game_id)
 
         times = [format_datetime(x) for x in details]
         for i, val in enumerate(times):
             times[i] = f"{emoji_numbers[i]}{val}"
-        text = prefix + "\n".join([format_datetime(x) for x in details])
+        message = prefix + '\n'.join([format_datetime(x) for x in details])
 
-        text += "\nHier ist der [Link](https://www.primeleague.gg/de/leagues/matches/{}) zur Seite.".format(
-            game.game_id)
-        send_message(msg=text, chat_id=game.team.telegram_channel_id)
+        send_message(msg=message, chat_id=game.team.telegram_channel_id)
         return
 
     @staticmethod
     def send_new_suggestion(game: Game):
-        msg = f"Neuer [Zeitvorschlag von uns](https://www.primeleague.gg/de/leagues/matches/{game.game_id}) " \
-              f"für Spieltag {game.game_day} gegen {game.enemy_team.team_tag}. {EMOJI_SUCCESS}"
-        send_message(msg=msg, chat_id=game.team.telegram_channel_id)
+        message = NEW_TIME_SUGGESTION_PREFIX.format(
+            US,
+            GENERAL_TEAM_LINK,
+            game.team.id,
+            game.game_day,
+            GENERAL_MATCH_LINK,
+            game.game_id
+        )
+        message += EMOJI_SUCCESS
+        send_message(msg=message, chat_id=game.team.telegram_channel_id)
 
     @staticmethod
     def send_scheduling_confirmation(game: Game, latest_confirmation_log):
         time = format_datetime(game.game_begin)
+        details = (
+            game.enemy_team.team_tag,
+            GENERAL_TEAM_LINK,
+            game.enemy_team.id,
+            game.game_day,
+            GENERAL_MATCH_LINK,
+            game.game_id,
+            EMOJI_ARROW,
+            time
+        )
         if isinstance(latest_confirmation_log, LogSchedulingAutoConfirmation):
-            text = f"Das Team {game.enemy_team.team_tag} hat für Spieltag {game.game_day} weder die vorgeschlagene " \
-                   f"Zeit angenommen, noch eine andere vorgeschlagen. Damit ist der Spieltermin\n{EMOJI_ARROW}" + \
-                   f"{time} bestätigt."
+            message = SCHEDULING_AUTO_CONFIRMATION_TEXT.format(*details)
         elif isinstance(latest_confirmation_log, LogSchedulingConfirmation):
-            text = f"Spielbestätigung von {game.enemy_team.team_tag} für Spieltag {game.game_day}:\n{EMOJI_ARROW}" \
-                   f"{time}"
+            message = SCHEDULING_CONFIRMATION_TEXT.format(*details)
         else:
             assert isinstance(latest_confirmation_log, LogChangeTime)
-            text = f"Ein Administrator hat eine neue Zeit für das Match gegen {game.enemy_team.team_tag} " \
-                   f"(Spieltag {game.game_day}) festgelegt:\n{EMOJI_ARROW}" \
-                   f"{time}"
-
-        text += f"\nHier ist der [Link](https://www.primeleague.gg/de/leagues/matches/{game.game_id}) zur Seite."
-        send_message(msg=text, chat_id=game.team.telegram_channel_id)
+            message = GAME_BEGIN_CHANGE_TEXT.format(*details)
+        send_message(msg=message, chat_id=game.team.telegram_channel_id)
 
     @staticmethod
     def send_new_lineup_of_enemies(game: Game, ):
         op_link = game.get_op_link_of_enemies(only_lineup=True)
         if op_link is None:
             raise Exception()
-        text = f"{game.enemy_team.team_tag} hat ein neues [Lineup]({op_link}) aufgestellt."
-        send_message(msg=text, chat_id=game.team.telegram_channel_id)
+        message = NEW_LINEUP_TEXT.format(
+            game.enemy_team.team_tag,
+            GENERAL_TEAM_LINK,
+            game.enemy_team.id,
+            game.game_day,
+            GENERAL_MATCH_LINK,
+            game.game_id,
+            op_link)
+        send_message(msg=message, chat_id=game.team.telegram_channel_id)
 
     @staticmethod
     def send_new_game_day(game: Game):
         op_link = game.get_op_link_of_enemies(only_lineup=False)
-        text = f"Spieltag {game.game_day} gegen [{game.enemy_team.team_tag}]" \
-               f"(https://www.primeleague.gg/de/leagues/matches/{game.game_id}):" \
-               f"\nHier ist der [op.gg-Link]({op_link}) des Teams."
+        text = WEEKLY_UPDATE_TEXT.format(
+            game.game_day,
+            GENERAL_MATCH_LINK,
+            game.game_id,
+            game.enemy_team.team_tag,
+            GENERAL_TEAM_LINK,
+            game.enemy_team.id,
+            op_link
+        )
         send_message(msg=text, chat_id=game.team.telegram_channel_id)

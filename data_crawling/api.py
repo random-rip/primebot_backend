@@ -88,4 +88,4 @@ class Crawler:
         return resp.text
 
 
-crawler = Crawler(local=False)
+crawler = Crawler(local=True)
