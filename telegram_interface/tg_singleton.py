@@ -43,10 +43,7 @@ class TelegramMessagesWrapper:
         prefix = prefix.format(game.enemy_team.team_tag, GENERAL_TEAM_LINK, game.enemy_team.id, game.game_day,
                                GENERAL_MATCH_LINK, game.game_id)
 
-        times = [format_datetime(x) for x in details]
-        for i, val in enumerate(times):
-            times[i] = f"{emoji_numbers[i]}{val}"
-        message = prefix + '\n'.join([format_datetime(x) for x in details])
+        message = prefix + '\n'.join([f"{emoji_numbers[i]}{format_datetime(x)}" for i, x in enumerate(details)])
 
         send_message(msg=message, chat_id=game.team.telegram_channel_id)
         return
