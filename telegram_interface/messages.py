@@ -31,10 +31,11 @@ HELP_COMMAND_LIST = "/issue - um zu Erfahren wie Ihr eine Störung melden könnt
                     "/settings - um die Einstellungen des Bots zu bearbeiten"
 
 # Antwort auf /issue
-ISSUE = f"Habt Ihr einen Fehler bemerkt? Bitte schreibt uns gern eine Nachricht in unserer [Support-Gruppe]({SUPPORT_GROUP_LINK}) (inkl. Screenshots,...) "
+ISSUE = f"Habt Ihr einen Fehler bemerkt? Bitte schreibt uns eine Nachricht in unserer " \
+        f"[Support-Gruppe]({SUPPORT_GROUP_LINK}) (inkl. Screenshots,... /bop) "
 
 # Antwort auf /feedback
-FEEDBACK = f"Habt ihr Feedback? Schreibt es uns gern eine Nachricht in unserer [Support-Gruppe]({SUPPORT_GROUP_LINK})."
+FEEDBACK = f"Habt ihr Feedback? Hinterlasst uns gerne eine Nachricht in unserer [Support-Gruppe]({SUPPORT_GROUP_LINK})."
 
 # Antwort, wenn /start Team_id oder tg_id bereits vergeben
 TEAM_EXISTING = "Euer Team ist bereits registriert und mit einem anderen Chat verknüpft oder " \
