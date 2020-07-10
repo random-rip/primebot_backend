@@ -52,7 +52,7 @@
 		<li>
 		<a href="https://www.primeleague.gg/de/leagues/prm">Spielen</a>
 					<i class="subnav-toggle icon-toggle"></i>
-			<ul><li><a href="https://www.primeleague.gg/de/statics/rules_general">Regelwerk</a></li><li><a href="https://www.primeleague.gg/de/statics/faq">FAQ</a></li><li><a href="https://www.primeleague.gg/de/users/support">Hilfe & Support</a></li><li><a href="https://www.primeleague.gg/de/leagues/prm/1457">Spring Split</a></li><li><a href="https://www.primeleague.gg/de/leagues/teams">Alle Teams</a></li></ul>
+			<ul><li><a href="https://www.primeleague.gg/de/statics/rules_general">Regelwerk</a></li><li><a href="https://www.primeleague.gg/de/statics/faq">FAQ</a></li><li><a href="https://www.primeleague.gg/de/users/support">Hilfe & Support</a></li><li><a href="https://www.primeleague.gg/de/leagues/teams">Alle Teams</a></li><li><a href="https://www.primeleague.gg/de/leagues/prm/1457">Spring Split</a></li></ul>
 			</li>
 		<li>
 		<a href="https://www.primeleague.gg/de/leagues/teamfinder">Teamsuche</a>
@@ -128,7 +128,7 @@
 			</ul>
 			<ul class="content-icon-info">
 																		<li class="wide"><i class="icon-league_group"></i><div class="txt-info">Aktuelle Gruppe:</div><a href="https://www.primeleague.gg/de/leagues/prm/1504-summer-split-2020/group/509-gruppenphase/5591-division-4-17">Division 4.17</a></li>
-						<li class="wide"><i class="icon-record"></i><div class="txt-info">Aktuelles Ergebnis:</div>Rang: 3. (5/3)</li>
+						<li class="wide"><i class="icon-record"></i><div class="txt-info">Aktuelles Ergebnis:</div>Rang: 3. (6/4)</li>
 															</ul>
 		</div>
 	</li>
@@ -349,7 +349,7 @@
 		<ul class="content-icon-info content-icon-info-l">
 	
 	<li class="wide"><i class="icon-league_group"></i><div class="txt-info">Gruppe</div><div class="txt-content"><a href="https://www.primeleague.gg/de/leagues/prm/1504-summer-split-2020/group/509-gruppenphase/5591-division-4-17">Division 4.17</a></a></div></li>
-	<li class="wide"><i class="icon-record"></i><div class="txt-info">Ergebnis</div><div class="txt-content">Rang: 3. (5/3)</div></li>
+	<li class="wide"><i class="icon-record"></i><div class="txt-info">Ergebnis</div><div class="txt-content">Rang: 3. (6/4)</div></li>
 </ul>
 <hr class="ge-sep">
 <ul class="league-stage-matches">
@@ -448,7 +448,7 @@
 			<span class="table-cell-item">TWB</span>
 			</a></td>
 	<td class="col-2 col-text-center"><a class="table-cell-container" href="https://www.primeleague.gg/de/leagues/matches/596860-the-wild-bunch-vs-exit-gaming-darkness">
-		<span class="table-cell-item important"><span class="itime " data-time="1594317600" data-ago="0" data-force-rel="0"></span></span>
+		<span class="table-cell-item important">1:1</span>
 	</a></td>
 	<td class="col-3 col-text-right"><a class="table-cell-container" href="https://www.primeleague.gg/de/leagues/matches/596860-the-wild-bunch-vs-exit-gaming-darkness">
 					<span class="table-cell-item">EXIT</span>

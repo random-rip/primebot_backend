@@ -9,7 +9,8 @@ from prime_league_bot import settings
 from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandler, ConversationHandler
 
 from telegram_interface.messages import START_GROUP, START_CHAT, HELP_COMMAND_LIST, SETTINGS_FINISHED, ISSUE, \
-    FEEDBACK, START_SETTINGS, TEAM_EXISTING, SETTINGS, CANCEL, SKIP, YES, TEAM_ID_VALID, HELP_TEXT, REGISTRATION_FINISH
+    FEEDBACK, START_SETTINGS, TEAM_EXISTING, SETTINGS, CANCEL, SKIP, YES, TEAM_ID_VALID, HELP_TEXT, REGISTRATION_FINISH, \
+    WAIT_A_MOMENT_TEXT
 
 TEAM_ID, SETTING1, SETTING2, SETTING3, SETTING4 = range(5)
 
@@ -36,6 +37,11 @@ def get_team_id(update: Update, context: CallbackContext):
     link = update.message.text
     team_id = link.split("/teams/")[-1].split("-")[0]
     tg_group_id = update["message"]["chat"]["id"]
+    context.bot.send_message(
+        text=WAIT_A_MOMENT_TEXT,
+        chat_id=tg_group_id,
+        arse_mode="Markdown",
+    )
     team = register_team(team_id=team_id, tg_group_id=tg_group_id)
     if team is None:
         update.message.reply_markdown(

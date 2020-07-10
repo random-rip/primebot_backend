@@ -4,5 +4,13 @@ EMOJI_THREE = "3️"
 EMOJI_ARROW = "⚡"
 EMOJI_SUCCESS = "✅"
 EMOJI_SAD = "😔"
+EMOJI_FIGHT = "⚔"
+EMOJI_TROPHY = "🏆"
+EMJOI_MAGN_GLASS = "🔍"
+EMOJI_LINEUP = "📈🆙"
+EMOJI_SOON = "🔜"
+EMOJI_CLOVER = "🍀"
+EMOJI_MINDBLOWN = "🤯"
+EMOJI_POST_HORN = "📯"
 
 TEAM_LEADER = ["Miriiel", "Starscream853", "Isilmacil", "Grayknife", "Kamir", "Itzsofteis", "Pixelqueen"]

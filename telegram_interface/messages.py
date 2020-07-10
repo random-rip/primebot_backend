@@ -1,4 +1,7 @@
 # Variablen
+from utils.constants import EMOJI_ONE, EMOJI_TWO, EMOJI_THREE, EMOJI_FIGHT, EMOJI_CLOVER, EMOJI_MINDBLOWN, \
+    EMOJI_POST_HORN
+
 SUPPORT_GROUP_LINK = "https://t.me/joinchat/IUH8NhsKTYUtFKaqQMWhKA"
 START_LINK = "https://t.me/prime_league_bot?startgroup=start"
 YES = "Ja"
@@ -34,28 +37,29 @@ ISSUE = f"Habt Ihr einen Fehler bemerkt? Bitte schreibt uns gern eine Nachricht 
 FEEDBACK = f"Habt ihr Feedback? Schreibt es uns gern eine Nachricht in unserer [Support-Gruppe]({SUPPORT_GROUP_LINK})."
 
 # Antwort, wenn /start Team_id oder tg_id bereits vergeben
-TEAM_EXISTING = "Euer Team ist bereits in registriert und mit einer anderen Gruppe verknüpft oder " \
-                "für diese Gruppe ist bereits ein Team registriert\n" \
-                "oder die angegebene URL ist falsch. \n" \
-                "Solltet ihr Hilfe benötigen, nutzt bitte /help oder /issue"
+TEAM_EXISTING = "Euer Team ist bereits registriert und mit einem anderen Chat verknüpft oder " \
+                "für diesen Chat ist bereits ein anderes Team hinterlegt\n" \
+                "oder eure eingegebene URL ist falsch.\n" \
+                "Solltet ihr Hilfe benötigen, nutzt bitte /help oder /issue ."
 
-TEAM_ID_VALID = "Euer registriertes Team:"
+TEAM_ID_VALID = "Euer registriertes Team:\n"
 
 # Start Messages
 # Antwort auf /start, wenn man command in einer Gruppe aufruft
 START_GROUP = "Ahoi, \n" \
               "du bist es Leid, jeden Tag mühselig auf der PrimeLeague-Seite nach neuen Updates zu suchen?\n" \
-              "Dann bin ich hier genau richtig! \n" \
+              f"Dann bin ich hier genau richtig! " \
+              f"Mit mir bekommst du alle Updates als {EMOJI_POST_HORN}Pushnachricht in diesen Chat. {EMOJI_MINDBLOWN}\n" \
               f"Bitte kopiere zunächst deine Team-URL (Format: {GENERAL_TEAM_LINK}" \
               "<TEAM ID>-<TEAM NAME>) in den Chat. \n" \
               f"Wenn du Hilfe brauchst: \n{HELP_COMMAND_LIST}"
 
 # Antwort auf /start, wenn man command in einem 1on1 Chat aufruft
 START_CHAT = "Ahoi, \n" \
-             "1. Erstelle einen Chat\n" \
-             f"2. klicke [hier]({START_LINK}) und lade den Bot in deine Gruppe ein\n" \
-             "3. Beantworte die gestellten Fragen\n" \
-             "Viel Spaß"
+             f"{EMOJI_ONE}Erstelle einen Chat\n" \
+             f"{EMOJI_TWO}klicke [hier]({START_LINK}) und lade den Bot in deine Gruppe ein\n" \
+             f"{EMOJI_THREE}Personalisiere deine Einstellungen\n" \
+             f"Viel Glück auf den Richtfeldern! {EMOJI_CLOVER}"
 
 # Settings (ConversationHandler)
 START_SETTINGS = "Settings: "
@@ -100,6 +104,9 @@ SCHEDULING_CONFIRMATION_TEXT = "Spielbestätigung von [{}]({}{}) für [Spieltag 
 GAME_BEGIN_CHANGE_TEXT = "Ein Administrator hat eine neue Zeit für das Match gegen {} " \
                          "([Spieltag {}]({}{})) festgelegt:\n{}{}"
 
-NEW_LINEUP_TEXT = "[{}]({}{}) ([Spieltag {}]({}{})) hat ein neues [Lineup]({}) aufgestellt."
+NEW_LINEUP_TEXT = "[{}]({}{}) ([Spieltag {}]({}{})) hat ein neues [Lineup]({}) aufgestellt. {}"
 
-WEEKLY_UPDATE_TEXT = "[Spieltag {}]({}{}) gegen [{}]({}{}):\nHier ist der [OP.GG Link]({}) des Teams."
+WEEKLY_UPDATE_TEXT = "{}[Spieltag {}]({}{}) gegen [{}]({}{}):\nHier ist der [OP.GG Link]({}) des Teams."
+
+
+WAIT_A_MOMENT_TEXT = "Alles klar, ich schaue, was ich dazu finden kann.\nDas kann einen Moment dauern...⏳"

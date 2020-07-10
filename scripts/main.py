@@ -19,10 +19,8 @@ def get_session():
 
 def check_match(match):
     game_id = match.game_id
-    print(game_id)
     team = match.team
     gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=game_id, )
-    print(gmd.latest_suggestion)
     cmp = GameComparer(match, gmd)
     settings = dict(team.setting_set.all().values_list("attr_name", "attr_value"))
     if match.game_begin is None:
@@ -59,8 +57,7 @@ def check(uncompleted_games):
 
 def run():
     start_time = time.time()
-    # uncompleted_games = Game.objects.get_uncompleted_games()
-    uncompleted_games = Game.objects.filter(id=5)
+    uncompleted_games = Game.objects.get_uncompleted_games()
     check(uncompleted_games=uncompleted_games)
 
     duration = time.time() - start_time

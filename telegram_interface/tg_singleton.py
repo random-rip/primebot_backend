@@ -6,7 +6,8 @@ from prime_league_bot import settings
 from telegram_interface.messages import NEW_TIME_SUGGESTION_PREFIX, NEW_TIME_SUGGESTIONS_PREFIX, GENERAL_MATCH_LINK, US, \
     SCHEDULING_AUTO_CONFIRMATION_TEXT, SCHEDULING_CONFIRMATION_TEXT, GAME_BEGIN_CHANGE_TEXT, NEW_LINEUP_TEXT, \
     WEEKLY_UPDATE_TEXT, GENERAL_TEAM_LINK
-from utils.constants import EMOJI_THREE, EMOJI_ONE, EMOJI_TWO, EMOJI_SUCCESS, EMOJI_ARROW
+from utils.constants import EMOJI_THREE, EMOJI_ONE, EMOJI_TWO, EMOJI_SUCCESS, EMOJI_ARROW, EMOJI_FIGHT, EMOJI_SOON, \
+    EMOJI_LINEUP
 
 emoji_numbers = [
     EMOJI_ONE,
@@ -73,7 +74,7 @@ class TelegramMessagesWrapper:
             game.game_day,
             GENERAL_MATCH_LINK,
             game.game_id,
-            EMOJI_ARROW,
+            EMOJI_FIGHT,
             time
         )
         if isinstance(latest_confirmation_log, LogSchedulingAutoConfirmation):
@@ -97,13 +98,16 @@ class TelegramMessagesWrapper:
             game.game_day,
             GENERAL_MATCH_LINK,
             game.game_id,
-            op_link)
+            op_link,
+            EMOJI_LINEUP,
+        )
         send_message(msg=message, chat_id=game.team.telegram_channel_id)
 
     @staticmethod
     def send_new_game_day(game: Game):
         op_link = game.get_op_link_of_enemies(only_lineup=False)
         text = WEEKLY_UPDATE_TEXT.format(
+            EMOJI_SOON,
             game.game_day,
             GENERAL_MATCH_LINK,
             game.game_id,
