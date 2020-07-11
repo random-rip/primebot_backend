@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <style>
+      textarea { width: 70%; height: 200px; }
+    </style>
 </head>
 <body>
 
 <form action="{% url "message" %}" method="post">
     {% csrf_token %}
     <label for="message"></label>
-    <textarea id="message" name="message"></textarea>
+    <textarea id="message" name="message" stlye="width:70%"></textarea>
 <button type="submit">Senden</button>
 </form>
 </body>
