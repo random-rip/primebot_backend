@@ -5,7 +5,7 @@ from parsing.parser import LogSchedulingAutoConfirmation, LogSchedulingConfirmat
 from prime_league_bot import settings
 from telegram_interface.messages import NEW_TIME_SUGGESTION_PREFIX, NEW_TIME_SUGGESTIONS_PREFIX, GENERAL_MATCH_LINK, US, \
     SCHEDULING_AUTO_CONFIRMATION_TEXT, SCHEDULING_CONFIRMATION_TEXT, GAME_BEGIN_CHANGE_TEXT, NEW_LINEUP_TEXT, \
-    WEEKLY_UPDATE_TEXT, GENERAL_TEAM_LINK
+    WEEKLY_UPDATE_TEXT, GENERAL_TEAM_LINK, OWN_NEW_TIME_SUGGESTION_TEXT
 from utils.constants import EMOJI_THREE, EMOJI_ONE, EMOJI_TWO, EMOJI_SUCCESS, EMOJI_ARROW, EMOJI_FIGHT, EMOJI_SOON, \
     EMOJI_LINEUP
 
@@ -50,15 +50,12 @@ class TelegramMessagesWrapper:
 
     @staticmethod
     def send_new_suggestion(game: Game):
-        message = NEW_TIME_SUGGESTION_PREFIX.format(
-            US,
-            GENERAL_TEAM_LINK,
-            game.team.id,
+        message = OWN_NEW_TIME_SUGGESTION_TEXT.format(
             game.game_day,
             GENERAL_MATCH_LINK,
-            game.game_id
+            game.game_id,
+            EMOJI_SUCCESS
         )
-        message += EMOJI_SUCCESS
         send_message(msg=message, chat_id=game.team.telegram_channel_id)
 
     @staticmethod

@@ -1,3 +1,4 @@
+import concurrent.futures
 import time
 
 from app_prime_league.models import Team, Player, Game, GameMetaData
@@ -70,20 +71,24 @@ def add_players(parser: TeamHTMLParser, team: Team):
             player.save()
 
 
+def add_game(team, game_id):
+    gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=game_id, )
+    game = Game.objects.get_game_by_team(game_id=game_id, team=team)
+    if game is None:
+        game = Game()
+    else:
+        print("Spiel existiert bereits in der Datenbank und wird geupdated")
+    gmd.get_enemy_team_data()
+    game.update_from_gmd(gmd)
+    game.update_enemy_team(gmd)
+    game.update_enemy_lineup(gmd)
+    game.update_latest_suggestion(gmd)
+
+
 def add_games(parser: TeamHTMLParser, team: Team):
     start_time = time.time()
     game_ids = parser.get_matches()
-    for j in game_ids:
-        gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=j, )
-        game = Game.objects.get_game_by_team(game_id=j, team=team)
-        if game is None:
-            game = Game()
-        else:
-            print("Spiel existiert bereits in der Datenbank und wird geupdated")
-        gmd.get_enemy_team_data()
-        game.update_from_gmd(gmd)
-        game.update_enemy_team(gmd)
-        game.update_enemy_lineup(gmd)
-        game.update_latest_suggestion(gmd)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+        executor.map(lambda p: add_game(*p), ((team, game_id) for game_id in game_ids))
     duration = time.time() - start_time
     print(f"Added games ({len(game_ids)}) in {duration} seconds")

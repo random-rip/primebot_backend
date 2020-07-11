@@ -10,7 +10,7 @@ from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandle
 
 from telegram_interface.messages import START_GROUP, START_CHAT, HELP_COMMAND_LIST, SETTINGS_FINISHED, ISSUE, \
     FEEDBACK, START_SETTINGS, TEAM_EXISTING, SETTINGS, CANCEL, SKIP, YES, TEAM_ID_VALID, HELP_TEXT, REGISTRATION_FINISH, \
-    WAIT_A_MOMENT_TEXT
+    WAIT_A_MOMENT_TEXT, EXPLAIN_TEXT
 
 TEAM_ID, SETTING1, SETTING2, SETTING3, SETTING4 = range(5)
 
@@ -189,6 +189,15 @@ def feedback(update: Update, context: CallbackContext):
     return ConversationHandler.END
 
 
+def explain(update: Update, context: CallbackContext):
+    update.message.reply_markdown(
+        EXPLAIN_TEXT,
+        reply_markup=ReplyKeyboardRemove(),
+        disable_web_page_preview=True,
+    )
+    return ConversationHandler.END
+
+
 def start_settings(update: Update, context: CallbackContext):
     update.message.reply_markdown(
         START_SETTINGS + "\n" + SETTINGS[TEAM_ID]["text"],
@@ -232,6 +241,7 @@ class BotFather:
             CommandHandler("issue", issue),
             CommandHandler("feedback", feedback),
             CommandHandler("bop", bop),
+            CommandHandler("explain", explain),
         ]
         # Add conversation handler with the states TEAM_ID, SETTING1, SETTING2
         conv_handler = ConversationHandler(
