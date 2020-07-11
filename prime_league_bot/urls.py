@@ -16,6 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from app_prime_league import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # path('login/', admin.site.),
+    path('globalmessage/', views.GlobalMessage.as_view(), name="message"),
 ]
