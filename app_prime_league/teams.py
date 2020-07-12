@@ -1,6 +1,8 @@
 import concurrent.futures
 import time
 
+from django.db.models import Q
+
 from app_prime_league.models import Team, Player, Game, GameMetaData
 from parsing.parser import TeamHTMLParser, TeamWrapper
 
@@ -20,26 +22,29 @@ def register_team(team_id, tg_group_id):
 
 
 def add_team(team_id, tg_group_id):
-    if not Team.objects.filter(telegram_channel_id=tg_group_id).exists():
-        wrapper = TeamWrapper(team_id=team_id)
-        try:
-            parser = wrapper.parser
-        except Exception:
-            print("Wrapper is None")
-            return None
+    if Team.objects.filter(
+            Q(id=team_id, telegram_channel_id__isnull=False) |
+            Q(telegram_channel_id=tg_group_id)).exists():
+        print("Dieser Telegramgruppe ist bereits ein Team zugewiesen.")
+        return None
 
-        team, created = Team.objects.get_or_create(id=team_id, defaults={
-            "name": parser.get_team_name(),
-            "team_tag": parser.get_team_tag(),
-            "division": parser.get_current_division(),
-            "telegram_channel_id": tg_group_id,
-        })
-        if not created:
-            team.telegram_channel_id = tg_group_id
-            team.save()
-        return team
-    print("Dieser Telegramgruppe ist bereits ein Team zugewiesen.")
-    return None
+    try:
+        wrapper = TeamWrapper(team_id=team_id)
+        parser = wrapper.parser
+    except Exception:
+        print("Wrapper is None")
+        return None
+
+    team, created = Team.objects.get_or_create(id=team_id, defaults={
+        "name": parser.get_team_name(),
+        "team_tag": parser.get_team_tag(),
+        "division": parser.get_current_division(),
+        "telegram_channel_id": tg_group_id,
+    })
+    if not created:
+        team.telegram_channel_id = tg_group_id
+        team.save()
+    return team
 
 
 def update_team(tg_chat_id, settings: dict):
@@ -47,13 +52,14 @@ def update_team(tg_chat_id, settings: dict):
         team = Team.objects.get(telegram_channel_id=tg_chat_id)
     except Team.DoesNotExist:
         print("Team existiert nicht")
-        return
+        return None
     for key, value in settings.items():
         setting, _ = team.setting_set.get_or_create(attr_name=key, defaults={
             "attr_value": value,
         })
         setting.attr_value = value
         setting.save()
+    return team
 
 
 def add_players(parser: TeamHTMLParser, team: Team):
