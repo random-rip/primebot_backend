@@ -11,9 +11,11 @@ CANCEL = "/cancel"
 BOOLEAN_KEYBOARD = [[YES], [NO], [SKIP, CANCEL, ]]
 SETTINGS_FINISHED = "Alles klar, ich habe die Einstellungen gespeichert."
 REGISTRATION_FINISH = "Perfekt! Ich sende euch jetzt Benachrichtigungen in diese Gruppe, " \
-                      f"wenn es neue Updates zu kommenden Matches gibt. {EMOJI_TROPHY}"
+                      f"wenn es neue Updates zu kommenden Matches gibt. {EMOJI_TROPHY}\n" \
+                      f"Benutzt /settings, um noch die Benachrichtigungseinstellungen zu personalisieren."
 CANCEL = "Vorgang abgebrochen, leider. \n" \
-         f"Brauchst du Hilfe nutze /help {EMJOI_MAGN_GLASS}"
+         f"Brauchst du Hilfe nutze /help. {EMJOI_MAGN_GLASS}"
+RETRY_TEXT = "Bitte versuche es erneut oder /cancel."
 
 GENERAL_MATCH_LINK = "https://www.primeleague.gg/de/leagues/matches/"
 GENERAL_TEAM_LINK = "https://www.primeleague.gg/de/leagues/teams/"
@@ -41,28 +43,33 @@ FEEDBACK = f"Habt Ihr Feedback? Hinterlasst den Entwicklern gerne eine Nachricht
            f"[Support-Gruppe]({SUPPORT_GROUP_LINK})."
 
 # Antwort, wenn /start Team_id oder tg_id bereits vergeben
-TEAM_EXISTING = "Euer Team ist bereits registriert und mit einem anderen Chat verknüpft\n" \
-                "oder für diesen Chat ist bereits ein anderes Team hinterlegt\n" \
-                "oder die eingegebene URL ist falsch.\n" \
-                "Solltet ihr Hilfe benötigen, nutzt bitte /help oder /issue ."
+TEAM_EXISTING = "Dieses Team ist bereits registriert und mit einem anderen Chat verknüpft oder\n" \
+                "für diesen Chat ist bereits ein anderes Team hinterlegt oder\n" \
+                "die Team ID wurde nicht gefunden.\n" \
+                f"Solltet ihr Hilfe benötigen, nutzt bitte /help oder /issue.\n{RETRY_TEXT}"
 
+TEAM_ID_NOT_VALID_TEXT = "Die angegebene URL entspricht nicht dem richtigen Format. \n" \
+                         "Achte auf das richtige Format oder gebe die Team ID ein.\n" \
+                         f"{RETRY_TEXT}"
 TEAM_ID_VALID = "Euer registriertes Team:\n"
 
 # Start Messages
 # Antwort auf /start, wenn man command in einer Gruppe aufruft
-START_GROUP = "Ahoi, \n" \
+START_GROUP = "_Hallo Beschwörer, \n" \
               "du bist es Leid, jeden Tag mühselig auf der PrimeLeague-Seite nach neuen Updates zu suchen?\n" \
-              f"Dann bin ich hier genau richtig! " \
-              f"Mit mir bekommst du alle Updates als {EMOJI_POST_HORN}Pushnachricht in diesen Chat. {EMOJI_MINDBLOWN}\n" \
-              f"Bitte kopiere dafür deine Team-URL (Format: {GENERAL_TEAM_LINK}" \
-              "<TEAM ID>-<TEAM NAME>) in den Chat.\n" \
+              f"Dann bin ich hier genau richtig:\n" \
+              f"__Ich schicke dir alle Updates der Seite als Pushbenachrichtigung{EMOJI_POST_HORN} " \
+              f"in diesen Gruppen-Chat.___ {EMOJI_MINDBLOWN}\n\n" \
+              f"{EMOJI_ONE} Bitte kopiere dafür deine Team-URL (Format: {GENERAL_TEAM_LINK}<TEAM ID>-<TEAM NAME>)" \
+              "oder deine Team ID in den Chat.\n" \
  \
     # Antwort auf /start, wenn man command in einem 1on1 Chat aufruft
-START_CHAT = "Ahoi, \n" \
-             f"{EMOJI_ONE}Erstelle einen Chat\n" \
-             f"{EMOJI_TWO}klicke [hier]({START_LINK}) und lade den Bot in deine Gruppe ein\n" \
-             f"{EMOJI_THREE}Personalisiere deine Einstellungen\n" \
-             f"Viel Glück auf den Richtfeldern! {EMOJI_CLOVER}"
+START_CHAT = "_Hallo Beschwörer,\ndu möchtest den PrimeBot für Pushbenachrichtigungen nutzen?_\n\n" \
+             "Setup:\n" \
+             f"{EMOJI_ONE} Erstelle einen Gruppen-Chat in Telegram.\n" \
+             f"{EMOJI_TWO} Klicke [hier]({START_LINK}) und lade so den PrimeBot in deine Gruppe ein.\n" \
+             f"{EMOJI_THREE} Personalisiere mit /settings deine Einstellungen.\n\n" \
+             f"_Viel Glück auf den Richtfeldern!_ {EMOJI_CLOVER}"
 
 # Settings (ConversationHandler)
 START_SETTINGS = "Settings: "
@@ -70,7 +77,7 @@ SETTINGS = [
     # 0 WEEKLY_OP_LINK
     {
         "name": "weekly_op_link",
-        "text": "Okay!\nMöchtet ihr jede Woche eine neue Benachrichtigung für die kommende Spielwoche erhalten?",
+        "text": "Möchtet ihr jede Woche eine neue Benachrichtigung für die kommende Spielwoche erhalten?",
         "keyboard": BOOLEAN_KEYBOARD,
     },
     # 1 LINEUP_OP_LINK
@@ -112,12 +119,14 @@ NEW_LINEUP_TEXT = "[{}]({}{}) ([Spieltag {}]({}{})) hat ein neues [Lineup]({}) a
 WEEKLY_UPDATE_TEXT = "{}[Spieltag {}]({}{}) gegen [{}]({}{}):\nHier ist der [OP.GG Link]({}) des Teams."
 
 WAIT_A_MOMENT_TEXT = "Alles klar, ich schaue, was ich dazu finden kann.\nDas kann einen Moment dauern...⏳"
+NO_GROUP_CHAT = "Dieser Befehl kann nur in einer Telegram-Gruppe ausgeführt werden."
+TEAM_NOT_IN_DB_TEXT = "Die Telegram-Gruppe wurde noch nicht initialisiert (/start)."
 
 EXPLAIN_TEXT = "Dieser Bot ist nicht in Kooperation mit der PrimeLeague bzw. der Freaks4u Gaming GmbH entstanden " \
                "und hat damit keinen direkten Bezug zur PrimeLeague. " \
                "Dieser Bot wurde aufgrund von versäumten Matches entworfen und programmiert. " \
                "Der Bot wurde nach bestem Gewissen realisiert, und nach einer Testphase für andere Teams zur " \
-               "Verfügung gestellt. Dennoch sind alle Angaben ohne Gewähr!" \
+               "Verfügung gestellt. Dennoch sind alle Angaben ohne Gewähr! " \
                "**Funktionsweise:** Nach der Registrierung des Teams wird über die noch nicht gespielten Spiele " \
                "iteriert und deren Website nach Änderungen abgesucht. Dies geschieht alle 30 Minuten. " \
                "Das bedeutet, dass Updates maximal 30 Minuten alt sein können. Das wöchentliche Update geschieht " \

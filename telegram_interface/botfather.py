@@ -10,7 +10,7 @@ from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandle
 
 from telegram_interface.messages import START_GROUP, START_CHAT, HELP_COMMAND_LIST, SETTINGS_FINISHED, ISSUE, \
     FEEDBACK, START_SETTINGS, TEAM_EXISTING, SETTINGS, CANCEL, SKIP, YES, TEAM_ID_VALID, HELP_TEXT, REGISTRATION_FINISH, \
-    WAIT_A_MOMENT_TEXT, EXPLAIN_TEXT
+    WAIT_A_MOMENT_TEXT, EXPLAIN_TEXT, NO_GROUP_CHAT, TEAM_NOT_IN_DB_TEXT, TEAM_ID_NOT_VALID_TEXT
 
 TEAM_ID, SETTING1, SETTING2, SETTING3, SETTING4 = range(5)
 
@@ -18,10 +18,10 @@ TEAM_ID, SETTING1, SETTING2, SETTING3, SETTING4 = range(5)
 def start(update: Update, context: CallbackContext):
     chat_type = update["message"]["chat"]["type"]
     if chat_type == "group":
-        update.message.reply_markdown(START_GROUP, markdown=True)
+        update.message.reply_markdown(START_GROUP, disable_web_page_preview=True)
         return TEAM_ID
     else:
-        update.message.reply_markdown(START_CHAT, )
+        update.message.reply_markdown(START_CHAT, parse_mode="Markdown", disable_web_page_preview=True)
         return ConversationHandler.END
 
 
@@ -34,13 +34,23 @@ def bop(update: Update, context: CallbackContext):
 
 
 def get_team_id(update: Update, context: CallbackContext):
-    link = update.message.text
-    team_id = link.split("/teams/")[-1].split("-")[0]
+    response = update.message.text
+    try:
+        team_id = int(response)
+    except Exception as e:
+        try:
+            team_id = int(response.split("/teams/")[-1].split("-")[0])
+        except Exception as e:
+            update.message.reply_markdown(
+                TEAM_ID_NOT_VALID_TEXT,
+            )
+            return TEAM_ID
+
     tg_group_id = update["message"]["chat"]["id"]
     context.bot.send_message(
         text=WAIT_A_MOMENT_TEXT,
         chat_id=tg_group_id,
-        arse_mode="Markdown",
+        parse_mode="Markdown",
     )
     team = register_team(team_id=team_id, tg_group_id=tg_group_id)
     if team is None:
@@ -51,8 +61,8 @@ def get_team_id(update: Update, context: CallbackContext):
         return TEAM_ID
     else:
         update.message.reply_markdown(
-            f"{TEAM_ID_VALID} {team.name}\n{REGISTRATION_FINISH}",
-            reply_markup=ReplyKeyboardMarkup(SETTINGS[0]["keyboard"], one_time_keyboard=True),
+            f"{TEAM_ID_VALID}*{team.name}*\n{REGISTRATION_FINISH}",
+            reply_markup=ReplyKeyboardRemove(),
             disable_web_page_preview=True,
         )
         return ConversationHandler.END
@@ -73,7 +83,9 @@ def weekly_op_link(update: Update, context: CallbackContext):
     }
     if answer != SKIP:
         tg_chat_id = update["message"]["chat"]["id"]
-        update_team(tg_chat_id, settings=settings)
+        team = update_team(tg_chat_id, settings=settings)
+        if team is None:
+            return team_not_exists(update, context)
     update.message.reply_markdown(
         SETTINGS[1]["text"],
         reply_markup=ReplyKeyboardMarkup(SETTINGS[1]["keyboard"], one_time_keyboard=True),
@@ -199,12 +211,36 @@ def explain(update: Update, context: CallbackContext):
 
 
 def start_settings(update: Update, context: CallbackContext):
+    chat_type = update["message"]["chat"]["type"]
+    if chat_type != "group":
+        return wrong_chat_type(update, context)
+    team = update_team(update["message"]["chat"]["id"], settings={})
+    if team is None:
+        return team_not_exists(update, context)
     update.message.reply_markdown(
         START_SETTINGS + "\n" + SETTINGS[TEAM_ID]["text"],
         reply_markup=ReplyKeyboardMarkup(SETTINGS[TEAM_ID]["keyboard"], one_time_keyboard=True),
         disable_web_page_preview=True,
     )
     return SETTING1
+
+
+def team_not_exists(update: Update, context: CallbackContext):
+    context.bot.send_message(
+        text=TEAM_NOT_IN_DB_TEXT,
+        chat_id=update["message"]["chat"]["id"],
+        parse_mode="Markdown",
+    )
+    return ConversationHandler.END
+
+
+def wrong_chat_type(update: Update, context: CallbackContext):
+    context.bot.send_message(
+        text=NO_GROUP_CHAT,
+        chat_id=update["message"]["chat"]["id"],
+        parse_mode="Markdown",
+    )
+    return ConversationHandler.END
 
 
 class BotFather:
