@@ -13,7 +13,7 @@ from app_prime_league.models import Team
 from telegram_interface import send_message
 
 
-class GlobalMessage(TemplateView, LoginRequiredMixin, ):
+class GlobalMessage(LoginRequiredMixin, TemplateView, ):
     template_name = 'global_message.html'
 
     def get(self, request, *args, **kwargs):

@@ -138,3 +138,5 @@ STORAGE_DIR = os.path.join(BASE_DIR, "storage", )
 TELEGRAM_BOT_KEY = env.str("TELEGRAM_BOT_API_KEY")
 
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
+
+LOGIN_URL = "/admin/login/"
