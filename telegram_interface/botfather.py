@@ -11,6 +11,8 @@ from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandle
 from telegram_interface.messages import START_GROUP, START_CHAT, HELP_COMMAND_LIST, SETTINGS_FINISHED, ISSUE, \
     FEEDBACK, START_SETTINGS, TEAM_EXISTING, SETTINGS, CANCEL, SKIP, YES, TEAM_ID_VALID, HELP_TEXT, REGISTRATION_FINISH, \
     WAIT_A_MOMENT_TEXT, EXPLAIN_TEXT, NO_GROUP_CHAT, TEAM_NOT_IN_DB_TEXT, TEAM_ID_NOT_VALID_TEXT
+from telegram_interface.tg_singleton import TelegramMessagesWrapper
+from utils.utils import current_game_day
 
 TEAM_ID, SETTING1, SETTING2, SETTING3, SETTING4 = range(5)
 
@@ -65,6 +67,9 @@ def get_team_id(update: Update, context: CallbackContext):
             reply_markup=ReplyKeyboardRemove(),
             disable_web_page_preview=True,
         )
+        next_game = team.games_against.filter(game_day=current_game_day()).first()
+        if next_game is not None:
+            TelegramMessagesWrapper.send_next_game_day_after_registration(next_game)
         return ConversationHandler.END
 
 

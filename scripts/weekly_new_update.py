@@ -1,15 +1,10 @@
-from datetime import datetime
-
-import pytz
-
 from app_prime_league.models import Game
 from telegram_interface.tg_singleton import TelegramMessagesWrapper
+from utils.utils import current_game_day
 
 
 def main():
-    start_date = datetime(2020, 6, 8).astimezone(pytz.timezone("Europe/Berlin"))
-    current_date = datetime.now().astimezone(pytz.timezone("Europe/Berlin"))
-    game_day = ((current_date - start_date) / 7).days + 1
+    game_day = current_game_day()
     games = Game.objects.filter(game_day=game_day, game_closed=False)
     for i in games:
         settings = dict(i.team.setting_set.all().values_list("attr_name", "attr_value"))
