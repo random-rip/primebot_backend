@@ -1,5 +1,8 @@
+import os
+import urllib.request
 from itertools import chain
 
+from django.core.files import File
 from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext.filters import Filters
 import requests
@@ -27,9 +30,27 @@ def start(update: Update, context: CallbackContext):
         return ConversationHandler.END
 
 
+def set_photo(update: Update, context: CallbackContext, url):
+    chat_id = update.message.chat_id
+    file_name = f"temp_{chat_id}.temp"
+    _ = urllib.request.urlretrieve(url, file_name)
+
+    try:
+        with open(file_name, 'rb') as f:
+            context.bot.set_chat_photo(
+                chat_id=chat_id,
+                photo=File(f),
+                timeout=20,
+            )
+        os.remove(file_name)
+    except FileNotFoundError as e:
+        return "File nicht gefunden"
+
+
 def bop(update: Update, context: CallbackContext):
     contents = requests.get('https://random.dog/woof.json').json()
     url = contents['url']
+    set_photo(update, context, url)
     chat_id = update.message.chat_id
     bot = context.bot
     bot.send_photo(chat_id=chat_id, photo=url)
