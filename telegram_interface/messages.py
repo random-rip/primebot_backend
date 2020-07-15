@@ -8,7 +8,6 @@ YES = "Ja"
 NO = "Nein"
 SKIP = "Überspringen"
 CANCEL = "/cancel"
-BOOLEAN_KEYBOARD = [[YES], [NO], [SKIP, CANCEL, ]]
 SETTINGS_FINISHED = "Alles klar, ich habe die Einstellungen gespeichert."
 REGISTRATION_FINISH = "Perfekt! Ich sende euch jetzt Benachrichtigungen in diese Gruppe, " \
                       f"wenn es neue Updates zu kommenden Matches gibt. {EMOJI_TROPHY}\n" \
@@ -23,6 +22,10 @@ GENERAL_TEAM_LINK = "https://www.primeleague.gg/de/leagues/teams/"
 US = "uns"
 FOR_GAME_DAY = "für [Spieltag] {}"
 FROM = "von {}"
+
+ENABLED = "aktiviert"
+DISABLED = "deaktiviert"
+
 
 # Antworten:
 # Antwort auf /help
@@ -73,30 +76,54 @@ START_CHAT = "_Hallo Beschwörer,\ndu möchtest den PrimeBot für Pushbenachrich
 
 # Settings (ConversationHandler)
 START_SETTINGS = "Settings: "
+MAIN_MENU_TEXT = "Hauptmenü"
+
+BOOLEAN_KEYBOARD_OPTIONS = [
+    {
+        "title": "Aktivieren",
+        "callback_data": "enable"
+    },
+    {
+        "title": "Deaktivieren",
+        "callback_data": "disable"
+    },
+    {
+        "title": MAIN_MENU_TEXT,
+        "callback_data": "main"
+    },
+]
+
+SETTINGS_MAIN_MENU = {
+    "text": "Hauptmenü:\nWählt eine Einstellung aus, die ihr anpassen möchtet",
+}
 SETTINGS = [
     # 0 WEEKLY_OP_LINK
     {
         "name": "weekly_op_link",
+        "title": "Wochenübersicht",
         "text": "Möchtet ihr jede Woche eine neue Benachrichtigung für die kommende Spielwoche erhalten?",
-        "keyboard": BOOLEAN_KEYBOARD,
+        "callback_data": "1",
     },
     # 1 LINEUP_OP_LINK
     {
         "name": "lineup_op_link",
+        "title": "Lineup",
         "text": "Verstanden!\nMöchtet ihr benachrichtigt werden, wenn der Gegner ein neues Lineup aufgestellt hat?",
-        "keyboard": BOOLEAN_KEYBOARD,
+        "callback_data": "2",
     },
     # 2 SCHEDULING_SUGGESTION
     {
         "name": "scheduling_suggestion",
+        "title": "Neue Zeitvorschläge",
         "text": "Alles klar!\nMöchtet ihr über neue Zeitvorschläge des Gegners informiert werden?",
-        "keyboard": BOOLEAN_KEYBOARD,
+        "callback_data": "3",
     },
     # 3 SCHEDULING_CONFIRMATION
     {
         "name": "scheduling_confirmation",
+        "title": "Bestätigte Zeitvorschläge",
         "text": "Perfekt!\nMöchtet ihr bei der Bestätigung eines Zeitvorschlags benachrichtigt werden?",
-        "keyboard": BOOLEAN_KEYBOARD,
+        "callback_data": "4",
     },
 ]
 

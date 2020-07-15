@@ -3,24 +3,35 @@ from datetime import datetime
 import requests
 import re
 
+from bs4 import BeautifulSoup
 from telegram import Bot
 from telegram.ext import Updater, CommandHandler
 
 from app_prime_league.models import Team, Game
-from data_crawling.api import crawler
-from parsing.parser import MatchWrapper, LogSchedulingConfirmation, LogSchedulingAutoConfirmation, LogChangeTime
+from data_crawling.api import crawler, Crawler
+from parsing.parser import MatchWrapper, LogSchedulingConfirmation, LogSchedulingAutoConfirmation, LogChangeTime, \
+    TeamHTMLParser
 from prime_league_bot import settings
 from telegram_interface.botfather import BotFather
 from telegram_interface.tg_singleton import TelegramMessagesWrapper
 
 
 def main():
-    game = Game.objects.get(game_id=596833)
-    TelegramMessagesWrapper.send_new_game_day(game)
-    TelegramMessagesWrapper.send_new_lineup_of_enemies(game)
-    TelegramMessagesWrapper.send_new_suggestion(game)
-    TelegramMessagesWrapper.send_new_suggestion_of_enemies(game)
-    TelegramMessagesWrapper.send_scheduling_confirmation(game, LogChangeTime("123546412","",""))
+
+
+    pass
+
+
+# TelegramMessagesWrapper.send_new_game_day(game)
+# TelegramMessagesWrapper.send_new_lineup_of_enemies(game)
+# TelegramMessagesWrapper.send_new_suggestion(game)
+# TelegramMessagesWrapper.send_new_suggestion_of_enemies(game)
+# TelegramMessagesWrapper.send_scheduling_confirmation(game, LogChangeTime("123546412", "", ""))
+# crawler = Crawler(local= False)
+# parser = TeamHTMLParser(crawler.get_team_website(121723))
+# print(parser.get_team_name())
+# print(parser.get_team_tag())
+# print(int("112004-1-esport-club-frankfurt-goethe-5-2-0"))
 
 
 # Command to run this file:

@@ -1,16 +1,18 @@
 from itertools import chain
 
-from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove
+from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext.filters import Filters
 import requests
 
 from app_prime_league.teams import register_team, update_team
 from prime_league_bot import settings
-from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandler, ConversationHandler
+from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandler, ConversationHandler, \
+    CallbackQueryHandler
 
 from telegram_interface.messages import START_GROUP, START_CHAT, HELP_COMMAND_LIST, SETTINGS_FINISHED, ISSUE, \
     FEEDBACK, START_SETTINGS, TEAM_EXISTING, SETTINGS, CANCEL, SKIP, YES, TEAM_ID_VALID, HELP_TEXT, REGISTRATION_FINISH, \
-    WAIT_A_MOMENT_TEXT, EXPLAIN_TEXT, NO_GROUP_CHAT, TEAM_NOT_IN_DB_TEXT, TEAM_ID_NOT_VALID_TEXT
+    WAIT_A_MOMENT_TEXT, EXPLAIN_TEXT, NO_GROUP_CHAT, TEAM_NOT_IN_DB_TEXT, TEAM_ID_NOT_VALID_TEXT, SETTINGS_MAIN_MENU, \
+    BOOLEAN_KEYBOARD_OPTIONS, ENABLED, DISABLED
 
 TEAM_ID, SETTING1, SETTING2, SETTING3, SETTING4 = range(5)
 
@@ -68,179 +70,152 @@ def get_team_id(update: Update, context: CallbackContext):
         return ConversationHandler.END
 
 
-def weekly_op_link(update: Update, context: CallbackContext):
-    answer = update.message.text
-    if answer not in list(chain(*SETTINGS[0]["keyboard"])):
-        update.message.reply_markdown(
-            SETTINGS[0]["text"],
-            reply_markup=ReplyKeyboardMarkup(SETTINGS[0]["keyboard"], one_time_keyboard=True),
-            disable_web_page_preview=True,
-        )
-        return SETTING1
-
-    settings = {
-        SETTINGS[0]["name"]: True if answer == YES else False,
-    }
-    if answer != SKIP:
-        tg_chat_id = update["message"]["chat"]["id"]
-        team = update_team(tg_chat_id, settings=settings)
-        if team is None:
-            return team_not_exists(update, context)
-    update.message.reply_markdown(
-        SETTINGS[1]["text"],
-        reply_markup=ReplyKeyboardMarkup(SETTINGS[1]["keyboard"], one_time_keyboard=True),
-        disable_web_page_preview=True,
-    )
-    return SETTING2
-
-
-def lineup_op_link(update: Update, context: CallbackContext):
-    answer = update.message.text
-    if answer not in list(chain(*SETTINGS[1]["keyboard"])):
-        update.message.reply_markdown(
-            SETTINGS[1]["text"],
-            reply_markup=ReplyKeyboardMarkup(SETTINGS[1]["keyboard"], one_time_keyboard=True),
-            disable_web_page_preview=True,
-        )
-        return SETTING2
-
-    settings = {
-        SETTINGS[1]["name"]: True if answer == YES else False,
-    }
-    if answer != SKIP:
-        tg_chat_id = update["message"]["chat"]["id"]
-        update_team(tg_chat_id, settings=settings)
-    update.message.reply_markdown(
-        SETTINGS[2]["text"],
-        reply_markup=ReplyKeyboardMarkup(SETTINGS[2]["keyboard"], one_time_keyboard=True),
-        disable_web_page_preview=True,
-    )
-    return SETTING3
-
-
-def scheduling_suggestion(update: Update, context: CallbackContext):
-    answer = update.message.text
-    if answer not in list(chain(*SETTINGS[2]["keyboard"])):
-        update.message.reply_markdown(
-            SETTINGS[2]["text"],
-            reply_markup=ReplyKeyboardMarkup(SETTINGS[2]["keyboard"], one_time_keyboard=True),
-            disable_web_page_preview=True,
-        )
-        return SETTING3
-    settings = {
-        SETTINGS[2]["name"]: True if answer == YES else False,
-    }
-    if answer != SKIP:
-        tg_chat_id = update["message"]["chat"]["id"]
-        update_team(tg_chat_id, settings=settings)
-
-    update.message.reply_markdown(
-        SETTINGS[3]["text"],
-        reply_markup=ReplyKeyboardMarkup(SETTINGS[3]["keyboard"], one_time_keyboard=True),
-        disable_web_page_preview=True,
-    )
-    return SETTING4
-
-
-def scheduling_confirmation(update: Update, context: CallbackContext):
-    answer = update.message.text
-    if answer not in list(chain(*SETTINGS[3]["keyboard"])):
-        update.message.reply_markdown(
-            SETTINGS[3]["text"],
-            reply_markup=ReplyKeyboardMarkup(SETTINGS[3]["keyboard"], one_time_keyboard=True),
-            disable_web_page_preview=True,
-        )
-        return SETTING4
-    settings = {
-        SETTINGS[3]["name"]: True if answer == YES else False,
-    }
-    if answer != SKIP:
-        tg_chat_id = update["message"]["chat"]["id"]
-        update_team(tg_chat_id, settings=settings)
-    update.message.reply_markdown(
-        SETTINGS_FINISHED,
-        reply_markup=ReplyKeyboardRemove(),
-        disable_web_page_preview=True,
-    )
-    return ConversationHandler.END
-
-
-def cancel(update: Update, context: CallbackContext):
-    update.message.reply_markdown(
-        CANCEL,
-        reply_markup=ReplyKeyboardRemove(),
-        disable_web_page_preview=True,
-    )
-    return ConversationHandler.END
-
-
-def helpcommand(update: Update, context: CallbackContext):
-    update.message.reply_markdown(
-        f"{HELP_TEXT}{HELP_COMMAND_LIST}",
-        reply_markup=ReplyKeyboardRemove(),
-        disable_web_page_preview=True,
-    )
-    return ConversationHandler.END
-
-
-def issue(update: Update, context: CallbackContext):
-    update.message.reply_markdown(
-        ISSUE,
-        reply_markup=ReplyKeyboardRemove(),
-        disable_web_page_preview=True,
-    )
-    return ConversationHandler.END
-
-
-def feedback(update: Update, context: CallbackContext):
-    update.message.reply_markdown(
-        FEEDBACK,
-        reply_markup=ReplyKeyboardRemove(),
-        disable_web_page_preview=True,
-    )
-    return ConversationHandler.END
-
-
-def explain(update: Update, context: CallbackContext):
-    update.message.reply_markdown(
-        EXPLAIN_TEXT,
-        reply_markup=ReplyKeyboardRemove(),
-        disable_web_page_preview=True,
-    )
-    return ConversationHandler.END
-
-
 def start_settings(update: Update, context: CallbackContext):
-    chat_type = update["message"]["chat"]["type"]
-    if chat_type != "group":
-        return wrong_chat_type(update, context)
-    team = update_team(update["message"]["chat"]["id"], settings={})
-    if team is None:
-        return team_not_exists(update, context)
-    update.message.reply_markdown(
-        START_SETTINGS + "\n" + SETTINGS[TEAM_ID]["text"],
-        reply_markup=ReplyKeyboardMarkup(SETTINGS[TEAM_ID]["keyboard"], one_time_keyboard=True),
-        disable_web_page_preview=True,
+    update.message.reply_text(
+        SETTINGS_MAIN_MENU["text"],
+        reply_markup=main_menu_keyboard(),
     )
-    return SETTING1
 
 
-def team_not_exists(update: Update, context: CallbackContext):
-    context.bot.send_message(
-        text=TEAM_NOT_IN_DB_TEXT,
-        chat_id=update["message"]["chat"]["id"],
-        parse_mode="Markdown",
+def main_settings_menu(update: Update, context: CallbackContext):
+    query = update.callback_query
+    context.bot.edit_message_text(
+        chat_id=query.message.chat_id,
+        message_id=query.message.message_id,
+        text=SETTINGS_MAIN_MENU["text"],
+        reply_markup=main_menu_keyboard(),
     )
-    return ConversationHandler.END
 
 
-def wrong_chat_type(update: Update, context: CallbackContext):
-    context.bot.send_message(
-        text=NO_GROUP_CHAT,
-        chat_id=update["message"]["chat"]["id"],
-        parse_mode="Markdown",
+def all_settings(update: Update, context: CallbackContext, setting):
+    query = update.callback_query
+    context.bot.edit_message_text(
+        chat_id=query.message.chat_id,
+        message_id=query.message.message_id,
+        text=setting["text"],
+        reply_markup=get_boolean_keyboard(setting["callback_data"]),
     )
-    return ConversationHandler.END
+
+
+def all_settings_enable(update: Update, context: CallbackContext, sett):
+    setting = {
+        sett["name"]: True,
+    }
+    query = update.callback_query
+    tg_chat_id = query.message.chat.id
+    update_team(tg_chat_id, settings=setting)
+    context.bot.edit_message_text(
+        chat_id=query.message.chat_id,
+        message_id=query.message.message_id,
+        text=f"{sett['title']} {ENABLED}\n{SETTINGS_MAIN_MENU['text']}",
+        reply_markup=main_menu_keyboard(),
+    )
+
+
+def all_settings_disable(update: Update, context: CallbackContext, sett):
+    setting = {
+        sett["name"]: False,
+    }
+    query = update.callback_query
+    tg_chat_id = query.message.chat.id
+    update_team(tg_chat_id, settings=setting)
+    context.bot.edit_message_text(
+        chat_id=query.message.chat_id,
+        message_id=query.message.message_id,
+        text=f"{sett['title']} {DISABLED}\n{SETTINGS_MAIN_MENU['text']}",
+        reply_markup=main_menu_keyboard(),
+    )
+
+############################ Settings #########################################
+
+def setting1(update: Update, context: CallbackContext):
+    all_settings(update, context, SETTINGS[0])
+
+
+def setting1_enable(update: Update, context: CallbackContext):
+    all_settings_enable(update, context, SETTINGS[0])
+
+
+def setting1_disable(update: Update, context: CallbackContext):
+    all_settings_disable(update, context, SETTINGS[0])
+
+
+def setting2(update: Update, context: CallbackContext):
+    all_settings(update, context, SETTINGS[1])
+
+
+def setting2_enable(update: Update, context: CallbackContext):
+    all_settings_enable(update, context, SETTINGS[1])
+
+
+def setting2_disable(update: Update, context: CallbackContext):
+    all_settings_disable(update, context, SETTINGS[1])
+
+
+def setting3(update: Update, context: CallbackContext):
+    all_settings(update, context, SETTINGS[2])
+
+
+def setting3_enable(update: Update, context: CallbackContext):
+    all_settings_enable(update, context, SETTINGS[2])
+
+
+def setting3_disable(update: Update, context: CallbackContext):
+    all_settings_disable(update, context, SETTINGS[2])
+
+
+def setting4(update: Update, context: CallbackContext):
+    all_settings(update, context, SETTINGS[3])
+
+
+def setting4_enable(update: Update, context: CallbackContext):
+    all_settings_enable(update, context, SETTINGS[3])
+
+
+def setting4_disable(update: Update, context: CallbackContext):
+    all_settings_disable(update, context, SETTINGS[3])
+
+
+############################ Keyboards #########################################
+def main_menu_keyboard():
+    reply_markup = InlineKeyboardMarkup([
+        [InlineKeyboardButton(setting["title"], callback_data=f"m{setting['callback_data']}")] for setting in SETTINGS
+    ])
+    return reply_markup
+
+
+def get_boolean_keyboard(callback_data_prefix):
+    reply_markup = InlineKeyboardMarkup([
+        [InlineKeyboardButton(
+            BOOLEAN_KEYBOARD_OPTIONS[0]["title"],
+            callback_data=f"{callback_data_prefix}enable"
+            # f"{callback_data_prefix}_{BOOLEAN_KEYBOARD_OPTIONS[0]['callback_data']}",
+        )],
+        [InlineKeyboardButton(
+            BOOLEAN_KEYBOARD_OPTIONS[1]["title"],
+            callback_data=f"{callback_data_prefix}disable"
+            # f"{callback_data_prefix}_{BOOLEAN_KEYBOARD_OPTIONS[1]['callback_data']}",
+        )],
+        # Main
+        [InlineKeyboardButton(
+            BOOLEAN_KEYBOARD_OPTIONS[2]["title"],
+            callback_data="main",
+        )],
+    ])
+    return reply_markup
+
+
+############################# Messages #########################################
+def main_menu_message():
+    return 'Choose the option in main menu:'
+
+
+def first_menu_message():
+    return 'Choose the submenu in first menu:'
+
+
+def second_menu_message():
+    return 'Choose the submenu in second menu:'
 
 
 class BotFather:
@@ -253,50 +228,27 @@ class BotFather:
 
     def run(self):
         updater = Updater(settings.TELEGRAM_BOT_KEY, use_context=True, )
-        dp = updater.dispatcher
+        # Allgemeine Commands
+        updater.dispatcher.add_handler(CommandHandler('bop', bop))
 
-        states = {
+        # Main Menu
+        updater.dispatcher.add_handler(CommandHandler('start_settings_test', start_settings))
+        updater.dispatcher.add_handler(CallbackQueryHandler(main_settings_menu, pattern='main'))
+        # Setting 1
+        updater.dispatcher.add_handler(CallbackQueryHandler(setting1, pattern='m1'))
+        updater.dispatcher.add_handler(CallbackQueryHandler(setting1_enable, pattern="1enable"))
+        updater.dispatcher.add_handler(CallbackQueryHandler(setting1_disable, pattern="1disable"))
+        # Setting 2
+        updater.dispatcher.add_handler(CallbackQueryHandler(setting2, pattern='m2'))
+        updater.dispatcher.add_handler(CallbackQueryHandler(setting2_enable, pattern="2enable"))
+        updater.dispatcher.add_handler(CallbackQueryHandler(setting2_disable, pattern="2disable"))
+        # Setting 3
+        updater.dispatcher.add_handler(CallbackQueryHandler(setting3, pattern='m3'))
+        updater.dispatcher.add_handler(CallbackQueryHandler(setting3_enable, pattern="3enable"))
+        updater.dispatcher.add_handler(CallbackQueryHandler(setting3_disable, pattern="3disable"))
+        # Setting 4
+        updater.dispatcher.add_handler(CallbackQueryHandler(setting4, pattern='m4'))
+        updater.dispatcher.add_handler(CallbackQueryHandler(setting4_enable, pattern="4enable"))
+        updater.dispatcher.add_handler(CallbackQueryHandler(setting4_disable, pattern="4disable"))
 
-            SETTING1: [MessageHandler(Filters.text & (~Filters.command), weekly_op_link), ],
-
-            SETTING2: [MessageHandler(Filters.text & (~Filters.command), lineup_op_link), ],
-
-            SETTING3: [MessageHandler(Filters.text & (~Filters.command), scheduling_suggestion), ],
-
-            SETTING4: [MessageHandler(Filters.text & (~Filters.command), scheduling_confirmation), ],
-
-        }
-
-        start_states = {
-            TEAM_ID: [MessageHandler(Filters.text & (~Filters.command), get_team_id), ],
-        }
-
-        fallbacks = [
-            CommandHandler('cancel', cancel),
-            CommandHandler("help", helpcommand),
-            CommandHandler("issue", issue),
-            CommandHandler("feedback", feedback),
-            CommandHandler("bop", bop),
-            CommandHandler("explain", explain),
-        ]
-        # Add conversation handler with the states TEAM_ID, SETTING1, SETTING2
-        conv_handler = ConversationHandler(
-            entry_points=[CommandHandler('start', start, )],
-
-            states=start_states,
-
-            fallbacks=fallbacks
-        )
-        conv_handler_settings = ConversationHandler(
-            entry_points=[CommandHandler('settings', start_settings, )],
-
-            states=states,
-
-            fallbacks=fallbacks
-        )
-        dp.add_handler(conv_handler)
-        dp.add_handler(conv_handler_settings)
-        for cmd in fallbacks[1:]:
-            dp.add_handler(cmd)
         updater.start_polling()
-        updater.idle()
