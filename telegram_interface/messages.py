@@ -108,21 +108,21 @@ SETTINGS = [
     {
         "name": "lineup_op_link",
         "title": "Lineup",
-        "text": "Verstanden!\nMöchtet ihr benachrichtigt werden, wenn der Gegner ein neues Lineup aufgestellt hat?",
+        "text": "Möchtet ihr benachrichtigt werden, wenn der Gegner ein neues Lineup aufgestellt hat?",
         "callback_data": "2",
     },
     # 2 SCHEDULING_SUGGESTION
     {
         "name": "scheduling_suggestion",
         "title": "Neue Zeitvorschläge",
-        "text": "Alles klar!\nMöchtet ihr über neue Zeitvorschläge des Gegners informiert werden?",
+        "text": "Möchtet ihr über neue Zeitvorschläge des Gegners informiert werden?",
         "callback_data": "3",
     },
     # 3 SCHEDULING_CONFIRMATION
     {
         "name": "scheduling_confirmation",
         "title": "Bestätigte Zeitvorschläge",
-        "text": "Perfekt!\nMöchtet ihr bei der Bestätigung eines Zeitvorschlags benachrichtigt werden?",
+        "text": "Möchtet ihr bei der Bestätigung eines Zeitvorschlags benachrichtigt werden?",
         "callback_data": "4",
     },
 ]

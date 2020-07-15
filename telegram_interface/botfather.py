@@ -205,19 +205,6 @@ def get_boolean_keyboard(callback_data_prefix):
     return reply_markup
 
 
-############################# Messages #########################################
-def main_menu_message():
-    return 'Choose the option in main menu:'
-
-
-def first_menu_message():
-    return 'Choose the submenu in first menu:'
-
-
-def second_menu_message():
-    return 'Choose the submenu in second menu:'
-
-
 class BotFather:
     """
     Botfather Class. Provides Communication with Bot(Telegram API) and Client
