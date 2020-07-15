@@ -136,3 +136,5 @@ DEFAULT_TELEGRAM_CHAT_ID = env.str("TG_CHAT_ID", None)
 STORAGE_DIR = os.path.join(BASE_DIR, "storage", )
 
 TELEGRAM_BOT_KEY = env.str("TELEGRAM_BOT_API_KEY")
+
+LOGGING_DIR = os.path.join(BASE_DIR, "logs", )

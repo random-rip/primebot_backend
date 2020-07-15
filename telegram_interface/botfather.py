@@ -11,15 +11,18 @@ from app_prime_league.teams import register_team, update_team
 from prime_league_bot import settings
 from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandler, ConversationHandler
 
+from prime_league_bot.settings import LOGGING_DIR
 from telegram_interface.messages import START_GROUP, START_CHAT, HELP_COMMAND_LIST, SETTINGS_FINISHED, ISSUE, \
     FEEDBACK, START_SETTINGS, TEAM_EXISTING, SETTINGS, CANCEL, SKIP, YES, TEAM_ID_VALID, HELP_TEXT, REGISTRATION_FINISH, \
     WAIT_A_MOMENT_TEXT, EXPLAIN_TEXT, NO_GROUP_CHAT, TEAM_NOT_IN_DB_TEXT, TEAM_ID_NOT_VALID_TEXT
 from telegram_interface.tg_singleton import TelegramMessagesWrapper
+from utils.log_wrapper import log_command
 from utils.utils import current_game_day
 
 TEAM_ID, SETTING1, SETTING2, SETTING3, SETTING4 = range(5)
 
 
+@log_command
 def start(update: Update, context: CallbackContext):
     chat_type = update["message"]["chat"]["type"]
     if chat_type == "group":
@@ -56,6 +59,7 @@ def bop(update: Update, context: CallbackContext):
     bot.send_photo(chat_id=chat_id, photo=url)
 
 
+@log_command
 def get_team_id(update: Update, context: CallbackContext):
     response = update.message.text
     try:
@@ -94,6 +98,7 @@ def get_team_id(update: Update, context: CallbackContext):
         return ConversationHandler.END
 
 
+@log_command
 def weekly_op_link(update: Update, context: CallbackContext):
     answer = update.message.text
     if answer not in list(chain(*SETTINGS[0]["keyboard"])):
@@ -120,6 +125,7 @@ def weekly_op_link(update: Update, context: CallbackContext):
     return SETTING2
 
 
+@log_command
 def lineup_op_link(update: Update, context: CallbackContext):
     answer = update.message.text
     if answer not in list(chain(*SETTINGS[1]["keyboard"])):
@@ -144,6 +150,7 @@ def lineup_op_link(update: Update, context: CallbackContext):
     return SETTING3
 
 
+@log_command
 def scheduling_suggestion(update: Update, context: CallbackContext):
     answer = update.message.text
     if answer not in list(chain(*SETTINGS[2]["keyboard"])):
@@ -168,6 +175,7 @@ def scheduling_suggestion(update: Update, context: CallbackContext):
     return SETTING4
 
 
+@log_command
 def scheduling_confirmation(update: Update, context: CallbackContext):
     answer = update.message.text
     if answer not in list(chain(*SETTINGS[3]["keyboard"])):
@@ -191,6 +199,7 @@ def scheduling_confirmation(update: Update, context: CallbackContext):
     return ConversationHandler.END
 
 
+@log_command
 def cancel(update: Update, context: CallbackContext):
     update.message.reply_markdown(
         CANCEL,
@@ -200,6 +209,7 @@ def cancel(update: Update, context: CallbackContext):
     return ConversationHandler.END
 
 
+@log_command
 def helpcommand(update: Update, context: CallbackContext):
     update.message.reply_markdown(
         f"{HELP_TEXT}{HELP_COMMAND_LIST}",
@@ -209,6 +219,7 @@ def helpcommand(update: Update, context: CallbackContext):
     return ConversationHandler.END
 
 
+@log_command
 def issue(update: Update, context: CallbackContext):
     update.message.reply_markdown(
         ISSUE,
@@ -218,6 +229,7 @@ def issue(update: Update, context: CallbackContext):
     return ConversationHandler.END
 
 
+@log_command
 def feedback(update: Update, context: CallbackContext):
     update.message.reply_markdown(
         FEEDBACK,
@@ -227,6 +239,7 @@ def feedback(update: Update, context: CallbackContext):
     return ConversationHandler.END
 
 
+@log_command
 def explain(update: Update, context: CallbackContext):
     update.message.reply_markdown(
         EXPLAIN_TEXT,
@@ -236,6 +249,7 @@ def explain(update: Update, context: CallbackContext):
     return ConversationHandler.END
 
 
+@log_command
 def start_settings(update: Update, context: CallbackContext):
     chat_type = update["message"]["chat"]["type"]
     if chat_type != "group":
