@@ -1,5 +1,5 @@
 # Variablen
-from utils.constants import EMOJI_ONE, EMOJI_TWO, EMOJI_THREE, EMOJI_FIGHT, EMOJI_CLOVER, EMOJI_MINDBLOWN, \
+from utils.constants import EMOJI_ONE, EMOJI_TWO, EMOJI_THREE, EMOJI_CLOVER, EMOJI_MINDBLOWN, \
     EMOJI_POST_HORN, EMOJI_TROPHY, EMJOI_MAGN_GLASS
 
 SUPPORT_GROUP_LINK = "https://t.me/joinchat/IUH8NhsKTYUtFKaqQMWhKA"
@@ -25,7 +25,6 @@ FROM = "von {}"
 
 ENABLED = "aktiviert"
 DISABLED = "deaktiviert"
-
 
 # Antworten:
 # Antwort auf /help
@@ -96,36 +95,6 @@ BOOLEAN_KEYBOARD_OPTIONS = [
 SETTINGS_MAIN_MENU = {
     "text": "Hauptmenü:\nWählt eine Einstellung aus, die ihr anpassen möchtet",
 }
-SETTINGS = [
-    # 0 WEEKLY_OP_LINK
-    {
-        "name": "weekly_op_link",
-        "title": "Wochenübersicht",
-        "text": "Möchtet ihr jede Woche eine neue Benachrichtigung für die kommende Spielwoche erhalten?",
-        "callback_data": "1",
-    },
-    # 1 LINEUP_OP_LINK
-    {
-        "name": "lineup_op_link",
-        "title": "Lineup",
-        "text": "Möchtet ihr benachrichtigt werden, wenn der Gegner ein neues Lineup aufgestellt hat?",
-        "callback_data": "2",
-    },
-    # 2 SCHEDULING_SUGGESTION
-    {
-        "name": "scheduling_suggestion",
-        "title": "Neue Zeitvorschläge",
-        "text": "Möchtet ihr über neue Zeitvorschläge des Gegners informiert werden?",
-        "callback_data": "3",
-    },
-    # 3 SCHEDULING_CONFIRMATION
-    {
-        "name": "scheduling_confirmation",
-        "title": "Bestätigte Zeitvorschläge",
-        "text": "Möchtet ihr bei der Bestätigung eines Zeitvorschlags benachrichtigt werden?",
-        "callback_data": "4",
-    },
-]
 
 # Update Messages
 OWN_NEW_TIME_SUGGESTION_TEXT = "Neuer Zeitvorschlag von uns für [Spieltag {}]({}{}). {}"
