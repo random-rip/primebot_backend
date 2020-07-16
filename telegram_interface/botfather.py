@@ -35,6 +35,11 @@ def start(update: Update, context: CallbackContext):
 
 def set_photo(update: Update, context: CallbackContext, url):
     chat_id = update.message.chat_id
+    bot_id = context.bot.id
+    bot_info = context.bot.get_chat_member(chat_id=chat_id, user_id=bot_id)
+    if not bot_info.can_change_info:
+        return
+
     file_name = f"temp_{chat_id}.temp"
     _ = urllib.request.urlretrieve(url, file_name)
 
@@ -47,7 +52,7 @@ def set_photo(update: Update, context: CallbackContext, url):
             )
         os.remove(file_name)
     except FileNotFoundError as e:
-        return "File nicht gefunden"
+        print("File nicht gefunden")
 
 
 def bop(update: Update, context: CallbackContext):
@@ -56,7 +61,7 @@ def bop(update: Update, context: CallbackContext):
     chat_id = update.message.chat_id
     bot = context.bot
     bot.send_photo(chat_id=chat_id, photo=url)
-    # set_photo(update, context, url)
+    set_photo(update, context, url)
 
 
 @log_command
