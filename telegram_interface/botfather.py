@@ -14,19 +14,21 @@ from telegram_interface.messages import START_GROUP, START_CHAT, HELP_COMMAND_LI
     WAIT_A_MOMENT_TEXT, EXPLAIN_TEXT, NO_GROUP_CHAT, TEAM_NOT_IN_DB_TEXT, TEAM_ID_NOT_VALID_TEXT, SETTINGS_MAIN_MENU, \
     BOOLEAN_KEYBOARD_OPTIONS, ENABLED, DISABLED
 
-TEAM_ID, SETTING1, SETTING2, SETTING3, SETTING4 = range(5)
 
+############################ Commands #########################################
 
+# /start
 def start(update: Update, context: CallbackContext):
     chat_type = update["message"]["chat"]["type"]
     if chat_type == "group":
         update.message.reply_markdown(START_GROUP, disable_web_page_preview=True)
-        return TEAM_ID
+        return 1
     else:
         update.message.reply_markdown(START_CHAT, parse_mode="Markdown", disable_web_page_preview=True)
         return ConversationHandler.END
 
 
+# /bop
 def bop(update: Update, context: CallbackContext):
     contents = requests.get('https://random.dog/woof.json').json()
     url = contents['url']
@@ -35,8 +37,70 @@ def bop(update: Update, context: CallbackContext):
     bot.send_photo(chat_id=chat_id, photo=url)
 
 
+# /cancel
+def cancel(update: Update, context: CallbackContext):
+    update.message.reply_markdown(
+        CANCEL,
+        reply_markup=ReplyKeyboardRemove(),
+        disable_web_page_preview=True,
+    )
+    return ConversationHandler.END
+
+
+# /help
+def helpcommand(update: Update, context: CallbackContext):
+    update.message.reply_markdown(
+        f"{HELP_TEXT}{HELP_COMMAND_LIST}",
+        reply_markup=ReplyKeyboardRemove(),
+        disable_web_page_preview=True,
+    )
+    return ConversationHandler.END
+
+
+# /issue
+def issue(update: Update, context: CallbackContext):
+    update.message.reply_markdown(
+        ISSUE,
+        reply_markup=ReplyKeyboardRemove(),
+        disable_web_page_preview=True,
+    )
+    return ConversationHandler.END
+
+
+# /feedback
+def feedback(update: Update, context: CallbackContext):
+    update.message.reply_markdown(
+        FEEDBACK,
+        reply_markup=ReplyKeyboardRemove(),
+        disable_web_page_preview=True,
+    )
+    return ConversationHandler.END
+
+
+# /explain
+def explain(update: Update, context: CallbackContext):
+    update.message.reply_markdown(
+        EXPLAIN_TEXT,
+        reply_markup=ReplyKeyboardRemove(),
+        disable_web_page_preview=True,
+    )
+    return ConversationHandler.END
+
+
+# /settings
+def start_settings(update: Update, context: CallbackContext):
+    update.message.reply_text(
+        SETTINGS_MAIN_MENU["text"],
+        reply_markup=main_menu_keyboard(),
+    )
+
+
+############################ /start ConversationsHandler #########################################
+
 def get_team_id(update: Update, context: CallbackContext):
+    print("Hier")
     response = update.message.text
+    print(response)
     try:
         team_id = int(response)
     except Exception as e:
@@ -46,7 +110,7 @@ def get_team_id(update: Update, context: CallbackContext):
             update.message.reply_markdown(
                 TEAM_ID_NOT_VALID_TEXT,
             )
-            return TEAM_ID
+            return 1
 
     tg_group_id = update["message"]["chat"]["id"]
     context.bot.send_message(
@@ -60,7 +124,7 @@ def get_team_id(update: Update, context: CallbackContext):
             TEAM_EXISTING,
             disable_web_page_preview=True,
         )
-        return TEAM_ID
+        return 1
     else:
         update.message.reply_markdown(
             f"{TEAM_ID_VALID}*{team.name}*\n{REGISTRATION_FINISH}",
@@ -70,11 +134,7 @@ def get_team_id(update: Update, context: CallbackContext):
         return ConversationHandler.END
 
 
-def start_settings(update: Update, context: CallbackContext):
-    update.message.reply_text(
-        SETTINGS_MAIN_MENU["text"],
-        reply_markup=main_menu_keyboard(),
-    )
+############################ Settings Main #########################################
 
 
 def main_settings_menu(update: Update, context: CallbackContext):
@@ -125,6 +185,7 @@ def all_settings_disable(update: Update, context: CallbackContext, sett):
         text=f"{sett['title']} {DISABLED}\n{SETTINGS_MAIN_MENU['text']}",
         reply_markup=main_menu_keyboard(),
     )
+
 
 ############################ Settings #########################################
 
@@ -215,27 +276,51 @@ class BotFather:
 
     def run(self):
         updater = Updater(settings.TELEGRAM_BOT_KEY, use_context=True, )
+        dp = updater.dispatcher
+
+        fallbacks = [
+            CommandHandler("cancel", cancel),
+            CommandHandler("help", helpcommand),
+            CommandHandler("issue", issue),
+            CommandHandler("feedback", feedback),
+            CommandHandler("bop", bop),
+            CommandHandler("explain", explain),
+        ]
+
+        conv_handler = ConversationHandler(
+            entry_points=[CommandHandler('start', start, )],
+
+            states={
+                1: [MessageHandler(Filters.text & (~Filters.command), get_team_id), ],
+            },
+
+            fallbacks=fallbacks
+        )
+
         # Allgemeine Commands
-        updater.dispatcher.add_handler(CommandHandler('bop', bop))
+        dp.add_handler(conv_handler)
+        for cmd in fallbacks[1:]:
+            dp.add_handler(cmd)
 
         # Main Menu
-        updater.dispatcher.add_handler(CommandHandler('start_settings_test', start_settings))
-        updater.dispatcher.add_handler(CallbackQueryHandler(main_settings_menu, pattern='main'))
+        dp.add_handler(CommandHandler('settings', start_settings))
+        dp.add_handler(CallbackQueryHandler(main_settings_menu, pattern='main'))
         # Setting 1
-        updater.dispatcher.add_handler(CallbackQueryHandler(setting1, pattern='m1'))
-        updater.dispatcher.add_handler(CallbackQueryHandler(setting1_enable, pattern="1enable"))
-        updater.dispatcher.add_handler(CallbackQueryHandler(setting1_disable, pattern="1disable"))
+        dp.add_handler(CallbackQueryHandler(setting1, pattern='m1'))
+        dp.add_handler(CallbackQueryHandler(setting1_enable, pattern="1enable"))
+        dp.add_handler(CallbackQueryHandler(setting1_disable, pattern="1disable"))
         # Setting 2
-        updater.dispatcher.add_handler(CallbackQueryHandler(setting2, pattern='m2'))
-        updater.dispatcher.add_handler(CallbackQueryHandler(setting2_enable, pattern="2enable"))
-        updater.dispatcher.add_handler(CallbackQueryHandler(setting2_disable, pattern="2disable"))
+        dp.add_handler(CallbackQueryHandler(setting2, pattern='m2'))
+        dp.add_handler(CallbackQueryHandler(setting2_enable, pattern="2enable"))
+        dp.add_handler(CallbackQueryHandler(setting2_disable, pattern="2disable"))
         # Setting 3
-        updater.dispatcher.add_handler(CallbackQueryHandler(setting3, pattern='m3'))
-        updater.dispatcher.add_handler(CallbackQueryHandler(setting3_enable, pattern="3enable"))
-        updater.dispatcher.add_handler(CallbackQueryHandler(setting3_disable, pattern="3disable"))
+        dp.add_handler(CallbackQueryHandler(setting3, pattern='m3'))
+        dp.add_handler(CallbackQueryHandler(setting3_enable, pattern="3enable"))
+        dp.add_handler(CallbackQueryHandler(setting3_disable, pattern="3disable"))
         # Setting 4
-        updater.dispatcher.add_handler(CallbackQueryHandler(setting4, pattern='m4'))
-        updater.dispatcher.add_handler(CallbackQueryHandler(setting4_enable, pattern="4enable"))
-        updater.dispatcher.add_handler(CallbackQueryHandler(setting4_disable, pattern="4disable"))
+        dp.add_handler(CallbackQueryHandler(setting4, pattern='m4'))
+        dp.add_handler(CallbackQueryHandler(setting4_enable, pattern="4enable"))
+        dp.add_handler(CallbackQueryHandler(setting4_disable, pattern="4disable"))
 
         updater.start_polling()
+        updater.idle()
