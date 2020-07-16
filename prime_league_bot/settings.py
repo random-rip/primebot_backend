@@ -16,7 +16,7 @@ import os
 import environ
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-print(BASE_DIR)
+
 env = environ.Env()
 environ.Env.read_env()  # reading .env file
 
@@ -60,7 +60,7 @@ ROOT_URLCONF = 'prime_league_bot.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR + "/templates/",
+        'DIRS': [os.path.join(BASE_DIR, 'templates'),
                  ]
         ,
         'APP_DIRS': True,
@@ -140,3 +140,5 @@ TELEGRAM_BOT_KEY = env.str("TELEGRAM_BOT_API_KEY")
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
 LOGIN_URL = "/admin/login/"
+
+LOGGING_DIR = os.path.join(BASE_DIR, "logs", )

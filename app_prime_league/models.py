@@ -49,6 +49,8 @@ class Team(models.Model):
     team_tag = models.CharField(max_length=10, null=True)
     division = models.CharField(max_length=5, null=True)
     telegram_channel_id = models.CharField(max_length=50, null=True, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     objects = TeamManager()
 
@@ -64,6 +66,8 @@ class Player(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE, null=True)
     summoner_name = models.CharField(max_length=30, null=True)
     is_leader = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     objects = PlayerManager()
 
@@ -139,6 +143,8 @@ class Game(models.Model):
     game_begin = models.DateTimeField(null=True)
     enemy_lineup = models.ManyToManyField(Player, )
     game_closed = models.BooleanField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     objects = GameManager()
 
@@ -223,6 +229,8 @@ class Setting(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     attr_name = models.CharField(max_length=50)
     attr_value = models.BooleanField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = "settings"

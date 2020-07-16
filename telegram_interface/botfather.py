@@ -1,23 +1,26 @@
-from itertools import chain
+import os
+import urllib.request
 
-from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext.filters import Filters
 import requests
+from django.core.files import File
+from telegram import Update, ReplyKeyboardRemove, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandler, ConversationHandler, \
+    CallbackQueryHandler
+from telegram.ext.filters import Filters
 
 from app_prime_league.teams import register_team, update_team
 from prime_league_bot import settings
-from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandler, ConversationHandler, \
-    CallbackQueryHandler
-
-from telegram_interface.messages import START_GROUP, START_CHAT, HELP_COMMAND_LIST, SETTINGS_FINISHED, ISSUE, \
-    FEEDBACK, START_SETTINGS, TEAM_EXISTING, SETTINGS, CANCEL, SKIP, YES, TEAM_ID_VALID, HELP_TEXT, REGISTRATION_FINISH, \
+from telegram_interface.messages import START_GROUP, START_CHAT, HELP_COMMAND_LIST, ISSUE, \
+    FEEDBACK, TEAM_EXISTING, SETTINGS, CANCEL, TEAM_ID_VALID, HELP_TEXT, REGISTRATION_FINISH, \
     WAIT_A_MOMENT_TEXT, EXPLAIN_TEXT, NO_GROUP_CHAT, TEAM_NOT_IN_DB_TEXT, TEAM_ID_NOT_VALID_TEXT, SETTINGS_MAIN_MENU, \
     BOOLEAN_KEYBOARD_OPTIONS, ENABLED, DISABLED
+from utils.log_wrapper import log_command
 
 
 ############################ Commands #########################################
 
 # /start
+@log_command
 def start(update: Update, context: CallbackContext):
     chat_type = update["message"]["chat"]["type"]
     if chat_type == "group":
@@ -28,6 +31,28 @@ def start(update: Update, context: CallbackContext):
         return ConversationHandler.END
 
 
+def set_photo(update: Update, context: CallbackContext, url):
+    chat_id = update.message.chat_id
+    bot_id = context.bot.id
+    bot_info = context.bot.get_chat_member(chat_id=chat_id, user_id=bot_id)
+    if not bot_info.can_change_info:
+        return
+
+    file_name = f"temp_{chat_id}.temp"
+    _ = urllib.request.urlretrieve(url, file_name)
+
+    try:
+        with open(file_name, 'rb') as f:
+            context.bot.set_chat_photo(
+                chat_id=chat_id,
+                photo=File(f),
+                timeout=20,
+            )
+        os.remove(file_name)
+    except FileNotFoundError as e:
+        print("File nicht gefunden")
+
+
 # /bop
 def bop(update: Update, context: CallbackContext):
     contents = requests.get('https://random.dog/woof.json').json()
@@ -35,6 +60,7 @@ def bop(update: Update, context: CallbackContext):
     chat_id = update.message.chat_id
     bot = context.bot
     bot.send_photo(chat_id=chat_id, photo=url)
+    set_photo(update, context, url)
 
 
 # /cancel
@@ -48,6 +74,7 @@ def cancel(update: Update, context: CallbackContext):
 
 
 # /help
+@log_command
 def helpcommand(update: Update, context: CallbackContext):
     update.message.reply_markdown(
         f"{HELP_TEXT}{HELP_COMMAND_LIST}",
@@ -58,6 +85,7 @@ def helpcommand(update: Update, context: CallbackContext):
 
 
 # /issue
+@log_command
 def issue(update: Update, context: CallbackContext):
     update.message.reply_markdown(
         ISSUE,
@@ -78,6 +106,7 @@ def feedback(update: Update, context: CallbackContext):
 
 
 # /explain
+@log_command
 def explain(update: Update, context: CallbackContext):
     update.message.reply_markdown(
         EXPLAIN_TEXT,
@@ -88,6 +117,7 @@ def explain(update: Update, context: CallbackContext):
 
 
 # /settings
+@log_command
 def start_settings(update: Update, context: CallbackContext):
     chat_type = update["message"]["chat"]["type"]
     if chat_type != "group":

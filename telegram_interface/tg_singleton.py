@@ -1,12 +1,13 @@
 import telepot
 from babel import dates as babel
-from app_prime_league.models import Team, Game
+
+from app_prime_league.models import Game
 from parsing.parser import LogSchedulingAutoConfirmation, LogSchedulingConfirmation, LogChangeTime
 from prime_league_bot import settings
-from telegram_interface.messages import NEW_TIME_SUGGESTION_PREFIX, NEW_TIME_SUGGESTIONS_PREFIX, GENERAL_MATCH_LINK, US, \
+from telegram_interface.messages import NEW_TIME_SUGGESTION_PREFIX, NEW_TIME_SUGGESTIONS_PREFIX, GENERAL_MATCH_LINK, \
     SCHEDULING_AUTO_CONFIRMATION_TEXT, SCHEDULING_CONFIRMATION_TEXT, GAME_BEGIN_CHANGE_TEXT, NEW_LINEUP_TEXT, \
-    WEEKLY_UPDATE_TEXT, GENERAL_TEAM_LINK, OWN_NEW_TIME_SUGGESTION_TEXT
-from utils.constants import EMOJI_THREE, EMOJI_ONE, EMOJI_TWO, EMOJI_SUCCESS, EMOJI_ARROW, EMOJI_FIGHT, EMOJI_SOON, \
+    WEEKLY_UPDATE_TEXT, GENERAL_TEAM_LINK, OWN_NEW_TIME_SUGGESTION_TEXT, NEXT_GAME_TEXT
+from utils.constants import EMOJI_THREE, EMOJI_ONE, EMOJI_TWO, EMOJI_SUCCESS, EMOJI_FIGHT, EMOJI_SOON, \
     EMOJI_LINEUP
 
 emoji_numbers = [
@@ -101,6 +102,21 @@ class TelegramMessagesWrapper:
     def send_new_game_day(game: Game):
         op_link = game.get_op_link_of_enemies(only_lineup=False)
         text = WEEKLY_UPDATE_TEXT.format(
+            EMOJI_SOON,
+            game.game_day,
+            GENERAL_MATCH_LINK,
+            game.game_id,
+            game.enemy_team.team_tag,
+            GENERAL_TEAM_LINK,
+            game.enemy_team.id,
+            op_link
+        )
+        send_message(msg=text, chat_id=game.team.telegram_channel_id)
+
+    @staticmethod
+    def send_next_game_day_after_registration(game: Game):
+        op_link = game.get_op_link_of_enemies(only_lineup=False)
+        text = NEXT_GAME_TEXT + WEEKLY_UPDATE_TEXT.format(
             EMOJI_SOON,
             game.game_day,
             GENERAL_MATCH_LINK,
