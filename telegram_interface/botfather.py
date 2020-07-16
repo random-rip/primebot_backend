@@ -53,10 +53,10 @@ def set_photo(update: Update, context: CallbackContext, url):
 def bop(update: Update, context: CallbackContext):
     contents = requests.get('https://random.dog/woof.json').json()
     url = contents['url']
-    set_photo(update, context, url)
     chat_id = update.message.chat_id
     bot = context.bot
     bot.send_photo(chat_id=chat_id, photo=url)
+    # set_photo(update, context, url)
 
 
 @log_command
