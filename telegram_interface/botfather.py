@@ -54,6 +54,7 @@ def set_photo(update: Update, context: CallbackContext, url):
 
 
 # /bop
+@log_command
 def bop(update: Update, context: CallbackContext):
     contents = requests.get('https://random.dog/woof.json').json()
     url = contents['url']
@@ -64,6 +65,7 @@ def bop(update: Update, context: CallbackContext):
 
 
 # /cancel
+@log_command
 def cancel(update: Update, context: CallbackContext):
     update.message.reply_markdown(
         CANCEL,
@@ -96,6 +98,7 @@ def issue(update: Update, context: CallbackContext):
 
 
 # /feedback
+@log_command
 def feedback(update: Update, context: CallbackContext):
     update.message.reply_markdown(
         FEEDBACK,
@@ -291,7 +294,7 @@ def setting4_disable(update: Update, context: CallbackContext):
     all_settings_disable(update, context, SETTINGS[3])
 
 
-############################ Keyboards #########################################
+############################ Keyboards ##########################################
 def main_menu_keyboard():
     reply_markup = InlineKeyboardMarkup([
         [InlineKeyboardButton(setting["title"], callback_data=f"m{setting['callback_data']}")] for setting in SETTINGS
