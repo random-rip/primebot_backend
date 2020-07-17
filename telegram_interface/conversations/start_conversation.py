@@ -19,7 +19,7 @@ def start(update: Update, context: CallbackContext):
         return ConversationHandler.END
 
 
-@log_conversation
+@log_command
 def get_team_id(update: Update, context: CallbackContext):
     response = update.message.text
     try:

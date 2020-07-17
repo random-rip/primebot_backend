@@ -30,9 +30,15 @@ def log_conversation(fn):
         chat_id = args[0].callback_query.message.chat.id
         command = fn.__name__
         message = args[0].callback_query.data
-        question =  args[0].callback_query.message.text
+        question = args[0].callback_query.message.text.replace("\n", " ")
         result = fn(*args, **kwargs)
-        logger.info(f"Chat: {chat_id}, Conversation: {command}, Question: {question}, Message: {message}, Result-Code: {result}")
+        logger.info(
+            f"Chat: {chat_id}, "
+            f"Conversation: {command}, "
+            f"Question: '{question}', "
+            f"Message: '{message}', "
+            f"Result-Code: {result}"
+        )
         return result
 
     return wrapper
