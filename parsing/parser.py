@@ -209,7 +209,7 @@ class BaseLog:
             return LogDisqualified(*log)
         elif action == "lineup_missing":
             return LogLineupMissing(*log)
-        elif action == "lineup_not_ready":
+        elif action == "lineup_notready":
             return LogLineupNotReady(*log)
         elif action == "change_time":
             return LogChangeTime(*log)
