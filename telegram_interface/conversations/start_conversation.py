@@ -1,9 +1,13 @@
-from telegram import Update, ReplyKeyboardRemove
+from telegram import Update
 from telegram.ext import CallbackContext, ConversationHandler
 
+from app_prime_league.models import Team
 from app_prime_league.teams import register_team
+from telegram_interface.commands.single_commands import set_photo
+from telegram_interface.keyboards import boolean_keyboard
 from telegram_interface.messages import START_GROUP, START_CHAT, TEAM_EXISTING, TEAM_ID_VALID, REGISTRATION_FINISH, \
-    WAIT_A_MOMENT_TEXT, TEAM_ID_NOT_VALID_TEXT
+    WAIT_A_MOMENT_TEXT, TEAM_ID_NOT_VALID_TEXT, GENERAL_TEAM_LINK, SET_PHOTO_TEXT, \
+    PHOTO_SUCESS_TEXT, PHOTO_RETRY_TEXT
 from utils.log_wrapper import log_command, log_conversation
 
 
@@ -20,7 +24,7 @@ def start(update: Update, context: CallbackContext):
 
 
 @log_command
-def get_team_id(update: Update, context: CallbackContext):
+def team_registration(update: Update, context: CallbackContext):
     response = update.message.text
     try:
         team_id = int(response)
@@ -48,8 +52,47 @@ def get_team_id(update: Update, context: CallbackContext):
         return 1
     else:
         update.message.reply_markdown(
-            f"{TEAM_ID_VALID}*{team.name}*\n{REGISTRATION_FINISH}",
-            reply_markup=ReplyKeyboardRemove(),
-            disable_web_page_preview=True,
+            SET_PHOTO_TEXT,
+            reply_markup=boolean_keyboard(0),
         )
         return ConversationHandler.END
+
+
+@log_conversation
+def set_optional_photo(update: Update, context: CallbackContext):
+    query = update.callback_query
+    chat_id = query.message.chat_id
+    url = Team.objects.get(telegram_channel_id=chat_id).logo_url
+    successful = set_photo(chat_id, context, url)
+    if successful:
+        finish_registration(update, context)
+    else:
+        context.bot.edit_message_text(
+            chat_id=query.message.chat_id,
+            message_id=query.message.message_id,
+            text=PHOTO_RETRY_TEXT,
+            reply_markup=boolean_keyboard(0),
+            parse_mode="Markdown",
+        )
+
+
+@log_conversation
+def finish_registration(update: Update, context: CallbackContext):
+    query = update.callback_query
+    chat_id = query.message.chat_id
+    team = Team.objects.get(telegram_channel_id=chat_id)
+    context.bot.edit_message_text(
+        chat_id=query.message.chat_id,
+        message_id=query.message.message_id,
+        text=PHOTO_SUCESS_TEXT,
+        reply_markup=None,
+        parse_mode="Markdown",
+
+    )
+
+    context.bot.send_message(
+        text=f"{TEAM_ID_VALID}*{team.name}*\n{REGISTRATION_FINISH}",
+        chat_id=chat_id,
+        disable_web_page_preview=True,
+        parse_mode="Markdown",
+    )
