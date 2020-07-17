@@ -41,7 +41,7 @@ def main():
           "3️⃣ Play-Off Integration. Möglicherweise noch nicht vollständig für diese Play-Offs.\n\n" \
           "Schreibt uns gerne, sollte euch noch etwas einfallen (/feedback).\n\n" \
           "Liebe Grüße\n" \
-          "_Die Developer_"
+          "_Grayknife und Orbis_"
 
     teams = Team.objects.exclude(telegram_channel_id__isnull=True)
     for team in teams:
