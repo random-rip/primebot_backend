@@ -49,6 +49,7 @@ class Team(models.Model):
     team_tag = models.CharField(max_length=10, null=True)
     division = models.CharField(max_length=5, null=True)
     telegram_channel_id = models.CharField(max_length=50, null=True, unique=True)
+    logo_url = models.CharField(max_length=1000, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

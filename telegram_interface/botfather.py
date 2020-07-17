@@ -3,10 +3,11 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, ConversationHa
 from telegram.ext.filters import Filters
 
 from prime_league_bot import settings
-from telegram_interface.commands.single_commands import cancel, helpcommand, issue, feedback, bop, explain
+from telegram_interface.commands.single_commands import cancel, helpcommand, issue, feedback, bop, explain, set_logo
 from telegram_interface.conversations.settings_conversation import main_settings_menu, callback_query_settings_handlers, \
-    start_settings
-from telegram_interface.conversations.start_conversation import start, get_team_id
+    start_settings, main_settings_menu_close
+from telegram_interface.conversations.start_conversation import start, team_registration, finish_registration, \
+    set_optional_photo
 
 
 ############################ Commands #########################################
@@ -40,13 +41,14 @@ class BotFather:
             CommandHandler("feedback", feedback),
             CommandHandler("bop", bop),
             CommandHandler("explain", explain),
+            CommandHandler("setlogo", set_logo),
         ]
 
         conv_handler = ConversationHandler(
             entry_points=[CommandHandler('start', start, )],
 
             states={
-                1: [MessageHandler(Filters.text & (~Filters.command), get_team_id), ],
+                1: [MessageHandler(Filters.text & (~Filters.command), team_registration), ],
             },
 
             fallbacks=fallbacks
@@ -60,6 +62,9 @@ class BotFather:
         # Main Menu
         dp.add_handler(CommandHandler('settings', start_settings))
         dp.add_handler(CallbackQueryHandler(main_settings_menu, pattern='main'))
+        dp.add_handler(CallbackQueryHandler(main_settings_menu_close, pattern='close'))
+        dp.add_handler(CallbackQueryHandler(finish_registration, pattern='0no'))
+        dp.add_handler(CallbackQueryHandler(set_optional_photo, pattern='0yes'))
 
         for i in callback_query_settings_handlers:
             dp.add_handler(i)

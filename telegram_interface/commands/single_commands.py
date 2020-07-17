@@ -6,19 +6,20 @@ from django.core.files import File
 from telegram import Update, ReplyKeyboardRemove
 from telegram.ext import CallbackContext, ConversationHandler
 
+from app_prime_league.models import Team
+from prime_league_bot.settings import STORAGE_DIR
 from telegram_interface.messages import HELP_COMMAND_LIST, ISSUE, \
-    FEEDBACK, CANCEL, HELP_TEXT, EXPLAIN_TEXT
+    FEEDBACK, CANCEL, HELP_TEXT, EXPLAIN_TEXT, PHOTO_SUCESS_TEXT, PHOTO_ERROR_TEXT
 from utils.log_wrapper import log_command
 
 
-def set_photo(update: Update, context: CallbackContext, url):
-    chat_id = update.message.chat_id
+def set_photo(chat_id, context: CallbackContext, url):
     bot_id = context.bot.id
     bot_info = context.bot.get_chat_member(chat_id=chat_id, user_id=bot_id)
     if not bot_info.can_change_info:
-        return
+        return False
 
-    file_name = f"temp_{chat_id}.temp"
+    file_name = os.path.join(STORAGE_DIR, f"temp_{chat_id}.temp")
     _ = urllib.request.urlretrieve(url, file_name)
 
     try:
@@ -26,11 +27,30 @@ def set_photo(update: Update, context: CallbackContext, url):
             context.bot.set_chat_photo(
                 chat_id=chat_id,
                 photo=File(f),
-                timeout=20,
+                timeout=30,
+                type="a",
             )
-        os.remove(file_name)
     except FileNotFoundError as e:
         print("File nicht gefunden")
+        return False
+    return True
+
+
+# /set_logo
+@log_command
+def set_logo(update: Update, context: CallbackContext):
+    chat_id = update.message.chat_id
+    url = Team.objects.get(telegram_channel_id=chat_id).logo_url
+    successful = set_photo(chat_id, context, url)
+    if successful:
+        update.message.reply_markdown(
+            PHOTO_SUCESS_TEXT,
+        )
+    else:
+        update.message.reply_markdown(
+            PHOTO_ERROR_TEXT,
+        )
+    return ConversationHandler.END
 
 
 # /bop
@@ -41,7 +61,7 @@ def bop(update: Update, context: CallbackContext):
     chat_id = update.message.chat_id
     bot = context.bot
     bot.send_photo(chat_id=chat_id, photo=url)
-    set_photo(update, context, url)
+    set_photo(chat_id, context, url)
 
 
 # /cancel

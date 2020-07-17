@@ -2,7 +2,8 @@ from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import CallbackContext, CallbackQueryHandler
 
 from app_prime_league.teams import update_team
-from telegram_interface.messages import ENABLED, SETTINGS_MAIN_MENU, DISABLED, BOOLEAN_KEYBOARD_OPTIONS
+from telegram_interface.messages import ENABLED, SETTINGS_MAIN_MENU, DISABLED, BOOLEAN_KEYBOARD_OPTIONS, CLOSE, \
+    SETTINGS_FINISHED
 from telegram_interface.validation_messages import wrong_chat_type, team_not_exists
 from utils.log_wrapper import log_command, log_conversation
 
@@ -64,8 +65,19 @@ def main_settings_menu(update: Update, context: CallbackContext):
     )
 
 
-main_menu_keyboard = InlineKeyboardMarkup(
-    [
+@log_conversation
+def main_settings_menu_close(update: Update, context: CallbackContext):
+    query = update.callback_query
+    context.bot.edit_message_text(
+        chat_id=query.message.chat_id,
+        message_id=query.message.message_id,
+        text=SETTINGS_FINISHED,
+        reply_markup=None,
+    )
+
+
+def _create_main_menu_keyboard():
+    keyboards = [
         [
             InlineKeyboardButton(
                 items["title"],
@@ -73,7 +85,15 @@ main_menu_keyboard = InlineKeyboardMarkup(
             )
         ] for items in SETTINGS.values()
     ]
-)
+    keyboards.append([InlineKeyboardButton(
+        CLOSE,
+        callback_data="close"
+    )])
+
+    return InlineKeyboardMarkup(keyboards)
+
+
+main_menu_keyboard = _create_main_menu_keyboard()
 
 
 def get_boolean_keyboard(callback_data_prefix):
