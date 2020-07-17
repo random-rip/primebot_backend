@@ -9,18 +9,6 @@ from telegram_interface.conversations.settings_conversation import main_settings
 from telegram_interface.conversations.start_conversation import start, get_team_id
 
 
-############################ Commands #########################################
-
-
-############################ /start ConversationsHandler #########################################
-
-
-############################ Settings Main #########################################
-
-
-############################ Settings #########################################
-
-
 class BotFather:
     """
     Botfather Class. Provides Communication with Bot(Telegram API) and Client

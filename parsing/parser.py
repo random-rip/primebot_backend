@@ -82,7 +82,10 @@ class TeamHTMLParser(BaseHTMLParser):
         return team_tag
 
     def get_current_division(self):
-        return None
+        logo_box = self.bs4.find("div", class_="content-portrait-head")
+        div_li = logo_box.find("li", class_="wide")
+        division = div_li.a.contents[0].split(" ")[-1]
+        return division
 
     def get_logo(self):
         logo_box = self.bs4.find("div", class_="content-portrait-head")
