@@ -46,7 +46,7 @@ class PlayerManager(models.Manager):
 
 class Team(models.Model):
     name = models.CharField(max_length=100, null=True)
-    team_tag = models.CharField(max_length=10, null=True)
+    team_tag = models.CharField(max_length=100, null=True)
     division = models.CharField(max_length=5, null=True)
     telegram_channel_id = models.CharField(max_length=50, null=True, unique=True)
     logo_url = models.CharField(max_length=1000, null=True)
