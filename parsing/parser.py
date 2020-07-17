@@ -84,7 +84,10 @@ class TeamHTMLParser(BaseHTMLParser):
     def get_current_division(self):
         logo_box = self.bs4.find("div", class_="content-portrait-head")
         div_li = logo_box.find("li", class_="wide")
-        division = div_li.a.contents[0].split("Division ")[-1]
+        try:
+            division = div_li.a.contents[0].split("Division ")[-1]
+        except AttributeError:
+            return None
         return division
 
     def get_logo(self):
