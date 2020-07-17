@@ -13,17 +13,40 @@ from parsing.parser import MatchWrapper, LogSchedulingConfirmation, LogSchedulin
     TeamHTMLParser
 from prime_league_bot import settings
 from telegram_interface.botfather import BotFather
-from telegram_interface.tg_singleton import TelegramMessagesWrapper
+from telegram_interface.tg_singleton import TelegramMessagesWrapper, send_message
 
 
 def main():
-    crawler = Crawler(local=False)
-    parser = TeamHTMLParser(crawler.get_team_website(121723))
-    print(parser.get_current_division())
+    msg = "Hallo {team_tag},\n" \
+          "hier ein kurzes Update der letzten größeren Änderungen am Bot.\n\n" \
+          "*Neuer Command:* \n" \
+          "- /setlogo - setzt euer Telegram Gruppenbild auf das bei der PrimeLeague hinterlegte Foto. " \
+          "(Der Bot benötigt dafür Adminrechte)\n\n" \
+          "*Überarbeiteter Command:* \n" \
+          "- /start - startet die Registirieung eines Teams. Hierbei wurden die Abfrage nach der TeamID angepasst und " \
+          "der Bot fragt anschließend nach der Übernahme des Gruppenbildes. \n" \
+          "- /settings - lässt euch weiterhin die Settings für euren Bot einstellen, jedoch wurde die Menüführung " \
+          "verändert. Schaut es euch gern an. Die Einstellungen lassen sich nun bequem über ein übersichtliches Menü " \
+          "einstellen. Weitere Optionen sind in Planung. Ihr könnt uns gerne /feedback geben.\n\n" \
+          "*Bugfixes:* \n" \
+          "1️⃣ Ein Fehler wurde behoben, durch den Teams, die sich registriert haben, keine Bestätigungsmeldung " \
+          "bekommen haben!\n" \
+          "2️⃣ Ein Fehler wurde behoben, durch den Spiele, die aufgrund von lineup\_notready beendet wurden, nicht als " \
+          "gespielt markiert wurden.\n" \
+          "3️⃣ Kleinere Fehler wurden behoben.\n" \
+          "Sollte ihr einen Fehler bemerken, nutzt bitte /issue.\n\n" \
+          "*Coming Soon:*\n" \
+          "1️⃣ Vollständige Integration für Teams, die sich noch in der Swiss Starter Kalibrierungsphase befinden.\n" \
+          "2️⃣ Anpinnen der Nachricht mit dem nächsten Spieltag.\n" \
+          "3️⃣ Play-Off Integration. Möglicherweise noch nicht vollständig für diese Play-Offs.\n\n" \
+          "Schreibt uns gerne, sollte euch noch etwas einfallen (/feedback).\n\n" \
+          "Liebe Grüße\n" \
+          "_Grayknife und Orbis_"
 
-# print(parser.get_team_name())
-# print(parser.get_team_tag())
-# print(int("112004-1-esport-club-frankfurt-goethe-5-2-0"))
+    teams = Team.objects.exclude(telegram_channel_id__isnull=True)
+    for team in teams:
+        msg = msg.format(team_tag=team.team_tag, )
+        send_message(msg=msg, chat_id=team.telegram_channel_id)
 
 
 # Command to run this file:
