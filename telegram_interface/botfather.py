@@ -10,18 +10,6 @@ from telegram_interface.conversations.start_conversation import start, team_regi
     set_optional_photo
 
 
-############################ Commands #########################################
-
-
-############################ /start ConversationsHandler #########################################
-
-
-############################ Settings Main #########################################
-
-
-############################ Settings #########################################
-
-
 class BotFather:
     """
     Botfather Class. Provides Communication with Bot(Telegram API) and Client

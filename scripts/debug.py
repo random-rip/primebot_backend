@@ -17,18 +17,10 @@ from telegram_interface.tg_singleton import TelegramMessagesWrapper
 
 
 def main():
+    crawler = Crawler(local=False)
+    parser = TeamHTMLParser(crawler.get_team_website(121723))
+    print(parser.get_current_division())
 
-
-    pass
-
-
-# TelegramMessagesWrapper.send_new_game_day(game)
-# TelegramMessagesWrapper.send_new_lineup_of_enemies(game)
-# TelegramMessagesWrapper.send_new_suggestion(game)
-# TelegramMessagesWrapper.send_new_suggestion_of_enemies(game)
-# TelegramMessagesWrapper.send_scheduling_confirmation(game, LogChangeTime("123546412", "", ""))
-# crawler = Crawler(local= False)
-# parser = TeamHTMLParser(crawler.get_team_website(121723))
 # print(parser.get_team_name())
 # print(parser.get_team_tag())
 # print(int("112004-1-esport-club-frankfurt-goethe-5-2-0"))
