@@ -9,8 +9,8 @@ def main():
     for i in teams:
         parser = TeamWrapper(team_id=i.id).parser
 
-        add_players(parser, i)
-        add_games(parser, i)
+        add_players(parser.get_members(), i)
+        add_games(parser.get_matches(), i)
 
 
 def run():

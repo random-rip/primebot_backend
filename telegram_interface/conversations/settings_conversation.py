@@ -1,7 +1,7 @@
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import CallbackContext, CallbackQueryHandler
 
-from app_prime_league.teams import update_team
+from app_prime_league.teams import update_settings
 from telegram_interface.messages import ENABLED, SETTINGS_MAIN_MENU, DISABLED, BOOLEAN_KEYBOARD_OPTIONS, CLOSE, \
     SETTINGS_FINISHED
 from telegram_interface.validation_messages import wrong_chat_type, team_not_exists
@@ -45,7 +45,7 @@ def start_settings(update: Update, context: CallbackContext):
     chat_type = update["message"]["chat"]["type"]
     if chat_type != "group":
         return wrong_chat_type(update, context)
-    team = update_team(update["message"]["chat"]["id"], settings={})
+    team = update_settings(update["message"]["chat"]["id"], settings={})
     if team is None:
         return team_not_exists(update, context)
     update.message.reply_text(
@@ -132,7 +132,7 @@ class Setting:
             }
             query = update.callback_query
             tg_chat_id = query.message.chat.id
-            update_team(tg_chat_id, settings=setting)
+            update_settings(tg_chat_id, settings=setting)
             context.bot.edit_message_text(
                 chat_id=query.message.chat_id,
                 message_id=query.message.message_id,
@@ -147,7 +147,7 @@ class Setting:
             }
             query = update.callback_query
             tg_chat_id = query.message.chat.id
-            update_team(tg_chat_id, settings=setting)
+            update_settings(tg_chat_id, settings=setting)
             context.bot.edit_message_text(
                 chat_id=query.message.chat_id,
                 message_id=query.message.message_id,
