@@ -1,14 +1,12 @@
 # Variablen
-from utils.constants import EMOJI_ONE, EMOJI_TWO, EMOJI_THREE, EMOJI_FIGHT, EMOJI_CLOVER, EMOJI_MINDBLOWN, \
-    EMOJI_POST_HORN, EMOJI_TROPHY, EMJOI_MAGN_GLASS
+from utils.constants import EMOJI_ONE, EMOJI_TWO, EMOJI_THREE, EMOJI_CLOVER, EMOJI_MINDBLOWN, \
+    EMOJI_POST_HORN, EMOJI_TROPHY, EMJOI_MAGN_GLASS, EMOJI_SUCCESS
 
 SUPPORT_GROUP_LINK = "https://t.me/joinchat/IUH8NhsKTYUtFKaqQMWhKA"
 START_LINK = "https://t.me/prime_league_bot?startgroup=start"
 YES = "Ja"
 NO = "Nein"
 SKIP = "Überspringen"
-CANCEL = "/cancel"
-BOOLEAN_KEYBOARD = [[YES], [NO], [SKIP, CANCEL, ]]
 SETTINGS_FINISHED = "Alles klar, ich habe die Einstellungen gespeichert."
 REGISTRATION_FINISH = "Perfekt! Ich sende euch jetzt Benachrichtigungen in diese Gruppe, " \
                       f"wenn es neue Updates zu kommenden Matches gibt. {EMOJI_TROPHY}\n" \
@@ -23,6 +21,9 @@ GENERAL_TEAM_LINK = "https://www.primeleague.gg/de/leagues/teams/"
 US = "uns"
 FOR_GAME_DAY = "für [Spieltag] {}"
 FROM = "von {}"
+
+ENABLED = "aktiviert"
+DISABLED = "deaktiviert"
 
 # Antworten:
 # Antwort auf /help
@@ -73,33 +74,32 @@ START_CHAT = "_Hallo Beschwörer,\ndu möchtest den PrimeBot für Pushbenachrich
 
 # Settings (ConversationHandler)
 START_SETTINGS = "Settings: "
-SETTINGS = [
-    # 0 WEEKLY_OP_LINK
+MAIN_MENU_TEXT = "Hauptmenü"
+
+BOOLEAN_KEYBOARD_OPTIONS = [
     {
-        "name": "weekly_op_link",
-        "text": "Möchtet ihr jede Woche eine neue Benachrichtigung für die kommende Spielwoche erhalten?",
-        "keyboard": BOOLEAN_KEYBOARD,
+        "title": "Aktivieren",
+        "callback_data": "enable"
     },
-    # 1 LINEUP_OP_LINK
     {
-        "name": "lineup_op_link",
-        "text": "Verstanden!\nMöchtet ihr benachrichtigt werden, wenn der Gegner ein neues Lineup aufgestellt hat?",
-        "keyboard": BOOLEAN_KEYBOARD,
+        "title": "Deaktivieren",
+        "callback_data": "disable"
     },
-    # 2 SCHEDULING_SUGGESTION
     {
-        "name": "scheduling_suggestion",
-        "text": "Alles klar!\nMöchtet ihr über neue Zeitvorschläge des Gegners informiert werden?",
-        "keyboard": BOOLEAN_KEYBOARD,
-    },
-    # 3 SCHEDULING_CONFIRMATION
-    {
-        "name": "scheduling_confirmation",
-        "text": "Perfekt!\nMöchtet ihr bei der Bestätigung eines Zeitvorschlags benachrichtigt werden?",
-        "keyboard": BOOLEAN_KEYBOARD,
+        "title": MAIN_MENU_TEXT,
+        "callback_data": "main"
     },
 ]
 
+SETTINGS_MAIN_MENU = {
+    "text": "Hauptmenü:\nWählt eine Einstellung aus, die ihr anpassen möchtet",
+}
+
+SET_PHOTO_TEXT = f"_Soll ich das Teambild aus der PrimeLeague importieren?_\n(Dazu werden Adminrechte benötigt)"
+PHOTO_SUCESS_TEXT = f"{EMOJI_SUCCESS}"
+PHOTO_ERROR_TEXT = f"Logo konnte nicht importiert werden."
+PHOTO_RETRY_TEXT = f"Profilbild konnte nicht geändert werden. Bitte stellt sicher, dass ich Administrator bin und " \
+                   f"die Gruppen-Info ändern darf\n_Soll ich das Teambild aus der PrimeLeague importieren?_"
 # Update Messages
 OWN_NEW_TIME_SUGGESTION_TEXT = "Neuer Zeitvorschlag von uns für [Spieltag {}]({}{}). {}"
 NEW_TIME_SUGGESTION_PREFIX = "Neuer Zeitvorschlag von [{}]({}{}) für [Spieltag {}]({}{}):\n"
@@ -133,3 +133,6 @@ EXPLAIN_TEXT = "Dieser Bot ist nicht in Kooperation mit der PrimeLeague bzw. der
                "Das bedeutet, dass Updates maximal 30 Minuten alt sein können. Das wöchentliche Update geschieht " \
                "einmal jeden Montag um 0Uhr nach Beginn des Splits bis zum Ende der Gruppenphase. " \
                "Die gespeicherten Teams werden einmal pro Tag um 0Uhr aktualisiert."
+
+
+CLOSE = "Schließen"

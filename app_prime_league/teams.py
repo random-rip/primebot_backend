@@ -40,9 +40,11 @@ def add_team(team_id, tg_group_id):
         "team_tag": parser.get_team_tag(),
         "division": parser.get_current_division(),
         "telegram_channel_id": tg_group_id,
+        "logo_url": parser.get_logo(),
     })
     if not created:
         team.telegram_channel_id = tg_group_id
+        team.logo_url = parser.get_logo()
         team.save()
     return team
 
