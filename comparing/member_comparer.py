@@ -15,8 +15,8 @@ class MemberComparer:
         parser = TeamHTMLParser(website)
         current_members = parser.get_members()
         for member in current_members:
-            player = Player.objects.filter(id=member[0], name=member[2])
+            player = Player.objects.filter(id=member[0], name=member[1], is_leader=member[3])
             if not player.exists():
                 player = Player.objects.filter(id=member[0])
-                player.update(name=member[2])
+                player.update(name=member[1], is_leader=member[3])
         return True
