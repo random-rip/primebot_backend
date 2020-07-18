@@ -43,12 +43,11 @@ def main():
           "Liebe Grüße\n" \
           "_Grayknife und Orbis_"
 
-    teams = Team.objects.exclude(telegram_channel_id__isnull=True)
+    teams = Team.objects.filter(id="119671")
     for team in teams:
         print(team.id)
-        if team.id in  [111914, 93008, 105959, 105878, ]:
-            continue
         msg = pattern.format(team_tag=team.team_tag, )
+        print(msg)
         send_message(msg=msg, chat_id=team.telegram_channel_id)
 
 
