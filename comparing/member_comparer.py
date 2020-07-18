@@ -14,9 +14,12 @@ class MemberComparer:
         website = crawler.get_team_website(self.team_id)
         parser = TeamHTMLParser(website)
         current_members = parser.get_members()
-        for member in current_members:
-            player = Player.objects.filter(id=member[0], name=member[1], is_leader=member[3])
+        for (id, name, summoner_name, is_leader) in current_members:
+            player = Player.objects.filter(id=id, name=name, summoner_name=summoner_name, is_leader=is_leader)
             if not player.exists():
-                player = Player.objects.filter(id=member[0])
-                player.update(name=member[1], is_leader=member[3])
+                player, created = Player.objects.get_or_create(id=id, defaults={
+                    "name": name,
+                })
+                if not created:
+                    player.update(name=name, summoner_name=summoner_name, is_leader=is_leader)
         return True
