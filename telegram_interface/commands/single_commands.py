@@ -27,9 +27,9 @@ def set_photo(chat_id, context: CallbackContext, url):
             context.bot.set_chat_photo(
                 chat_id=chat_id,
                 photo=File(f),
-                timeout=30,
-                type="a",
+                timeout=20,
             )
+        os.remove(file_name)
     except FileNotFoundError as e:
         print("File nicht gefunden")
         return False
