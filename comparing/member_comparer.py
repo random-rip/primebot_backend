@@ -5,9 +5,8 @@ from parsing.parser import TeamHTMLParser
 
 class MemberComparer:
 
-    def __init__(self, team_id, members):
+    def __init__(self, team_id,):
         self.team_id = team_id
-        self.members = members
 
     def compare_members(self):
         crawler = Crawler(local=False)
