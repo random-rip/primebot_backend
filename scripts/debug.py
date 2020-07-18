@@ -17,7 +17,7 @@ from telegram_interface.tg_singleton import TelegramMessagesWrapper, send_messag
 
 
 def main():
-    msg = "Hallo {team_tag},\n" \
+    pattern = "Hallo {team_tag},\n" \
           "hier ein kurzes Update der letzten größeren Änderungen am Bot.\n\n" \
           "*Neuer Command:* \n" \
           "- /setlogo - setzt euer Telegram Gruppenbild auf das bei der PrimeLeague hinterlegte Foto. " \
@@ -45,7 +45,10 @@ def main():
 
     teams = Team.objects.exclude(telegram_channel_id__isnull=True)
     for team in teams:
-        msg = msg.format(team_tag=team.team_tag, )
+        print(team.id)
+        if team.id in  [111914, 93008, 105959, 105878, ]:
+            continue
+        msg = pattern.format(team_tag=team.team_tag, )
         send_message(msg=msg, chat_id=team.telegram_channel_id)
 
 
