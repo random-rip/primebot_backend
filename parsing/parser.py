@@ -67,9 +67,12 @@ class TeamHTMLParser(BaseHTMLParser):
 
     def get_matches(self):
         games_table = self.bs4.find_all("ul", class_="league-stage-matches")
-        games = games_table[-1].find_all("td", class_="col-2 col-text-center")
-        game_ids = [td.a.get("href").split("/matches/")[1].split("-")[0] for td in games]
-        return game_ids
+        try:
+            games = games_table[-1].find_all("td", class_="col-2 col-text-center")
+            game_ids = [td.a.get("href").split("/matches/")[1].split("-")[0] for td in games]
+            return game_ids
+        except IndexError:
+            return []
 
     def get_team_name(self):
         page_title_div = self.bs4.find_all("div", class_="page-title")[0]

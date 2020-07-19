@@ -49,7 +49,7 @@ def add_team(team_id, tg_group_id):
     return team
 
 
-def update_team(parser: TeamHTMLParser, team: Team ):
+def update_team(parser: TeamHTMLParser, team: Team):
     team.name = parser.get_team_name()
     team.logo_url = parser.get_logo()
     team.team_tag = parser.get_team_tag()
@@ -75,16 +75,19 @@ def update_settings(tg_chat_id, settings: dict):
 
 def add_players(members, team: Team):
     for (id_, name, summoner_name, is_leader,) in members:
-        player, created = Player.objects.get_or_create(id=id_, defaults={
-            "name": name,
-            "team": team,
-            "summoner_name": summoner_name,
-            "is_leader": is_leader,
-        })
-        if not created:
-            player.is_leader = is_leader
-            player.summoner_name = summoner_name
-            player.save()
+        player = Player.objects.filter(id=id_, name=name, summoner_name=summoner_name, is_leader=is_leader)
+        if not player.exists():
+            player, created = Player.objects.get_or_create(id=id_, defaults={
+                "name": name,
+                "team": team,
+                "summoner_name": summoner_name,
+                "is_leader": is_leader,
+            })
+            if not created:
+                player.name = name
+                player.is_leader = is_leader
+                player.summoner_name = summoner_name
+                player.save()
 
 
 def add_game(team, game_id):
