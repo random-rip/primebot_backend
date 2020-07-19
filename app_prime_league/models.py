@@ -213,8 +213,8 @@ class Game(models.Model):
                 return None
         else:
             names = list(self.enemy_team.player_set.all().values_list("summoner_name", flat=True))
-        url = "%2C".join([x.replace(" ", "") for x in names])
-        return "https://euw.op.gg/multi/query={}".format(url)
+        url = ",".join([x.replace(" ", "") for x in names])
+        return "https://euw.op.gg/multi/?query={}".format(url)
 
 
 class Suggestion(models.Model):

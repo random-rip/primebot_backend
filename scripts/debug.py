@@ -1,4 +1,5 @@
 from app_prime_league.models import Game
+from telegram_interface.tg_singleton import TelegramMessagesWrapper
 
 
 def main():
@@ -6,6 +7,7 @@ def main():
 
     print(match.get_op_link_of_enemies(only_lineup=False))
 
+    TelegramMessagesWrapper.send_new_lineup_of_enemies(match)
     # pattern = "Hallo {team_tag},\n" \
     #       "hier ein kurzes Update der letzten größeren Änderungen am Bot.\n\n" \
     #       "*Neuer Command:* \n" \
