@@ -2,7 +2,7 @@ import time
 from datetime import datetime
 
 from app_prime_league.models import Team
-from app_prime_league.teams import add_players, add_games, update_team
+from app_prime_league.teams import add_or_update_players, add_games, update_team
 from parsing.parser import TeamWrapper
 
 
@@ -13,8 +13,8 @@ def main():
 
     for i in teams:
         parser = TeamWrapper(team_id=i.id).parser
-        update_team(parser, i)
-        add_players(parser.get_members(), i)
+        update_team(parser, team_id=i.id)
+        add_or_update_players(parser.get_members(), i)
         if i.telegram_channel_id is not None:
             game_ids = parser.get_matches()
             if len(game_ids) != len(i.games_against.all()):
