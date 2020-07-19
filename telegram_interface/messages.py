@@ -134,5 +134,5 @@ EXPLAIN_TEXT = "Dieser Bot ist nicht in Kooperation mit der PrimeLeague bzw. der
                "einmal jeden Montag um 0Uhr nach Beginn des Splits bis zum Ende der Gruppenphase. " \
                "Die gespeicherten Teams werden einmal pro Tag um 0Uhr aktualisiert."
 
-
 CLOSE = "Schließen"
+CURRENTLY = "Derzeitig"

@@ -1,9 +1,10 @@
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import CallbackContext, CallbackQueryHandler
 
+from app_prime_league.models import Setting, Team
 from app_prime_league.teams import update_team
 from telegram_interface.messages import ENABLED, SETTINGS_MAIN_MENU, DISABLED, BOOLEAN_KEYBOARD_OPTIONS, CLOSE, \
-    SETTINGS_FINISHED
+    SETTINGS_FINISHED, CURRENTLY
 from telegram_interface.validation_messages import wrong_chat_type, team_not_exists
 from utils.log_wrapper import log_command, log_conversation
 
@@ -124,7 +125,7 @@ def get_boolean_keyboard(callback_data_prefix):
     return reply_markup
 
 
-class Setting:
+class NotificationSetting:
 
     def __init__(self, name, title, text, callback_data):
         self.name = name
@@ -165,10 +166,14 @@ class Setting:
         @log_conversation
         def show(update: Update, context: CallbackContext):
             query = update.callback_query
+            team_id = Team.objects.get(telegram_channel_id=query.message.chat.id).id
+            setting_model_disabled = Setting.objects.filter(team_id=team_id, attr_name=self.name, attr_value=0).first()
             context.bot.edit_message_text(
                 chat_id=query.message.chat_id,
                 message_id=query.message.message_id,
-                text=self.text,
+                text=f"{self.text} \n"
+                     f"{CURRENTLY}: "
+                     f"{DISABLED if setting_model_disabled is not None else ENABLED}",
                 reply_markup=get_boolean_keyboard(self.callback_data)
             )
 
@@ -179,7 +184,7 @@ class Setting:
 
 callback_query_settings_handlers = []
 for i, v in SETTINGS.items():
-    setting = Setting(**v)
+    setting = NotificationSetting(**v)
     setting_id = setting.callback_data
     callback_query_settings_handlers.append(CallbackQueryHandler(setting.show, pattern=f'm{setting_id}'))
     callback_query_settings_handlers.append(CallbackQueryHandler(setting.enable, pattern=f'{setting_id}enable'))
