@@ -6,7 +6,7 @@ from parsing.parser import LogSchedulingAutoConfirmation, LogSchedulingConfirmat
 from prime_league_bot import settings
 from telegram_interface.messages import NEW_TIME_SUGGESTION_PREFIX, NEW_TIME_SUGGESTIONS_PREFIX, GENERAL_MATCH_LINK, \
     SCHEDULING_AUTO_CONFIRMATION_TEXT, SCHEDULING_CONFIRMATION_TEXT, GAME_BEGIN_CHANGE_TEXT, NEW_LINEUP_TEXT, \
-    WEEKLY_UPDATE_TEXT, GENERAL_TEAM_LINK, OWN_NEW_TIME_SUGGESTION_TEXT, NEXT_GAME_TEXT
+    WEEKLY_UPDATE_TEXT, GENERAL_TEAM_LINK, OWN_NEW_TIME_SUGGESTION_TEXT, NEXT_GAME_TEXT, MESSAGE_NOT_PINED_TEXT
 from utils.constants import EMOJI_THREE, EMOJI_ONE, EMOJI_TWO, EMOJI_SUCCESS, EMOJI_FIGHT, EMOJI_SOON, \
     EMOJI_LINEUP
 
@@ -24,7 +24,7 @@ def send_message(msg: str, chat_id: int = None):
     """
     if settings.DEBUG or chat_id is None:
         chat_id = settings.DEFAULT_TELEGRAM_CHAT_ID
-    bot.sendMessage(chat_id=chat_id, text=msg, parse_mode="Markdown", disable_web_page_preview=True)
+    return bot.sendMessage(chat_id=chat_id, text=msg, parse_mode="Markdown", disable_web_page_preview=True)
 
 
 def format_datetime(x):
@@ -32,7 +32,14 @@ def format_datetime(x):
                                  tzinfo=babel.get_timezone(settings.TIME_ZONE))
 
 
+def pin_msg(message):
+    message_id = message["message_id"]
+    chat_id = message["chat"]["id"]
+    return bot.pinChatMessage(chat_id=chat_id, message_id=message_id)
+
+
 class TelegramMessagesWrapper:
+
 
     @staticmethod
     def send_new_suggestion_of_enemies(game: Game):
@@ -99,7 +106,7 @@ class TelegramMessagesWrapper:
         send_message(msg=message, chat_id=game.team.telegram_channel_id)
 
     @staticmethod
-    def send_new_game_day(game: Game):
+    def send_new_game_day(game: Game, setting):
         op_link = game.get_op_link_of_enemies(only_lineup=False)
         text = WEEKLY_UPDATE_TEXT.format(
             EMOJI_SOON,
@@ -111,7 +118,13 @@ class TelegramMessagesWrapper:
             game.enemy_team.id,
             op_link
         )
-        send_message(msg=text, chat_id=game.team.telegram_channel_id)
+        message = send_message(msg=text, chat_id=game.team.telegram_channel_id)
+        if setting:
+            try:
+                pin_msg(message)
+            except telepot.exception.NotEnoughRightsError:
+                send_message(msg=MESSAGE_NOT_PINED_TEXT)
+        return message
 
     @staticmethod
     def send_next_game_day_after_registration(game: Game):

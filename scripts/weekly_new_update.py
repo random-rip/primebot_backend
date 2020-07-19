@@ -9,7 +9,10 @@ def main():
     for i in games:
         settings = dict(i.team.setting_set.all().values_list("attr_name", "attr_value"))
         if settings.get("weekly_op_link", True):
-            TelegramMessagesWrapper.send_new_game_day(i)
+            TelegramMessagesWrapper.send_new_game_day(i, settings.get("pin_weekly_op_link", True))
+
+
+
 
 
 def run():

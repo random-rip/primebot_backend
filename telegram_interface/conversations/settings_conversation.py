@@ -9,35 +9,43 @@ from telegram_interface.validation_messages import wrong_chat_type, team_not_exi
 from utils.log_wrapper import log_command, log_conversation
 
 SETTINGS = {
-    # 0 WEEKLY_OP_LINK
+    # WEEKLY_OP_LINK
     "WEEKLY_OP_LINK": {
         "name": "weekly_op_link",
         "title": "Wochenübersicht",
         "text": "Möchtet ihr jede Woche eine neue Benachrichtigung für die kommende Spielwoche erhalten?",
         "callback_data": "1",
     },
-    # 1 LINEUP_OP_LINK
+    # PIN_WEEKLY_OP_LINK
+    "PIN_WEEKLY_OP_LINK": {
+        "name": "pin_weekly_op_link",
+        "title": "Wochenübersicht anheften",
+        "text": "Möchtet ihr, dass die wöchentliche Benachrichtigung angeheftet wird?\n"
+                "(Dazu werden Admin- oder Pinrechte benötigt!)",
+        "callback_data": "6",
+    },
+    # LINEUP_OP_LINK
     "LINEUP_OP_LINK": {
         "name": "lineup_op_link",
         "title": "Lineup",
         "text": "Möchtet ihr benachrichtigt werden, wenn der Gegner ein neues Lineup aufgestellt hat?",
         "callback_data": "2",
     },
-    # 2 SCHEDULING_SUGGESTION
+    # SCHEDULING_SUGGESTION
     "SCHEDULING_SUGGESTION": {
         "name": "scheduling_suggestion",
         "title": "Neue Zeitvorschläge",
         "text": "Möchtet ihr über neue Zeitvorschläge des Gegners informiert werden?",
         "callback_data": "3",
     },
-    # 3 SCHEDULING_CONFIRMATION
+    # SCHEDULING_CONFIRMATION
     "SCHEDULING_CONFIRMATION": {
         "name": "scheduling_confirmation",
         "title": "Bestätigte Zeitvorschläge",
         "text": "Möchtet ihr bei der Bestätigung eines Zeitvorschlags benachrichtigt werden?",
         "callback_data": "4",
     },
-    # 4 CHANGELOG_UPDATE
+    # CHANGELOG_UPDATE
     "CHANGELOG_UPDATE": {
         "name": "changelog_update",
         "title": "Changelog",
