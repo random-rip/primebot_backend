@@ -36,6 +36,13 @@ SETTINGS = {
         "text": "Möchtet ihr bei der Bestätigung eines Zeitvorschlags benachrichtigt werden?",
         "callback_data": "4",
     },
+    # 4 CHANGELOG_UPDATE
+    "CHANGELOG_UPDATE": {
+        "name": "changelog_update",
+        "title": "Changelog",
+        "text": "Möchtet ihr bei Änderungen am Bot benachrichtigt werden?",
+        "callback_data": "5",
+    },
 }
 
 
