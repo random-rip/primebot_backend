@@ -10,7 +10,7 @@ from app_prime_league.models import Team
 from prime_league_bot.settings import STORAGE_DIR
 from telegram_interface.messages import HELP_COMMAND_LIST, ISSUE, \
     FEEDBACK, CANCEL, HELP_TEXT, EXPLAIN_TEXT, PHOTO_SUCESS_TEXT, PHOTO_ERROR_TEXT
-from utils.log_wrapper import log_command
+from utils.messages_logger import log_command
 
 
 def set_photo(chat_id, context: CallbackContext, url):

@@ -1,4 +1,5 @@
 import sys
+import sys
 import traceback
 
 from telegram import ParseMode
@@ -13,7 +14,6 @@ from telegram_interface.conversations.settings_conversation import main_settings
     start_settings, main_settings_menu_close
 from telegram_interface.conversations.start_conversation import start, team_registration, finish_registration, \
     set_optional_photo
-from utils.log_wrapper import logger
 
 
 # this is a general error handler function. If you need more information about specific type of update, add it to the

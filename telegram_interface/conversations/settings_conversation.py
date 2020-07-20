@@ -5,7 +5,7 @@ from app_prime_league.teams import update_settings
 from telegram_interface.messages import ENABLED, SETTINGS_MAIN_MENU, DISABLED, BOOLEAN_KEYBOARD_OPTIONS, CLOSE, \
     SETTINGS_FINISHED
 from telegram_interface.validation_messages import wrong_chat_type, team_not_exists
-from utils.log_wrapper import log_command, log_conversation
+from utils.messages_logger import log_command, log_conversation
 
 SETTINGS = {
     # 0 WEEKLY_OP_LINK

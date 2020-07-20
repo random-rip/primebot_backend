@@ -8,7 +8,7 @@ from telegram_interface.keyboards import boolean_keyboard
 from telegram_interface.messages import START_GROUP, START_CHAT, TEAM_EXISTING, TEAM_ID_VALID, REGISTRATION_FINISH, \
     WAIT_A_MOMENT_TEXT, TEAM_ID_NOT_VALID_TEXT, GENERAL_TEAM_LINK, SET_PHOTO_TEXT, \
     PHOTO_SUCESS_TEXT, PHOTO_RETRY_TEXT
-from utils.log_wrapper import log_command, log_conversation
+from utils.messages_logger import log_command, log_conversation
 
 
 # /start
