@@ -2,6 +2,7 @@ import os
 import urllib.request
 
 import requests
+import telegram
 from django.core.files import File
 from telegram import Update, ReplyKeyboardRemove
 from telegram.ext import CallbackContext, ConversationHandler
@@ -10,7 +11,7 @@ from app_prime_league.models import Team
 from prime_league_bot.settings import STORAGE_DIR
 from telegram_interface.messages import HELP_COMMAND_LIST, ISSUE, \
     FEEDBACK, CANCEL, HELP_TEXT, EXPLAIN_TEXT, PHOTO_SUCESS_TEXT, PHOTO_ERROR_TEXT
-from utils.messages_logger import log_command
+from utils.messages_logger import log_command, logger
 
 
 def set_photo(chat_id, context: CallbackContext, url):
@@ -19,10 +20,9 @@ def set_photo(chat_id, context: CallbackContext, url):
     if not bot_info.can_change_info:
         return False
 
-    file_name = os.path.join(STORAGE_DIR, f"temp_{chat_id}.temp")
-    _ = urllib.request.urlretrieve(url, file_name)
-
     try:
+        file_name = os.path.join(STORAGE_DIR, f"temp_{chat_id}.temp")
+        _ = urllib.request.urlretrieve(url, file_name)
         with open(file_name, 'rb') as f:
             context.bot.set_chat_photo(
                 chat_id=chat_id,
@@ -30,8 +30,10 @@ def set_photo(chat_id, context: CallbackContext, url):
                 timeout=20,
             )
         os.remove(file_name)
-    except FileNotFoundError as e:
-        print("File nicht gefunden")
+    except (FileNotFoundError, telegram.error.BadRequest) as e:
+        return False
+    except Exception as e:
+        logger.error(e)
         return False
     return True
 
@@ -61,7 +63,11 @@ def bop(update: Update, context: CallbackContext):
     chat_id = update.message.chat.id
     bot = context.bot
     bot.send_photo(chat_id=chat_id, photo=url)
-    set_photo(chat_id, context, url)
+    successful = set_photo(chat_id, context, url)
+    if not successful:
+        update.message.reply_markdown(
+            PHOTO_ERROR_TEXT,
+        )
 
 
 # /cancel

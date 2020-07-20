@@ -97,7 +97,7 @@ SETTINGS_MAIN_MENU = {
 
 SET_PHOTO_TEXT = f"_Soll ich das Teambild aus der PrimeLeague importieren?_\n(Dazu werden Adminrechte benötigt)"
 PHOTO_SUCESS_TEXT = f"{EMOJI_SUCCESS}"
-PHOTO_ERROR_TEXT = f"Logo konnte nicht importiert werden."
+PHOTO_ERROR_TEXT = f"Bild konnte nicht gesetzt werden."
 PHOTO_RETRY_TEXT = f"Profilbild konnte nicht geändert werden. Bitte stellt sicher, dass ich Administrator bin und " \
                    f"die Gruppen-Info ändern darf\n_Soll ich das Teambild aus der PrimeLeague importieren?_"
 # Update Messages
