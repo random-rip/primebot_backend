@@ -5,7 +5,7 @@ from telegram.ext.filters import Filters
 from prime_league_bot import settings
 from telegram_interface.commands.single_commands import cancel, helpcommand, issue, feedback, bop, explain, set_logo
 from telegram_interface.conversations.settings_conversation import main_settings_menu, callback_query_settings_handlers, \
-    start_settings, main_settings_menu_close
+    start_settings, main_settings_menu_close, migrate_chat
 from telegram_interface.conversations.start_conversation import start, team_registration, finish_registration, \
     set_optional_photo
 
@@ -53,9 +53,9 @@ class BotFather:
         dp.add_handler(CallbackQueryHandler(main_settings_menu_close, pattern='close'))
         dp.add_handler(CallbackQueryHandler(finish_registration, pattern='0no'))
         dp.add_handler(CallbackQueryHandler(set_optional_photo, pattern='0yes'))
-
+        # Chat Migration
+        dp.add_handler(MessageHandler(Filters.status_update.migrate, migrate_chat))
         for i in callback_query_settings_handlers:
             dp.add_handler(i)
-
         updater.start_polling()
         updater.idle()

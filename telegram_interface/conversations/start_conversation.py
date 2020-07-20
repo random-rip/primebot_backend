@@ -14,8 +14,8 @@ from utils.log_wrapper import log_command, log_conversation
 # /start
 @log_command
 def start(update: Update, context: CallbackContext):
-    chat_type = update["message"]["chat"]["type"]
-    if chat_type == "group":
+    chat_type = update.message.chat.type
+    if chat_type in ["group", "supergroup"]:
         update.message.reply_markdown(START_GROUP, disable_web_page_preview=True)
         return 1
     else:
@@ -37,7 +37,7 @@ def team_registration(update: Update, context: CallbackContext):
             )
             return 1
 
-    tg_group_id = update["message"]["chat"]["id"]
+    tg_group_id = update.message.chat.id
     context.bot.send_message(
         text=WAIT_A_MOMENT_TEXT,
         chat_id=tg_group_id,

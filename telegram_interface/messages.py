@@ -1,6 +1,6 @@
 # Variablen
 from utils.constants import EMOJI_ONE, EMOJI_TWO, EMOJI_THREE, EMOJI_CLOVER, EMOJI_MINDBLOWN, \
-    EMOJI_POST_HORN, EMOJI_TROPHY, EMJOI_MAGN_GLASS, EMOJI_SUCCESS
+    EMOJI_POST_HORN, EMOJI_TROPHY, EMJOI_MAGN_GLASS, EMOJI_SUCCESS, EMOJI_ARROW_RIGHT
 
 SUPPORT_GROUP_LINK = "https://t.me/joinchat/IUH8NhsKTYUtFKaqQMWhKA"
 START_LINK = "https://t.me/prime_league_bot?startgroup=start"
@@ -100,6 +100,13 @@ PHOTO_SUCESS_TEXT = f"{EMOJI_SUCCESS}"
 PHOTO_ERROR_TEXT = f"Logo konnte nicht importiert werden."
 PHOTO_RETRY_TEXT = f"Profilbild konnte nicht geändert werden. Bitte stellt sicher, dass ich Administrator bin und " \
                    f"die Gruppen-Info ändern darf\n_Soll ich das Teambild aus der PrimeLeague importieren?_"
+
+MESSAGE_NOT_PINED_TEXT = f"Die wöchentliche Nachricht konnte nicht angeheftet werden. Bitte stellt für das nächste Mal " \
+                         f"sicher, dass ich Administrator bin oder ausreichend Rechte habe um Nachrichten anzuheften. " \
+                         f"Falls ihr nicht möchtet, dass die wöchentliche Benachrichtigung angeheftet wird, " \
+                         f"nutzt bitte /settings {EMOJI_ARROW_RIGHT} 'Wochenübersicht anheften' {EMOJI_ARROW_RIGHT} " \
+                         f"'Deaktivieren'."
+
 # Update Messages
 OWN_NEW_TIME_SUGGESTION_TEXT = "Neuer Zeitvorschlag von uns für [Spieltag {}]({}{}). {}"
 NEW_TIME_SUGGESTION_PREFIX = "Neuer Zeitvorschlag von [{}]({}{}) für [Spieltag {}]({}{}):\n"
@@ -134,5 +141,7 @@ EXPLAIN_TEXT = "Dieser Bot ist nicht in Kooperation mit der PrimeLeague bzw. der
                "einmal jeden Montag um 0Uhr nach Beginn des Splits bis zum Ende der Gruppenphase. " \
                "Die gespeicherten Teams werden einmal pro Tag um 0Uhr aktualisiert."
 
-
 CLOSE = "Schließen"
+CURRENTLY = "Derzeitig"
+
+
