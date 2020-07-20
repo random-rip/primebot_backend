@@ -106,7 +106,7 @@ class TelegramMessagesWrapper:
         send_message(msg=message, chat_id=game.team.telegram_channel_id)
 
     @staticmethod
-    def send_new_game_day(game: Game, setting):
+    def send_new_game_day(game: Game, pin_weekly_op_link):
         op_link = game.get_op_link_of_enemies(only_lineup=False)
         text = WEEKLY_UPDATE_TEXT.format(
             EMOJI_SOON,
@@ -119,7 +119,7 @@ class TelegramMessagesWrapper:
             op_link
         )
         message = send_message(msg=text, chat_id=game.team.telegram_channel_id)
-        if setting:
+        if pin_weekly_op_link:
             try:
                 pin_msg(message)
             except telepot.exception.NotEnoughRightsError:

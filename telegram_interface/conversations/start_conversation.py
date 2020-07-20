@@ -14,9 +14,8 @@ from utils.log_wrapper import log_command, log_conversation
 # /start
 @log_command
 def start(update: Update, context: CallbackContext):
-    accept = ["group", "supergroup"]
     chat_type = update.message.chat.type
-    if chat_type in accept:
+    if chat_type in ["group", "supergroup"]:
         update.message.reply_markdown(START_GROUP, disable_web_page_preview=True)
         return 1
     else:
