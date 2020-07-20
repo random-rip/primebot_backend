@@ -18,7 +18,7 @@ from telegram_interface.conversations.start_conversation import start, team_regi
 
 # this is a general error handler function. If you need more information about specific type of update, add it to the
 # payload in the respective if clause
-def  error(update, context):
+def error(update, context):
     # add all the dev user_ids in this list. You can also add ids of channels or groups.
     devs = [-490819576]
     # we want to notify the user of this problem. This will always work, but not notify users if the update is an
