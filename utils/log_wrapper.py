@@ -6,7 +6,7 @@ from prime_league_bot.settings import LOGGING_DIR
 
 logging.basicConfig(
     filename=os.path.join(LOGGING_DIR, f"bot_father_{datetime.now().strftime('%Y-%m-%d')}.log"),
-    level=logging.INFO,
+    level=logging.ERROR,
     format='%(asctime)s %(levelname)s %(message)s',
     datefmt='%d/%m/%Y %H:%M:%S'
 )
