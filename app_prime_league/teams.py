@@ -14,8 +14,8 @@ def register_team(team_id, tg_group_id):
             wrapper = TeamWrapper(team_id=team.id)
         except Exception:
             return None
-        add_players(wrapper.parser, team)
-        add_games(wrapper.parser, team)
+        add_or_update_players(wrapper.parser.get_members(), team)
+        add_games(wrapper.parser.get_matches(), team)
         return team
     else:
         return None
@@ -49,7 +49,26 @@ def add_team(team_id, tg_group_id):
     return team
 
 
-def update_team(tg_chat_id, settings: dict):
+def update_team(parser: TeamHTMLParser, team_id: int):
+    name = parser.get_team_name()
+    logo = parser.get_logo()
+    team_tag = parser.get_team_tag()
+    division = parser.get_current_division()
+
+    team = Team.objects.filter(id=team_id, name=name, logo_url=logo, team_tag=team_tag, division=division)
+    if team.exists():
+        return team.first()
+    team = team.first()
+    assert isinstance(team, Team)
+    team.name = name
+    team.logo_url = logo
+    team.team_tag = team_tag
+    team.division = division
+    team.save()
+    return team
+
+
+def update_settings(tg_chat_id, settings: dict):
     try:
         team = Team.objects.get(telegram_channel_id=tg_chat_id)
     except Team.DoesNotExist:
@@ -64,9 +83,11 @@ def update_team(tg_chat_id, settings: dict):
     return team
 
 
-def add_players(parser: TeamHTMLParser, team: Team):
-    members = parser.get_members()
+def add_or_update_players(members, team: Team):
     for (id_, name, summoner_name, is_leader,) in members:
+        player = Player.objects.filter(id=id_, name=name, summoner_name=summoner_name, is_leader=is_leader)
+        if player.exists():
+            continue
         player, created = Player.objects.get_or_create(id=id_, defaults={
             "name": name,
             "team": team,
@@ -74,6 +95,7 @@ def add_players(parser: TeamHTMLParser, team: Team):
             "is_leader": is_leader,
         })
         if not created:
+            player.name = name
             player.is_leader = is_leader
             player.summoner_name = summoner_name
             player.save()
@@ -93,9 +115,8 @@ def add_game(team, game_id):
     game.update_latest_suggestion(gmd)
 
 
-def add_games(parser: TeamHTMLParser, team: Team):
+def add_games(game_ids, team: Team):
     start_time = time.time()
-    game_ids = parser.get_matches()
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         executor.map(lambda p: add_game(*p), ((team, game_id) for game_id in game_ids))
     duration = time.time() - start_time

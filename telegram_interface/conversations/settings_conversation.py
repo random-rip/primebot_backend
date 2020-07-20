@@ -156,7 +156,7 @@ class NotificationSetting:
             }
             query = update.callback_query
             tg_chat_id = query.message.chat.id
-            update_team(tg_chat_id, settings=setting)
+            update_settings(tg_chat_id, settings=setting)
             context.bot.edit_message_text(
                 chat_id=query.message.chat_id,
                 message_id=query.message.message_id,
@@ -171,7 +171,7 @@ class NotificationSetting:
             }
             query = update.callback_query
             tg_chat_id = query.message.chat.id
-            update_team(tg_chat_id, settings=setting)
+            update_settings(tg_chat_id, settings=setting)
             context.bot.edit_message_text(
                 chat_id=query.message.chat_id,
                 message_id=query.message.message_id,

@@ -27,9 +27,9 @@ def set_photo(chat_id, context: CallbackContext, url):
             context.bot.set_chat_photo(
                 chat_id=chat_id,
                 photo=File(f),
-                timeout=30,
-                type="a",
+                timeout=20,
             )
+        os.remove(file_name)
     except FileNotFoundError as e:
         print("File nicht gefunden")
         return False
@@ -39,7 +39,7 @@ def set_photo(chat_id, context: CallbackContext, url):
 # /set_logo
 @log_command
 def set_logo(update: Update, context: CallbackContext):
-    chat_id = update.message.chat_id
+    chat_id = update.message.chat.id
     url = Team.objects.get(telegram_channel_id=chat_id).logo_url
     successful = set_photo(chat_id, context, url)
     if successful:
@@ -58,7 +58,7 @@ def set_logo(update: Update, context: CallbackContext):
 def bop(update: Update, context: CallbackContext):
     contents = requests.get('https://random.dog/woof.json').json()
     url = contents['url']
-    chat_id = update.message.chat_id
+    chat_id = update.message.chat.id
     bot = context.bot
     bot.send_photo(chat_id=chat_id, photo=url)
     set_photo(chat_id, context, url)

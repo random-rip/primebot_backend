@@ -40,7 +40,7 @@ def check_match(match):
         if settings.get("scheduling_confirmation", True):
             TelegramMessagesWrapper.send_scheduling_confirmation(match, gmd.latest_confirmation_log)
     if cmp.compare_lineup_confirmation():
-        print("Neues Lineup des gegnerischen Teams")
+        print("Neues Lineup des gegnerischen Teams: ", game_id)
         gmd.get_enemy_team_data()
         match.update_enemy_team(gmd)
         match.update_enemy_lineup(gmd)
