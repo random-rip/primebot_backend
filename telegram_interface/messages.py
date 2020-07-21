@@ -49,6 +49,8 @@ TEAM_EXISTING = "Dieses Team ist bereits registriert und mit einem anderen Chat 
                 "die Team ID wurde nicht gefunden.\n" \
                 f"Solltet ihr Hilfe benötigen, nutzt bitte /help oder /issue.\n{RETRY_TEXT}"
 
+CHAT_EXISTING = "Für diesen Chat ist bereits ein Team registriert. Solltet ihr Hilfe benötigen nutzt bitte /help"
+
 TEAM_ID_NOT_VALID_TEXT = "Die angegebene URL entspricht nicht dem richtigen Format. \n" \
                          "Achte auf das richtige Format oder gebe die Team ID ein.\n" \
                          f"{RETRY_TEXT}"

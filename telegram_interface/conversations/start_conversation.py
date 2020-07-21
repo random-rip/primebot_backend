@@ -7,7 +7,7 @@ from telegram_interface.commands.single_commands import set_photo
 from telegram_interface.keyboards import boolean_keyboard
 from telegram_interface.messages import START_GROUP, START_CHAT, TEAM_EXISTING, TEAM_ID_VALID, REGISTRATION_FINISH, \
     WAIT_A_MOMENT_TEXT, TEAM_ID_NOT_VALID_TEXT, GENERAL_TEAM_LINK, SET_PHOTO_TEXT, \
-    PHOTO_SUCESS_TEXT, PHOTO_RETRY_TEXT
+    PHOTO_SUCESS_TEXT, PHOTO_RETRY_TEXT, CHAT_EXISTING
 from utils.log_wrapper import log_command, log_conversation
 
 
@@ -15,9 +15,14 @@ from utils.log_wrapper import log_command, log_conversation
 @log_command
 def start(update: Update, context: CallbackContext):
     chat_type = update.message.chat.type
+    chat_id = update.message.chat.id
     if chat_type in ["group", "supergroup"]:
-        update.message.reply_markdown(START_GROUP, disable_web_page_preview=True)
-        return 1
+        chat_existing = Team.objects.find(telegram_channel_id=chat_id).exists()
+        if not chat_existing:
+            update.message.reply_markdown(CHAT_EXISTING, disable_web_page_preview=True)
+            return 1
+        update.message.reply_markdown(START_CHAT, parse_mode="Markdown", disable_web_page_preview=True)
+        return ConversationHandler.END
     else:
         update.message.reply_markdown(START_CHAT, parse_mode="Markdown", disable_web_page_preview=True)
         return ConversationHandler.END

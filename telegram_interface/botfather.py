@@ -8,6 +8,7 @@ from telegram_interface.conversations.settings_conversation import main_settings
     start_settings, main_settings_menu_close, migrate_chat
 from telegram_interface.conversations.start_conversation import start, team_registration, finish_registration, \
     set_optional_photo
+from telegram_interface.liveticker.liveticker import liveticker_add_team
 
 
 class BotFather:
@@ -32,7 +33,7 @@ class BotFather:
             CommandHandler("setlogo", set_logo),
         ]
 
-        conv_handler = ConversationHandler(
+        start_conv_handler = ConversationHandler(
             entry_points=[CommandHandler('start', start, )],
 
             states={
@@ -42,8 +43,18 @@ class BotFather:
             fallbacks=fallbacks
         )
 
+        # liveticker_conv_handler = ConversationHandler(
+        #     entry_points=[CallbackQueryHandler(main_settings_menu, pattern='main', )],
+        #
+        #     states={
+        #         1: [MessageHandler(Filters.text & (~Filters.command), liveticker_add_team), ],
+        #     },
+        #
+        #     fallbacks=fallbacks,
+        # )
+
         # Allgemeine Commands
-        dp.add_handler(conv_handler)
+        dp.add_handler(start_conv_handler)
         for cmd in fallbacks[1:]:
             dp.add_handler(cmd)
 

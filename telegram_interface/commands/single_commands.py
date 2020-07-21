@@ -9,7 +9,7 @@ from telegram.ext import CallbackContext, ConversationHandler
 from app_prime_league.models import Team
 from prime_league_bot.settings import STORAGE_DIR
 from telegram_interface.messages import HELP_COMMAND_LIST, ISSUE, \
-    FEEDBACK, CANCEL, HELP_TEXT, EXPLAIN_TEXT, PHOTO_SUCESS_TEXT, PHOTO_ERROR_TEXT
+    FEEDBACK, CANCEL, HELP_TEXT, EXPLAIN_TEXT, PHOTO_SUCESS_TEXT, PHOTO_ERROR_TEXT, TEAM_NOT_IN_DB_TEXT
 from utils.log_wrapper import log_command
 
 
@@ -40,6 +40,11 @@ def set_photo(chat_id, context: CallbackContext, url):
 @log_command
 def set_logo(update: Update, context: CallbackContext):
     chat_id = update.message.chat.id
+    if not Team.objects.filter(telegram_channel_id=chat_id).exists():
+        update.message.reply_markdown(
+            TEAM_NOT_IN_DB_TEXT,
+        )
+        return ConversationHandler.END
     url = Team.objects.get(telegram_channel_id=chat_id).logo_url
     successful = set_photo(chat_id, context, url)
     if successful:
