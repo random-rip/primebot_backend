@@ -17,11 +17,11 @@ def start(update: Update, context: CallbackContext):
     chat_type = update.message.chat.type
     chat_id = update.message.chat.id
     if chat_type in ["group", "supergroup"]:
-        chat_existing = Team.objects.find(telegram_channel_id=chat_id).exists()
+        chat_existing = Team.objects.filter(telegram_channel_id=chat_id).exists()
         if not chat_existing:
-            update.message.reply_markdown(CHAT_EXISTING, disable_web_page_preview=True)
+            update.message.reply_markdown(START_GROUP, parse_mode="Markdown", disable_web_page_preview=True)
             return 1
-        update.message.reply_markdown(START_CHAT, parse_mode="Markdown", disable_web_page_preview=True)
+        update.message.reply_markdown(CHAT_EXISTING, parse_mode="Markdown", disable_web_page_preview=True)
         return ConversationHandler.END
     else:
         update.message.reply_markdown(START_CHAT, parse_mode="Markdown", disable_web_page_preview=True)

@@ -8,7 +8,6 @@ from telegram_interface.conversations.settings_conversation import main_settings
     start_settings, main_settings_menu_close, migrate_chat
 from telegram_interface.conversations.start_conversation import start, team_registration, finish_registration, \
     set_optional_photo
-from telegram_interface.liveticker.liveticker import liveticker_add_team
 
 
 class BotFather:
@@ -20,7 +19,7 @@ class BotFather:
         self.api_key = settings.TELEGRAM_BOT_KEY
 
     def run(self):
-        updater = Updater(settings.TELEGRAM_BOT_KEY, use_context=True, )
+        updater = Updater(self.api_key, use_context=True, )
         dp = updater.dispatcher
 
         fallbacks = [

@@ -145,6 +145,11 @@ class MatchHTMLParser(BaseHTMLParser):
                 return True
         return False
 
+    def get_game_result(self):
+        result = self.bs4.find("span", class_="league-match-result").contents[0]
+        scores = result.split(":")
+        return f"{scores[0]}:{scores[1]}" if self.team_is_team_1 else f"{scores[1]}:{scores[0]}"
+
     def get_latest_suggestion(self):
         for log in self.logs:
             if isinstance(log, LogSuggestion):

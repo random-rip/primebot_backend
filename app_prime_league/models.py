@@ -88,6 +88,7 @@ class GameMetaData:
         self.enemy_team = None
         self.enemy_lineup = None
         self.game_closed = None
+        self.game_result = None
         self.latest_suggestion = None
         self.game_begin = None
         self.latest_confirmation_log = None
@@ -99,6 +100,7 @@ class GameMetaData:
                f"\nEnemyTeam: {self.enemy_team}, " \
                f"\nEnemyLineup: {self.enemy_lineup}, " \
                f"\nGameClosed: {self.game_closed}, " \
+               f"\nGame Result: {self.game_result}" \
                f"\nLatestSuggestion: {self.latest_suggestion}, " \
                f"\nSuggestionConfirmed: {self.game_begin}, "
 
@@ -122,6 +124,7 @@ class GameMetaData:
         gmd.game_closed = match_parser.get_game_closed()
         gmd.latest_suggestion = match_parser.get_latest_suggestion()
         gmd.game_begin, gmd.latest_confirmation_log = match_parser.get_game_begin()
+        gmd.game_result = match_parser.get_game_result()
         return gmd
 
     def get_enemy_team_data(self):
@@ -144,6 +147,7 @@ class Game(models.Model):
     game_begin = models.DateTimeField(null=True)
     enemy_lineup = models.ManyToManyField(Player, )
     game_closed = models.BooleanField()
+    game_result = models.CharField(max_length=4, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -172,6 +176,7 @@ class Game(models.Model):
         enemy_team, _ = Team.objects.get_or_create(id=gmd.enemy_team["id"])
         self.enemy_team = enemy_team
         self.game_closed = gmd.game_closed
+        self.game_result = gmd.game_result
         self.save()
 
     def update_game_begin(self, gmd):
@@ -236,3 +241,14 @@ class Setting(models.Model):
     class Meta:
         db_table = "settings"
         unique_together = [("team", "attr_name"), ]
+
+
+class LiveTicker(models.Model):
+    telegram_channel_id = models.CharField(max_length=50, null=True)
+    sub_team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table: "liveticker"
+        unique_together = [("telegram_channel_id", "sub_team"), ]
