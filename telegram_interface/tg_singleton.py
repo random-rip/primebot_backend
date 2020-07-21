@@ -1,5 +1,6 @@
 import telepot
 from babel import dates as babel
+from telegram import ParseMode
 
 from app_prime_league.models import Game
 from parsing.parser import LogSchedulingAutoConfirmation, LogSchedulingConfirmation, LogChangeTime
@@ -18,13 +19,13 @@ emoji_numbers = [
 bot = telepot.Bot(token=settings.TELEGRAM_BOT_KEY)
 
 
-def send_message(msg: str, chat_id: int = None):
+def send_message(msg: str, chat_id: int = None, parse_mode=ParseMode.MARKDOWN):
     """
     Sends a Message using Markdown. If settings.DEBUG is True, overwrites the chat_id.
     """
     if settings.DEBUG or chat_id is None:
         chat_id = settings.DEFAULT_TELEGRAM_CHAT_ID
-    return bot.sendMessage(chat_id=chat_id, text=msg, parse_mode="Markdown", disable_web_page_preview=True)
+    return bot.sendMessage(chat_id=chat_id, text=msg, parse_mode=parse_mode, disable_web_page_preview=True)
 
 
 def format_datetime(x):
@@ -32,14 +33,18 @@ def format_datetime(x):
                                  tzinfo=babel.get_timezone(settings.TIME_ZONE))
 
 
-def pin_msg(message):
+def pin_msg(message) -> bool:
+    """
+
+    :param message:
+    :return: True if
+    """
     message_id = message["message_id"]
     chat_id = message["chat"]["id"]
     return bot.pinChatMessage(chat_id=chat_id, message_id=message_id)
 
 
 class TelegramMessagesWrapper:
-
 
     @staticmethod
     def send_new_suggestion_of_enemies(game: Game):
@@ -140,3 +145,7 @@ class TelegramMessagesWrapper:
             op_link
         )
         send_message(msg=text, chat_id=game.team.telegram_channel_id)
+
+    @staticmethod
+    def send_command(log):
+        send_message(msg=log, chat_id=-490819576, parse_mode=ParseMode.HTML)

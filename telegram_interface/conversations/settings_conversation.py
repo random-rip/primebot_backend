@@ -6,7 +6,7 @@ from app_prime_league.teams import update_team, update_settings
 from telegram_interface.messages import ENABLED, SETTINGS_MAIN_MENU, DISABLED, BOOLEAN_KEYBOARD_OPTIONS, CLOSE, \
     SETTINGS_FINISHED, CURRENTLY
 from telegram_interface.validation_messages import wrong_chat_type, team_not_exists
-from utils.log_wrapper import log_command, log_conversation
+from utils.messages_logger import log_command, log_callbacks
 
 SETTINGS = {
     # WEEKLY_OP_LINK
@@ -70,7 +70,7 @@ def start_settings(update: Update, context: CallbackContext):
     )
 
 
-@log_conversation
+@log_callbacks
 def main_settings_menu(update: Update, context: CallbackContext):
     query = update.callback_query
     context.bot.edit_message_text(
@@ -81,7 +81,7 @@ def main_settings_menu(update: Update, context: CallbackContext):
     )
 
 
-@log_conversation
+@log_callbacks
 def main_settings_menu_close(update: Update, context: CallbackContext):
     query = update.callback_query
     context.bot.edit_message_text(
@@ -149,7 +149,7 @@ class NotificationSetting:
         self.text = text
         self.callback_data = callback_data
 
-        @log_conversation
+        @log_callbacks
         def enable(update: Update, context: CallbackContext):
             setting = {
                 self.name: True,
@@ -164,7 +164,7 @@ class NotificationSetting:
                 reply_markup=main_menu_keyboard,
             )
 
-        @log_conversation
+        @log_callbacks
         def disable(update: Update, context: CallbackContext):
             setting = {
                 self.name: False,
@@ -179,7 +179,7 @@ class NotificationSetting:
                 reply_markup=main_menu_keyboard,
             )
 
-        @log_conversation
+        @log_callbacks
         def show(update: Update, context: CallbackContext):
             query = update.callback_query
             team_id = Team.objects.get(telegram_channel_id=query.message.chat.id).id
