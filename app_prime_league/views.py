@@ -1,11 +1,7 @@
 import datetime
 
-import telepot
-from django.db import models
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
 from django.shortcuts import render
-
 # Create your views here.
 from django.views.generic import TemplateView
 
@@ -22,7 +18,7 @@ class GlobalMessage(LoginRequiredMixin, TemplateView, ):
 
     def post(self, request, *args, **kwargs):
         msg = request.POST["message"]
-        teams = Team.objects.exclude(telegram_channel_id__isnull=True)
+        teams = Team.objects.exclude(telegram_id__isnull=True)
         for team in teams:
             msg = msg.format(team_tag=team.team_tag, )
             send_message(msg=msg, chat_id=team.telegram_id)

@@ -146,7 +146,10 @@ class MatchHTMLParser(BaseHTMLParser):
         return False
 
     def get_game_result(self):
-        result = self.bs4.find("span", class_="league-match-result").contents[0]
+        result_div = self.bs4.find("span", class_="league-match-result")
+        if result_div is None:
+            return None
+        result = result_div.contents[0]
         scores = result.split(":")
         return f"{scores[0]}:{scores[1]}" if self.team_is_team_1 else f"{scores[1]}:{scores[0]}"
 

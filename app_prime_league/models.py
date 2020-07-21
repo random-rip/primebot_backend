@@ -7,7 +7,7 @@ from parsing.parser import TeamHTMLParser, MatchWrapper, TeamWrapper
 class TeamManager(models.Manager):
 
     def get_watched_teams(self):
-        return self.model.objects.filter(telegram_channel_id__isnull=False)
+        return self.model.objects.filter(telegram_id__isnull=False)
 
 
 class GameManager(models.Manager):
@@ -106,6 +106,7 @@ class GameMetaData:
 
     @staticmethod
     def create_game_meta_data_from_website(team: Team, game_id):
+
         gmd = GameMetaData()
         match_parser = MatchWrapper(game_id, team).parser
 

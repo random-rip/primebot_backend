@@ -23,8 +23,8 @@ def register_team(team_id, tg_group_id):
 
 def add_team(team_id, tg_group_id):
     if Team.objects.filter(
-            Q(id=team_id, telegram_channel_id__isnull=False) |
-            Q(telegram_channel_id=tg_group_id)).exists():
+            Q(id=team_id, telegram_id__isnull=False) |
+            Q(telegram_id=tg_group_id)).exists():
         print("Dieser Telegramgruppe ist bereits ein Team zugewiesen.")
         return None
 
@@ -39,7 +39,7 @@ def add_team(team_id, tg_group_id):
         "name": parser.get_team_name(),
         "team_tag": parser.get_team_tag(),
         "division": parser.get_current_division(),
-        "telegram_channel_id": tg_group_id,
+        "telegram_id": tg_group_id,
         "logo_url": parser.get_logo(),
     })
     if not created:
@@ -70,7 +70,7 @@ def update_team(parser: TeamHTMLParser, team_id: int):
 
 def update_settings(tg_chat_id, settings: dict):
     try:
-        team = Team.objects.get(telegram_channel_id=tg_chat_id)
+        team = Team.objects.get(telegram_id=tg_chat_id)
     except Team.DoesNotExist:
         print("Team existiert nicht")
         return None

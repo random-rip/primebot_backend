@@ -95,7 +95,7 @@ def main_settings_menu_close(update: Update, context: CallbackContext):
 def migrate_chat(update: Update, context: CallbackContext):
     old_chat_id = update.message.migrate_from_chat_id
     new_chat_id = update.message.chat.id
-    team = Team.objects.get(telegram_channel_id=old_chat_id)
+    team = Team.objects.get(telegram_id=old_chat_id)
     team.telegram_id = new_chat_id
     team.save()
 
@@ -182,7 +182,7 @@ class NotificationSetting:
         @log_callbacks
         def show(update: Update, context: CallbackContext):
             query = update.callback_query
-            team_id = Team.objects.get(telegram_channel_id=query.message.chat.id).id
+            team_id = Team.objects.get(telegram_id=query.message.chat.id).id
             setting_model_disabled = Setting.objects.filter(team_id=team_id, attr_name=self.name, attr_value=0).first()
             context.bot.edit_message_text(
                 chat_id=query.message.chat_id,

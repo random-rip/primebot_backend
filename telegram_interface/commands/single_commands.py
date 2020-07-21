@@ -42,12 +42,12 @@ def set_photo(chat_id, context: CallbackContext, url):
 @log_command
 def set_logo(update: Update, context: CallbackContext):
     chat_id = update.message.chat.id
-    if not Team.objects.filter(telegram_channel_id=chat_id).exists():
+    if not Team.objects.filter(telegram_id=chat_id).exists():
         update.message.reply_markdown(
             TEAM_NOT_IN_DB_TEXT,
         )
         return ConversationHandler.END
-    url = Team.objects.get(telegram_channel_id=chat_id).logo_url
+    url = Team.objects.get(telegram_id=chat_id).logo_url
     successful = set_photo(chat_id, context, url)
     if successful:
         update.message.reply_markdown(

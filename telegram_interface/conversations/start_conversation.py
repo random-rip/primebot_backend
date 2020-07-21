@@ -17,7 +17,7 @@ def start(update: Update, context: CallbackContext):
     chat_type = update.message.chat.type
     chat_id = update.message.chat.id
     if chat_type in ["group", "supergroup"]:
-        chat_existing = Team.objects.filter(telegram_channel_id=chat_id).exists()
+        chat_existing = Team.objects.filter(telegram_id=chat_id).exists()
         if not chat_existing:
             update.message.reply_markdown(START_GROUP, parse_mode="Markdown", disable_web_page_preview=True)
             return 1
@@ -67,7 +67,7 @@ def team_registration(update: Update, context: CallbackContext):
 def set_optional_photo(update: Update, context: CallbackContext):
     query = update.callback_query
     chat_id = query.message.chat_id
-    url = Team.objects.get(telegram_channel_id=chat_id).logo_url
+    url = Team.objects.get(telegram_id=chat_id).logo_url
     successful = set_photo(chat_id, context, url)
     if successful:
         finish_registration(update, context)
@@ -85,7 +85,7 @@ def set_optional_photo(update: Update, context: CallbackContext):
 def finish_registration(update: Update, context: CallbackContext):
     query = update.callback_query
     chat_id = query.message.chat_id
-    team = Team.objects.get(telegram_channel_id=chat_id)
+    team = Team.objects.get(telegram_id=chat_id)
     context.bot.edit_message_text(
         chat_id=query.message.chat_id,
         message_id=query.message.message_id,
