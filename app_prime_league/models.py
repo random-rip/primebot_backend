@@ -48,7 +48,7 @@ class Team(models.Model):
     name = models.CharField(max_length=100, null=True)
     team_tag = models.CharField(max_length=100, null=True)
     division = models.CharField(max_length=20, null=True)
-    telegram_channel_id = models.CharField(max_length=50, null=True, unique=True)
+    telegram_id = models.CharField(max_length=50, null=True, unique=True)
     logo_url = models.CharField(max_length=1000, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -147,7 +147,7 @@ class Game(models.Model):
     game_begin = models.DateTimeField(null=True)
     enemy_lineup = models.ManyToManyField(Player, )
     game_closed = models.BooleanField()
-    game_result = models.CharField(max_length=4, null=True)
+    game_result = models.CharField(max_length=5, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -228,7 +228,7 @@ class Suggestion(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        db_table = "suggestion"
+        db_table = "suggestions"
 
 
 class Setting(models.Model):
@@ -243,12 +243,12 @@ class Setting(models.Model):
         unique_together = [("team", "attr_name"), ]
 
 
-class LiveTicker(models.Model):
-    telegram_channel_id = models.CharField(max_length=50, null=True)
-    sub_team = models.ForeignKey(Team, on_delete=models.CASCADE)
+class TeamWatcher(models.Model):
+    telegram_id = models.CharField(max_length=50, null=True)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        db_table: "liveticker"
-        unique_together = [("telegram_channel_id", "sub_team"), ]
+        db_table = "watched_teams"
+        unique_together = [("telegram_id", "team"), ]

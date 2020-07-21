@@ -96,7 +96,7 @@ def migrate_chat(update: Update, context: CallbackContext):
     old_chat_id = update.message.migrate_from_chat_id
     new_chat_id = update.message.chat.id
     team = Team.objects.get(telegram_channel_id=old_chat_id)
-    team.telegram_channel_id = new_chat_id
+    team.telegram_id = new_chat_id
     team.save()
 
 

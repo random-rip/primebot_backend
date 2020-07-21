@@ -25,5 +25,5 @@ class GlobalMessage(LoginRequiredMixin, TemplateView, ):
         teams = Team.objects.exclude(telegram_channel_id__isnull=True)
         for team in teams:
             msg = msg.format(team_tag=team.team_tag, )
-            send_message(msg=msg, chat_id=team.telegram_channel_id)
+            send_message(msg=msg, chat_id=team.telegram_id)
         return render(request, self.template_name)

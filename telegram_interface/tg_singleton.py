@@ -58,7 +58,7 @@ class TelegramMessagesWrapper:
 
         message = prefix + '\n'.join([f"{emoji_numbers[i]}{format_datetime(x)}" for i, x in enumerate(details)])
 
-        send_message(msg=message, chat_id=game.team.telegram_channel_id)
+        send_message(msg=message, chat_id=game.team.telegram_id)
         return
 
     @staticmethod
@@ -69,7 +69,7 @@ class TelegramMessagesWrapper:
             game.game_id,
             EMOJI_SUCCESS
         )
-        send_message(msg=message, chat_id=game.team.telegram_channel_id)
+        send_message(msg=message, chat_id=game.team.telegram_id)
 
     @staticmethod
     def send_scheduling_confirmation(game: Game, latest_confirmation_log):
@@ -91,7 +91,7 @@ class TelegramMessagesWrapper:
         else:
             assert isinstance(latest_confirmation_log, LogChangeTime)
             message = GAME_BEGIN_CHANGE_TEXT.format(*details)
-        send_message(msg=message, chat_id=game.team.telegram_channel_id)
+        send_message(msg=message, chat_id=game.team.telegram_id)
 
     @staticmethod
     def send_new_lineup_of_enemies(game: Game, ):
@@ -108,7 +108,7 @@ class TelegramMessagesWrapper:
             op_link,
             EMOJI_LINEUP,
         )
-        send_message(msg=message, chat_id=game.team.telegram_channel_id)
+        send_message(msg=message, chat_id=game.team.telegram_id)
 
     @staticmethod
     def send_new_game_day(game: Game, pin_weekly_op_link):
@@ -123,7 +123,7 @@ class TelegramMessagesWrapper:
             game.enemy_team.id,
             op_link
         )
-        message = send_message(msg=text, chat_id=game.team.telegram_channel_id)
+        message = send_message(msg=text, chat_id=game.team.telegram_id)
         if pin_weekly_op_link:
             try:
                 pin_msg(message)
@@ -144,7 +144,7 @@ class TelegramMessagesWrapper:
             game.enemy_team.id,
             op_link
         )
-        send_message(msg=text, chat_id=game.team.telegram_channel_id)
+        send_message(msg=text, chat_id=game.team.telegram_id)
 
     @staticmethod
     def send_command(log):

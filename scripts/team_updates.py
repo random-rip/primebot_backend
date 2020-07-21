@@ -15,7 +15,7 @@ def main():
         parser = TeamWrapper(team_id=i.id).parser
         update_team(parser, team_id=i.id)
         add_or_update_players(parser.get_members(), i)
-        if i.telegram_channel_id is not None:
+        if i.telegram_id is not None:
             game_ids = parser.get_matches()
             if len(game_ids) != len(i.games_against.all()):
                 print(i)
