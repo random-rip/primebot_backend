@@ -13,5 +13,3 @@ EMOJI_CLOVER = "🍀"
 EMOJI_MINDBLOWN = "🤯"
 EMOJI_POST_HORN = "📯"
 EMOJI_ARROW_RIGHT = "➡"
-
-TEAM_LEADER = ["Miriiel", "Starscream853", "Isilmacil", "Grayknife", "Kamir", "Itzsofteis", "Pixelqueen"]

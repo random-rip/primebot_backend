@@ -87,16 +87,6 @@ class BotFather:
             fallbacks=fallbacks
         )
 
-        # liveticker_conv_handler = ConversationHandler(
-        #     entry_points=[CallbackQueryHandler(main_settings_menu, pattern='main', )],
-        #
-        #     states={
-        #         1: [MessageHandler(Filters.text & (~Filters.command), liveticker_add_team), ],
-        #     },
-        #
-        #     fallbacks=fallbacks,
-        # )
-
         # Allgemeine Commands
         dp.add_handler(start_conv_handler)
         for cmd in fallbacks[1:]:

@@ -10,9 +10,9 @@ SKIP = "Überspringen"
 SETTINGS_FINISHED = "Alles klar, ich habe die Einstellungen gespeichert."
 REGISTRATION_FINISH = "Perfekt! Ich sende euch jetzt Benachrichtigungen in diese Gruppe, " \
                       f"wenn es neue Updates zu kommenden Matches gibt. {EMOJI_TROPHY}\n" \
-                      f"Benutzt /settings, um noch die Benachrichtigungseinstellungen zu personalisieren."
+                      f"Benutzt /settings, um die Benachrichtigungen zu personalisieren."
 CANCEL = "Vorgang abgebrochen, leider. \n" \
-         f"Brauchst du Hilfe nutze /help. {EMJOI_MAGN_GLASS}"
+         f"Braucht ihr Hilfe nutzt doch /help. {EMJOI_MAGN_GLASS}"
 RETRY_TEXT = "Bitte versuche es erneut oder /cancel."
 
 GENERAL_MATCH_LINK = "https://www.primeleague.gg/de/leagues/matches/"
@@ -59,20 +59,20 @@ TEAM_ID_VALID = "Euer registriertes Team:\n"
 # Start Messages
 # Antwort auf /start, wenn man command in einer Gruppe aufruft
 START_GROUP = "_Hallo Beschwörer, \n" \
-              "du bist es Leid, jeden Tag mühselig auf der PrimeLeague-Seite nach neuen Updates zu suchen?\n" \
+              "ihr seid es Leid, jeden Tag mühselig auf der PrimeLeague-Seite nach neuen Updates zu suchen?\n" \
               f"Dann bin ich hier genau richtig:\n" \
-              f"__Ich schicke dir alle Updates der Seite als Pushbenachrichtigung{EMOJI_POST_HORN} " \
-              f"in diesen Gruppen-Chat.___ {EMOJI_MINDBLOWN}\n\n" \
-              f"{EMOJI_ONE} Bitte kopiere dafür deine Team-URL (Format: {GENERAL_TEAM_LINK}<TEAM ID>-<TEAM NAME>)" \
-              "oder deine Team ID in den Chat.\n" \
+              f"__Ich schicke euch alle Updates der Seite als Pushbenachrichtigung{EMOJI_POST_HORN} " \
+              f"in diesen Chat.___ {EMOJI_MINDBLOWN}\n\n" \
+              f"{EMOJI_ONE} Bitte kopiert dafür eure Team-URL (Format: {GENERAL_TEAM_LINK}<TEAM ID>-<TEAM NAME>)" \
+              "oder eure Team ID in den Chat.\n" \
  \
     # Antwort auf /start, wenn man command in einem 1on1 Chat aufruft
-START_CHAT = "_Hallo Beschwörer,\ndu möchtest den PrimeBot für Pushbenachrichtigungen nutzen?_\n\n" \
+START_CHAT = "_Hallo Beschwörer,\nihr möchtet den PrimeBot für Pushbenachrichtigungen nutzen?_\n\n" \
              "Setup:\n" \
-             f"{EMOJI_ONE} Erstelle einen Gruppen-Chat in Telegram.\n" \
-             f"{EMOJI_TWO} Klicke [hier]({START_LINK}) und lade so den PrimeBot in deine Gruppe ein.\n" \
-             f"{EMOJI_THREE} Personalisiere mit /settings deine Einstellungen.\n\n" \
-             f"_Viel Glück auf den Richtfeldern!_ {EMOJI_CLOVER}"
+             f"{EMOJI_ONE} Erstellt einen Gruppen-Chat in Telegram.\n" \
+             f"{EMOJI_TWO} Klickt [hier]({START_LINK}) und ladet so den PrimeBot in eure Gruppe ein.\n" \
+             f"{EMOJI_THREE} Personalisiert mit /settings eure Benachrichtigungen.\n\n" \
+             f"_Viel Erfolg auf den Richtfeldern!_ {EMOJI_CLOVER}"
 
 # Settings (ConversationHandler)
 START_SETTINGS = "Settings: "
@@ -100,17 +100,16 @@ SETTINGS_MAIN_MENU = {
 SET_PHOTO_TEXT = f"_Soll ich das Teambild aus der PrimeLeague importieren?_\n(Dazu werden Adminrechte benötigt)"
 PHOTO_SUCESS_TEXT = f"{EMOJI_SUCCESS}"
 PHOTO_ERROR_TEXT = f"Bild konnte nicht gesetzt werden."
-PHOTO_RETRY_TEXT = f"Profilbild konnte nicht geändert werden. Bitte stellt sicher, dass ich Administrator bin und " \
-                   f"die Gruppen-Info ändern darf\n_Soll ich das Teambild aus der PrimeLeague importieren?_"
+PHOTO_RETRY_TEXT = f"Profilbild konnte nicht geändert werden. Dazu werden Adminrechte benötigt.\n" \
+                   f"_Soll ich das Teambild aus der PrimeLeague importieren?_"
 
-MESSAGE_NOT_PINED_TEXT = f"Die wöchentliche Nachricht konnte nicht angeheftet werden. Bitte stellt für das nächste Mal " \
-                         f"sicher, dass ich Administrator bin oder ausreichend Rechte habe um Nachrichten anzuheften. " \
+MESSAGE_NOT_PINED_TEXT = f"Die wöchentliche Nachricht konnte nicht angeheftet werden. Dazu werden Adminrechte benötigt." \
                          f"Falls ihr nicht möchtet, dass die wöchentliche Benachrichtigung angeheftet wird, " \
                          f"nutzt bitte /settings {EMOJI_ARROW_RIGHT} 'Wochenübersicht anheften' {EMOJI_ARROW_RIGHT} " \
                          f"'Deaktivieren'."
 
 # Update Messages
-OWN_NEW_TIME_SUGGESTION_TEXT = "Neuer Zeitvorschlag von uns für [Spieltag {}]({}{}). {}"
+OWN_NEW_TIME_SUGGESTION_TEXT = "Neuer Zeitvorschlag von euch für [Spieltag {}]({}{}). {}"
 NEW_TIME_SUGGESTION_PREFIX = "Neuer Zeitvorschlag von [{}]({}{}) für [Spieltag {}]({}{}):\n"
 
 NEW_TIME_SUGGESTIONS_PREFIX = "Neue Zeitvorschläge von [{}]({}{}) für [Spieltag {}]({}{}):\n"
@@ -145,5 +144,3 @@ EXPLAIN_TEXT = "Dieser Bot ist nicht in Kooperation mit der PrimeLeague bzw. der
 
 CLOSE = "Schließen"
 CURRENTLY = "Derzeitig"
-
-

@@ -21,7 +21,7 @@ SETTINGS = {
         "name": "pin_weekly_op_link",
         "title": "Wochenübersicht anheften",
         "text": "Möchtet ihr, dass die wöchentliche Benachrichtigung angeheftet wird?\n"
-                "(Dazu werden Admin- oder Pinrechte benötigt!)",
+                "(Dazu werden Admin- oder Pinrechte benötigt)",
         "callback_data": "6",
     },
     # LINEUP_OP_LINK
@@ -48,8 +48,8 @@ SETTINGS = {
     # CHANGELOG_UPDATE
     "CHANGELOG_UPDATE": {
         "name": "changelog_update",
-        "title": "Changelog",
-        "text": "Möchtet ihr bei Änderungen am Bot benachrichtigt werden?",
+        "title": "Bot Patches",
+        "text": "Möchtet ihr bei Patches am Bot benachrichtigt werden?",
         "callback_data": "5",
     },
 }
