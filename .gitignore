@@ -5,6 +5,7 @@
 storage
 logs/*
 !logs/.gitkeep
+*.temp
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
