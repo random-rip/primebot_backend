@@ -1,6 +1,5 @@
 # custom files
-
-.idea
+.idea/
 
 storage
 logs/*
