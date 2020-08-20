@@ -52,11 +52,11 @@ def error(update, context):
                    f"</code>"
             # and send it to the dev(s)
         else:
-            text = "Ein gravierender Fehler ist aufgetreten (update is none)."
+            text = "Ein Fehler ist aufgetreten (update is none)."
     except Exception as e:
         text = f"Ein gravierender Fehler ist aufgetreten.\n{e}"
     for dev_id in devs:
-        context.bot.send_message(dev_id, text, parse_mode=ParseMode.HTML)
+        context.bot.send_message(dev_id, text, parse_mode=ParseMode.HTML) # TODO: catch connection errors
     # we raise the error again, so the logger module catches it. If you don't use the logger module, use it.
     raise
 
@@ -111,5 +111,5 @@ class BotFather:
 
         for i in callback_query_settings_handlers:
             dp.add_handler(i)
-        updater.start_polling()
+        updater.start_polling()  # TODO: try catch connection errors
         updater.idle()
