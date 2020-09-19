@@ -144,3 +144,7 @@ PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 LOGIN_URL = "/admin/login/"
 
 LOGGING_DIR = os.path.join(BASE_DIR, "logs", )
+
+DISCORD_BOT_KEY = env.str("DISCORD_API_KEY")
+
+DISCORD_DEFAULT_GUILD = "***REMOVED***"

@@ -20,6 +20,19 @@ def register_team(team_id, tg_group_id):
     else:
         return None
 
+def register_team_discord(team_id, discord_id):
+    team = add_team_discord(team_id, discord_id)
+    if team is not None:
+        try:
+            wrapper = TeamWrapper(team_id=team.id)
+        except Exception:
+            return None
+        add_or_update_players(wrapper.parser.get_members(), team)
+        add_games(wrapper.parser.get_matches(), team)
+        return team
+    else:
+        return None
+
 
 def add_team(team_id, tg_group_id):
     if Team.objects.filter(
@@ -48,6 +61,33 @@ def add_team(team_id, tg_group_id):
         team.save()
     return team
 
+
+def add_team_discord(team_id, discord_id):
+    if Team.objects.filter(
+            Q(id=team_id, discord_channel_id__isnull=False) |
+            Q(discord_channel_id=discord_id)).exists():
+        print("Dieser Telegramgruppe ist bereits ein Team zugewiesen.")
+        return None
+
+    try:
+        wrapper = TeamWrapper(team_id=team_id)
+        parser = wrapper.parser
+    except Exception:
+        print("Wrapper is None")
+        return None
+
+    team, created = Team.objects.get_or_create(id=team_id, defaults={
+        "name": parser.get_team_name(),
+        "team_tag": parser.get_team_tag(),
+        "division": parser.get_current_division(),
+        "discord_channel_id": discord_id,
+        "logo_url": parser.get_logo(),
+    })
+    if not created:
+        team.discord_channel_id = discord_id
+        team.logo_url = parser.get_logo()
+        team.save()
+    return team
 
 def update_team(parser: TeamHTMLParser, team_id: int):
     name = parser.get_team_name()
