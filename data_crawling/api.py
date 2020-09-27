@@ -72,6 +72,7 @@ class Crawler:
             return text
         resp = self.api.html_handler(f"teams/{_id}")
         if resp.status_code == 404:
+            print(f"Teamid: {_id}")
             return None
         if self.save_requests:
             save_object_to_file(resp.text, f"team_{_id}.txt")

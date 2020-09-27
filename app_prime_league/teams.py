@@ -64,7 +64,7 @@ def update_team(parser: TeamHTMLParser, team_id: int):
         return None
 
     team.name = name
-    team.logo_url = logo
+    team.logo_rurl = logo
     team.team_tag = team_tag
     team.division = division
     team.save()
