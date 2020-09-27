@@ -9,6 +9,7 @@ from telegram.utils.helpers import mention_html
 
 from prime_league_bot import settings
 from telegram_interface.commands.single_commands import cancel, helpcommand, issue, feedback, bop, explain, set_logo
+from telegram_interface.conversations.reassign_conversation import team_reassignment, start_reassign_team
 from telegram_interface.conversations.settings_conversation import main_settings_menu, callback_query_settings_handlers, \
     start_settings, main_settings_menu_close, migrate_chat
 from telegram_interface.conversations.start_conversation import start, team_registration, finish_registration, \
@@ -56,7 +57,7 @@ def error(update, context):
     except Exception as e:
         text = f"Ein gravierender Fehler ist aufgetreten.\n{e}"
     for dev_id in devs:
-        context.bot.send_message(dev_id, text, parse_mode=ParseMode.HTML) # TODO: catch connection errors
+        context.bot.send_message(dev_id, text, parse_mode=ParseMode.HTML)  # TODO: catch connection errors
     # we raise the error again, so the logger module catches it. If you don't use the logger module, use it.
     raise
 
@@ -93,8 +94,19 @@ class BotFather:
             fallbacks=fallbacks
         )
 
+        reassign_conv_handler = ConversationHandler(
+            entry_points=[CommandHandler('reassign', start_reassign_team, )],
+
+            states={
+                1: [MessageHandler(Filters.text & (~Filters.command), team_reassignment), ],
+            },
+
+            fallbacks=fallbacks
+        )
+
         # Allgemeine Commands
         dp.add_handler(start_conv_handler)
+        dp.add_handler(reassign_conv_handler)
         for cmd in fallbacks[1:]:
             dp.add_handler(cmd)
 

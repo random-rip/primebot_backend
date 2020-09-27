@@ -64,9 +64,18 @@ START_GROUP = "_Hallo Beschwörer, \n" \
               f"__Ich schicke euch alle Updates der Seite als Pushbenachrichtigung{EMOJI_POST_HORN} " \
               f"in diesen Chat.___ {EMOJI_MINDBLOWN}\n\n" \
               f"{EMOJI_ONE} Bitte kopiert dafür eure Team-URL (Format: {GENERAL_TEAM_LINK}<TEAM ID>-<TEAM NAME>)" \
-              "oder eure Team ID in den Chat.\n" \
- \
-    # Antwort auf /start, wenn man command in einem 1on1 Chat aufruft
+              "oder eure Team ID in den Chat.\n"
+# Antwort auf /start, wenn man command in einem 1on1 Chat aufruft
+
+REASSIGN_TEAM = "_Hallo Beschwörer, \n" \
+                "ihr möchtet diesem Chat ein bereits registriertes Team zuweisen?_\n" \
+                f"{EMOJI_ONE} Gebt dafür jetzt eure Team-URL (Format: {GENERAL_TEAM_LINK}<TEAM ID>-<TEAM NAME>)" \
+                "oder eure Team ID an.\n"
+
+OTHER_TEAM_REGISTERED = "In diesem Chat ist bereits ein Team registriert. \n" \
+                        f"{EMOJI_ONE} Erstelle einen neuen Chat. \n" \
+                        f"{EMOJI_TWO} Führe /reassign erneut aus. \n"
+
 START_CHAT = "_Hallo Beschwörer,\nihr möchtet den PrimeBot für Pushbenachrichtigungen nutzen?_\n\n" \
              "Setup:\n" \
              f"{EMOJI_ONE} Erstellt einen Gruppen-Chat in Telegram.\n" \
@@ -130,6 +139,7 @@ WEEKLY_UPDATE_TEXT = "{}[Spieltag {}]({}{}) gegen [{}]({}{}):\nHier ist der [OP.
 WAIT_A_MOMENT_TEXT = "Alles klar, ich schaue, was ich dazu finden kann.\nDas kann einen Moment dauern...⏳"
 NO_GROUP_CHAT = "Dieser Befehl kann nur in einer Telegram-Gruppe ausgeführt werden."
 TEAM_NOT_IN_DB_TEXT = "Die Telegram-Gruppe wurde noch nicht initialisiert (/start)."
+TEAM_NOT_FOUND = "Dieses Team wurde noch nicht initialisiert (/start)."
 
 EXPLAIN_TEXT = "Dieser Bot ist nicht in Kooperation mit der PrimeLeague bzw. der Freaks4u Gaming GmbH entstanden " \
                "und hat damit keinen direkten Bezug zur PrimeLeague. " \
