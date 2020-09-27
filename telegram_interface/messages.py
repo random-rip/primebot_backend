@@ -34,6 +34,7 @@ HELP_COMMAND_LIST = "/issue - um zu erfahren, wie Ihr eine Störung melden könn
                     "/settings - um die Einstellungen des Bots zu bearbeiten\n" \
                     "/cancel - um den aktuellen Prozess abzubrechen\n" \
                     "/explain - um eine Erklärung zu dem Bot zu lesen\n" \
+                    "/reassign - um in dem Chat ein anderes Team zu registrieren\n" \
  \
     # Antwort auf /issue
 ISSUE = f"Habt Ihr einen Fehler bemerkt? Bitte schreibt den Entwicklern eine Nachricht in ihrer " \
