@@ -5,8 +5,9 @@ from utils.constants import EMOJI_ONE, EMOJI_MINDBLOWN, EMOJI_SOON, EMOJI_ARROW,
 
 
 def main():
-    teams = Team.objects.exclude(telegram_id__isnull=True, division__isnull=True)
+    teams = Team.objects.exclude(telegram_id__isnull=True, division__isnull=True, id=89678)
     for team in teams:
+        print(team)
         next_match = team.games_against.order_by("game_begin").first()
         pattern = "Hallo Beschwörer, \n \n" \
                   "der Wintersplit 2020 ❄ beginnt morgen und ich bin natürlich auch am Stizzle. \n" \
