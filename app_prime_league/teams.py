@@ -21,6 +21,37 @@ def register_team(team_id, tg_group_id):
         return None
 
 
+def reassign_team(team_id, tg_group_id):
+    try:
+        team = Team.objects.get(id=team_id)
+    except Team.DoesNotExist as e:
+        return None
+
+    team.telegram_id = tg_group_id
+    team.save()
+    return team
+
+
+def reassign_chat(team_id, tg_group_id):
+    try:
+        old_team = Team.objects.get(telegram_id=tg_group_id)
+    except Team.DoesNotExist as e:
+        return None
+
+    old_team.telegram_id = None
+    # TODO old team chat bescheid geben
+    old_team.save()
+
+    try:
+        new_team = Team.objects.get(id=team_id)
+        new_team.telegram_id = tg_group_id
+        new_team.save()
+    except Team.DoesNotExist as e:
+        new_team = register_team(team_id, tg_group_id)
+
+    return new_team
+
+
 def add_team(team_id, tg_group_id):
     if Team.objects.filter(
             Q(id=team_id, telegram_id__isnull=False) |
@@ -64,7 +95,7 @@ def update_team(parser: TeamHTMLParser, team_id: int):
         return None
 
     team.name = name
-    team.logo_rurl = logo
+    team.logo_url = logo
     team.team_tag = team_tag
     team.division = division
     team.save()
