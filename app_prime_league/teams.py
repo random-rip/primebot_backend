@@ -58,8 +58,11 @@ def update_team(parser: TeamHTMLParser, team_id: int):
     team = Team.objects.filter(id=team_id, name=name, logo_url=logo, team_tag=team_tag, division=division)
     if team.exists():
         return team.first()
-    team = team.first()
-    assert isinstance(team, Team)
+    try:
+        team = Team.objects.get(id=team_id)
+    except Team.DoesNotExist as e:
+        return None
+
     team.name = name
     team.logo_url = logo
     team.team_tag = team_tag
