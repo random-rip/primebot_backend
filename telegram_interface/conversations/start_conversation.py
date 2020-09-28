@@ -157,6 +157,12 @@ def team_registration(update: Update, context: CallbackContext):
             disable_web_page_preview=True
         )
         return 1
+    elif new_team is None:
+        update.message.reply_markdown(
+            text=TEAM_ID_NOT_CORRECT.format(id=team_id),
+            disable_web_page_preview=True
+        )
+        return 1
     else:
         if new_team_old_chat_id is not None:
             send_message(
