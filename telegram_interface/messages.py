@@ -77,6 +77,10 @@ TEAM_LOCKED = "Das Team *{team.name}* wurde nicht freigegeben.\n" \
               f"(/settings {EMOJI_ARROW_RIGHT} Team-Sperre)\n\n" \
               f"{NEED_HELP}"
 
+GROUP_REASSIGNED = "Euer Team wurde in einem anderen Chat initialisiert!\n" \
+                   "Es werden in dieser Gruppe keine weiteren Updates zu *{team.name}* folgen.\n\n" \
+                   f"{NEED_HELP}"
+
 # Antwort auf /start, wenn man command in einem 1on1 Chat aufruft
 
 

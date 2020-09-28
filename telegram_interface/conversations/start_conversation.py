@@ -8,7 +8,7 @@ from telegram_interface.commands.single_commands import set_photo
 from telegram_interface.keyboards import boolean_keyboard
 from telegram_interface.messages import START_GROUP, START_CHAT, TEAM_EXISTING, TEAM_ID_VALID, REGISTRATION_FINISH, \
     WAIT_A_MOMENT_TEXT, TEAM_ID_NOT_VALID_TEXT, SET_PHOTO_TEXT, \
-    PHOTO_SUCESS_TEXT, PHOTO_RETRY_TEXT, CHAT_EXISTING, TEAM_LOCKED
+    PHOTO_SUCESS_TEXT, PHOTO_RETRY_TEXT, CHAT_EXISTING, TEAM_LOCKED, GROUP_REASSIGNED
 from utils.messages_logger import log_command, log_callbacks
 
 
@@ -144,7 +144,7 @@ def team_registration(update: Update, context: CallbackContext):
         old_team_chat_id = old_team.telegram_id
         old_team.telegram_id = None
         old_team.save()
-
+    new_team_old_chat_id = Team.objects.get_team(team_id).telegram_id
     new_team = register_team(team_id=team_id, telegram_id=chat_id)
 
     if new_team is None and old_team is not None:
@@ -154,15 +154,16 @@ def team_registration(update: Update, context: CallbackContext):
             text=TEAM_ID_NOT_VALID_TEXT
         )
     else:
+        send_message(
+            msg=GROUP_REASSIGNED.format(team=new_team),
+            chat_id=new_team_old_chat_id,
+            parse_mode=ParseMode.MARKDOWN
+        )
         update.message.reply_markdown(
             SET_PHOTO_TEXT,
             reply_markup=boolean_keyboard(0),
         )
-        send_message(
-            msg="Euer Team wurde in einem anderen Chat initialisiert!",
-            chat_id=old_team_chat_id,
-            parse_mode=ParseMode.MARKDOWN
-        )
+
 
 
     return ConversationHandler.END
