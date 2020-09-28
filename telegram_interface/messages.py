@@ -62,6 +62,10 @@ TEAM_ID_NOT_VALID_TEXT = "Die angegebene URL entspricht nicht dem richtigen Form
                          f"{RETRY_TEXT}"
 TEAM_ID_VALID = "Euer registriertes Team:\n"
 
+TEAM_ID_NOT_CORRECT = "Die ID: *{id}* konnte *keinem* Team zugeordnet werden.\n\n" \
+                      f"Bitte kopiert eure Team-URL (Format: {GENERAL_TEAM_LINK}<TEAM ID>-<TEAM NAME>)" \
+                      " oder eure Team ID in den Chat. Zum Abbrechen nutzt /cancel."
+
 # Start Messages
 # Antwort auf /start, wenn man command in einer Gruppe aufruft
 START_GROUP = "_Hallo Beschwörer, \n" \
@@ -70,7 +74,7 @@ START_GROUP = "_Hallo Beschwörer, \n" \
               f"__Ich schicke euch alle Updates der Seite als Pushbenachrichtigung{EMOJI_POST_HORN} " \
               f"in diesen Chat.___ {EMOJI_MINDBLOWN}\n\n" \
               f"{EMOJI_ONE} Bitte kopiert dafür eure Team-URL (Format: {GENERAL_TEAM_LINK}<TEAM ID>-<TEAM NAME>)" \
-              "oder eure Team ID in den Chat.\n"
+              " oder eure Team ID in den Chat.\n"
 
 TEAM_LOCKED = "Das Team *{team.name}* wurde nicht freigegeben.\n" \
               "Bitte stellt sicher, dass in den Einstellungen von {team.name} die Team-Sperre *deaktiviert* ist!\n" \
