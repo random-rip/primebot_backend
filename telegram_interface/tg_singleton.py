@@ -128,7 +128,7 @@ class TelegramMessagesWrapper:
             try:
                 pin_msg(message)
             except telepot.exception.NotEnoughRightsError:
-                send_message(msg=MESSAGE_NOT_PINED_TEXT)
+                send_message(msg=MESSAGE_NOT_PINED_TEXT, chat_id=game.team.telegram_id)
         return message
 
     @staticmethod

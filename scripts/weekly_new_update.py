@@ -6,8 +6,8 @@ from utils.utils import current_game_day
 def main():
     game_day = current_game_day()
 
-    teams = Team.objects.filter(telegram_id__isnull=False)
-
+    # teams = Team.objects.filter(telegram_id__isnull=False, division__isnull=False)
+    teams = Team.objects.filter(id__in=[89678, 101916])
     for team in teams:
         print(team)
         settings = dict(team.setting_set.all().values_list("attr_name", "attr_value"))
