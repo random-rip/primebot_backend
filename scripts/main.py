@@ -1,6 +1,8 @@
 import concurrent.futures
+import logging
 import threading
 import time
+from datetime import datetime
 
 import requests
 
@@ -9,6 +11,7 @@ from comparing.game_comparer import GameMetaData, GameComparer
 from telegram_interface.tg_singleton import TelegramMessagesWrapper
 
 thread_local = threading.local()
+logger = logging.getLogger("main_logger")
 
 
 def get_session():
@@ -23,24 +26,27 @@ def check_match(match):
     gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=game_id, )
     cmp = GameComparer(match, gmd)
     settings = dict(team.setting_set.all().values_list("attr_name", "attr_value"))
+
+    log_message = f"Check {game_id} ({team}): "
+    logger.info(f"Checking {game_id} ({team})... ")
     if match.game_begin is None:
         if cmp.compare_new_suggestion(of_enemy_team=True):
-            print("Neuer Zeitvorschlag der Gegner")
+            logger.debug(f"{log_message}Neuer Zeitvorschlag der Gegner")
             match.update_latest_suggestion(gmd)
             if settings.get("scheduling_suggestion", True):
                 TelegramMessagesWrapper.send_new_suggestion_of_enemies(match)
         if cmp.compare_new_suggestion():
-            print("Eigener neuer Zeitvorschlag")
+            logger.debug(f"{log_message}Eigener neuer Zeitvorschlag")
             match.update_latest_suggestion(gmd)
             if settings.get("scheduling_suggestion", True):
                 TelegramMessagesWrapper.send_new_suggestion(match)
     if cmp.compare_scheduling_confirmation():
-        print("Termin wurde festgelegt")
+        logger.debug(f"{log_message}Termin wurde festgelegt")
         match.update_game_begin(gmd)
         if settings.get("scheduling_confirmation", True):
             TelegramMessagesWrapper.send_scheduling_confirmation(match, gmd.latest_confirmation_log)
     if cmp.compare_lineup_confirmation():
-        print("Neues Lineup des gegnerischen Teams: ", game_id)
+        logger.debug(f"{log_message}Neues Lineup des gegnerischen Teams")
         gmd.get_enemy_team_data()
         match.update_enemy_team(gmd)
         match.update_enemy_lineup(gmd)
@@ -58,6 +64,7 @@ def check(uncompleted_games):
 def run():
     start_time = time.time()
     uncompleted_games = Game.objects.get_uncompleted_games()
+    logger.info(f"Checking uncompleted games at {datetime.now()}...")
     check(uncompleted_games=uncompleted_games)
 
     duration = time.time() - start_time

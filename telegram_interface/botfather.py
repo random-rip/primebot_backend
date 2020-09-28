@@ -1,3 +1,4 @@
+import logging
 import sys
 import traceback
 
@@ -59,8 +60,10 @@ def error(update, context):
     for dev_id in devs:
         context.bot.send_message(dev_id, text, parse_mode=ParseMode.HTML)  # TODO: catch connection errors
     # we raise the error again, so the logger module catches it. If you don't use the logger module, use it.
-    raise
-
+    try:
+        raise
+    except RuntimeError as e:
+        logging.getLogger("django").critical(e)
 
 class BotFather:
     """

@@ -1,4 +1,5 @@
 import concurrent.futures
+import logging
 import time
 
 from django.db.models import Q
@@ -52,13 +53,7 @@ def reassign_chat(team_id, tg_group_id):
     return new_team
 
 
-def add_team(team_id, tg_group_id):
-    if Team.objects.filter(
-            Q(id=team_id, telegram_id__isnull=False) |
-            Q(telegram_id=tg_group_id)).exists():
-        print("Dieser Telegramgruppe ist bereits ein Team zugewiesen.")
-        return None
-
+def add_team(team_id, tg_group_id=None):
     try:
         wrapper = TeamWrapper(team_id=team_id)
         parser = wrapper.parser
@@ -93,7 +88,7 @@ def update_team(parser: TeamHTMLParser, team_id: int):
         team = Team.objects.get(id=team_id)
     except Team.DoesNotExist as e:
         return None
-
+    logging.getLogger("periodic_logger").debug(f"Updating {team}...")
     team.name = name
     team.logo_url = logo
     team.team_tag = team_tag
@@ -119,8 +114,9 @@ def update_settings(tg_chat_id, settings: dict):
 
 def add_or_update_players(members, team: Team):
     for (id_, name, summoner_name, is_leader,) in members:
-        player = Player.objects.filter(id=id_, name=name, summoner_name=summoner_name, is_leader=is_leader)
-        if player.exists():
+        player = Player.objects.filter(id=id_, name=name, summoner_name=summoner_name, is_leader=is_leader).first()
+        logging.getLogger("periodic_logger").debug(f"Updating {player}...")
+        if player is not None:
             continue
         player, created = Player.objects.get_or_create(id=id_, defaults={
             "name": name,
@@ -138,10 +134,10 @@ def add_or_update_players(members, team: Team):
 def add_game(team, game_id):
     gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=game_id, )
     game = Game.objects.get_game_by_team(game_id=game_id, team=team)
+
     if game is None:
         game = Game()
-    else:
-        print("Spiel existiert bereits in der Datenbank und wird geupdated")
+    logging.getLogger("periodic_logger").debug(f"Updating {game}...")
     gmd.get_enemy_team_data()
     game.update_from_gmd(gmd)
     game.update_enemy_team(gmd)
@@ -154,4 +150,3 @@ def add_games(game_ids, team: Team):
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         executor.map(lambda p: add_game(*p), ((team, game_id) for game_id in game_ids))
     duration = time.time() - start_time
-    print(f"Added games ({len(game_ids)}) in {duration} seconds")

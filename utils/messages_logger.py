@@ -1,22 +1,8 @@
 import logging
-import os
-import sys
-import traceback
-from datetime import datetime
 
-from telegram.utils.helpers import mention_html
-
-from prime_league_bot.settings import LOGGING_DIR
 from telegram_interface.tg_singleton import TelegramMessagesWrapper
 
-logging.basicConfig(
-    filename=os.path.join(LOGGING_DIR, f"messages_{datetime.now().strftime('%Y-%m-%d')}.log"),
-    level=logging.INFO,
-    format='%(asctime)s %(levelname)s %(message)s',
-    datefmt='%d/%m/%Y %H:%M:%S'
-)
-
-logger = logging.getLogger()
+logger = logging.getLogger("commands_logger")
 
 
 def log_command(fn):
@@ -29,8 +15,11 @@ def log_command(fn):
                     f"Command: {command}, "
                     f"Message: {message}, "
                     f"Result-Code: {result}")
-        TelegramMessagesWrapper.send_command(log_text)
         logger.info(log_text)
+        try:
+            TelegramMessagesWrapper.send_command(log_text)
+        except Exception as e:
+            logger.error(e)
         return result
 
     return wrapper
@@ -50,8 +39,11 @@ def log_callbacks(fn):
             f"Message: '{message}', "
             f"Result-Code: {result}"
         )
-        TelegramMessagesWrapper.send_command(log_text)
         logger.info(log_text)
+        try:
+            TelegramMessagesWrapper.send_command(log_text)
+        except Exception as e:
+            logger.error(e)
         return result
 
     return wrapper

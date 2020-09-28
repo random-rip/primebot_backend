@@ -9,6 +9,8 @@ class TeamManager(models.Manager):
     def get_watched_teams(self):
         return self.model.objects.filter(telegram_id__isnull=False)
 
+    def get_watched_team_of_current_split(self):
+        return self.model.objects.filter(telegram_id__isnull=False, division__isnull=False)
 
 class GameManager(models.Manager):
 
@@ -61,6 +63,9 @@ class Team(models.Model):
     def __repr__(self):
         return f"{self.id} - {self.name}"
 
+    def __str__(self):
+        return f"Team {self.id} - {self.name}"
+
 
 class Player(models.Model):
     name = models.CharField(max_length=50)
@@ -77,6 +82,9 @@ class Player(models.Model):
 
     def __repr__(self):
         return f"{self.name}"
+
+    def __str__(self):
+        return f"Player {self.name}"
 
 
 class GameMetaData:
@@ -162,7 +170,7 @@ class Game(models.Model):
         return f"{self.game_id}"
 
     def __str__(self):
-        return self.__repr__()
+        return f"Game {self.game_id} from {self.team}"
 
     @property
     def get_first_suggested_game_begin(self):

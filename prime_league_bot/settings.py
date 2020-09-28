@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
-
+import errno
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -144,3 +144,114 @@ PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 LOGIN_URL = "/admin/login/"
 
 LOGGING_DIR = os.path.join(BASE_DIR, "logs", )
+
+try:
+    os.mkdir(LOGGING_DIR)
+except OSError as exc:
+    if exc.errno != errno.EEXIST:
+        raise exc
+    pass
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'to_file': {
+            'format': "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt': "%d/%b/%Y %H:%M:%S"
+        },
+        'to_console': {
+            'format': '[%(levelname)s] %(name)s: %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+            'formatter': 'to_console',
+            'class': 'logging.StreamHandler',
+        },
+        'django_file': {
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'WARNING'),
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(LOGGING_DIR, 'django.log'),
+            'when': 'midnight',
+            'formatter': 'to_file',
+        },
+        'periodic_handler': {
+            'level': 'INFO',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(LOGGING_DIR, 'periodic.log'),
+            'when': 'midnight',
+            'formatter': 'to_file',
+        },
+        'periodic_verbose_handler': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(LOGGING_DIR, 'periodic_verbose.log'),
+            'when': 'midnight',
+            'formatter': 'to_file',
+        },
+        'main_handler': {
+            'level': 'INFO',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(LOGGING_DIR, 'main.log'),
+            'when': 'midnight',
+            'formatter': 'to_file',
+        },
+        'main_verbose_handler': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(LOGGING_DIR, 'main_verbose.log'),
+            'when': 'midnight',
+            'formatter': 'to_file',
+        },
+        'notifications_handler': {
+            'level': 'INFO',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(LOGGING_DIR, 'notifications.log'),
+            'when': 'midnight',
+            'formatter': 'to_file',
+        },
+        'notifications_verbose_handler': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(LOGGING_DIR, 'notifications_verbose.log'),
+            'when': 'midnight',
+            'formatter': 'to_file',
+        },
+        'commands_handler': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(LOGGING_DIR, 'commands.log'),
+            'when': 'midnight',
+            'formatter': 'to_file',
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'django_file'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': False,
+        },
+        'main_logger': {
+            'handlers': ['main_handler', 'main_verbose_handler'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+            'propagate': False,
+        },
+        'periodic_logger': {
+            'handlers': ['periodic_handler', 'periodic_verbose_handler'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+            'propagate': False,
+        },
+        'notifications_logger': {
+            'handlers': ['notifications_handler', 'notifications_verbose_handler'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+            'propagate': False,
+        },
+        'commands_logger': {
+            'handlers': ['commands_handler', ],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+            'propagate': False,
+        }
+    }
+}
