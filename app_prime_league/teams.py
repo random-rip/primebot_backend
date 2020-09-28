@@ -137,12 +137,12 @@ def add_game(team, game_id):
 
     if game is None:
         game = Game()
-    logging.getLogger("periodic_logger").debug(f"Updating {game}...")
     gmd.get_enemy_team_data()
     game.update_from_gmd(gmd)
     game.update_enemy_team(gmd)
     game.update_enemy_lineup(gmd)
     game.update_latest_suggestion(gmd)
+    logging.getLogger("periodic_logger").debug(f"Updating {game}...")
 
 
 def add_games(game_ids, team: Team):
