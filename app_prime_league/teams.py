@@ -8,8 +8,11 @@ from app_prime_league.models import Team, Player, Game, GameMetaData
 from parsing.parser import TeamHTMLParser, TeamWrapper
 
 
-def register_team(team_id, tg_group_id):
-    team = add_team(team_id, tg_group_id)
+def register_team(team_id, telegram_id=None):
+    """
+    Add or Update a Team, Add or Update Players, Add or Update Games. Optionally set telegram_id of the team.
+    """
+    team = add_or_update_team(team_id, telegram_id)
     if team is not None:
         try:
             wrapper = TeamWrapper(team_id=team.id)
@@ -53,7 +56,7 @@ def reassign_chat(team_id, tg_group_id):
     return new_team
 
 
-def add_team(team_id, tg_group_id=None):
+def add_or_update_team(team_id, tg_group_id=None):
     try:
         wrapper = TeamWrapper(team_id=team_id)
         parser = wrapper.parser
@@ -69,8 +72,8 @@ def add_team(team_id, tg_group_id=None):
         "logo_url": parser.get_logo(),
     })
     if not created:
+        team = update_team(parser, team_id)
         team.telegram_id = tg_group_id
-        team.logo_url = parser.get_logo()
         team.save()
     return team
 

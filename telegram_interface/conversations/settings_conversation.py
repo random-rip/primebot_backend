@@ -52,6 +52,13 @@ SETTINGS = {
         "text": "Möchtet ihr bei Patches am Bot benachrichtigt werden?",
         "callback_data": "5",
     },
+    # UNLOCK_BOT
+    "LOCK_Team": {
+        "name": "lock_team",
+        "title": "Team-Sperre",
+        "text": "Möchtet ihr, dass euer Team in einem anderem Chat *nicht* neu initialisiert werden kann?",
+        "callback_data": "7",
+    }
 }
 
 
