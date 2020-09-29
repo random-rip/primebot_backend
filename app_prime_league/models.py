@@ -15,6 +15,7 @@ class TeamManager(models.Manager):
     def get_team(self, team_id):
         return self.model.objects.filter(id=team_id).first()
 
+
 class GameManager(models.Manager):
 
     def get_uncompleted_games(self):
@@ -71,6 +72,7 @@ class Team(models.Model):
 
     def value_of_setting(self, setting):
         return dict(self.setting_set.all().values_list("attr_name", "attr_value")).get(setting, True)
+
 
 class Player(models.Model):
     name = models.CharField(max_length=50)

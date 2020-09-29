@@ -2,6 +2,7 @@ import json
 import re
 
 from bs4 import BeautifulSoup
+import requests
 
 from data_crawling.api import crawler
 from utils.patterns import TEAM_NAME
@@ -12,8 +13,9 @@ class MatchWrapper:
 
     def __init__(self, match_id, team):
         website = crawler.get_match_website(match_id)
-        json_match = crawler.get_details_json(match_id)
-        self.parser = MatchHTMLParser(website, team, json_match)
+        json_match = crawler.get_match_details_json(match_id)
+        json_comments = crawler.get_comments_json(match_id)
+        self.parser = MatchHTMLParser(website, team, json_match, json_comments)
 
 
 class TeamWrapper:
@@ -106,9 +108,10 @@ class MatchHTMLParser(BaseHTMLParser):
     ParserClass for a match website.
     """
 
-    def __init__(self, website, team, json_match):
+    def __init__(self, website, team, json_match, json_comments):
         super().__init__(website)
         self.json_match = json.loads(json_match)
+        self.json_comments = json.loads(json_comments)
         team_1_div = self.bs4.find_all("div", class_="content-match-head-team content-match-head-team1")[0]
         team_1_id = int(team_1_div.contents[1].contents[1].get("href").split("/teams/")[1].split("-")[0])
         self.team_is_team_1 = team_1_id == team.id
@@ -197,6 +200,11 @@ class MatchHTMLParser(BaseHTMLParser):
         game_day_div = match_info_div.find_all("div", class_="txt-subtitle")[1]
         game_day = game_day_div.contents[0].split(" ")[1]
         return game_day
+
+    def get_comments(self):
+        comments_from_json = self.json_comments["comments"]
+        comments = [(x["id"], (x["user_id"], x["user_name"]), x["content"], None) for x in comments_from_json]
+        return None if len(comments) == 0 else comments
 
 
 class BaseLog:
