@@ -73,7 +73,8 @@ def just_wait_a_moment(chat_id, context: CallbackContext):
 
 
 def get_existing_chat_id(update: Update):
-    if Team.objects.filter(telegram_id=(chat_id := update.message.chat.id)).exists():
+    chat_id = get_chat_id(update)
+    if Team.objects.filter(telegram_id=chat_id).exists():
         return chat_id
     return None
 
