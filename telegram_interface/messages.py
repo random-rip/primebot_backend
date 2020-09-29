@@ -1,6 +1,6 @@
 # Variablen
 from utils.constants import EMOJI_ONE, EMOJI_TWO, EMOJI_THREE, EMOJI_CLOVER, EMOJI_MINDBLOWN, \
-    EMOJI_POST_HORN, EMOJI_TROPHY, EMJOI_MAGN_GLASS, EMOJI_SUCCESS, EMOJI_ARROW_RIGHT
+    EMOJI_POST_HORN, EMOJI_TROPHY, EMJOI_MAGN_GLASS, EMOJI_SUCCESS, EMOJI_ARROW_RIGHT, EMOJI_GIFT
 
 SUPPORT_GROUP_LINK = "https://t.me/joinchat/IUH8NhsKTYUtFKaqQMWhKA"
 START_LINK = "https://t.me/prime_league_bot?startgroup=start"
@@ -68,11 +68,11 @@ TEAM_ID_NOT_CORRECT = "Die ID: *{id}* konnte *keinem* Team zugeordnet werden.\n\
 
 # Start Messages
 # Antwort auf /start, wenn man command in einer Gruppe aufruft
-START_GROUP = "_Hallo Beschwörer, \n" \
-              "ihr seid es Leid, jeden Tag mühselig auf der PrimeLeague-Seite nach neuen Updates zu suchen?\n" \
-              f"Dann bin ich hier genau richtig:\n" \
-              f"__Ich schicke euch alle Updates der Seite als Pushbenachrichtigung{EMOJI_POST_HORN} " \
-              f"in diesen Chat.___ {EMOJI_MINDBLOWN}\n\n" \
+START_GROUP = "Sternige Grüße, \n" \
+              "ihr seid es Leid, jeden Tag auf den PrimeLeague-Seiten mühsam nach neuen Updates zu suchen?\n" \
+              f"Gut, dass ich hier bin:\n" \
+              f"Ich schicke euch alle *Updates* als *Pushbenachrichtigung* {EMOJI_POST_HORN} " \
+              f"in diesen Chat. {EMOJI_GIFT}\n\n" \
               f"{EMOJI_ONE} Bitte kopiert dafür eure Team-URL (Format: {GENERAL_TEAM_LINK}<TEAM ID>-<TEAM NAME>)" \
               " oder eure Team ID in den Chat.\n"
 
@@ -117,7 +117,7 @@ SETTINGS_MAIN_MENU = {
     "text": "*Hauptmenü:*\nWelche Einstellung soll angepasst werden?",
 }
 
-SET_PHOTO_TEXT = f"_Soll ich das Teambild aus der PrimeLeague importieren?_\n(Dazu werden Adminrechte benötigt)"
+SET_PHOTO_TEXT = f"Soll ich das Teambild aus der PrimeLeague importieren?\n_Dazu werden Adminrechte benötigt._"
 PHOTO_SUCESS_TEXT = f"{EMOJI_SUCCESS}"
 PHOTO_ERROR_TEXT = f"Bild konnte nicht gesetzt werden."
 PHOTO_RETRY_TEXT = f"Profilbild konnte nicht geändert werden. Dazu werden Adminrechte benötigt.\n" \

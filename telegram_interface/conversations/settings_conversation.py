@@ -104,9 +104,12 @@ def main_settings_menu_close(update: Update, context: CallbackContext):
 def migrate_chat(update: Update, context: CallbackContext):
     if update.message.chat.type == "supergroup":
         return
-    old_chat_id = update.message.migrate_from_chat_id
-    new_chat_id = update.message.chat.id
-    team = Team.objects.get(telegram_id=old_chat_id)
+    try:
+        old_chat_id = update.message.chat.id
+        team = Team.objects.get(telegram_id=old_chat_id)
+    except Team.DoesNotExist as e:
+        return
+    new_chat_id = update.message.migrate_to_chat_id
     team.telegram_id = new_chat_id
     team.save()
 

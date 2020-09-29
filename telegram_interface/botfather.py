@@ -64,6 +64,7 @@ def error(update, context):
     except RuntimeError as e:
         logging.getLogger("django").critical(e)
 
+
 class BotFather:
     """
     Botfather Class. Provides Communication with Bot(Telegram API) and Client
@@ -76,7 +77,7 @@ class BotFather:
         updater = Updater(self.api_key, use_context=True, )
         dp = updater.dispatcher
 
-        fallbacks = [
+        commands = [
             CommandHandler("cancel", cancel),
             CommandHandler("help", helpcommand),
             CommandHandler("issue", issue),
@@ -84,6 +85,7 @@ class BotFather:
             CommandHandler("bop", bop),
             CommandHandler("explain", explain),
             CommandHandler("setlogo", set_logo),
+            MessageHandler(Filters.status_update.migrate, migrate_chat)  # Migration
         ]
 
         start_conv_handler = ConversationHandler(
@@ -91,26 +93,14 @@ class BotFather:
 
             states={
                 1: [MessageHandler(Filters.text & (~Filters.command), team_registration), ],
-                # 2: [MessageHandler(Filters.text & (~Filters.command), chat_reassignment), ],
             },
 
-            fallbacks=fallbacks
+            fallbacks=commands
         )
-
-        # reassign_conv_handler = ConversationHandler(
-        #     entry_points=[CommandHandler('reassign', start_reassign_team, )],
-        #
-        #     states={
-        #         1: [MessageHandler(Filters.text & (~Filters.command), team_reassignment), ],
-        #     },
-        #
-        #     fallbacks=fallbacks
-        # )
 
         # Allgemeine Commands
         dp.add_handler(start_conv_handler)
-        # dp.add_handler(reassign_conv_handler)
-        for cmd in fallbacks[1:]:
+        for cmd in commands[1:]:
             dp.add_handler(cmd)
 
         # Main Menu
@@ -120,7 +110,6 @@ class BotFather:
         dp.add_handler(CallbackQueryHandler(finish_registration, pattern='0no'))
         dp.add_handler(CallbackQueryHandler(set_optional_photo, pattern='0yes'))
         # Chat Migration
-        dp.add_handler(MessageHandler(Filters.status_update.migrate, migrate_chat))
 
         dp.add_error_handler(error)
 
