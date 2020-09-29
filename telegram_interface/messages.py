@@ -96,7 +96,6 @@ START_CHAT = "_Hallo Beschwörer,\nihr möchtet den PrimeBot für Pushbenachrich
              f"_Viel Erfolg auf den Richtfeldern!_ {EMOJI_CLOVER}"
 
 # Settings (ConversationHandler)
-START_SETTINGS = "Settings: "
 MAIN_MENU_TEXT = "Hauptmenü"
 
 BOOLEAN_KEYBOARD_OPTIONS = [
@@ -115,7 +114,7 @@ BOOLEAN_KEYBOARD_OPTIONS = [
 ]
 
 SETTINGS_MAIN_MENU = {
-    "text": "Hauptmenü:\nWählt eine Einstellung aus, die ihr anpassen möchtet",
+    "text": "*Hauptmenü:*\nWelche Einstellung soll angepasst werden?",
 }
 
 SET_PHOTO_TEXT = f"_Soll ich das Teambild aus der PrimeLeague importieren?_\n(Dazu werden Adminrechte benötigt)"
