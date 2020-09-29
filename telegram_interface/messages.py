@@ -34,7 +34,6 @@ HELP_COMMAND_LIST = "/issue - um zu erfahren, wie Ihr eine Störung melden könn
                     "/settings - um die Einstellungen des Bots zu bearbeiten\n" \
                     "/cancel - um den aktuellen Prozess abzubrechen\n" \
                     "/explain - um eine Erklärung zu dem Bot zu lesen\n" \
-                    "/reassign - um in dem Chat ein anderes Team zu registrieren\n" \
  \
     # Antwort auf /issue
 ISSUE = f"Habt Ihr einen Fehler bemerkt? Bitte schreibt den Entwicklern eine Nachricht in ihrer " \
@@ -44,18 +43,28 @@ ISSUE = f"Habt Ihr einen Fehler bemerkt? Bitte schreibt den Entwicklern eine Nac
 FEEDBACK = f"Habt Ihr Feedback? Hinterlasst den Entwicklern gerne eine Nachricht in folgender " \
            f"[Support-Gruppe]({SUPPORT_GROUP_LINK})."
 
+NEED_HELP = "Solltet ihr Hilfe benötigen nutzt bitte /help."
+
 # Antwort, wenn /start Team_id oder tg_id bereits vergeben
 TEAM_EXISTING = "Dieses Team ist bereits registriert und mit einem anderen Chat verknüpft oder\n" \
                 "für diesen Chat ist bereits ein anderes Team hinterlegt oder\n" \
                 "die Team ID wurde nicht gefunden.\n" \
                 f"Solltet ihr Hilfe benötigen, nutzt bitte /help oder /issue.\n{RETRY_TEXT}"
 
-CHAT_EXISTING = "In diesem Chat ist bereits ein Team registriert. Solltet ihr Hilfe benötigen nutzt bitte /help"
+CHAT_EXISTING = "In diesem Chat ist bereits ein Team registriert. Wollt ihr ein anderes Team für diesen Channel " \
+                "registrieren?\n" \
+                f"Dann gebt dafür jetzt eure Team-URL (Format: {GENERAL_TEAM_LINK}<TEAM ID>-<TEAM NAME>)" \
+                "oder eure Team ID an. Wenn nicht, dann nutzt /cancel um die Konversation abzubrechen.\n\n" \
+                f"{NEED_HELP}"
 
 TEAM_ID_NOT_VALID_TEXT = "Die angegebene URL entspricht nicht dem richtigen Format. \n" \
                          "Achte auf das richtige Format oder gebe die Team ID ein.\n" \
                          f"{RETRY_TEXT}"
 TEAM_ID_VALID = "Euer registriertes Team:\n"
+
+TEAM_ID_NOT_CORRECT = "Die ID: *{id}* konnte *keinem* Team zugeordnet werden.\n\n" \
+                      f"Bitte kopiert eure Team-URL (Format: {GENERAL_TEAM_LINK}<TEAM ID>-<TEAM NAME>)" \
+                      " oder eure Team ID in den Chat. Zum Abbrechen nutzt /cancel."
 
 # Start Messages
 # Antwort auf /start, wenn man command in einer Gruppe aufruft
@@ -65,17 +74,19 @@ START_GROUP = "_Hallo Beschwörer, \n" \
               f"__Ich schicke euch alle Updates der Seite als Pushbenachrichtigung{EMOJI_POST_HORN} " \
               f"in diesen Chat.___ {EMOJI_MINDBLOWN}\n\n" \
               f"{EMOJI_ONE} Bitte kopiert dafür eure Team-URL (Format: {GENERAL_TEAM_LINK}<TEAM ID>-<TEAM NAME>)" \
-              "oder eure Team ID in den Chat.\n"
+              " oder eure Team ID in den Chat.\n"
+
+TEAM_LOCKED = "Das Team *{team.name}* wurde nicht freigegeben.\n" \
+              "Bitte stellt sicher, dass in den Einstellungen von {team.name} die Team-Sperre *deaktiviert* ist!\n" \
+              f"(/settings {EMOJI_ARROW_RIGHT} Team-Sperre)\n\n" \
+              f"{NEED_HELP}"
+
+GROUP_REASSIGNED = "Euer Team wurde in einem anderen Chat initialisiert!\n" \
+                   "Es werden in dieser Gruppe keine weiteren Updates zu *{team.name}* folgen.\n\n" \
+                   f"{NEED_HELP}"
+
 # Antwort auf /start, wenn man command in einem 1on1 Chat aufruft
 
-REASSIGN_TEAM = "_Hallo Beschwörer, \n" \
-                "ihr möchtet diesem Chat ein bereits registriertes Team zuweisen?_\n" \
-                f"{EMOJI_ONE} Gebt dafür jetzt eure Team-URL (Format: {GENERAL_TEAM_LINK}<TEAM ID>-<TEAM NAME>)" \
-                "oder eure Team ID an.\n"
-
-OTHER_TEAM_REGISTERED = "In diesem Chat ist bereits ein Team registriert. \n" \
-                        f"{EMOJI_ONE} Erstelle einen neuen Chat. \n" \
-                        f"{EMOJI_TWO} Führe /reassign erneut aus. \n"
 
 START_CHAT = "_Hallo Beschwörer,\nihr möchtet den PrimeBot für Pushbenachrichtigungen nutzen?_\n\n" \
              "Setup:\n" \
@@ -85,7 +96,6 @@ START_CHAT = "_Hallo Beschwörer,\nihr möchtet den PrimeBot für Pushbenachrich
              f"_Viel Erfolg auf den Richtfeldern!_ {EMOJI_CLOVER}"
 
 # Settings (ConversationHandler)
-START_SETTINGS = "Settings: "
 MAIN_MENU_TEXT = "Hauptmenü"
 
 BOOLEAN_KEYBOARD_OPTIONS = [
@@ -104,7 +114,7 @@ BOOLEAN_KEYBOARD_OPTIONS = [
 ]
 
 SETTINGS_MAIN_MENU = {
-    "text": "Hauptmenü:\nWählt eine Einstellung aus, die ihr anpassen möchtet",
+    "text": "*Hauptmenü:*\nWelche Einstellung soll angepasst werden?",
 }
 
 SET_PHOTO_TEXT = f"_Soll ich das Teambild aus der PrimeLeague importieren?_\n(Dazu werden Adminrechte benötigt)"
