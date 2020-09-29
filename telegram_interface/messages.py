@@ -156,12 +156,12 @@ EXPLAIN_TEXT = "Dieser Bot ist nicht in Kooperation mit der PrimeLeague bzw. der
                "und hat damit keinen direkten Bezug zur PrimeLeague. " \
                "Dieser Bot wurde aufgrund von versäumten Matches entworfen und programmiert. " \
                "Der Bot wurde nach bestem Gewissen realisiert, und nach einer Testphase für andere Teams zur " \
-               "Verfügung gestellt. Dennoch sind alle Angaben ohne Gewähr! " \
-               "**Funktionsweise:** Nach der Registrierung des Teams wird über die noch nicht gespielten Spiele " \
+               "Verfügung gestellt. Dennoch sind alle Angaben ohne Gewähr!\n" \
+               "*Funktionsweise:* Nach der Registrierung des Teams wird über die noch nicht gespielten Spiele " \
                "iteriert und deren Website nach Änderungen abgesucht. Dies geschieht alle 30 Minuten. " \
                "Das bedeutet, dass Updates maximal 30 Minuten alt sein können. Das wöchentliche Update geschieht " \
                "einmal jeden Montag um 0Uhr nach Beginn des Splits bis zum Ende der Gruppenphase. " \
-               "Die gespeicherten Teams werden einmal pro Tag um 0Uhr aktualisiert."
+               "Die gespeicherten Teams werden einmal pro Tag um 0Uhr aktualisiert. \n_Version: {version}_"
 
 CLOSE = "Schließen"
 CURRENTLY = "Derzeitig"

@@ -26,4 +26,8 @@ Sternige Grüße
 @Grayknife und @OrbisK
 """
     },
+    2: {
+        "version": "1.12.1-beta",
+        "text": f"Supergroup Hotfix"
+    }
 }
