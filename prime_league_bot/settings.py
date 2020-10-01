@@ -209,7 +209,6 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.handlers.WatchedFileHandler',
             'filename': os.path.join(LOGGING_DIR, 'notifications.log'),
-            'when': 'midnight',
             'formatter': 'to_file',
         },
         'commands_handler': {
