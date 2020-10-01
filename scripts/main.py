@@ -28,7 +28,7 @@ def check_match(match):
     cmp = GameComparer(match, gmd)
     settings = dict(team.setting_set.all().values_list("attr_name", "attr_value"))
 
-    log_message = f"Check {game_id} ({team}): "
+    log_message = f"New notification for {game_id} ({team}): "
     main_logger.debug(f"Checking {game_id} ({team})...")
     if match.game_begin is None:
         if cmp.compare_new_suggestion(of_enemy_team=True):

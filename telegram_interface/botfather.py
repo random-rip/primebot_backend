@@ -116,4 +116,8 @@ class BotFather:
         for i in callback_query_settings_handlers:
             dp.add_handler(i)
         updater.start_polling()  # TODO: try catch connection errors
+
+        from django import db
+        db.close_old_connections()  # Possible Fix for MySQL has gone away
+
         updater.idle()

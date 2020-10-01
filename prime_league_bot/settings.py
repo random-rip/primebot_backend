@@ -206,16 +206,9 @@ LOGGING = {
             'formatter': 'to_file',
         },
         'notifications_handler': {
-            'level': 'INFO',
-            'class': 'logging.handlers.TimedRotatingFileHandler',
-            'filename': os.path.join(LOGGING_DIR, 'notifications.log'),
-            'when': 'midnight',
-            'formatter': 'to_file',
-        },
-        'notifications_verbose_handler': {
             'level': 'DEBUG',
-            'class': 'logging.handlers.TimedRotatingFileHandler',
-            'filename': os.path.join(LOGGING_DIR, 'notifications_verbose.log'),
+            'class': 'logging.handlers.WatchedFileHandler',
+            'filename': os.path.join(LOGGING_DIR, 'notifications.log'),
             'when': 'midnight',
             'formatter': 'to_file',
         },
@@ -244,7 +237,7 @@ LOGGING = {
             'propagate': False,
         },
         'notifications_logger': {
-            'handlers': ['notifications_handler', 'notifications_verbose_handler'],
+            'handlers': ['notifications_handler'],
             'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
             'propagate': False,
         },
