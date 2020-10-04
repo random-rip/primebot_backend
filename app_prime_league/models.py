@@ -15,6 +15,7 @@ class TeamManager(models.Manager):
     def get_team(self, team_id):
         return self.model.objects.filter(id=team_id).first()
 
+
 class GameManager(models.Manager):
 
     def get_uncompleted_games(self):
@@ -70,7 +71,11 @@ class Team(models.Model):
         return f"Team {self.id} - {self.name}"
 
     def value_of_setting(self, setting):
-        return dict(self.setting_set.all().values_list("attr_name", "attr_value")).get(setting, True)
+        return self.settings_dict().get(setting, True)
+
+    def settings_dict(self):
+        return dict(self.setting_set.all().values_list("attr_name", "attr_value"))
+
 
 class Player(models.Model):
     name = models.CharField(max_length=50)
@@ -255,6 +260,22 @@ class Setting(models.Model):
     class Meta:
         db_table = "settings"
         unique_together = [("team", "attr_name"), ]
+
+
+class Comment(models.Model):
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    comment_id = models.CharField(max_length=50)
+    parent = models.ForeignKey('Comment', on_delete=models.CASCADE)
+    content = models.CharField(max_length=3000)
+    has_more_content = models.BooleanField(default=False)
+    author_name = models.CharField(max_length=50)
+    author_id = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "comments"
+        unique_together = [("game", "comment_id"), ]
 
 
 class TeamWatcher(models.Model):

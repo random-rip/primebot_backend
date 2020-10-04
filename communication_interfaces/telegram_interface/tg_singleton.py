@@ -3,11 +3,13 @@ from babel import dates as babel
 from telegram import ParseMode
 
 from app_prime_league.models import Game
+from communication_interfaces.languages.de_DE import (
+    NEW_TIME_SUGGESTION_PREFIX, NEW_TIME_SUGGESTIONS_PREFIX, GENERAL_MATCH_LINK, SCHEDULING_AUTO_CONFIRMATION_TEXT,
+    SCHEDULING_CONFIRMATION_TEXT, GAME_BEGIN_CHANGE_TEXT, NEW_LINEUP_TEXT, WEEKLY_UPDATE_TEXT, GENERAL_TEAM_LINK,
+    OWN_NEW_TIME_SUGGESTION_TEXT, NEXT_GAME_TEXT, MESSAGE_NOT_PINED_TEXT, CANT_PIN_MSG_IN_PRIVATE_CHAT
+)
 from parsing.parser import LogSchedulingAutoConfirmation, LogSchedulingConfirmation, LogChangeTime
 from prime_league_bot import settings
-from telegram_interface.messages import NEW_TIME_SUGGESTION_PREFIX, NEW_TIME_SUGGESTIONS_PREFIX, GENERAL_MATCH_LINK, \
-    SCHEDULING_AUTO_CONFIRMATION_TEXT, SCHEDULING_CONFIRMATION_TEXT, GAME_BEGIN_CHANGE_TEXT, NEW_LINEUP_TEXT, \
-    WEEKLY_UPDATE_TEXT, GENERAL_TEAM_LINK, OWN_NEW_TIME_SUGGESTION_TEXT, NEXT_GAME_TEXT, MESSAGE_NOT_PINED_TEXT
 from utils.constants import EMOJI_THREE, EMOJI_ONE, EMOJI_TWO, EMOJI_SUCCESS, EMOJI_FIGHT, EMOJI_SOON, \
     EMOJI_LINEUP
 
@@ -111,7 +113,7 @@ class TelegramMessagesWrapper:
         send_message(msg=message, chat_id=game.team.telegram_id)
 
     @staticmethod
-    def send_new_game_day(game: Game, pin_weekly_op_link):
+    def send_new_game_day(game: Game, pin_weekly_op_link: bool):
         op_link = game.get_op_link_of_enemies(only_lineup=False)
         text = WEEKLY_UPDATE_TEXT.format(
             EMOJI_SOON,
@@ -129,6 +131,8 @@ class TelegramMessagesWrapper:
                 pin_msg(message)
             except telepot.exception.NotEnoughRightsError:
                 send_message(msg=MESSAGE_NOT_PINED_TEXT, chat_id=game.team.telegram_id)
+            except telepot.exception.TelegramError:
+                print(CANT_PIN_MSG_IN_PRIVATE_CHAT)
         return message
 
     @staticmethod

@@ -1,4 +1,5 @@
 # Variablen
+from prime_league_bot import settings
 from utils.constants import EMOJI_ONE, EMOJI_TWO, EMOJI_THREE, EMOJI_CLOVER, EMOJI_MINDBLOWN, \
     EMOJI_POST_HORN, EMOJI_TROPHY, EMJOI_MAGN_GLASS, EMOJI_SUCCESS, EMOJI_ARROW_RIGHT, EMOJI_GIFT
 
@@ -15,8 +16,8 @@ CANCEL = "Vorgang abgebrochen, leider. \n" \
          f"Braucht ihr Hilfe nutzt doch /help. {EMJOI_MAGN_GLASS}"
 RETRY_TEXT = "Bitte versuche es erneut oder /cancel."
 
-GENERAL_MATCH_LINK = "https://www.primeleague.gg/de/leagues/matches/"
-GENERAL_TEAM_LINK = "https://www.primeleague.gg/de/leagues/teams/"
+GENERAL_MATCH_LINK = settings.MATCH_URI
+GENERAL_TEAM_LINK = settings.TEAM_URI
 
 US = "uns"
 FOR_GAME_DAY = "für [Spieltag] {}"
@@ -127,6 +128,8 @@ MESSAGE_NOT_PINED_TEXT = f"Die wöchentliche Nachricht konnte nicht angeheftet w
                          f"Falls ihr nicht möchtet, dass die wöchentliche Benachrichtigung angeheftet wird, " \
                          f"nutzt bitte /settings {EMOJI_ARROW_RIGHT} 'Wochenübersicht anheften' {EMOJI_ARROW_RIGHT} " \
                          f"'Deaktivieren'."
+
+CANT_PIN_MSG_IN_PRIVATE_CHAT = "Man kann keine Nachricht in einem privaten Chat anpinnen."
 
 # Update Messages
 OWN_NEW_TIME_SUGGESTION_TEXT = "Neuer Zeitvorschlag von euch für [Spieltag {}]({}{}). {}"

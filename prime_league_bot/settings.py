@@ -128,8 +128,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-BASE_URI = "https://www.primeleague.gg/de/leagues/"
-BASE_URI_AJAX = "https://www.primeleague.gg/ajax/"
+LEAGUES_URI = "https://www.primeleague.gg/de/leagues/"
+AJAX_URI = "https://www.primeleague.gg/ajax/"
+
+MATCH_URI = "https://www.primeleague.gg/de/leagues/matches/"
+TEAM_URI = "https://www.primeleague.gg/de/leagues/teams/"
 
 DEFAULT_TELEGRAM_CHAT_ID = env.str("TG_CHAT_ID", None)
 

@@ -3,12 +3,14 @@ from telegram.ext import CallbackContext, ConversationHandler
 
 from app_prime_league.models import Team
 from app_prime_league.teams import register_team
-from telegram_interface import send_message
-from telegram_interface.commands.single_commands import set_photo
-from telegram_interface.keyboards import boolean_keyboard
-from telegram_interface.messages import START_GROUP, START_CHAT, TEAM_EXISTING, TEAM_ID_VALID, REGISTRATION_FINISH, \
-    WAIT_A_MOMENT_TEXT, TEAM_ID_NOT_VALID_TEXT, SET_PHOTO_TEXT, \
+from communication_interfaces import send_message
+from communication_interfaces.languages.de_DE import (
+    START_GROUP, START_CHAT, TEAM_ID_VALID, REGISTRATION_FINISH,
+    WAIT_A_MOMENT_TEXT, TEAM_ID_NOT_VALID_TEXT, SET_PHOTO_TEXT,
     PHOTO_SUCESS_TEXT, PHOTO_RETRY_TEXT, CHAT_EXISTING, TEAM_LOCKED, GROUP_REASSIGNED, TEAM_ID_NOT_CORRECT
+)
+from communication_interfaces.telegram_interface.commands.single_commands import set_photo
+from communication_interfaces.telegram_interface.keyboards import boolean_keyboard
 from utils.messages_logger import log_command, log_callbacks
 
 
@@ -65,7 +67,7 @@ def get_valid_team_id(response, update: Update):
 
 
 def just_wait_a_moment(chat_id, context: CallbackContext):
-    context.bot.send_message(
+    context.bot.tg_send_message(
         text=WAIT_A_MOMENT_TEXT,
         chat_id=chat_id,
         parse_mode=ParseMode.MARKDOWN,
@@ -176,8 +178,6 @@ def team_registration(update: Update, context: CallbackContext):
             reply_markup=boolean_keyboard(0),
         )
 
-
-
     return ConversationHandler.END
 
 
@@ -213,7 +213,7 @@ def finish_registration(update: Update, context: CallbackContext):
 
     )
 
-    context.bot.send_message(
+    context.bot.tg_send_message(
         text=f"{TEAM_ID_VALID}*{team.name}*\n{REGISTRATION_FINISH}",
         chat_id=chat_id,
         disable_web_page_preview=True,

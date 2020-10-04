@@ -1,4 +1,4 @@
-from telegram_interface.botfather import BotFather
+from communication_interfaces.telegram_interface.botfather import BotFather
 
 
 def main():

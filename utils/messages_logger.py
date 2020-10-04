@@ -1,6 +1,6 @@
 import logging
 
-from telegram_interface.tg_singleton import TelegramMessagesWrapper
+from communication_interfaces.telegram_interface.tg_singleton import TelegramMessagesWrapper
 
 logger = logging.getLogger("commands_logger")
 
