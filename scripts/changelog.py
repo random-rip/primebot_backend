@@ -1,5 +1,5 @@
 from app_prime_league.models import Team
-from telegram_interface import send_message
+from communication_interfaces import send_message
 from utils.changelogs import CHANGELOGS
 
 

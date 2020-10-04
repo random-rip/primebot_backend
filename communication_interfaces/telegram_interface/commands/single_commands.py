@@ -9,8 +9,10 @@ from telegram.ext import CallbackContext, ConversationHandler
 
 from app_prime_league.models import Team
 from prime_league_bot.settings import STORAGE_DIR
-from telegram_interface.messages import HELP_COMMAND_LIST, ISSUE, \
-    TEAM_NOT_IN_DB_TEXT, PHOTO_SUCESS_TEXT, PHOTO_ERROR_TEXT, HELP_TEXT, FEEDBACK, EXPLAIN_TEXT, CANCEL
+from communication_interfaces.languages.de_DE import (
+    HELP_COMMAND_LIST, ISSUE, TEAM_NOT_IN_DB_TEXT, PHOTO_SUCESS_TEXT, PHOTO_ERROR_TEXT, HELP_TEXT, FEEDBACK,
+    EXPLAIN_TEXT, CANCEL
+)
 from utils.messages_logger import log_command, logger
 
 

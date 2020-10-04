@@ -1,7 +1,6 @@
 from app_prime_league.models import Team
 from app_prime_league.teams import add_or_update_players, add_games
-from data_crawling.api import crawler
-from parsing.parser import TeamHTMLParser, TeamWrapper
+from parsing.parser import TeamWrapper
 
 
 def main():

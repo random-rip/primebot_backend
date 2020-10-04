@@ -3,17 +3,17 @@ import sys
 import traceback
 
 from telegram import ParseMode
-from telegram.ext import Updater, CommandHandler, MessageHandler, ConversationHandler, \
-    CallbackQueryHandler
+from telegram.ext import Updater, CommandHandler, MessageHandler, ConversationHandler, CallbackQueryHandler
 from telegram.ext.filters import Filters
 from telegram.utils.helpers import mention_html
 
+from communication_interfaces.telegram_interface.commands.single_commands import (
+    cancel, helpcommand, issue, feedback, bop, explain, set_logo)
+from communication_interfaces.telegram_interface.conversations.settings_conversation import (
+    main_settings_menu, callback_query_settings_handlers, start_settings, main_settings_menu_close, migrate_chat)
+from communication_interfaces.telegram_interface.conversations.start_conversation import (
+    start, team_registration, finish_registration, set_optional_photo)
 from prime_league_bot import settings
-from telegram_interface.commands.single_commands import cancel, helpcommand, issue, feedback, bop, explain, set_logo
-from telegram_interface.conversations.settings_conversation import main_settings_menu, callback_query_settings_handlers, \
-    start_settings, main_settings_menu_close, migrate_chat
-from telegram_interface.conversations.start_conversation import start, team_registration, finish_registration, \
-    set_optional_photo, chat_reassignment
 
 
 # this is a general error handler function. If you need more information about specific type of update, add it to the
@@ -63,6 +63,7 @@ def error(update, context):
         raise
     except RuntimeError as e:
         logging.getLogger("django").critical(e)
+
 
 class BotFather:
     """
