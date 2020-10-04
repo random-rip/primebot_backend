@@ -262,6 +262,22 @@ class Setting(models.Model):
         unique_together = [("team", "attr_name"), ]
 
 
+class Comment(models.Model):
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    comment_id = models.CharField(max_length=50)
+    parent = models.ForeignKey('Comment', on_delete=models.CASCADE)
+    content = models.CharField(max_length=3000)
+    has_more_content = models.BooleanField(default=False)
+    author_name = models.CharField(max_length=50)
+    author_id = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "comments"
+        unique_together = [("game", "comment_id"), ]
+
+
 class TeamWatcher(models.Model):
     telegram_id = models.CharField(max_length=50, null=True)
     team = models.ForeignKey(Team, on_delete=models.CASCADE)

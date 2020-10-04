@@ -180,14 +180,6 @@ class MatchHTMLParser(BaseHTMLParser):
                 return log.details, log
         return None, False
 
-    def get_enemy_team_name(self):
-        results = re.finditer(TEAM_NAME, self.website)
-        results = [x for x in results]
-        name = [x.group("name") for x in results][0]
-        if name is None:
-            name = [x.group("name_2") for x in results][0]
-        return name
-
     def get_enemy_team_id(self):
         team_1_div = self.bs4.find_all("div", class_="content-match-head-team content-match-head-team1")[0]
         team_2_div = self.bs4.find_all("div", class_="content-match-head-team content-match-head-team2")[0]
@@ -203,6 +195,7 @@ class MatchHTMLParser(BaseHTMLParser):
 
     def get_comments(self):
         comments_from_json = self.json_comments["comments"]
+        print(comments_from_json)
         comments = [(x["id"], (x["user_id"], x["user_name"]), x["content"], None) for x in comments_from_json]
         return None if len(comments) == 0 else comments
 
