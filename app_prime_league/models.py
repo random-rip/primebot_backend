@@ -50,6 +50,10 @@ class PlayerManager(models.Manager):
         return players
 
 
+class CommentManager(models.Manager):
+    pass
+
+
 class Team(models.Model):
     name = models.CharField(max_length=100, null=True)
     team_tag = models.CharField(max_length=100, null=True)
@@ -269,6 +273,8 @@ class Comment(models.Model):
     author_id = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    objects = PlayerManager()
 
     class Meta:
         db_table = "comments"
