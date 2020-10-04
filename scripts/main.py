@@ -7,8 +7,8 @@ from datetime import datetime
 import requests
 
 from app_prime_league.models import Game
+from communication_interfaces.telegram_interface.tg_singleton import TelegramMessagesWrapper
 from comparing.game_comparer import GameMetaData, GameComparer
-from telegram_interface.tg_singleton import TelegramMessagesWrapper
 
 thread_local = threading.local()
 main_logger = logging.getLogger("main_logger")
@@ -26,9 +26,9 @@ def check_match(match):
     team = match.team
     gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=game_id, )
     cmp = GameComparer(match, gmd)
-    settings = dict(team.setting_set.all().values_list("attr_name", "attr_value"))
+    settings = team.settings_dict()
 
-    log_message = f"Check {game_id} ({team}): "
+    log_message = f"New notification for {game_id} ({team}): "
     main_logger.debug(f"Checking {game_id} ({team})...")
     if match.game_begin is None:
         if cmp.compare_new_suggestion(of_enemy_team=True):

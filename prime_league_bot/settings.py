@@ -128,8 +128,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-BASE_URI = "https://www.primeleague.gg/de/leagues/"
-BASE_URI_AJAX = "https://www.primeleague.gg/ajax/"
+LEAGUES_URI = "https://www.primeleague.gg/de/leagues/"
+AJAX_URI = "https://www.primeleague.gg/ajax/"
+
+MATCH_URI = "https://www.primeleague.gg/de/leagues/matches/"
+TEAM_URI = "https://www.primeleague.gg/de/leagues/teams/"
 
 DEFAULT_TELEGRAM_CHAT_ID = env.str("TG_CHAT_ID", None)
 
@@ -206,17 +209,9 @@ LOGGING = {
             'formatter': 'to_file',
         },
         'notifications_handler': {
-            'level': 'INFO',
-            'class': 'logging.handlers.TimedRotatingFileHandler',
-            'filename': os.path.join(LOGGING_DIR, 'notifications.log'),
-            'when': 'midnight',
-            'formatter': 'to_file',
-        },
-        'notifications_verbose_handler': {
             'level': 'DEBUG',
-            'class': 'logging.handlers.TimedRotatingFileHandler',
-            'filename': os.path.join(LOGGING_DIR, 'notifications_verbose.log'),
-            'when': 'midnight',
+            'class': 'logging.handlers.WatchedFileHandler',
+            'filename': os.path.join(LOGGING_DIR, 'notifications.log'),
             'formatter': 'to_file',
         },
         'commands_handler': {
@@ -244,7 +239,7 @@ LOGGING = {
             'propagate': False,
         },
         'notifications_logger': {
-            'handlers': ['notifications_handler', 'notifications_verbose_handler'],
+            'handlers': ['notifications_handler'],
             'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
             'propagate': False,
         },

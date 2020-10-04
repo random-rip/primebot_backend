@@ -1,6 +1,6 @@
 from app_prime_league.models import Team
-from telegram_interface import send_message
-from telegram_interface.messages import GENERAL_MATCH_LINK
+from communication_interfaces import send_message
+from communication_interfaces.languages.de_DE import GENERAL_MATCH_LINK
 from utils.constants import EMOJI_ARROW
 
 

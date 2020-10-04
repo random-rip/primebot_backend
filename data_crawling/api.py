@@ -22,8 +22,8 @@ def save_object_to_file(obj, file_name):
 
 class Api:
     def __init__(self):
-        self.base_uri = settings.BASE_URI
-        self.base_uri_ajax = settings.BASE_URI_AJAX
+        self.base_uri = settings.LEAGUES_URI
+        self.base_uri_ajax = settings.AJAX_URI
 
     def json_handler(self, endpoint, request=requests.post, post_params=None):
         if endpoint is None:

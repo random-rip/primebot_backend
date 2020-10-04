@@ -2,10 +2,10 @@ from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton, ParseMo
 from telegram.ext import CallbackContext, CallbackQueryHandler
 
 from app_prime_league.models import Setting, Team
-from app_prime_league.teams import update_team, update_settings
-from telegram_interface.messages import ENABLED, SETTINGS_MAIN_MENU, DISABLED, BOOLEAN_KEYBOARD_OPTIONS, CLOSE, \
+from app_prime_league.teams import update_settings
+from communication_interfaces.languages.de_DE import ENABLED, SETTINGS_MAIN_MENU, DISABLED, BOOLEAN_KEYBOARD_OPTIONS, CLOSE, \
     SETTINGS_FINISHED, CURRENTLY
-from telegram_interface.validation_messages import wrong_chat_type, team_not_exists
+from communication_interfaces.validation_messages import wrong_chat_type, team_not_exists
 from utils.messages_logger import log_command, log_callbacks
 
 SETTINGS = {
@@ -104,9 +104,12 @@ def main_settings_menu_close(update: Update, context: CallbackContext):
 def migrate_chat(update: Update, context: CallbackContext):
     if update.message.chat.type == "supergroup":
         return
-    old_chat_id = update.message.migrate_from_chat_id
-    new_chat_id = update.message.chat.id
-    team = Team.objects.get(telegram_id=old_chat_id)
+    try:
+        old_chat_id = update.message.chat.id
+        team = Team.objects.get(telegram_id=old_chat_id)
+    except Team.DoesNotExist as e:
+        return
+    new_chat_id = update.message.migrate_to_chat_id
     team.telegram_id = new_chat_id
     team.save()
 

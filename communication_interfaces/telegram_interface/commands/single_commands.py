@@ -9,8 +9,11 @@ from telegram.ext import CallbackContext, ConversationHandler
 
 from app_prime_league.models import Team
 from prime_league_bot.settings import STORAGE_DIR
-from telegram_interface.messages import HELP_COMMAND_LIST, ISSUE, \
-    TEAM_NOT_IN_DB_TEXT, PHOTO_SUCESS_TEXT, PHOTO_ERROR_TEXT, HELP_TEXT, FEEDBACK, EXPLAIN_TEXT, CANCEL
+from communication_interfaces.languages.de_DE import (
+    HELP_COMMAND_LIST, ISSUE, TEAM_NOT_IN_DB_TEXT, PHOTO_SUCESS_TEXT, PHOTO_ERROR_TEXT, HELP_TEXT, FEEDBACK,
+    EXPLAIN_TEXT, CANCEL
+)
+from utils.changelogs import CHANGELOGS
 from utils.messages_logger import log_command, logger
 
 
@@ -127,8 +130,9 @@ def feedback(update: Update, context: CallbackContext):
 # /explain
 @log_command
 def explain(update: Update, context: CallbackContext):
+    log = CHANGELOGS[sorted(CHANGELOGS.keys())[-1]]
     update.message.reply_markdown(
-        EXPLAIN_TEXT,
+        EXPLAIN_TEXT.format(version=log["version"]),
         reply_markup=ReplyKeyboardRemove(),
         disable_web_page_preview=True,
     )

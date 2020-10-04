@@ -3,17 +3,17 @@ import sys
 import traceback
 
 from telegram import ParseMode
-from telegram.ext import Updater, CommandHandler, MessageHandler, ConversationHandler, \
-    CallbackQueryHandler
+from telegram.ext import Updater, CommandHandler, MessageHandler, ConversationHandler, CallbackQueryHandler
 from telegram.ext.filters import Filters
 from telegram.utils.helpers import mention_html
 
+from communication_interfaces.telegram_interface.commands.single_commands import (
+    cancel, helpcommand, issue, feedback, bop, explain, set_logo)
+from communication_interfaces.telegram_interface.conversations.settings_conversation import (
+    main_settings_menu, callback_query_settings_handlers, start_settings, main_settings_menu_close, migrate_chat)
+from communication_interfaces.telegram_interface.conversations.start_conversation import (
+    start, team_registration, finish_registration, set_optional_photo)
 from prime_league_bot import settings
-from telegram_interface.commands.single_commands import cancel, helpcommand, issue, feedback, bop, explain, set_logo
-from telegram_interface.conversations.settings_conversation import main_settings_menu, callback_query_settings_handlers, \
-    start_settings, main_settings_menu_close, migrate_chat
-from telegram_interface.conversations.start_conversation import start, team_registration, finish_registration, \
-    set_optional_photo, chat_reassignment
 
 
 # this is a general error handler function. If you need more information about specific type of update, add it to the
@@ -64,6 +64,7 @@ def error(update, context):
     except RuntimeError as e:
         logging.getLogger("django").critical(e)
 
+
 class BotFather:
     """
     Botfather Class. Provides Communication with Bot(Telegram API) and Client
@@ -76,7 +77,7 @@ class BotFather:
         updater = Updater(self.api_key, use_context=True, )
         dp = updater.dispatcher
 
-        fallbacks = [
+        commands = [
             CommandHandler("cancel", cancel),
             CommandHandler("help", helpcommand),
             CommandHandler("issue", issue),
@@ -84,6 +85,7 @@ class BotFather:
             CommandHandler("bop", bop),
             CommandHandler("explain", explain),
             CommandHandler("setlogo", set_logo),
+            MessageHandler(Filters.status_update.migrate, migrate_chat)  # Migration
         ]
 
         start_conv_handler = ConversationHandler(
@@ -91,26 +93,14 @@ class BotFather:
 
             states={
                 1: [MessageHandler(Filters.text & (~Filters.command), team_registration), ],
-                # 2: [MessageHandler(Filters.text & (~Filters.command), chat_reassignment), ],
             },
 
-            fallbacks=fallbacks
+            fallbacks=commands
         )
-
-        # reassign_conv_handler = ConversationHandler(
-        #     entry_points=[CommandHandler('reassign', start_reassign_team, )],
-        #
-        #     states={
-        #         1: [MessageHandler(Filters.text & (~Filters.command), team_reassignment), ],
-        #     },
-        #
-        #     fallbacks=fallbacks
-        # )
 
         # Allgemeine Commands
         dp.add_handler(start_conv_handler)
-        # dp.add_handler(reassign_conv_handler)
-        for cmd in fallbacks[1:]:
+        for cmd in commands[1:]:
             dp.add_handler(cmd)
 
         # Main Menu
@@ -120,11 +110,14 @@ class BotFather:
         dp.add_handler(CallbackQueryHandler(finish_registration, pattern='0no'))
         dp.add_handler(CallbackQueryHandler(set_optional_photo, pattern='0yes'))
         # Chat Migration
-        dp.add_handler(MessageHandler(Filters.status_update.migrate, migrate_chat))
 
         dp.add_error_handler(error)
 
         for i in callback_query_settings_handlers:
             dp.add_handler(i)
         updater.start_polling()  # TODO: try catch connection errors
+
+        from django import db
+        db.close_old_connections()  # Possible Fix for MySQL has gone away
+
         updater.idle()

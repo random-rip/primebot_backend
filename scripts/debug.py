@@ -1,6 +1,5 @@
 from app_prime_league.models import Team
 from parsing.parser import MatchWrapper
-from utils.changelogs import CHANGELOGS
 
 
 def main():
@@ -8,7 +7,6 @@ def main():
     wrapper = MatchWrapper(650878, team)
     parser = wrapper.parser
     print(parser.get_comments())
-
 
 
 def run():

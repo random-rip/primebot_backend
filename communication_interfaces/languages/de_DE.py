@@ -1,6 +1,7 @@
 # Variablen
+from prime_league_bot import settings
 from utils.constants import EMOJI_ONE, EMOJI_TWO, EMOJI_THREE, EMOJI_CLOVER, EMOJI_MINDBLOWN, \
-    EMOJI_POST_HORN, EMOJI_TROPHY, EMJOI_MAGN_GLASS, EMOJI_SUCCESS, EMOJI_ARROW_RIGHT
+    EMOJI_POST_HORN, EMOJI_TROPHY, EMJOI_MAGN_GLASS, EMOJI_SUCCESS, EMOJI_ARROW_RIGHT, EMOJI_GIFT
 
 SUPPORT_GROUP_LINK = "https://t.me/joinchat/IUH8NhsKTYUtFKaqQMWhKA"
 START_LINK = "https://t.me/prime_league_bot?startgroup=start"
@@ -15,8 +16,8 @@ CANCEL = "Vorgang abgebrochen, leider. \n" \
          f"Braucht ihr Hilfe nutzt doch /help. {EMJOI_MAGN_GLASS}"
 RETRY_TEXT = "Bitte versuche es erneut oder /cancel."
 
-GENERAL_MATCH_LINK = "https://www.primeleague.gg/de/leagues/matches/"
-GENERAL_TEAM_LINK = "https://www.primeleague.gg/de/leagues/teams/"
+GENERAL_MATCH_LINK = settings.MATCH_URI
+GENERAL_TEAM_LINK = settings.TEAM_URI
 
 US = "uns"
 FOR_GAME_DAY = "für [Spieltag] {}"
@@ -68,11 +69,11 @@ TEAM_ID_NOT_CORRECT = "Die ID: *{id}* konnte *keinem* Team zugeordnet werden.\n\
 
 # Start Messages
 # Antwort auf /start, wenn man command in einer Gruppe aufruft
-START_GROUP = "_Hallo Beschwörer, \n" \
-              "ihr seid es Leid, jeden Tag mühselig auf der PrimeLeague-Seite nach neuen Updates zu suchen?\n" \
-              f"Dann bin ich hier genau richtig:\n" \
-              f"__Ich schicke euch alle Updates der Seite als Pushbenachrichtigung{EMOJI_POST_HORN} " \
-              f"in diesen Chat.___ {EMOJI_MINDBLOWN}\n\n" \
+START_GROUP = "Sternige Grüße, \n" \
+              "ihr seid es Leid, jeden Tag auf den PrimeLeague-Seiten mühsam nach neuen Updates zu suchen?\n" \
+              f"Gut, dass ich hier bin:\n" \
+              f"Ich schicke euch alle *Updates* als *Pushbenachrichtigung* {EMOJI_POST_HORN} " \
+              f"in diesen Chat. {EMOJI_GIFT}\n\n" \
               f"{EMOJI_ONE} Bitte kopiert dafür eure Team-URL (Format: {GENERAL_TEAM_LINK}<TEAM ID>-<TEAM NAME>)" \
               " oder eure Team ID in den Chat.\n"
 
@@ -117,7 +118,7 @@ SETTINGS_MAIN_MENU = {
     "text": "*Hauptmenü:*\nWelche Einstellung soll angepasst werden?",
 }
 
-SET_PHOTO_TEXT = f"_Soll ich das Teambild aus der PrimeLeague importieren?_\n(Dazu werden Adminrechte benötigt)"
+SET_PHOTO_TEXT = f"Soll ich das Teambild aus der PrimeLeague importieren?\n_Dazu werden Adminrechte benötigt._"
 PHOTO_SUCESS_TEXT = f"{EMOJI_SUCCESS}"
 PHOTO_ERROR_TEXT = f"Bild konnte nicht gesetzt werden."
 PHOTO_RETRY_TEXT = f"Profilbild konnte nicht geändert werden. Dazu werden Adminrechte benötigt.\n" \
@@ -127,6 +128,8 @@ MESSAGE_NOT_PINED_TEXT = f"Die wöchentliche Nachricht konnte nicht angeheftet w
                          f"Falls ihr nicht möchtet, dass die wöchentliche Benachrichtigung angeheftet wird, " \
                          f"nutzt bitte /settings {EMOJI_ARROW_RIGHT} 'Wochenübersicht anheften' {EMOJI_ARROW_RIGHT} " \
                          f"'Deaktivieren'."
+
+CANT_PIN_MSG_IN_PRIVATE_CHAT = "Man kann keine Nachricht in einem privaten Chat anpinnen."
 
 # Update Messages
 OWN_NEW_TIME_SUGGESTION_TEXT = "Neuer Zeitvorschlag von euch für [Spieltag {}]({}{}). {}"
@@ -156,12 +159,12 @@ EXPLAIN_TEXT = "Dieser Bot ist nicht in Kooperation mit der PrimeLeague bzw. der
                "und hat damit keinen direkten Bezug zur PrimeLeague. " \
                "Dieser Bot wurde aufgrund von versäumten Matches entworfen und programmiert. " \
                "Der Bot wurde nach bestem Gewissen realisiert, und nach einer Testphase für andere Teams zur " \
-               "Verfügung gestellt. Dennoch sind alle Angaben ohne Gewähr! " \
-               "**Funktionsweise:** Nach der Registrierung des Teams wird über die noch nicht gespielten Spiele " \
+               "Verfügung gestellt. Dennoch sind alle Angaben ohne Gewähr!\n" \
+               "*Funktionsweise:* Nach der Registrierung des Teams wird über die noch nicht gespielten Spiele " \
                "iteriert und deren Website nach Änderungen abgesucht. Dies geschieht alle 30 Minuten. " \
                "Das bedeutet, dass Updates maximal 30 Minuten alt sein können. Das wöchentliche Update geschieht " \
                "einmal jeden Montag um 0Uhr nach Beginn des Splits bis zum Ende der Gruppenphase. " \
-               "Die gespeicherten Teams werden einmal pro Tag um 0Uhr aktualisiert."
+               "Die gespeicherten Teams werden einmal pro Tag um 0Uhr aktualisiert. \n_Version: {version}_"
 
 CLOSE = "Schließen"
 CURRENTLY = "Derzeitig"
