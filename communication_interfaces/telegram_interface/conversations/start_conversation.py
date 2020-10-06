@@ -168,6 +168,7 @@ def team_registration(update: Update, context: CallbackContext):
         return 1
     else:
         if new_team_old_chat_id is not None:
+            # TODO use reply instead of send_message
             send_message(
                 msg=GROUP_REASSIGNED.format(team=new_team),
                 chat_id=new_team_old_chat_id,
