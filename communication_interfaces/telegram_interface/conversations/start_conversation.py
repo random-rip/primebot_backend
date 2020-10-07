@@ -67,7 +67,7 @@ def get_valid_team_id(response, update: Update):
 
 
 def just_wait_a_moment(chat_id, context: CallbackContext):
-    context.bot.tg_send_message(
+    context.bot.send_message(
         text=WAIT_A_MOMENT_TEXT,
         chat_id=chat_id,
         parse_mode=ParseMode.MARKDOWN,
@@ -214,7 +214,7 @@ def finish_registration(update: Update, context: CallbackContext):
 
     )
 
-    context.bot.tg_send_message(
+    context.bot.send_message(
         text=f"{TEAM_ID_VALID}*{team.name}*\n{REGISTRATION_FINISH}",
         chat_id=chat_id,
         disable_web_page_preview=True,
