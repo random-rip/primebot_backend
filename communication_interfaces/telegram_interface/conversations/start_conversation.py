@@ -67,7 +67,7 @@ def get_valid_team_id(response, update: Update):
 
 
 def just_wait_a_moment(chat_id, context: CallbackContext):
-    context.bot.tg_send_message(
+    context.bot.send_message(
         text=WAIT_A_MOMENT_TEXT,
         chat_id=chat_id,
         parse_mode=ParseMode.MARKDOWN,
@@ -168,6 +168,7 @@ def team_registration(update: Update, context: CallbackContext):
         return 1
     else:
         if new_team_old_chat_id is not None:
+            # TODO use reply instead of send_message
             send_message(
                 msg=GROUP_REASSIGNED.format(team=new_team),
                 chat_id=new_team_old_chat_id,
@@ -213,7 +214,7 @@ def finish_registration(update: Update, context: CallbackContext):
 
     )
 
-    context.bot.tg_send_message(
+    context.bot.send_message(
         text=f"{TEAM_ID_VALID}*{team.name}*\n{REGISTRATION_FINISH}",
         chat_id=chat_id,
         disable_web_page_preview=True,

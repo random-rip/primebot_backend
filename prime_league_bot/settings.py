@@ -88,7 +88,8 @@ DATABASES = {
         'USER': env.str('DB_USER'),
         'PASSWORD': env.str('DB_PASSWORD'),
         'HOST': env.str('DB_HOST'),
-        'PORT': env.str('DB_PORT')
+        'PORT': env.str('DB_PORT'),
+        'CONN_MAX_AGE': 3600,
     }
 }
 
