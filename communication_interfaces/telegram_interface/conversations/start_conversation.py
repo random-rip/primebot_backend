@@ -11,9 +11,11 @@ from communication_interfaces.languages.de_DE import (
 )
 from communication_interfaces.telegram_interface.commands.single_commands import set_photo
 from communication_interfaces.telegram_interface.keyboards import boolean_keyboard
+from communication_interfaces.utils import mysql_has_gone_away
 from utils.messages_logger import log_command, log_callbacks
 
 
+# TODO not used yet?
 def chat_reassignment(update: Update, context: CallbackContext):
     response = update.message.text
     try:
@@ -99,6 +101,7 @@ def team_is_locked(team_id):
 
 # /start
 @log_command
+@mysql_has_gone_away
 def start(update: Update, context: CallbackContext):
     chat_type = update.message.chat.type
     if chat_type not in ["group", "supergroup"]:
@@ -126,6 +129,7 @@ def team_has_chat_id(team_id):
 
 
 @log_command
+@mysql_has_gone_away
 def team_registration(update: Update, context: CallbackContext):
     team_id = get_valid_team_id(update.message.text, update)
     if team_id is None:
@@ -183,6 +187,7 @@ def team_registration(update: Update, context: CallbackContext):
 
 
 @log_callbacks
+@mysql_has_gone_away
 def set_optional_photo(update: Update, context: CallbackContext):
     query = update.callback_query
     chat_id = query.message.chat_id
@@ -201,6 +206,7 @@ def set_optional_photo(update: Update, context: CallbackContext):
 
 
 @log_callbacks
+@mysql_has_gone_away
 def finish_registration(update: Update, context: CallbackContext):
     query = update.callback_query
     chat_id = query.message.chat_id

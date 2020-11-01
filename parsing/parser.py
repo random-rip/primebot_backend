@@ -1,12 +1,13 @@
 import json
-import re
 
 from bs4 import BeautifulSoup
-import requests
 
 from data_crawling.api import crawler
-from utils.patterns import TEAM_NAME
 from utils.utils import timestamp_to_datetime, string_to_datetime
+
+
+class WebsiteIsNoneException(Exception):
+    pass
 
 
 class MatchWrapper:
@@ -23,8 +24,7 @@ class TeamWrapper:
     def __init__(self, team_id):
         website = crawler.get_team_website(team_id)
         if website is None:
-            print("Website is none")
-            raise Exception()
+            raise WebsiteIsNoneException(f"Website is None of team {team_id}")
         self.parser = TeamHTMLParser(website, )
 
 

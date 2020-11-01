@@ -8,11 +8,12 @@ from telegram import Update, ReplyKeyboardRemove
 from telegram.ext import CallbackContext, ConversationHandler
 
 from app_prime_league.models import Team
-from prime_league_bot.settings import STORAGE_DIR
 from communication_interfaces.languages.de_DE import (
     HELP_COMMAND_LIST, ISSUE, TEAM_NOT_IN_DB_TEXT, PHOTO_SUCESS_TEXT, PHOTO_ERROR_TEXT, HELP_TEXT, FEEDBACK,
     EXPLAIN_TEXT, CANCEL
 )
+from communication_interfaces.utils import mysql_has_gone_away
+from prime_league_bot.settings import STORAGE_DIR
 from utils.changelogs import CHANGELOGS
 from utils.messages_logger import log_command, logger
 
@@ -43,6 +44,7 @@ def set_photo(chat_id, context: CallbackContext, url):
 
 # /set_logo
 @log_command
+@mysql_has_gone_away
 def set_logo(update: Update, context: CallbackContext):
     chat_id = update.message.chat.id
     if not Team.objects.filter(telegram_id=chat_id).exists():
