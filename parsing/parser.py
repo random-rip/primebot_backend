@@ -196,15 +196,19 @@ class MatchHTMLParser(BaseHTMLParser):
     def get_comments(self):
         comments_from_json = self.json_comments["comments"]
         match_id_from_json = self.json_match["match_id"]
-        comments = [(
-            match_id_from_json,
-            x["id"],
-            x["parent"] if not x["parent"] == 0 else None,
-            x["content_orig"][:3000 if (len_of_comment := len(x["content_orig"])) >= 3000 else len_of_comment],
-            len_of_comment > 3000,
-            x["user_name"],
-            x["user_id"]
-        ) for x in comments_from_json]
+
+        comments = []
+        for x in comments_from_json:
+            len_of_comment = len(x["content_orig"])
+            comments.append((
+                match_id_from_json,
+                x["id"],
+                x["parent"] if not x["parent"] == 0 else None,
+                x["content_orig"][:3000 if len_of_comment >= 3000 else len_of_comment],
+                len_of_comment > 3000,
+                x["user_name"],
+                x["user_id"]
+            ))
         # TODO: Childen Parsen @Grayknife
         return None if len(comments) == 0 else comments
 
