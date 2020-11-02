@@ -15,7 +15,8 @@ def main():
         if team.value_of_setting("weekly_op_link"):
             logger.debug(f"Sending Weekly Notification to {team}...")
             next_match = team.games_against.filter(game_day=game_day).first()
-            TelegramMessagesWrapper.send_new_game_day(next_match, team.value_of_setting("pin_weekly_op_link"))
+            if next_match is not None:
+                TelegramMessagesWrapper.send_new_game_day(next_match, team.value_of_setting("pin_weekly_op_link"))
 
 
 def run():
