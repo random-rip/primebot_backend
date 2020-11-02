@@ -33,5 +33,10 @@ Sternige Grüße
     3: {
         "version": "1.12.2-beta",
         "text": f"My SQL Has Gone Away Hotfix"
+    },
+    4: {
+        "version": "1.12.3-beta",
+        "text": f"Ein Fehler wurde behoben, in dem nicht alle Teams die wöchentliche Benachrichtigung bekommen haben, "
+                f"obwohl sie es aktiviert hatten."
     }
 }
