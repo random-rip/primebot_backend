@@ -1,15 +1,17 @@
-from communication_interfaces import send_message
-from utils.constants import EMOJI_CLOVER, EMOJI_PEACE
+from app_prime_league.models import Team
+from utils.utils import current_game_day
 
 
 def main():
-    print(
-        send_message(
-            msg=f"Hi Chat,\nich war leider down, #rip.\nAber jetzt geht es wieder (hoffentlich). {EMOJI_CLOVER} \n"
-                f"Ihr könnt mich jetzt wieder in vollem Umfang benutzen! {EMOJI_PEACE}",
-            chat_id=913800738,
-        )
-    )
+    game_day = current_game_day()
+
+    teams = Team.objects.get_watched_team_of_current_split()
+    print(teams)
+    for team in teams:
+        print(team)
+        if team.value_of_setting("weekly_op_link"):
+            next_match = team.games_against.filter(game_day=game_day).first()
+            print(next_match)
 
 
 def run():
