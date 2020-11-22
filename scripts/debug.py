@@ -1,7 +1,8 @@
 import logging
 
 from app_prime_league.models import Team
-from communication_interfaces.telegram_interface.tg_singleton import TelegramMessagesWrapper
+from communication_interfaces.telegram_interface.tg_singleton import send_message
+from utils.constants import EMOJI_GIFT, EMOJI_FIRE, EMOJI_TROPHY
 from utils.utils import current_game_day
 
 
@@ -10,15 +11,25 @@ def main():
 
     logger = logging.getLogger("notifications_logger")
     logger.info(f"Start Sending Weekly Notifications...")
-    teams = Team.objects.filter(id__in=[89678, 102301])
-    print(teams)
+    teams = Team.objects.get_watched_teams()
+    message = \
+        """
+        Hallo {},
+        """ \
+        f"""
+die Gruppenphase des aktuellen PrimeLeague-Splits ist jetzt vorbei und wir hoffen, ihr habt das erreicht, was ihr erreichen wolltet. {EMOJI_TROPHY}
+        
+Natürlich wird euch der Primebot im kommenden Split bei der Organisation weiterhin unterstützen. {EMOJI_GIFT}
+
+Wir freuen uns, wenn ihr uns Feedback in [diesem PL Forenpost](https://www.primeleague.gg/de/forums/1418-league-of-legends/1469-off-topic/637268-pl-spieltag-updates-als-push-benachrichtigung-aufs-handy) gebt und würden uns wünschen, dass ihr den PrimeBot anderen Teams präsentiert (vielleicht seid ihr ja in einer Organisation oder einem Verein {EMOJI_FIRE}).  
+        
+Sternige Grüße
+@Grayknife und @OrbisK
+        """
     for team in teams:
         print(teams)
-        if team.value_of_setting("weekly_op_link"):
-            logger.debug(f"Sending Weekly Notification to {team}...")
-            next_match = team.games_against.filter(game_day=game_day).first()
-            if next_match is not None:
-                TelegramMessagesWrapper.send_new_game_day(next_match, team.value_of_setting("pin_weekly_op_link"))
+        logger.debug(f"Sending Notification to {team}...")
+        send_message(message.format(team.name))
 
 
 def run():
