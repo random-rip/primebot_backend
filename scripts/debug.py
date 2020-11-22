@@ -19,7 +19,7 @@ def main():
         f"""
 die Gruppenphase des aktuellen PrimeLeague-Splits ist jetzt vorbei und wir hoffen, ihr habt das erreicht, was ihr erreichen wolltet. {EMOJI_TROPHY}
         
-Natürlich wird euch der Primebot im kommenden Split bei der Organisation weiterhin unterstützen. {EMOJI_GIFT}
+Natürlich wird euch der Primebot bei der Organisierung im kommenden Split weiterhin unterstützen. {EMOJI_GIFT}
 
 Wir freuen uns, wenn ihr uns Feedback in [diesem PL Forenpost](https://www.primeleague.gg/de/forums/1418-league-of-legends/1469-off-topic/637268-pl-spieltag-updates-als-push-benachrichtigung-aufs-handy) gebt und würden uns wünschen, dass ihr den PrimeBot anderen Teams präsentiert (vielleicht seid ihr ja in einer Organisation oder einem Verein {EMOJI_FIRE}).  
         
