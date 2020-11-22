@@ -27,9 +27,9 @@ Sternige Grüße
 @Grayknife und @OrbisK
         """
     for team in teams:
-        print(teams)
+        print(team)
         logger.debug(f"Sending Notification to {team}...")
-        send_message(message.format(team.name))
+        send_message(message.format(team.name), chat_id=team.telegram_id)
 
 
 def run():
