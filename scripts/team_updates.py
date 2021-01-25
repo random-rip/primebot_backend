@@ -4,7 +4,7 @@ from datetime import datetime
 
 from app_prime_league.models import Team
 from app_prime_league.teams import add_or_update_players, add_games, update_team
-from parsing.parser import TeamWrapper
+from parsing.parser import TeamWrapper, WebsiteIsNoneException
 
 
 def main():
@@ -15,7 +15,11 @@ def main():
 
     for team in teams:
         logger.info(f"Checking {team}... ")
-        parser = TeamWrapper(team_id=team.id).parser
+        try:
+            parser = TeamWrapper(team_id=team.id).parser
+        except WebsiteIsNoneException as e:
+            logger.info(f"{e}, Skipping!")
+            continue
         update_team(parser, team_id=team.id)
         add_or_update_players(parser.get_members(), team)
         if team.telegram_id is not None:

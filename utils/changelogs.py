@@ -29,5 +29,9 @@ Sternige Grüße
     2: {
         "version": "1.12.1-beta",
         "text": f"Supergroup Hotfix"
+    },
+    3: {
+        "version": "1.12.2-beta",
+        "text": f"My SQL Has Gone Away Hotfix"
     }
 }
