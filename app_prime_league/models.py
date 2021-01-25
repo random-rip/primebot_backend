@@ -126,6 +126,9 @@ class GameMetaData:
                f"\nLatestSuggestion: {self.latest_suggestion}, " \
                f"\nSuggestionConfirmed: {self.game_begin}, "
 
+    def __str__(self):
+        return self.__repr__()
+
     @staticmethod
     def create_game_meta_data_from_website(team: Team, game_id):
 

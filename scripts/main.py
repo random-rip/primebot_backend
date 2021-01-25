@@ -30,17 +30,16 @@ def check_match(match):
 
     log_message = f"New notification for {game_id} ({team}): "
     main_logger.debug(f"Checking {game_id} ({team})...")
-    if match.game_begin is None:
-        if cmp.compare_new_suggestion(of_enemy_team=True):
-            notifications_logger.debug(f"{log_message}Neuer Zeitvorschlag der Gegner")
-            match.update_latest_suggestion(gmd)
-            if settings.get("scheduling_suggestion", True):
-                TelegramMessagesWrapper.send_new_suggestion_of_enemies(match)
-        if cmp.compare_new_suggestion():
-            notifications_logger.debug(f"{log_message}Eigener neuer Zeitvorschlag")
-            match.update_latest_suggestion(gmd)
-            if settings.get("scheduling_suggestion", True):
-                TelegramMessagesWrapper.send_new_suggestion(match)
+    if cmp.compare_new_suggestion(of_enemy_team=True):
+        notifications_logger.debug(f"{log_message}Neuer Zeitvorschlag der Gegner")
+        match.update_latest_suggestion(gmd)
+        if settings.get("scheduling_suggestion", True):
+            TelegramMessagesWrapper.send_new_suggestion_of_enemies(match)
+    if cmp.compare_new_suggestion():
+        notifications_logger.debug(f"{log_message}Eigener neuer Zeitvorschlag")
+        match.update_latest_suggestion(gmd)
+        if settings.get("scheduling_suggestion", True):
+            TelegramMessagesWrapper.send_new_suggestion(match)
     if cmp.compare_scheduling_confirmation():
         notifications_logger.debug(f"{log_message}Termin wurde festgelegt")
         match.update_game_begin(gmd)

@@ -10,7 +10,7 @@ hier ein kurze Zusammenfassung der letzten Änderungen am PrimeBot.
 
 *Updates ({version}):*"""
 f"""
-{EMOJI_ONE} /reassign : Dieses Kommando ist jetzt in /start integriert. Falls ihr also ein *anderes* Team für diesen Chat registieren möchtet, führt /start aus. 
+{EMOJI_ONE} /reassign : Dieses Kommando ist jetzt in /start integriert. Falls ihr also ein *anderes* Team für diesen Chat registrieren möchtet, führt /start aus. 
 {EMOJI_TWO} Team-Sperre: Um ein Team in einem anderen Chat neu zu registrieren muss unter /settings {EMOJI_ARROW_RIGHT} Team-Sperre dein Team vorher freigegeben werden.
 
 *Bugfixes:*
