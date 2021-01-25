@@ -93,7 +93,7 @@ GROUP_REASSIGNED = "Dein Team wurde in einem anderen Chat initialisiert!\n" \
 
 START_CHAT = "Hallo,\nDu möchtest den PrimeBot für Pushbenachrichtigungen benutzen?\n\n" \
              "Erste Scrhitte:\n" \
-             f"{EMOJI_ONE} Erstelle einen Gruppen-Chat in Telegram und füge mich @prime_league_bot hinzu.\n" \
+             f"{EMOJI_ONE} Erstelle einen Gruppen-Chat in Telegram und füge [mich]({START_LINK}) hinzu.\n" \
              f"{EMOJI_TWO} Registriere dein Team im Gruppenchat mit /start.\n" \
              f"{EMOJI_THREE} Personalisiere mit /settings deine Benachrichtigungen.\n\n" \
              f"Viel Erfolg auf den Richtfeldern! {EMOJI_CLOVER}"
