@@ -61,7 +61,6 @@ class TeamHTMLParser(BaseHTMLParser):
         leader_choices = ["Leader", "Captain"]
         members = []
         for i in team_li:
-            print(i)
             user_id = i.a.get("href").split("/users/")[-1].split("-")[0]
             h3_content = i.h3.contents[0]
             span_content = i.span.contents[0]

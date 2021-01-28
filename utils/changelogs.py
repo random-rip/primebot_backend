@@ -1,4 +1,4 @@
-from utils.constants import EMOJI_ONE, EMOJI_TWO, EMOJI_ARROW_RIGHT
+from utils.constants import EMOJI_ONE, EMOJI_TWO, EMOJI_ARROW_RIGHT, EMOJI_POST_HORN, EMOJI_PEACE
 
 CHANGELOGS = {
     1: {
@@ -38,5 +38,22 @@ Sternige Grüße
         "version": "1.12.3-beta",
         "text": f"Ein Fehler wurde behoben, in dem nicht alle Teams die wöchentliche Benachrichtigung bekommen haben, "
                 f"obwohl sie es aktiviert hatten."
+    },
+    5: {
+        "version": "1.13.0-beta",
+        "text":
+"""
+Hallo {team.name}, 
+"""
+f"""
+der Spring Split 2021 steht in den Startlöchern und der Primebot ist natürlich wieder am Start!
+Aufgrund der erhöhten Anzahl an Teams, die den Bot jetzt benutzen, kam es in den letzten Tagen leider zu einigen Ausfällen.
+Jedes Team, welches diese Nachricht erhält, ist auf jeden Fall erfolgreich in der Datenbank hinterlegt worden. Bei Problemen oder Fragen benutzt /issue.
+Allerdings können erst ab dem 29.01.2021 Benachrichtigungen{EMOJI_POST_HORN} bei Terminvorschlägen (o.ä.) gesendet werden.
+Wir arbeiten außerdem daran, dass ihr mehr Informationen aus unserer Datenbank abfragen könnt. {EMOJI_PEACE}
+
+Viel Erfolg im Split und sternige Grüße
+Grayknife und Orbis
+"""
     }
 }
