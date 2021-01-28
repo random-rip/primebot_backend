@@ -26,9 +26,10 @@ def main():
         except WebsiteIsNoneException as e:
             logger.info(f"{e}, Skipping!")
             continue
+
+        update_team(parser, team_id=team.id)
         if team.division is not None:
             try:
-                update_team(parser, team_id=team.id)
                 add_or_update_players(parser.get_members(), team)
                 if team.telegram_id is not None:
                     game_ids = parser.get_matches()
