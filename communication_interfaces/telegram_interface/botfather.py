@@ -27,7 +27,7 @@ def error(update, context):
     try:
         if update is not None:
             if update.effective_message:
-                text = "Hey. I'm sorry to inform you that an error happened while I tried to handle your update. " \
+                text = "Hey. I'm sorry to inform you that an error happened while I tried to handle your request. " \
                        "My developer(s) will be notified."
                 update.effective_message.reply_text(text)
             # This traceback is created with accessing the traceback object from the sys.exc_info, which is returned as the
@@ -116,8 +116,5 @@ class BotFather:
         for i in callback_query_settings_handlers:
             dp.add_handler(i)
         updater.start_polling()  # TODO: try catch connection errors
-
-        from django import db
-        db.close_old_connections()  # Possible Fix for MySQL has gone away
 
         updater.idle()
