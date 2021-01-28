@@ -1,11 +1,15 @@
 import concurrent.futures
 import logging
+import sys
 import time
+import traceback
 
-from django.db.models import Q
+from telegram import ParseMode
 
 from app_prime_league.models import Team, Player, Game, GameMetaData
+from communication_interfaces import send_message
 from parsing.parser import TeamHTMLParser, TeamWrapper
+from prime_league_bot import settings
 
 
 def register_team(team_id, telegram_id=None):
@@ -18,8 +22,17 @@ def register_team(team_id, telegram_id=None):
             wrapper = TeamWrapper(team_id=team.id)
         except Exception:
             return None
-        add_or_update_players(wrapper.parser.get_members(), team)
-        add_games(wrapper.parser.get_matches(), team)
+        if team.division is not None:
+            try:
+                add_or_update_players(wrapper.parser.get_members(), team)
+                add_games(wrapper.parser.get_matches(), team)
+            except Exception as e:
+                trace = "".join(traceback.format_tb(sys.exc_info()[2]))
+                send_message(
+                    f"Ein Fehler ist beim Updaten von Team {team.id} {team.name} aufgetreten:\n<code>{trace}\n{e}</code>",
+                    chat_id=settings.TG_DEVELOPER_GROUP, parse_mode=ParseMode.HTML)
+                logging.getLogger("periodic_logger").error(e)
+
         return team
     else:
         return None

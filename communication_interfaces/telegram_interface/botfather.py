@@ -20,7 +20,7 @@ from prime_league_bot import settings
 # payload in the respective if clause
 def error(update, context):
     # add all the dev user_ids in this list. You can also add ids of channels or groups.
-    devs = [-490819576]
+    devs = [settings.TG_DEVELOPER_GROUP]
     # we want to notify the user of this problem. This will always work, but not notify users if the update is an
     # callback or inline query, or a poll update. In case you want this, keep in mind that sending the message
     # could fail

@@ -58,13 +58,15 @@ class TeamHTMLParser(BaseHTMLParser):
 
     def get_members(self):
         team_li = self.bs4.find_all("ul", class_="content-portrait-grid-l")[0].find_all("li")
-        is_leader = ["Leader", "Captain"]
-        members = [(
-            i.a.get("href").split("/users/")[-1].split("-")[0],
-            i.h3.contents[0],
-            i.span.contents[0],
-            i.find("div", class_="txt-subtitle").contents[0] in is_leader,
-        ) for i in team_li]
+        leader_choices = ["Leader", "Captain"]
+        members = []
+        for i in team_li:
+            print(i)
+            user_id = i.a.get("href").split("/users/")[-1].split("-")[0]
+            h3_content = i.h3.contents[0]
+            span_content = i.span.contents[0]
+            is_leader = i.find("div", class_="txt-subtitle").contents[0] in leader_choices
+            members.append((user_id, h3_content, span_content, is_leader))
         return members
 
     def get_matches(self):
