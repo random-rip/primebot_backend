@@ -143,8 +143,7 @@ class MatchHTMLParser(BaseHTMLParser):
 
     def get_game_closed(self):
         for log in self.logs:
-            if isinstance(log, LogPlayed) or isinstance(log, LogLineupMissing) or \
-                    isinstance(log, LogLineupNotReady) or isinstance(log, LogDisqualified):
+            if isinstance(log, BaseGameIsOverLog):
                 return True
         return False
 
@@ -247,6 +246,11 @@ class BaseLog:
         return None
 
 
+class BaseGameIsOverLog(BaseLog):
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+
+
 class LogSuggestion(BaseLog):
 
     def __init__(self, timestamp, user, details):
@@ -267,25 +271,25 @@ class LogSchedulingAutoConfirmation(BaseLog):
         super().__init__(timestamp, user, details)
 
 
-class LogPlayed(BaseLog):
+class LogPlayed(BaseGameIsOverLog):
 
     def __init__(self, timestamp, user, details):
         super().__init__(timestamp, user, details)
 
 
-class LogLineupMissing(BaseLog):
+class LogLineupMissing(BaseGameIsOverLog):
 
     def __init__(self, timestamp, user, details):
         super().__init__(timestamp, user, details)
 
 
-class LogLineupNotReady(BaseLog):
+class LogLineupNotReady(BaseGameIsOverLog):
 
     def __init__(self, timestamp, user, details):
         super().__init__(timestamp, user, details)
 
 
-class LogDisqualified(BaseLog):
+class LogDisqualified(BaseGameIsOverLog):
 
     def __init__(self, timestamp, user, details):
         super().__init__(timestamp, user, details)
