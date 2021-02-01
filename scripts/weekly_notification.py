@@ -1,5 +1,7 @@
 import logging
 
+import telepot
+
 from app_prime_league.models import Team
 from communication_interfaces.telegram_interface.tg_singleton import TelegramMessagesWrapper
 from utils.utils import current_game_day

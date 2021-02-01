@@ -1,3 +1,5 @@
+import logging
+
 import telepot
 from babel import dates as babel
 from telegram import ParseMode
@@ -27,7 +29,11 @@ def send_message(msg: str, chat_id: int = None, parse_mode=ParseMode.MARKDOWN):
     """
     if settings.DEBUG or chat_id is None:
         chat_id = settings.DEFAULT_TELEGRAM_CHAT_ID
-    return bot.sendMessage(chat_id=chat_id, text=msg, parse_mode=parse_mode, disable_web_page_preview=True)
+    try:
+        return bot.sendMessage(chat_id=chat_id, text=msg, parse_mode=parse_mode, disable_web_page_preview=True)
+    except Exception as e:
+        logging.getLogger("notifications_logger").error(f"Error Sending Message in Chat {chat_id=} {msg=}\n{e}")
+        raise e
 
 
 def format_datetime(x):
@@ -125,7 +131,10 @@ class TelegramMessagesWrapper:
             game.enemy_team.id,
             op_link
         )
-        message = send_message(msg=text, chat_id=game.team.telegram_id)
+        try:
+            message = send_message(msg=text, chat_id=game.team.telegram_id)
+        except Exception:
+            return
         if pin_weekly_op_link:
             try:
                 pin_msg(message)
@@ -152,4 +161,4 @@ class TelegramMessagesWrapper:
 
     @staticmethod
     def send_command(log):
-        send_message(msg=log, chat_id=-490819576, parse_mode=ParseMode.HTML)
+        send_message(msg=log, chat_id=settings.TG_DEVELOPER_GROUP, parse_mode=ParseMode.HTML)
