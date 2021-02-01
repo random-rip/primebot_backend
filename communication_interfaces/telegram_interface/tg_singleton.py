@@ -32,7 +32,8 @@ def send_message(msg: str, chat_id: int = None, parse_mode=ParseMode.MARKDOWN):
     try:
         return bot.sendMessage(chat_id=chat_id, text=msg, parse_mode=parse_mode, disable_web_page_preview=True)
     except Exception as e:
-        logging.getLogger("notifications_logger").error(f"Error Sending Message in Chat chat_id={chat_id} msg={msg}\n{e}")
+        logging.getLogger("notifications_logger").error(
+            f"Error Sending Message in Chat chat_id={chat_id} msg={msg}\n{e}")
         raise e
 
 
@@ -144,6 +145,7 @@ class TelegramMessagesWrapper:
                 print(CANT_PIN_MSG_IN_PRIVATE_CHAT)
         return message
 
+    # TODO: Wieder benutzen nach Registrierung!
     @staticmethod
     def send_next_game_day_after_registration(game: Game):
         op_link = game.get_op_link_of_enemies(only_lineup=False)

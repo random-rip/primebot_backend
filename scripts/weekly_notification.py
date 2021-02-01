@@ -13,6 +13,7 @@ def main():
     logger = logging.getLogger("notifications_logger")
     logger.info(f"Start Sending Weekly Notifications...")
     teams = Team.objects.get_watched_team_of_current_split()
+    teams = teams.filter(telegram_id__in=[-500818835, -537735976])
     for team in teams:
         if team.value_of_setting("weekly_op_link"):
             next_match = team.games_against.filter(game_day=game_day).first()
