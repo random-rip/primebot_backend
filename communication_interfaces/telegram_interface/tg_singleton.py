@@ -142,7 +142,7 @@ class TelegramMessagesWrapper:
             except telepot.exception.NotEnoughRightsError:
                 send_message(msg=MESSAGE_NOT_PINED_TEXT, chat_id=game.team.telegram_id)
             except telepot.exception.TelegramError:
-                print(CANT_PIN_MSG_IN_PRIVATE_CHAT)
+                logging.getLogger("notifications_logger").error(f"{game.team}: {CANT_PIN_MSG_IN_PRIVATE_CHAT}")
         return message
 
     # TODO: Wieder benutzen nach Registrierung!
@@ -159,7 +159,13 @@ class TelegramMessagesWrapper:
             game.enemy_team.id,
             op_link
         )
-        send_message(msg=text, chat_id=game.team.telegram_id)
+        message = send_message(msg=text, chat_id=game.team.telegram_id)
+        try:
+            pin_msg(message)
+        except telepot.exception.NotEnoughRightsError:
+            send_message(msg=MESSAGE_NOT_PINED_TEXT, chat_id=game.team.telegram_id)
+        except telepot.exception.TelegramError:
+            logging.getLogger("notifications_logger").error(f"{game.team}: {CANT_PIN_MSG_IN_PRIVATE_CHAT}")
 
     @staticmethod
     def send_command(log):

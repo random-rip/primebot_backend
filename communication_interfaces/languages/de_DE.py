@@ -149,7 +149,7 @@ GAME_BEGIN_CHANGE_TEXT = "Ein Administrator hat eine neue Zeit für das Match ge
 
 NEW_LINEUP_TEXT = "[{}]({}{}) ([Spieltag {}]({}{})) hat ein neues [Lineup]({}) aufgestellt. {}"
 
-NEXT_GAME_TEXT = "Euer nächstes Spiel:\n"
+NEXT_GAME_TEXT = "Der nächste Spieltag:\n"
 WEEKLY_UPDATE_TEXT = "{}[Spieltag {}]({}{}) gegen [{}]({}{}):\nHier ist der [OP.GG Link]({}) des Teams."
 
 WAIT_A_MOMENT_TEXT = "Alles klar, ich schaue, was ich dazu finden kann.\nDas kann einen Moment dauern...⏳"
