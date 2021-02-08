@@ -55,5 +55,9 @@ Wir arbeiten außerdem daran, dass ihr mehr Informationen aus unserer Datenbank 
 Viel Erfolg im Split und sternige Grüße
 Grayknife und Orbis
 """
+    },
+    6: {
+        "version": "1.13.1-beta",
+        "text": "Ein Fehler wurde behoben, bei dem Teams eine falsche Spieltag-Benachrichtigung bekommen haben."
     }
 }
