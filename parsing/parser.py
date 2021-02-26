@@ -310,5 +310,5 @@ class LogLineupSubmit(BaseLog):
 class LogChangeTime(BaseLog):
     def __init__(self, timestamp, user, details):
         super().__init__(timestamp, user, details)
-        # prefix = "Manually adjusted time to "
-        # self.details = string_to_datetime(self.details[0][len(prefix):], timestamp_format="%Y-%m-%d %H:%M %z")
+        prefix = "Manually adjusted time to "
+        self.details = string_to_datetime(self.details[0][len(prefix):], timestamp_format="%Y-%m-%d %H:%M %z")
