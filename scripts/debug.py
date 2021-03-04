@@ -2,7 +2,6 @@ from discord_interface.discord_bot import DiscordBot
 
 
 def main():
-    print("jooo")
     DiscordBot().run()
 
 

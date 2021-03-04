@@ -1,7 +1,7 @@
 # Variablen
 from prime_league_bot import settings
 from utils.constants import EMOJI_ONE, EMOJI_TWO, EMOJI_THREE, EMOJI_CLOVER, EMOJI_POST_HORN, EMOJI_TROPHY, \
-    EMJOI_MAGN_GLASS, EMOJI_SUCCESS, EMOJI_ARROW_RIGHT, EMOJI_GIFT
+    EMJOI_MAGN_GLASS, EMOJI_SUCCESS, EMOJI_ARROW_RIGHT, EMOJI_GIFT, EMOJI_SOON, EMOJI_LINEUP, EMOJI_FIGHT
 
 SUPPORT_GROUP_LINK = "https://t.me/joinchat/IUH8NhsKTYUtFKaqQMWhKA"
 PRIME_LEAGUE_FORUM_LINK = "https://www.primeleague.gg/de/forums/1418-league-of-legends/1469-off-topic/637268-pl-spieltag-updates-als-push-benachrichtigung-aufs-handy"
@@ -38,7 +38,7 @@ HELP_COMMAND_LIST = \
     "/feedback - um meinen Entwicklern dein Feedback mitzuteilen\n" \
     "/explain - um eine Erklärung zu dem Bot zu erhalten\n" \
  \
-# Antwort auf /issue
+    # Antwort auf /issue
 ISSUE = f"Hast Du einen Fehler bemerkt? Bitte schreibe den Entwicklern eine Nachricht in ihrer " \
         f"[Support-Gruppe]({SUPPORT_GROUP_LINK}) (evtl. inklusive Screenshots,... /bop) "
 
@@ -134,23 +134,60 @@ MESSAGE_NOT_PINED_TEXT = f"Die wöchentliche Nachricht konnte nicht angeheftet w
 CANT_PIN_MSG_IN_PRIVATE_CHAT = "Man kann keine Nachricht in einem privaten Chat anpinnen."
 
 # Update Messages
-OWN_NEW_TIME_SUGGESTION_TEXT = "Neuer Zeitvorschlag von euch für [Spieltag {}]({}{}). {}"
-NEW_TIME_SUGGESTION_PREFIX = "Neuer Zeitvorschlag von [{}]({}{}) für [Spieltag {}]({}{}):\n"
+OWN_NEW_TIME_SUGGESTION_TEXT = "Neuer Zeitvorschlag von euch für [Spieltag {game_day}](" + \
+                               GENERAL_MATCH_LINK + \
+                               "{game_id})." + \
+                               EMOJI_SUCCESS
 
-NEW_TIME_SUGGESTIONS_PREFIX = "Neue Zeitvorschläge von [{}]({}{}) für [Spieltag {}]({}{}):\n"
+NEW_TIME_SUGGESTION_PREFIX = "Neuer Zeitvorschlag von [{enemy_team.team_tag}](" + \
+                             GENERAL_TEAM_LINK + \
+                             "{enemy_team.id}) für [Spieltag {game_day}](" + \
+                             GENERAL_MATCH_LINK + \
+                             "{game_id}):\n"
 
-SCHEDULING_AUTO_CONFIRMATION_TEXT = "[{}]({}{}) hat für [Spieltag {}]({}{}) weder die vorgeschlagene Zeit angenommen," \
+NEW_TIME_SUGGESTIONS_PREFIX = "Neue Zeitvorschläge von [{enemy_team.team_tag}](" + \
+                              GENERAL_TEAM_LINK + \
+                              "{enemy_team.id}) für [Spieltag {game_day}](" + \
+                              GENERAL_MATCH_LINK + \
+                              "{game_id}):\n"
+
+SCHEDULING_AUTO_CONFIRMATION_TEXT = "[{enemy_team.team_tag}](" + \
+                                    GENERAL_TEAM_LINK + \
+                                    "{enemy_team.id}) hat für [Spieltag {game_day}](" + \
+                                    GENERAL_MATCH_LINK + \
+                                    "{game_id}) weder die vorgeschlagene Zeit angenommen," \
                                     "noch eine andere vorgeschlagen. Damit ist folgender Spieltermin bestätigt\n" + \
-                                    "{}{}"
-SCHEDULING_CONFIRMATION_TEXT = "Spielbestätigung von [{}]({}{}) für [Spieltag {}]({}{}):\n{}{}"
+                                    EMOJI_FIGHT + "{time}"
+SCHEDULING_CONFIRMATION_TEXT = "Spielbestätigung von [{enemy_team.team_tag}](" + \
+                               GENERAL_TEAM_LINK + \
+                               "{enemy_team.id}) für [Spieltag {game_day}](" + \
+                               GENERAL_MATCH_LINK + \
+                               "{game_id}):\n" + \
+                               EMOJI_FIGHT + "{time}"
 
-GAME_BEGIN_CHANGE_TEXT = "Ein Administrator hat eine neue Zeit für das Match gegen [{}]({}{}) " \
-                         "([Spieltag {}]({}{})) festgelegt:\n{}{}"
+GAME_BEGIN_CHANGE_TEXT = "Ein Administrator hat eine neue Zeit für das Match gegen [{enemy_team.team_tag}](" + \
+                         GENERAL_TEAM_LINK + \
+                         "{enemy_team.id}) " + \
+                         "([Spieltag {game_day}](" + \
+                         GENERAL_MATCH_LINK + \
+                         "{game_id})) festgelegt:\n" + \
+                         EMOJI_FIGHT + "{time}"
 
-NEW_LINEUP_TEXT = "[{}]({}{}) ([Spieltag {}]({}{})) hat ein neues [Lineup]({}) aufgestellt. {}"
+NEW_LINEUP_TEXT = "[{enemy_team.team_tag}](" + \
+                  GENERAL_TEAM_LINK + \
+                  "{enemy_team.id}) ([Spieltag {game_day}](" + \
+                  GENERAL_MATCH_LINK + \
+                  "{game_id})) hat ein neues [Lineup]({op_link}) aufgestellt. " + \
+                  EMOJI_LINEUP
 
-NEXT_GAME_TEXT = "Der nächste Spieltag:\n"
-WEEKLY_UPDATE_TEXT = "{}[Spieltag {}]({}{}) gegen [{}]({}{}):\nHier ist der [OP.GG Link]({}) des Teams."
+WEEKLY_UPDATE_TEXT = "Der nächste Spieltag:\n" + \
+                     EMOJI_SOON + \
+                     "[Spieltag {game_day}](" + \
+                     GENERAL_MATCH_LINK + \
+                     "{game_id}) gegen [{game.enemy_team.team_tag}](" + \
+                     GENERAL_TEAM_LINK + \
+                     "{enemy_team.id}):\n" + \
+                     "Hier ist der [OP.GG Link]({op_link}) des Teams."
 
 WAIT_A_MOMENT_TEXT = "Alles klar, ich schaue, was ich dazu finden kann.\nDas kann einen Moment dauern...⏳"
 NO_GROUP_CHAT = "Dieser Befehl kann nur in einer Telegram-Gruppe ausgeführt werden."
