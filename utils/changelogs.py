@@ -59,5 +59,9 @@ Grayknife und Orbis
     6: {
         "version": "1.13.1-beta",
         "text": "Ein Fehler wurde behoben, bei dem Teams eine falsche Spieltag-Benachrichtigung bekommen haben."
+    },
+    7: {
+        "version": "1.13.2-beta",
+        "text": "Matches, in denen die Zeit vom einem Administrator manuell eingestellt wurde, werden nun korrekt im System gespeichert und es werden nicht mehr mehrere Benachrichtigungen dazu gesendet."
     }
 }
