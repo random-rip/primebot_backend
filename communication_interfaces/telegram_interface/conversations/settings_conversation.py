@@ -1,11 +1,12 @@
-from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
+from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton, ParseMode
 from telegram.ext import CallbackContext, CallbackQueryHandler
 
 from app_prime_league.models import Setting, Team
-from app_prime_league.teams import update_team, update_settings
-from telegram_interface.messages import ENABLED, SETTINGS_MAIN_MENU, DISABLED, BOOLEAN_KEYBOARD_OPTIONS, CLOSE, \
+from app_prime_league.teams import update_settings
+from communication_interfaces.languages.de_DE import ENABLED, SETTINGS_MAIN_MENU, DISABLED, BOOLEAN_KEYBOARD_OPTIONS, CLOSE, \
     SETTINGS_FINISHED, CURRENTLY
-from telegram_interface.validation_messages import wrong_chat_type, team_not_exists
+from communication_interfaces.utils import mysql_has_gone_away
+from communication_interfaces.validation_messages import wrong_chat_type, team_not_exists
 from utils.messages_logger import log_command, log_callbacks
 
 SETTINGS = {
@@ -52,11 +53,19 @@ SETTINGS = {
         "text": "Möchtet ihr bei Patches am Bot benachrichtigt werden?",
         "callback_data": "5",
     },
+    # UNLOCK_BOT
+    "LOCK_Team": {
+        "name": "lock_team",
+        "title": "Team-Sperre",
+        "text": "Möchtet ihr, dass euer Team in einem anderen Chat *nicht* neu initialisiert werden darf?",
+        "callback_data": "7",
+    }
 }
 
 
 # /settings
 @log_command
+@mysql_has_gone_away
 def start_settings(update: Update, context: CallbackContext):
     chat_type = update.message.chat.type
     if chat_type not in ["group", "supergroup"]:
@@ -67,10 +76,12 @@ def start_settings(update: Update, context: CallbackContext):
     update.message.reply_text(
         SETTINGS_MAIN_MENU["text"],
         reply_markup=main_menu_keyboard,
+        parse_mode=ParseMode.MARKDOWN
     )
 
 
 @log_callbacks
+@mysql_has_gone_away
 def main_settings_menu(update: Update, context: CallbackContext):
     query = update.callback_query
     context.bot.edit_message_text(
@@ -78,10 +89,12 @@ def main_settings_menu(update: Update, context: CallbackContext):
         message_id=query.message.message_id,
         text=SETTINGS_MAIN_MENU["text"],
         reply_markup=main_menu_keyboard,
+        parse_mode=ParseMode.MARKDOWN,
     )
 
 
 @log_callbacks
+@mysql_has_gone_away
 def main_settings_menu_close(update: Update, context: CallbackContext):
     query = update.callback_query
     context.bot.edit_message_text(
@@ -92,12 +105,16 @@ def main_settings_menu_close(update: Update, context: CallbackContext):
     )
 
 
+@mysql_has_gone_away
 def migrate_chat(update: Update, context: CallbackContext):
     if update.message.chat.type == "supergroup":
         return
-    old_chat_id = update.message.migrate_from_chat_id
-    new_chat_id = update.message.chat.id
-    team = Team.objects.get(telegram_id=old_chat_id)
+    try:
+        old_chat_id = update.message.chat.id
+        team = Team.objects.get(telegram_id=old_chat_id)
+    except Team.DoesNotExist as e:
+        return
+    new_chat_id = update.message.migrate_to_chat_id
     team.telegram_id = new_chat_id
     team.save()
 
@@ -164,6 +181,7 @@ class NotificationSetting:
                 message_id=query.message.message_id,
                 text=f"{self.title} {ENABLED}\n{SETTINGS_MAIN_MENU['text']}",
                 reply_markup=main_menu_keyboard,
+                parse_mode=ParseMode.MARKDOWN,
             )
 
         @log_callbacks
@@ -179,6 +197,7 @@ class NotificationSetting:
                 message_id=query.message.message_id,
                 text=f"{self.title} {DISABLED}\n{SETTINGS_MAIN_MENU['text']}",
                 reply_markup=main_menu_keyboard,
+                parse_mode=ParseMode.MARKDOWN,
             )
 
         @log_callbacks
@@ -191,8 +210,9 @@ class NotificationSetting:
                 message_id=query.message.message_id,
                 text=f"{self.text} \n"
                      f"{CURRENTLY}: "
-                     f"{DISABLED if setting_model_disabled is not None else ENABLED}",
-                reply_markup=get_boolean_keyboard(self.callback_data)
+                     f"_{DISABLED if setting_model_disabled is not None else ENABLED}_",
+                reply_markup=get_boolean_keyboard(self.callback_data),
+                parse_mode=ParseMode.MARKDOWN,
             )
 
         self.enable = enable

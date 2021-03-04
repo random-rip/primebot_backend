@@ -1,32 +1,33 @@
+import logging
 import sys
 import traceback
 
 from telegram import ParseMode
-from telegram.ext import Updater, CommandHandler, MessageHandler, ConversationHandler, \
-    CallbackQueryHandler
+from telegram.ext import Updater, CommandHandler, MessageHandler, ConversationHandler, CallbackQueryHandler
 from telegram.ext.filters import Filters
 from telegram.utils.helpers import mention_html
 
+from communication_interfaces.telegram_interface.commands.single_commands import (
+    cancel, helpcommand, issue, feedback, bop, explain, set_logo)
+from communication_interfaces.telegram_interface.conversations.settings_conversation import (
+    main_settings_menu, callback_query_settings_handlers, start_settings, main_settings_menu_close, migrate_chat)
+from communication_interfaces.telegram_interface.conversations.start_conversation import (
+    start, team_registration, finish_registration, set_optional_photo)
 from prime_league_bot import settings
-from telegram_interface.commands.single_commands import cancel, helpcommand, issue, feedback, bop, explain, set_logo
-from telegram_interface.conversations.settings_conversation import main_settings_menu, callback_query_settings_handlers, \
-    start_settings, main_settings_menu_close, migrate_chat
-from telegram_interface.conversations.start_conversation import start, team_registration, finish_registration, \
-    set_optional_photo
 
 
 # this is a general error handler function. If you need more information about specific type of update, add it to the
 # payload in the respective if clause
 def error(update, context):
     # add all the dev user_ids in this list. You can also add ids of channels or groups.
-    devs = [-490819576]
+    devs = [settings.TG_DEVELOPER_GROUP]
     # we want to notify the user of this problem. This will always work, but not notify users if the update is an
     # callback or inline query, or a poll update. In case you want this, keep in mind that sending the message
     # could fail
     try:
         if update is not None:
             if update.effective_message:
-                text = "Hey. I'm sorry to inform you that an error happened while I tried to handle your update. " \
+                text = "Hey. I'm sorry to inform you that an error happened while I tried to handle your request. " \
                        "My developer(s) will be notified."
                 update.effective_message.reply_text(text)
             # This traceback is created with accessing the traceback object from the sys.exc_info, which is returned as the
@@ -56,9 +57,12 @@ def error(update, context):
     except Exception as e:
         text = f"Ein gravierender Fehler ist aufgetreten.\n{e}"
     for dev_id in devs:
-        context.bot.send_message(dev_id, text, parse_mode=ParseMode.HTML) # TODO: catch connection errors
+        context.bot.send_message(dev_id, text, parse_mode=ParseMode.HTML)  # TODO: catch connection errors
     # we raise the error again, so the logger module catches it. If you don't use the logger module, use it.
-    raise
+    try:
+        raise
+    except RuntimeError as e:
+        logging.getLogger("django").critical(e)
 
 
 class BotFather:
@@ -73,7 +77,7 @@ class BotFather:
         updater = Updater(self.api_key, use_context=True, )
         dp = updater.dispatcher
 
-        fallbacks = [
+        commands = [
             CommandHandler("cancel", cancel),
             CommandHandler("help", helpcommand),
             CommandHandler("issue", issue),
@@ -81,6 +85,7 @@ class BotFather:
             CommandHandler("bop", bop),
             CommandHandler("explain", explain),
             CommandHandler("setlogo", set_logo),
+            MessageHandler(Filters.status_update.migrate, migrate_chat)  # Migration
         ]
 
         start_conv_handler = ConversationHandler(
@@ -90,12 +95,12 @@ class BotFather:
                 1: [MessageHandler(Filters.text & (~Filters.command), team_registration), ],
             },
 
-            fallbacks=fallbacks
+            fallbacks=commands
         )
 
         # Allgemeine Commands
         dp.add_handler(start_conv_handler)
-        for cmd in fallbacks[1:]:
+        for cmd in commands[1:]:
             dp.add_handler(cmd)
 
         # Main Menu
@@ -105,11 +110,11 @@ class BotFather:
         dp.add_handler(CallbackQueryHandler(finish_registration, pattern='0no'))
         dp.add_handler(CallbackQueryHandler(set_optional_photo, pattern='0yes'))
         # Chat Migration
-        dp.add_handler(MessageHandler(Filters.status_update.migrate, migrate_chat))
 
         dp.add_error_handler(error)
 
         for i in callback_query_settings_handlers:
             dp.add_handler(i)
         updater.start_polling()  # TODO: try catch connection errors
+
         updater.idle()

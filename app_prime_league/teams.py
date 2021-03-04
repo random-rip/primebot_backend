@@ -1,21 +1,38 @@
 import concurrent.futures
+import logging
+import sys
 import time
+import traceback
 
-from django.db.models import Q
+from telegram import ParseMode
 
 from app_prime_league.models import Team, Player, Game, GameMetaData
+from communication_interfaces import send_message
 from parsing.parser import TeamHTMLParser, TeamWrapper
+from prime_league_bot import settings
 
 
-def register_team(team_id, tg_group_id):
-    team = add_team(team_id, tg_group_id)
+def register_team(team_id, telegram_id=None):
+    """
+    Add or Update a Team, Add or Update Players, Add or Update Games. Optionally set telegram_id of the team.
+    """
+    team = add_or_update_team(team_id, telegram_id)
     if team is not None:
         try:
             wrapper = TeamWrapper(team_id=team.id)
         except Exception:
             return None
-        add_or_update_players(wrapper.parser.get_members(), team)
-        add_games(wrapper.parser.get_matches(), team)
+        if team.division is not None:
+            try:
+                add_or_update_players(wrapper.parser.get_members(), team)
+                add_games(wrapper.parser.get_matches(), team)
+            except Exception as e:
+                trace = "".join(traceback.format_tb(sys.exc_info()[2]))
+                send_message(
+                    f"Ein Fehler ist beim Updaten von Team {team.id} {team.name} aufgetreten:\n<code>{trace}\n{e}</code>",
+                    chat_id=settings.TG_DEVELOPER_GROUP, parse_mode=ParseMode.HTML)
+                logging.getLogger("periodic_logger").error(e)
+
         return team
     else:
         return None
@@ -34,13 +51,38 @@ def register_team_discord(team_id, discord_id):
         return None
 
 
-def add_team(team_id, tg_group_id):
-    if Team.objects.filter(
-            Q(id=team_id, telegram_id__isnull=False) |
-            Q(telegram_id=tg_group_id)).exists():
-        print("Dieser Telegramgruppe ist bereits ein Team zugewiesen.")
+def reassign_team(team_id, tg_group_id):
+    try:
+        team = Team.objects.get(id=team_id)
+    except Team.DoesNotExist as e:
         return None
 
+    team.telegram_id = tg_group_id
+    team.save()
+    return team
+
+
+def reassign_chat(team_id, tg_group_id):
+    try:
+        old_team = Team.objects.get(telegram_id=tg_group_id)
+    except Team.DoesNotExist as e:
+        return None
+
+    old_team.telegram_id = None
+    # TODO old team chat bescheid geben
+    old_team.save()
+
+    try:
+        new_team = Team.objects.get(id=team_id)
+        new_team.telegram_id = tg_group_id
+        new_team.save()
+    except Team.DoesNotExist as e:
+        new_team = register_team(team_id, tg_group_id)
+
+    return new_team
+
+
+def add_or_update_team(team_id, tg_group_id=None):
     try:
         wrapper = TeamWrapper(team_id=team_id)
         parser = wrapper.parser
@@ -56,8 +98,8 @@ def add_team(team_id, tg_group_id):
         "logo_url": parser.get_logo(),
     })
     if not created:
+        team = update_team(parser, team_id)
         team.telegram_id = tg_group_id
-        team.logo_url = parser.get_logo()
         team.save()
     return team
 
@@ -98,8 +140,11 @@ def update_team(parser: TeamHTMLParser, team_id: int):
     team = Team.objects.filter(id=team_id, name=name, logo_url=logo, team_tag=team_tag, division=division)
     if team.exists():
         return team.first()
-    team = team.first()
-    assert isinstance(team, Team)
+    try:
+        team = Team.objects.get(id=team_id)
+    except Team.DoesNotExist as e:
+        return None
+    logging.getLogger("periodic_logger").debug(f"Updating {team}...")
     team.name = name
     team.logo_url = logo
     team.team_tag = team_tag
@@ -125,8 +170,9 @@ def update_settings(tg_chat_id, settings: dict):
 
 def add_or_update_players(members, team: Team):
     for (id_, name, summoner_name, is_leader,) in members:
-        player = Player.objects.filter(id=id_, name=name, summoner_name=summoner_name, is_leader=is_leader)
-        if player.exists():
+        player = Player.objects.filter(id=id_, name=name, summoner_name=summoner_name, is_leader=is_leader).first()
+        logging.getLogger("periodic_logger").debug(f"Updating {player}...")
+        if player is not None:
             continue
         player, created = Player.objects.get_or_create(id=id_, defaults={
             "name": name,
@@ -144,15 +190,15 @@ def add_or_update_players(members, team: Team):
 def add_game(team, game_id):
     gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=game_id, )
     game = Game.objects.get_game_by_team(game_id=game_id, team=team)
+
     if game is None:
         game = Game()
-    else:
-        print("Spiel existiert bereits in der Datenbank und wird geupdated")
     gmd.get_enemy_team_data()
     game.update_from_gmd(gmd)
     game.update_enemy_team(gmd)
     game.update_enemy_lineup(gmd)
     game.update_latest_suggestion(gmd)
+    logging.getLogger("periodic_logger").debug(f"Updating {game}...")
 
 
 def add_games(game_ids, team: Team):
@@ -160,4 +206,3 @@ def add_games(game_ids, team: Team):
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         executor.map(lambda p: add_game(*p), ((team, game_id) for game_id in game_ids))
     duration = time.time() - start_time
-    print(f"Added games ({len(game_ids)}) in {duration} seconds")

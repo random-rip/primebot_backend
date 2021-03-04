@@ -22,8 +22,8 @@ def save_object_to_file(obj, file_name):
 
 class Api:
     def __init__(self):
-        self.base_uri = settings.BASE_URI
-        self.base_uri_ajax = settings.BASE_URI_AJAX
+        self.base_uri = settings.LEAGUES_URI
+        self.base_uri_ajax = settings.AJAX_URI
 
     def json_handler(self, endpoint, request=requests.post, post_params=None):
         if endpoint is None:
@@ -72,12 +72,13 @@ class Crawler:
             return text
         resp = self.api.html_handler(f"teams/{_id}")
         if resp.status_code == 404:
+            print(f"Teamid: {_id}")
             return None
         if self.save_requests:
             save_object_to_file(resp.text, f"team_{_id}.txt")
         return resp.text
 
-    def get_details_json(self, match):
+    def get_match_details_json(self, match):
         if self.local:
             return get_local_response(f"match_details_json_{match}.txt")
         resp = self.api.json_handler(f"leagues_match", post_params={"id": match, "action": "init", "language": "de"})
@@ -85,6 +86,21 @@ class Crawler:
             return None
         if self.save_requests:
             save_object_to_file(resp.text, f"match_details_json_{match}.txt")
+        return resp.text
+
+    def get_comments_json(self, match):
+        if self.local:
+            return get_local_response(f"comments_json_{match}.txt")
+        resp =  self.api.json_handler(f"comments_load", post_params={
+            "init": 1,
+            "m": "league_match",
+            "language": "de",
+            "i": match
+        })
+        if resp.status_code == 404:
+            return None
+        if self.save_requests:
+            save_object_to_file(resp.text, f"comments_json_{match}.txt")
         return resp.text
 
 

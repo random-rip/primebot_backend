@@ -9,6 +9,12 @@ class TeamManager(models.Manager):
     def get_watched_teams(self):
         return self.model.objects.filter(telegram_id__isnull=False)
 
+    def get_watched_team_of_current_split(self):
+        return self.model.objects.filter(telegram_id__isnull=False, division__isnull=False)
+
+    def get_team(self, team_id):
+        return self.model.objects.filter(id=team_id).first()
+
 
 class GameManager(models.Manager):
 
@@ -44,6 +50,10 @@ class PlayerManager(models.Manager):
         return players
 
 
+class CommentManager(models.Manager):
+    pass
+
+
 class Team(models.Model):
     name = models.CharField(max_length=100, null=True)
     team_tag = models.CharField(max_length=100, null=True)
@@ -63,6 +73,15 @@ class Team(models.Model):
     def __repr__(self):
         return f"{self.id} - {self.name}"
 
+    def __str__(self):
+        return f"Team {self.id} - {self.name}"
+
+    def value_of_setting(self, setting):
+        return self.settings_dict().get(setting, True)
+
+    def settings_dict(self):
+        return dict(self.setting_set.all().values_list("attr_name", "attr_value"))
+
 
 class Player(models.Model):
     name = models.CharField(max_length=50)
@@ -79,6 +98,9 @@ class Player(models.Model):
 
     def __repr__(self):
         return f"{self.name}"
+
+    def __str__(self):
+        return f"Player {self.name}"
 
 
 class GameMetaData:
@@ -105,6 +127,9 @@ class GameMetaData:
                f"\nGame Result: {self.game_result}" \
                f"\nLatestSuggestion: {self.latest_suggestion}, " \
                f"\nSuggestionConfirmed: {self.game_begin}, "
+
+    def __str__(self):
+        return self.__repr__()
 
     @staticmethod
     def create_game_meta_data_from_website(team: Team, game_id):
@@ -164,7 +189,7 @@ class Game(models.Model):
         return f"{self.game_id}"
 
     def __str__(self):
-        return self.__repr__()
+        return f"Game {self.game_id} from {self.team}"
 
     @property
     def get_first_suggested_game_begin(self):
@@ -244,6 +269,24 @@ class Setting(models.Model):
     class Meta:
         db_table = "settings"
         unique_together = [("team", "attr_name"), ]
+
+
+class Comment(models.Model):
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    comment_id = models.CharField(max_length=50)
+    parent = models.ForeignKey('Comment', on_delete=models.CASCADE)
+    content = models.CharField(max_length=3000)
+    has_more_content = models.BooleanField(default=False)
+    author_name = models.CharField(max_length=50)
+    author_id = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    objects = PlayerManager()
+
+    class Meta:
+        db_table = "comments"
+        unique_together = [("game", "comment_id"), ]
 
 
 class TeamWatcher(models.Model):

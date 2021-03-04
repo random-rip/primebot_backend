@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
-
+import errno
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -88,7 +88,8 @@ DATABASES = {
         'USER': env.str('DB_USER'),
         'PASSWORD': env.str('DB_PASSWORD'),
         'HOST': env.str('DB_HOST'),
-        'PORT': env.str('DB_PORT')
+        'PORT': env.str('DB_PORT'),
+        'CONN_MAX_AGE': 3600,
     }
 }
 
@@ -128,23 +129,128 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-BASE_URI = "https://www.primeleague.gg/de/leagues/"
-BASE_URI_AJAX = "https://www.primeleague.gg/ajax/"
+LEAGUES_URI = "https://www.primeleague.gg/de/leagues/"
+AJAX_URI = "https://www.primeleague.gg/ajax/"
+
+MATCH_URI = "https://www.primeleague.gg/de/leagues/matches/"
+TEAM_URI = "https://www.primeleague.gg/de/leagues/teams/"
 
 DEFAULT_TELEGRAM_CHAT_ID = env.str("TG_CHAT_ID", None)
 
 STORAGE_DIR = os.path.join(BASE_DIR, "storage", )
 
 TELEGRAM_BOT_KEY = env.str("TELEGRAM_BOT_API_KEY")
-
+TG_DEVELOPER_GROUP = env.int("TG_DEVELOPER_GROUP")
 TELEGRAM_LIVETICKER_KEY = env.str("TELEGRAM_LIVETICKER_API_KEY")
 
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
+DISCORD_BOT_KEY = env.str("DISCORD_API_KEY")
+DISCORD_DEFAULT_GUILD = "***REMOVED***"
+
 LOGIN_URL = "/admin/login/"
 
 LOGGING_DIR = os.path.join(BASE_DIR, "logs", )
+try:
+    os.mkdir(LOGGING_DIR)
+except OSError as exc:
+    if exc.errno != errno.EEXIST:
+        raise exc
+    pass
 
-DISCORD_BOT_KEY = env.str("DISCORD_API_KEY")
-
-DISCORD_DEFAULT_GUILD = "***REMOVED***"
+if not DEBUG:
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'formatters': {
+            'to_file': {
+                'format': "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+                'datefmt': "%d/%b/%Y %H:%M:%S"
+            },
+            'to_console': {
+                'format': '[%(levelname)s] %(name)s: %(message)s'
+            },
+        },
+        'handlers': {
+            'console': {
+                'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+                'formatter': 'to_console',
+                'class': 'logging.StreamHandler',
+            },
+            'django_file': {
+                'level': os.getenv('DJANGO_LOG_LEVEL', 'WARNING'),
+                'class': 'logging.handlers.TimedRotatingFileHandler',
+                'filename': os.path.join(LOGGING_DIR, 'django.log'),
+                'when': 'midnight',
+                'formatter': 'to_file',
+            },
+            'periodic_handler': {
+                'level': 'INFO',
+                'class': 'logging.handlers.TimedRotatingFileHandler',
+                'filename': os.path.join(LOGGING_DIR, 'periodic.log'),
+                'when': 'midnight',
+                'formatter': 'to_file',
+            },
+            'periodic_verbose_handler': {
+                'level': 'DEBUG',
+                'class': 'logging.handlers.TimedRotatingFileHandler',
+                'filename': os.path.join(LOGGING_DIR, 'periodic_verbose.log'),
+                'when': 'midnight',
+                'formatter': 'to_file',
+            },
+            'main_handler': {
+                'level': 'INFO',
+                'class': 'logging.handlers.TimedRotatingFileHandler',
+                'filename': os.path.join(LOGGING_DIR, 'main.log'),
+                'when': 'midnight',
+                'formatter': 'to_file',
+            },
+            'main_verbose_handler': {
+                'level': 'DEBUG',
+                'class': 'logging.handlers.TimedRotatingFileHandler',
+                'filename': os.path.join(LOGGING_DIR, 'main_verbose.log'),
+                'when': 'midnight',
+                'formatter': 'to_file',
+            },
+            'notifications_handler': {
+                'level': 'DEBUG',
+                'class': 'logging.handlers.WatchedFileHandler',
+                'filename': os.path.join(LOGGING_DIR, 'notifications.log'),
+                'formatter': 'to_file',
+            },
+            'commands_handler': {
+                'level': 'DEBUG',
+                'class': 'logging.handlers.TimedRotatingFileHandler',
+                'filename': os.path.join(LOGGING_DIR, 'commands.log'),
+                'when': 'midnight',
+                'formatter': 'to_file',
+            }
+        },
+        'loggers': {
+            'django': {
+                'handlers': ['console', 'django_file'],
+                'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+                'propagate': False,
+            },
+            'main_logger': {
+                'handlers': ['main_handler', 'main_verbose_handler'],
+                'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+                'propagate': False,
+            },
+            'periodic_logger': {
+                'handlers': ['periodic_handler', 'periodic_verbose_handler'],
+                'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+                'propagate': False,
+            },
+            'notifications_logger': {
+                'handlers': ['notifications_handler'],
+                'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+                'propagate': False,
+            },
+            'commands_logger': {
+                'handlers': ['commands_handler', ],
+                'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+                'propagate': False,
+            }
+        }
+    }
