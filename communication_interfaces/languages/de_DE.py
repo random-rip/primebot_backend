@@ -20,10 +20,6 @@ RETRY_TEXT = "Bitte versuche es erneut oder /cancel."
 GENERAL_MATCH_LINK = settings.MATCH_URI
 GENERAL_TEAM_LINK = settings.TEAM_URI
 
-US = "uns"
-FOR_GAME_DAY = "für [Spieltag] {}"
-FROM = "von {}"
-
 ENABLED = "aktiviert"
 DISABLED = "deaktiviert"
 
@@ -139,43 +135,44 @@ OWN_NEW_TIME_SUGGESTION_TEXT = "Neuer Zeitvorschlag von euch für [Spieltag {gam
                                "{game_id})." + \
                                EMOJI_SUCCESS
 
-NEW_TIME_SUGGESTION_PREFIX = "Neuer Zeitvorschlag von [{enemy_team.team_tag}](" + \
+NEW_TIME_SUGGESTION_PREFIX = "Neuer Zeitvorschlag von [{enemy_team_tag}](" + \
                              GENERAL_TEAM_LINK + \
                              "{enemy_team.id}) für [Spieltag {game_day}](" + \
                              GENERAL_MATCH_LINK + \
                              "{game_id}):\n"
 
-NEW_TIME_SUGGESTIONS_PREFIX = "Neue Zeitvorschläge von [{enemy_team.team_tag}](" + \
+NEW_TIME_SUGGESTIONS_PREFIX = "Neue Zeitvorschläge von [{enemy_team_tag}](" + \
                               GENERAL_TEAM_LINK + \
-                              "{enemy_team.id}) für [Spieltag {game_day}](" + \
+                              "{enemy_team_id}) für [Spieltag {game_day}](" + \
                               GENERAL_MATCH_LINK + \
                               "{game_id}):\n"
 
-SCHEDULING_AUTO_CONFIRMATION_TEXT = "[{enemy_team.team_tag}](" + \
+SCHEDULING_AUTO_CONFIRMATION_TEXT = "[{enemy_team_tag}](" + \
                                     GENERAL_TEAM_LINK + \
-                                    "{enemy_team.id}) hat für [Spieltag {game_day}](" + \
+                                    "{enemy_team_id}) hat für [Spieltag {game_day}](" + \
                                     GENERAL_MATCH_LINK + \
                                     "{game_id}) weder die vorgeschlagene Zeit angenommen," \
                                     "noch eine andere vorgeschlagen. Damit ist folgender Spieltermin bestätigt\n" + \
                                     EMOJI_FIGHT + "{time}"
-SCHEDULING_CONFIRMATION_TEXT = "Spielbestätigung von [{enemy_team.team_tag}](" + \
+
+SCHEDULING_CONFIRMATION_TEXT = "Spielbestätigung von [{enemy_team_tag}](" + \
                                GENERAL_TEAM_LINK + \
-                               "{enemy_team.id}) für [Spieltag {game_day}](" + \
+                               "{enemy_team_id}) für [Spieltag {game_day}](" + \
                                GENERAL_MATCH_LINK + \
                                "{game_id}):\n" + \
                                EMOJI_FIGHT + "{time}"
 
-GAME_BEGIN_CHANGE_TEXT = "Ein Administrator hat eine neue Zeit für das Match gegen [{enemy_team.team_tag}](" + \
+GAME_BEGIN_CHANGE_TEXT = "Ein Administrator hat eine neue Zeit für das Match gegen [{enemy_team_tag}](" + \
                          GENERAL_TEAM_LINK + \
-                         "{enemy_team.id}) " + \
+                         "{enemy_team_id}) " + \
                          "([Spieltag {game_day}](" + \
                          GENERAL_MATCH_LINK + \
                          "{game_id})) festgelegt:\n" + \
                          EMOJI_FIGHT + "{time}"
 
-NEW_LINEUP_TEXT = "[{enemy_team.team_tag}](" + \
+NEW_LINEUP_TEXT = "[{enemy_team_tag}](" + \
                   GENERAL_TEAM_LINK + \
-                  "{enemy_team.id}) ([Spieltag {game_day}](" + \
+                  "{enemy_team_id}) ([Spieltag {game_day}](" + \
                   GENERAL_MATCH_LINK + \
                   "{game_id})) hat ein neues [Lineup]({op_link}) aufgestellt. " + \
                   EMOJI_LINEUP
@@ -184,9 +181,9 @@ WEEKLY_UPDATE_TEXT = "Der nächste Spieltag:\n" + \
                      EMOJI_SOON + \
                      "[Spieltag {game_day}](" + \
                      GENERAL_MATCH_LINK + \
-                     "{game_id}) gegen [{game.enemy_team.team_tag}](" + \
+                     "{game_id}) gegen [{enemy_team_tag}](" + \
                      GENERAL_TEAM_LINK + \
-                     "{enemy_team.id}):\n" + \
+                     "{enemy_team_id}):\n" + \
                      "Hier ist der [OP.GG Link]({op_link}) des Teams."
 
 WAIT_A_MOMENT_TEXT = "Alles klar, ich schaue, was ich dazu finden kann.\nDas kann einen Moment dauern...⏳"
