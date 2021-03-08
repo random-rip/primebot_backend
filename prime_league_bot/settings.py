@@ -146,6 +146,7 @@ TELEGRAM_LIVETICKER_KEY = env.str("TELEGRAM_LIVETICKER_API_KEY")
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
 DISCORD_BOT_KEY = env.str("DISCORD_API_KEY")
+DISCORD_APP_CLIENT_ID = env.int("DISCORD_APP_CLIENT_ID")
 DISCORD_DEFAULT_GUILD = "***REMOVED***"
 
 LOGIN_URL = "/admin/login/"

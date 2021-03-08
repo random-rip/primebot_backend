@@ -17,6 +17,7 @@ def register_team(team_id, communication_config=None):
     Add or Update a Team, Add or Update Players, Add or Update Games. Optionally set telegram_id of the team.
     """
     team = add_or_update_team(team_id, communication_config)
+    print(team)
     if team is not None:
         try:
             wrapper = TeamWrapper(team_id=team.id)
@@ -33,20 +34,6 @@ def register_team(team_id, communication_config=None):
                     chat_id=settings.TG_DEVELOPER_GROUP, parse_mode=ParseMode.HTML)
                 logging.getLogger("periodic_logger").error(e)
 
-        return team
-    else:
-        return None
-
-
-def register_team_discord(team_id, discord_id):
-    team = add_team_discord(team_id, discord_id)
-    if team is not None:
-        try:
-            wrapper = TeamWrapper(team_id=team.id)
-        except Exception:
-            return None
-        add_or_update_players(wrapper.parser.get_members(), team)
-        add_games(wrapper.parser.get_matches(), team)
         return team
     else:
         return None
