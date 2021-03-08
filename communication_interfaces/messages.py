@@ -37,9 +37,10 @@ class WeeklyNotificationMessage(BaseMessage):
 
     def _generate_message(self):
         op_link = self.game.get_op_link_of_enemies(only_lineup=False)
+        enemy_team_tag = self.game.enemy_team.team_tag
         if op_link is None:
             raise Exception()
-        self.message = WEEKLY_UPDATE_TEXT.format(op_link, **vars(self.game))
+        self.message = WEEKLY_UPDATE_TEXT.format(op_link=op_link, enemy_team_tag=enemy_team_tag, **vars(self.game))
 
 
 class NewLineupNotificationMessage(BaseMessage):
@@ -52,9 +53,10 @@ class NewLineupNotificationMessage(BaseMessage):
 
     def _generate_message(self):
         op_link = self.game.get_op_link_of_enemies(only_lineup=True)
+        enemy_team_tag = self.game.enemy_team.team_tag
         if op_link is None:
             raise Exception()
-        self.message = NEW_LINEUP_TEXT.format(op_link, **vars(self.game))
+        self.message = NEW_LINEUP_TEXT.format(op_link=op_link, enemy_team_tag=enemy_team_tag, **vars(self.game))
 
 
 class OwnNewTimeSuggestionsNotificationMessage(BaseMessage):
@@ -79,11 +81,13 @@ class EnemyNewTimeSuggestionsNotificationMessage(BaseMessage):
 
     def _generate_message(self):
         details = list(self.game.suggestion_set.all().values_list("game_begin", flat=True))
+        enemy_team_tag = self.game.enemy_team.team_tag
+
         if len(details) == 1:
             prefix = NEW_TIME_SUGGESTION_PREFIX
         else:
             prefix = NEW_TIME_SUGGESTIONS_PREFIX
-        prefix = prefix.format(**vars(self.game))
+        prefix = prefix.format(enemy_team_tag=enemy_team_tag, **vars(self.game))
 
         self.message = prefix + '\n'.join([f"{emoji_numbers[i]}{format_datetime(x)}" for i, x in enumerate(details)])
 
@@ -99,10 +103,14 @@ class ScheduleConfirmationNotification(BaseMessage):
 
     def _generate_message(self):
         time = format_datetime(self.game.game_begin)
+        enemy_team_tag = self.game.enemy_team.team_tag
+
         if isinstance(self.latest_confirmation_log, LogSchedulingAutoConfirmation):
-            self.message = SCHEDULING_AUTO_CONFIRMATION_TEXT.format(time, **vars(self.game))
+            message = SCHEDULING_AUTO_CONFIRMATION_TEXT
         elif isinstance(self.latest_confirmation_log, LogSchedulingConfirmation):
-            self.message = SCHEDULING_CONFIRMATION_TEXT.format(time, **vars(self.game))
+            message = SCHEDULING_CONFIRMATION_TEXT
         else:
             assert isinstance(self.latest_confirmation_log, LogChangeTime)
-            self.message = GAME_BEGIN_CHANGE_TEXT.format(time, **vars(self.game))
+            message = GAME_BEGIN_CHANGE_TEXT
+
+        self.message = message.format(time=time, enemy_team_tag=enemy_team_tag, **vars(self.game))
