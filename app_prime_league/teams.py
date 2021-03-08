@@ -12,11 +12,11 @@ from parsing.parser import TeamHTMLParser, TeamWrapper
 from prime_league_bot import settings
 
 
-def register_team(team_id, telegram_id=None):
+def register_team(team_id, communication_config=None):
     """
     Add or Update a Team, Add or Update Players, Add or Update Games. Optionally set telegram_id of the team.
     """
-    team = add_or_update_team(team_id, telegram_id)
+    team = add_or_update_team(team_id, communication_config)
     if team is not None:
         try:
             wrapper = TeamWrapper(team_id=team.id)
@@ -36,6 +36,7 @@ def register_team(team_id, telegram_id=None):
         return team
     else:
         return None
+
 
 def register_team_discord(team_id, discord_id):
     team = add_team_discord(team_id, discord_id)
@@ -82,7 +83,7 @@ def reassign_chat(team_id, tg_group_id):
     return new_team
 
 
-def add_or_update_team(team_id, tg_group_id=None):
+def add_or_update_team(team_id, communication_config: dict = None):
     try:
         wrapper = TeamWrapper(team_id=team_id)
         parser = wrapper.parser
@@ -90,46 +91,21 @@ def add_or_update_team(team_id, tg_group_id=None):
         print("Wrapper is None")
         return None
 
-    team, created = Team.objects.get_or_create(id=team_id, defaults={
+    defaults = {
         "name": parser.get_team_name(),
         "team_tag": parser.get_team_tag(),
         "division": parser.get_current_division(),
-        "telegram_id": tg_group_id,
         "logo_url": parser.get_logo(),
-    })
+    }
+    defaults = {**defaults, **communication_config}
+
+    team, created = Team.objects.get_or_create(id=team_id, defaults=defaults)
     if not created:
+        Team.objects.filter(id=team.id).update(**communication_config)
         team = update_team(parser, team_id)
-        team.telegram_id = tg_group_id
         team.save()
     return team
 
-
-def add_team_discord(team_id, discord_id):
-    if Team.objects.filter(
-            Q(id=team_id, discord_channel_id__isnull=False) |
-            Q(discord_channel_id=discord_id)).exists():
-        print("Dieser Telegramgruppe ist bereits ein Team zugewiesen.")
-        return None
-
-    try:
-        wrapper = TeamWrapper(team_id=team_id)
-        parser = wrapper.parser
-    except Exception:
-        print("Wrapper is None")
-        return None
-
-    team, created = Team.objects.get_or_create(id=team_id, defaults={
-        "name": parser.get_team_name(),
-        "team_tag": parser.get_team_tag(),
-        "division": parser.get_current_division(),
-        "discord_channel_id": discord_id,
-        "logo_url": parser.get_logo(),
-    })
-    if not created:
-        team.discord_channel_id = discord_id
-        team.logo_url = parser.get_logo()
-        team.save()
-    return team
 
 def update_team(parser: TeamHTMLParser, team_id: int):
     name = parser.get_team_name()
