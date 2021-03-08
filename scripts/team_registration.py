@@ -11,6 +11,6 @@ def run(*args):
         return
     team_id = args[0]
     tg_group_id = args[1]
-    register_team(team_id, tg_group_id)
+    register_team(team_id=team_id, telegram_id=tg_group_id)
     duration = time.time() - start_time
     print(f"Finished all in {duration} seconds")

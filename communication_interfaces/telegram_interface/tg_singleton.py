@@ -12,8 +12,7 @@ from communication_interfaces.languages.de_DE import (
 )
 from parsing.parser import LogSchedulingAutoConfirmation, LogSchedulingConfirmation, LogChangeTime
 from prime_league_bot import settings
-from utils.constants import EMOJI_THREE, EMOJI_ONE, EMOJI_TWO, EMOJI_SUCCESS, EMOJI_FIGHT, EMOJI_SOON, \
-    EMOJI_LINEUP
+from utils.constants import EMOJI_THREE, EMOJI_ONE, EMOJI_TWO, EMOJI_FIGHT
 
 emoji_numbers = [
     EMOJI_ONE,
@@ -125,7 +124,7 @@ class TelegramMessagesWrapper:
     @staticmethod
     def send_next_game_day_after_registration(game: Game):
         op_link = game.get_op_link_of_enemies(only_lineup=False)
-        text = WEEKLY_UPDATE_TEXT.format(op_link, **vars(game))
+        text = WEEKLY_UPDATE_TEXT.format(op_link, enemy_team_tag=game.enemy_team.team_tag, **vars(game))
         message = send_message(msg=text, chat_id=game.team.telegram_id)
         try:
             pin_msg(message)

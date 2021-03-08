@@ -12,11 +12,11 @@ from parsing.parser import TeamHTMLParser, TeamWrapper
 from prime_league_bot import settings
 
 
-def register_team(team_id, communication_config=None):
+def register_team(*, team_id, **kwargs):
     """
     Add or Update a Team, Add or Update Players, Add or Update Games. Optionally set telegram_id of the team.
     """
-    team = add_or_update_team(team_id, communication_config)
+    team = add_or_update_team(team_id=team_id, **kwargs)
     if team is not None:
         try:
             wrapper = TeamWrapper(team_id=team.id)
@@ -78,12 +78,12 @@ def reassign_chat(team_id, tg_group_id):
         new_team.telegram_id = tg_group_id
         new_team.save()
     except Team.DoesNotExist as e:
-        new_team = register_team(team_id, tg_group_id)
+        new_team = register_team(team_id=team_id, telegram_id=tg_group_id)
 
     return new_team
 
 
-def add_or_update_team(team_id, communication_config: dict = None):
+def add_or_update_team(*, team_id, **kwargs):
     try:
         wrapper = TeamWrapper(team_id=team_id)
         parser = wrapper.parser
@@ -97,11 +97,11 @@ def add_or_update_team(team_id, communication_config: dict = None):
         "division": parser.get_current_division(),
         "logo_url": parser.get_logo(),
     }
-    defaults = {**defaults, **communication_config}
+    defaults = {**defaults, **kwargs}
 
     team, created = Team.objects.get_or_create(id=team_id, defaults=defaults)
     if not created:
-        Team.objects.filter(id=team.id).update(**communication_config)
+        Team.objects.filter(id=team.id).update(**kwargs)
         team = update_team(parser, team_id)
         team.save()
     return team
