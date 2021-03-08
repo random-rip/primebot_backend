@@ -77,7 +77,7 @@ class TelegramBot(Bot):
         self.bot.idle()
 
     @staticmethod
-    def send_message():
+    def send_message(msg, team):
         # TODO implement Telepot code here
         pass
 

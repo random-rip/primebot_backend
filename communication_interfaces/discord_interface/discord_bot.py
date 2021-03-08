@@ -42,6 +42,6 @@ class DiscordBot(Bot):
         self.bot.run(self.token)
 
     @staticmethod
-    def send_message():
+    def send_message(msg, team):
         # TODO implement Webhook here
         pass
