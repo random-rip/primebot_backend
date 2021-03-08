@@ -1,5 +1,6 @@
 import random
 
+import discord
 from asgiref.sync import sync_to_async
 from discord.ext import commands
 
@@ -35,3 +36,10 @@ class DiscordBot:
                 await ctx.send(response)
 
         self.bot.run(self.api_key)
+
+    @staticmethod
+    def send(channel_id=756603280703881269, message="TESTd"):
+        # print(channel, message)
+        channel = client.get_channel(channel_id)
+        client = discord.Client().run(settings.DISCORD_BOT_KEY)
+        print(channel)
