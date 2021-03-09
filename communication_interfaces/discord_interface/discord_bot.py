@@ -50,21 +50,20 @@ class DiscordBot(Bot):
         @self.bot.command(name="fix", help="Erstellt den Webhook im Channel neu.", pass_context=True)
         async def fix(ctx):
             channel = ctx.message.channel
-            chat_existing = await sync_to_async(Team.objects.filter(discord_channel_id=channel.id).exists)()
-            if chat_existing:
+            team = await sync_to_async(Team.objects.filter(discord_channel_id=channel.id).first)()
+            if team is not None:
                 webhook = await _create_new_webhook(ctx)
                 if webhook is None:
                     return
-                team = await sync_to_async(Team.objects.filter(discord_channel_id=channel.id))()
-                if team is None:
-                    ctx.send("In diesem Channel ist derzeitig kein Team registriert. Bitte nutze !start <team_id>")
-                    return
                 team.discord_webhook_id = webhook.id
                 team.discord_webhook_token = webhook.token
-                team.save()
+                await sync_to_async(team.save)()
                 await ctx.send(
                     "Webhook wurde neu erstellt. Sollten weiterhin Probeleme auftreten wende dich bitte an den Support."
                 )
+            else:
+                await ctx.send("In diesem Channel ist derzeitig kein Team registriert. Bitte nutze !start <team_id>")
+                return
 
         async def _create_new_webhook(ctx):
             channel = ctx.message.channel
@@ -81,5 +80,5 @@ class DiscordBot(Bot):
 
     @staticmethod
     def send_message(msg, team):
-        # TODO implement Webhook here
+
         pass
