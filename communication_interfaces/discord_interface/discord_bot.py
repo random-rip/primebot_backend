@@ -63,6 +63,6 @@ class DiscordBot(Bot):
         self.bot.run(self.token)
 
     @staticmethod
-    def send_message(msg, team):
+    def send_message(msg, team, attach):
         # TODO implement Webhook here
         pass

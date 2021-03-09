@@ -17,5 +17,5 @@ class Bot:
 
     @staticmethod
     @abstractmethod
-    def send_message(msg, team):
+    def send_message(*, msg, team, attach):
         pass

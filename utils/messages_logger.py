@@ -1,8 +1,10 @@
 import logging
 
+from django.conf import settings
+from telegram import ParseMode
 from telegram.utils.helpers import mention_html
 
-from communication_interfaces.telegram_interface.tg_singleton import TelegramMessagesWrapper
+from communication_interfaces.telegram_interface.tg_singleton import send_message
 
 logger = logging.getLogger("commands_logger")
 
@@ -26,7 +28,7 @@ def log_command(fn):
 
         logger.info(log_text)
         try:
-            TelegramMessagesWrapper.send_command(log_text)
+            send_command_to_dev_group(log_text)
         except Exception as e:
             logger.error(e)
         return result
@@ -50,9 +52,13 @@ def log_callbacks(fn):
         )
         logger.info(log_text)
         try:
-            TelegramMessagesWrapper.send_command(log_text)
+            send_command_to_dev_group(log_text)
         except Exception as e:
             logger.error(e)
         return result
 
     return wrapper
+
+
+def send_command_to_dev_group(log):
+    send_message(msg=log, chat_id=settings.TG_DEVELOPER_GROUP, parse_mode=ParseMode.HTML)
