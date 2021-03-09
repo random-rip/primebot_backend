@@ -137,7 +137,7 @@ OWN_NEW_TIME_SUGGESTION_TEXT = "Neuer Zeitvorschlag von euch für [Spieltag {gam
 
 NEW_TIME_SUGGESTION_PREFIX = "Neuer Zeitvorschlag von [{enemy_team_tag}](" + \
                              GENERAL_TEAM_LINK + \
-                             "{enemy_team.id}) für [Spieltag {game_day}](" + \
+                             "{enemy_team_id}) für [Spieltag {game_day}](" + \
                              GENERAL_MATCH_LINK + \
                              "{game_id}):\n"
 
@@ -155,7 +155,7 @@ SCHEDULING_AUTO_CONFIRMATION_TEXT = "[{enemy_team_tag}](" + \
                                     "noch eine andere vorgeschlagen. Damit ist folgender Spieltermin bestätigt\n" + \
                                     EMOJI_FIGHT + "{time}"
 
-SCHEDULING_CONFIRMATION_TEXT = "Spielbestätigung von [{enemy_team_tag}](" + \
+SCHEDULING_CONFIRMATION_TEXT = "Spielbestätigung gegen [{enemy_team_tag}](" + \
                                GENERAL_TEAM_LINK + \
                                "{enemy_team_id}) für [Spieltag {game_day}](" + \
                                GENERAL_MATCH_LINK + \

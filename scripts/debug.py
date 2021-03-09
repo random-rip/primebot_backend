@@ -1,21 +1,17 @@
-from app_prime_league.models import Team
+from app_prime_league.models import Team, Game
 from communication_interfaces.message_dispatcher import MessageDispatcher
-from communication_interfaces.messages import WeeklyNotificationMessage, ScheduleConfirmationNotification, \
-    NewLineupNotificationMessage, OwnNewTimeSuggestionsNotificationMessage
+from communication_interfaces.messages import WeeklyNotificationMessage, NewLineupNotificationMessage
 from parsing.parser import LogSchedulingAutoConfirmation
 
 
 def main():
     team = Team.objects.get(id=125071)
-    game = team.games_against.first()
+    game = Game.objects.get(game_id=696320)
     message = WeeklyNotificationMessage(team, game)
     log = LogSchedulingAutoConfirmation("1614976397", "Janek", "None")
     # message = ScheduleConfirmationNotification(team, game, log)
-    # lineup_message = NewLineupNotificationMessage(team, game)
-    print(message.message)
-    print(message.notification_wanted())
-    print(message.can_be_pinned())
-    MessageDispatcher(team=team).dispatch(ScheduleConfirmationNotification, game=game, latest_confirmation_log=log)
+    lineup_message = NewLineupNotificationMessage(team, game)
+    MessageDispatcher(team=team).dispatch(NewLineupNotificationMessage, game=game, )
 
 
 # Command to run this file:
