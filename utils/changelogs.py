@@ -1,4 +1,5 @@
-from utils.constants import EMOJI_ONE, EMOJI_TWO, EMOJI_ARROW_RIGHT, EMOJI_POST_HORN, EMOJI_PEACE
+from utils.constants import EMOJI_ONE, EMOJI_TWO, EMOJI_ARROW_RIGHT, EMOJI_POST_HORN, EMOJI_PEACE, EMOJI_PARTY1, \
+    EMOJI_PARTY2
 
 CHANGELOGS = {
     1: {
@@ -62,6 +63,32 @@ Grayknife und Orbis
     },
     7: {
         "version": "1.13.2-beta",
-        "text": "Matches, in denen die Zeit vom einem Administrator manuell eingestellt wurde, werden nun korrekt im System gespeichert und es werden nicht mehr mehrere Benachrichtigungen dazu gesendet."
-    }
+        "text": "Matches, in denen die Zeit von einem Administrator manuell eingestellt wurde, werden nun korrekt im System gespeichert und es werden nicht mehr mehrere Benachrichtigungen dazu gesendet."
+    },
+    8: {
+        "version": "1.14.0-beta",
+        "text":
+"""
+Hallo {team.name}, 
+hier ein kurze Zusammenfassung der Neuerungen am PrimeBot.
+
+*Updates ({version}):*"""
+f"""
+{EMOJI_ONE} Der Primebot steht jetzt auch auf *Discord* zur Verfügung! {EMOJI_PARTY2} Wir möchten die letzten beiden Spieltage nutzen, mögliche Fehler bei dieser Integration zu finden und das im Rahmen einer Closed Beta. Wenn ihr also Interesse habt, schreibt uns gerne privat (@Grayknife oder @OrbisK), damit wir euch whitelisten können.
+
+*Bugfixes:*
+Ein Fehler wurde behoben, bei dem Teams eine falsche Spieltag-Benachrichtigung bekommen haben.
+Matches, in denen die Zeit von einem Administrator manuell eingestellt wurde, werden nun korrekt im System gespeichert und es werden nicht mehr mehrere Benachrichtigungen dazu gesendet.
+
+*Coming Soon:*
+{EMOJI_ONE} Pushnachrichten für neue Kommentare in ungespielten Matches
+
+Ein Hinweis für Teams aus dem *Swiss Starter*: Aufgrund der unregelmäßigen Veröffentlichung der wöhentlich neuen Matches ist es für uns nur begrenzt möglich, euch zeitnah Updates für diese Matches zu benachrichtigen. Wir arbeiten für den nächsten Split an einer Lösung.
+
+Wenn ihr keine Patchnotes erhalten wollt, deaktiviert die Einstellung in /settings {EMOJI_ARROW_RIGHT} Bot Patches.
+
+Sternige Grüße
+Grayknife und Orbis
+"""
+    },
 }
