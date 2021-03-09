@@ -61,6 +61,7 @@ class Team(models.Model):
     telegram_id = models.CharField(max_length=50, null=True, unique=True)
     discord_webhook_id = models.CharField(max_length=50, null=True, unique=True)
     discord_webhook_token = models.CharField(max_length=100, null=True)
+    discord_channel_id = models.CharField(max_length=50, unique=True, null=True)
     logo_url = models.CharField(max_length=1000, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
