@@ -4,6 +4,8 @@ import os
 from asgiref.sync import sync_to_async
 from discord.ext import commands
 
+from discord import Webhook, RequestsWebhookAdapter, Embed, Colour
+
 from app_prime_league.models import Team
 from app_prime_league.teams import register_team
 from communication_interfaces.base_bot import Bot
@@ -34,7 +36,8 @@ class DiscordBot(Bot):
                 Team.objects.filter(id=team_id_or_url, discord_webhook_id__isnull=False).exists)()
 
             if chat_existing:
-                await ctx.send("Für diesen Channel ist bereits ein Team registriert! Solltet Ihr keine Nachrichten mehr bekommen, nutzt bitte !fix")
+                await ctx.send(
+                    "Für diesen Channel ist bereits ein Team registriert! Solltet Ihr keine Nachrichten mehr bekommen, nutzt bitte !fix")
             elif team_existing:
                 await ctx.send("Dieses Team ist bereits in einem anderen Channel registriert!")
             else:
@@ -79,6 +82,8 @@ class DiscordBot(Bot):
         self.bot.run(self.token)
 
     @staticmethod
-    def send_message(msg, team):
-
-        pass
+    def send_message(*, msg: str, team, attach):
+        webhook = Webhook.partial(team.discord_webhook_id, team.discord_webhook_token, adapter=RequestsWebhookAdapter())
+        embed = Embed(description=msg, color=Colour.from_rgb(255, 255, 0))
+        webhook.send(embed=embed)
+        return

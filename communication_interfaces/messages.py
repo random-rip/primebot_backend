@@ -9,7 +9,6 @@ from communication_interfaces.languages.de_DE import WEEKLY_UPDATE_TEXT, NEW_LIN
 from communication_interfaces.telegram_interface.tg_singleton import emoji_numbers
 from parsing.parser import LogSchedulingAutoConfirmation, LogSchedulingConfirmation, LogChangeTime
 from prime_league_bot import settings
-from utils.constants import EMOJI_SOON
 
 
 def format_datetime(x):
@@ -18,21 +17,33 @@ def format_datetime(x):
 
 
 class BaseMessage:
-    def __init__(self, team: Team):
+    _key = None
+
+    def __init__(self, team: Team, **kwargs):
         self.team = team
         self.message = None
+        self._attachable = False
 
     @abstractmethod
     def _generate_message(self):
         pass
 
+    def notification_wanted(self):
+        return self.team.value_of_setting(type(self)._key)
+
+    def can_be_pinned(self):
+        return self._attachable
+
 
 class WeeklyNotificationMessage(BaseMessage):
     msg_type = "weekly_notification"
+    _key = "weekly_op_link"
+    _attachable_key = "pin_weekly_op_link"
 
     def __init__(self, team: Team, game: Game):
         super().__init__(team)
         self.game = game
+        self._attachable = self.team.value_of_setting(self._attachable_key)
         self._generate_message()
 
     def _generate_message(self):
@@ -45,6 +56,7 @@ class WeeklyNotificationMessage(BaseMessage):
 
 class NewLineupNotificationMessage(BaseMessage):
     msg_type = "new_lineup_notification"
+    _key = "lineup_op_link"
 
     def __init__(self, team: Team, game: Game):
         super().__init__(team)
@@ -61,6 +73,7 @@ class NewLineupNotificationMessage(BaseMessage):
 
 class OwnNewTimeSuggestionsNotificationMessage(BaseMessage):
     msg_type = "own_new_time_suggestion_notification"
+    _key = "scheduling_suggestion"
 
     def __init__(self, team: Team, game: Game):
         super().__init__(team)
@@ -73,6 +86,7 @@ class OwnNewTimeSuggestionsNotificationMessage(BaseMessage):
 
 class EnemyNewTimeSuggestionsNotificationMessage(BaseMessage):
     msg_type = "enemy_new_time_suggestion_notification"
+    _key = "scheduling_suggestion"
 
     def __init__(self, team: Team, game: Game):
         super().__init__(team)
@@ -94,6 +108,7 @@ class EnemyNewTimeSuggestionsNotificationMessage(BaseMessage):
 
 class ScheduleConfirmationNotification(BaseMessage):
     msg_type = "schedule_confirmation_notification"
+    _key = "scheduling_confirmation"
 
     def __init__(self, team: Team, game: Game, latest_confirmation_log):
         super().__init__(team)

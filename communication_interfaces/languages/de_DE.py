@@ -151,7 +151,7 @@ SCHEDULING_AUTO_CONFIRMATION_TEXT = "[{enemy_team_tag}](" + \
                                     GENERAL_TEAM_LINK + \
                                     "{enemy_team_id}) hat für [Spieltag {game_day}](" + \
                                     GENERAL_MATCH_LINK + \
-                                    "{game_id}) weder die vorgeschlagene Zeit angenommen," \
+                                    "{game_id}) weder die vorgeschlagene Zeit angenommen, " \
                                     "noch eine andere vorgeschlagen. Damit ist folgender Spieltermin bestätigt\n" + \
                                     EMOJI_FIGHT + "{time}"
 
