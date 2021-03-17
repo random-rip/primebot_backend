@@ -15,7 +15,6 @@ def mysql_has_gone_away_decorator(fn):
     """
 
     def wrapper(*args, **kwargs):
-        print("YUhu wir sind hieR")
         async_to_sync(mysql_has_gone_away)()
         return fn(*args, **kwargs)
 
@@ -23,8 +22,9 @@ def mysql_has_gone_away_decorator(fn):
 
 
 async def mysql_has_gone_away(*args):
+    print("YUhu wir sind hieR")
     try:
-        sync_to_async(Team.objects.exists)()
+        await sync_to_async(Team.objects.exists)()
     except django.db.utils.OperationalError as e:
         log_text = f"{e}: TRY ESTABLISH NEW CONNECTION"
         logging.getLogger("commands_logger").info(log_text)
