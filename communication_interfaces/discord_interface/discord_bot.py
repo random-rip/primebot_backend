@@ -8,7 +8,7 @@ from app_prime_league.models import Team
 from app_prime_league.teams import register_team
 from communication_interfaces.base_bot import Bot
 from communication_interfaces.languages.de_DE import WAIT_A_MOMENT_TEXT
-from communication_interfaces.utils import mysql_has_gone_away_decorator, mysql_has_gone_away
+from communication_interfaces.utils import mysql_has_gone_away
 from prime_league_bot import settings
 
 
@@ -27,8 +27,8 @@ class DiscordBot(Bot):
         )
 
     def _initialize(self):
-        @mysql_has_gone_away_decorator
         @self.bot.command(name='start', help='Team initialisieren', pass_context=True)
+        @commands.check(mysql_has_gone_away)
         async def start(ctx, team_id_or_url):
             channel = ctx.message.channel
             chat_existing = await sync_to_async(Team.objects.filter(discord_channel_id=channel.id).exists)()
@@ -53,7 +53,6 @@ class DiscordBot(Bot):
         @self.bot.command(name="fix", help="Erstellt den Webhook im Channel neu.", pass_context=True)
         @commands.check(mysql_has_gone_away)
         async def fix(ctx):
-            print("ASDASD")
             channel = ctx.message.channel
             team = await sync_to_async(Team.objects.filter(discord_channel_id=channel.id).first)()
             if team is not None:

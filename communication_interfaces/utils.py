@@ -22,7 +22,6 @@ def mysql_has_gone_away_decorator(fn):
 
 
 async def mysql_has_gone_away(*args):
-    print("YUhu wir sind hieR")
     try:
         await sync_to_async(Team.objects.exists)()
     except django.db.utils.OperationalError as e:
