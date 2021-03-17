@@ -29,6 +29,7 @@ class DiscordBot(Bot):
         )
 
     def _initialize(self):
+        @mysql_has_gone_away
         @self.bot.command(name='start', help='Team initialisieren', pass_context=True)
         async def start(ctx, team_id_or_url):
             channel = ctx.message.channel

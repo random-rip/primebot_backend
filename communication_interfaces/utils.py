@@ -13,6 +13,7 @@ def mysql_has_gone_away(fn):
     :return:
     """
     def wrapper(*args, **kwargs):
+        print("YUhu wir sind hieR")
         try:
             Team.objects.exists()
         except django.db.utils.OperationalError as e:
