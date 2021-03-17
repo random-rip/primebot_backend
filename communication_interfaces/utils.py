@@ -1,7 +1,7 @@
 import logging
 
 import django
-from asgiref.sync import async_to_sync
+from asgiref.sync import async_to_sync, sync_to_async
 from django import db
 
 from app_prime_league.models import Team
@@ -22,7 +22,7 @@ def mysql_has_gone_away_decorator(fn):
 
 async def mysql_has_gone_away(*args):
     try:
-        await Team.objects.exists()
+        sync_to_async(Team.objects.exists)()
     except django.db.utils.OperationalError as e:
         log_text = f"{e}: TRY ESTABLISH NEW CONNECTION"
         logging.getLogger("commands_logger").info(log_text)
