@@ -55,6 +55,7 @@ class DiscordBot(Bot):
         @mysql_has_gone_away
         @self.bot.command(name="fix", help="Erstellt den Webhook im Channel neu.", pass_context=True)
         async def fix(ctx):
+            print("ASDASD")
             channel = ctx.message.channel
             team = await sync_to_async(Team.objects.filter(discord_channel_id=channel.id).first)()
             if team is not None:
