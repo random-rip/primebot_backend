@@ -1,16 +1,14 @@
-import base64
 import os
 
 from asgiref.sync import sync_to_async
-from discord.ext import commands
-
 from discord import Webhook, RequestsWebhookAdapter, Embed, Colour
+from discord.ext import commands
 
 from app_prime_league.models import Team
 from app_prime_league.teams import register_team
 from communication_interfaces.base_bot import Bot
 from communication_interfaces.languages.de_DE import WAIT_A_MOMENT_TEXT
-from communication_interfaces.utils import mysql_has_gone_away
+from communication_interfaces.utils import mysql_has_gone_away_decorator, mysql_has_gone_away
 from prime_league_bot import settings
 
 
@@ -29,7 +27,7 @@ class DiscordBot(Bot):
         )
 
     def _initialize(self):
-        @mysql_has_gone_away
+        @mysql_has_gone_away_decorator
         @self.bot.command(name='start', help='Team initialisieren', pass_context=True)
         async def start(ctx, team_id_or_url):
             channel = ctx.message.channel
@@ -52,8 +50,8 @@ class DiscordBot(Bot):
                     response = f"Channel {ctx.message.channel} wurde für Team {team.name} initialisiert!"
                     await ctx.send(response)
 
-        @mysql_has_gone_away
         @self.bot.command(name="fix", help="Erstellt den Webhook im Channel neu.", pass_context=True)
+        @commands.check(mysql_has_gone_away)
         async def fix(ctx):
             print("ASDASD")
             channel = ctx.message.channel

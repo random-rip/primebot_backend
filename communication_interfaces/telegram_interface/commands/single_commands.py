@@ -12,7 +12,7 @@ from communication_interfaces.languages.de_DE import (
     HELP_COMMAND_LIST, ISSUE, TEAM_NOT_IN_DB_TEXT, PHOTO_SUCESS_TEXT, PHOTO_ERROR_TEXT, HELP_TEXT, FEEDBACK,
     EXPLAIN_TEXT, CANCEL
 )
-from communication_interfaces.utils import mysql_has_gone_away
+from communication_interfaces.utils import mysql_has_gone_away_decorator
 from prime_league_bot.settings import STORAGE_DIR
 from utils.changelogs import CHANGELOGS
 from utils.messages_logger import log_command, logger
@@ -44,7 +44,7 @@ def set_photo(chat_id, context: CallbackContext, url):
 
 # /set_logo
 @log_command
-@mysql_has_gone_away
+@mysql_has_gone_away_decorator
 def set_logo(update: Update, context: CallbackContext):
     chat_id = update.message.chat.id
     if not Team.objects.filter(telegram_id=chat_id).exists():
