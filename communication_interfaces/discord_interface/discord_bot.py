@@ -30,7 +30,6 @@ class DiscordBot(Bot):
 
     def _initialize(self):
         @self.bot.command(name='start', help='Team initialisieren', pass_context=True)
-        @mysql_has_gone_away
         async def start(ctx, team_id_or_url):
             channel = ctx.message.channel
             chat_existing = await sync_to_async(Team.objects.filter(discord_channel_id=channel.id).exists)()
@@ -52,8 +51,8 @@ class DiscordBot(Bot):
                     response = f"Channel {ctx.message.channel} wurde für Team {team.name} initialisiert!"
                     await ctx.send(response)
 
-        @self.bot.command(name="fix", help="Erstellt den Webhook im Channel neu.", pass_context=True)
         @mysql_has_gone_away
+        @self.bot.command(name="fix", help="Erstellt den Webhook im Channel neu.", pass_context=True)
         async def fix(ctx):
             channel = ctx.message.channel
             team = await sync_to_async(Team.objects.filter(discord_channel_id=channel.id).first)()
