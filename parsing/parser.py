@@ -149,6 +149,10 @@ class MatchHTMLParser(BaseHTMLParser):
         for log in self.logs:
             if isinstance(log, BaseGameIsOverLog):
                 return True
+            if isinstance(log, LogChangeStatus) and log.details == "finished":
+                return True
+        if len([x for x in self.logs if isinstance(x, LogScoreReport)]) == 2:
+            return True
         return False
 
     def get_game_result(self):
@@ -247,6 +251,10 @@ class BaseLog:
             return LogLineupNotReady(*log)
         elif action == "change_time":
             return LogChangeTime(*log)
+        elif action == "change_status":
+            return LogChangeStatus(*log)
+        elif action == "change_score":
+            return LogChangeScore(*log)
         return None
 
 
@@ -295,6 +303,35 @@ class LogLineupNotReady(BaseGameIsOverLog):
 
 class LogDisqualified(BaseGameIsOverLog):
 
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+
+
+class LogChangeStatus(BaseLog):
+    """
+    self.details can currently be "finished" (Stand 21.03.2021)
+    """
+
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+        prefix = "Manually adjusted status to "
+        self.details = self.details[0][len(prefix):]
+
+
+class LogChangeScore(BaseLog):
+    """
+    Currently deprecated
+    """
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+        prefix = "Manually adjusted score to "
+        self.details = self.details[0][len(prefix):]
+
+
+class LogScoreReport(BaseLog):
+    """
+    Currently deprecated
+    """
     def __init__(self, timestamp, user, details):
         super().__init__(timestamp, user, details)
 

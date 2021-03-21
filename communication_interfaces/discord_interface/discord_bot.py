@@ -63,7 +63,7 @@ class DiscordBot(Bot):
                 team.discord_webhook_token = webhook.token
                 await sync_to_async(team.save)()
                 await ctx.send(
-                    "Webhook wurde neu erstellt. Sollten weiterhin Probeleme auftreten wende dich bitte an den Support."
+                    "Webhook wurde neu erstellt. Sollten weiterhin Probleme auftreten wende dich bitte an den Support."
                 )
             else:
                 await ctx.send("In diesem Channel ist derzeitig kein Team registriert. Bitte nutze !start <team_id>")
