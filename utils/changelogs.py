@@ -91,4 +91,8 @@ Sternige Grüße
 Grayknife und Orbis
 """
     },
+    9: {
+        "version": "1.14.1-beta",
+        "text": "Matches, in denen denen eigene Lobbies erstellt wurden, werden nun beim Crawling berücksichtigt."
+    },
 }

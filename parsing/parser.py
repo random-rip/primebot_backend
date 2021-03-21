@@ -255,6 +255,8 @@ class BaseLog:
             return LogChangeStatus(*log)
         elif action == "change_score":
             return LogChangeScore(*log)
+        elif action == "score_report":
+            return LogScoreReport(*log)
         return None
 
 
