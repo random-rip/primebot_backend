@@ -9,6 +9,7 @@ def main():
     pattern = log["text"]
     teams = Team.objects.get_watched_teams()
     for team in teams:
+        print(team)
         dispatcher = MessageDispatcher(team)
         msg = pattern.format(team=team, version=log["version"])
         dispatcher.dispatch_raw_message(msg=msg)
