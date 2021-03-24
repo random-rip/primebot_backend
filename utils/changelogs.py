@@ -95,4 +95,22 @@ Grayknife und Orbis
         "version": "1.14.1-beta",
         "text": "Matches, in denen denen eigene Lobbies erstellt wurden, werden nun beim Crawling berücksichtigt."
     },
+    10: {
+        "version": "1.14.2-beta",
+        "text":
+"""
+Hallo {team.name}, 
+
+die Gruppenphase des aktuellen PrimeLeague-Splits ist vorbei und damit geht der Primebot bis zum nächsten Split in eine kurze Pause.
+Die Tiebreakerspiele, die diese Woche noch stattfinden, werden von unserem Bot (noch) *nicht* berücksichtigt.
+
+Wir sammeln in der Pause fleißig Feedback zum Bot, zu seinen Funktionalitäten und zur Discordintegration. 🏆
+Aus dem Grund freuen wir uns, wenn ihr uns Feedback in diesem [PL Forenpost](https://www.primeleague.gg/de/forums/1418-league-of-legends/1469-off-topic/637268) oder uns privat gebt.  
+
+Wir haben auf jeden Fall Bock neue geile Features zu entwickeln! 🔥
+
+Sternige Grüße
+Grayknife und Orbis
+"""
+    },
 }

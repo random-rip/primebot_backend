@@ -24,3 +24,7 @@ class MessageDispatcher:
             return
         for bot in self.bots:
             bot.send_message(msg=msg.message, team=self.team, attach=msg.can_be_pinned())
+
+    def dispatch_raw_message(self, msg, **kwargs):
+        for bot in self.bots:
+            bot.send_message(msg=msg, team=self.team, attach=False)
