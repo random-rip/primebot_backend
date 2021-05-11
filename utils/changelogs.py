@@ -113,4 +113,20 @@ Sternige Grüße
 Grayknife und Orbis
 """
     },
+    11: {
+        "version": "1.15-beta",
+        "text":
+"""
+Hallo {team.name}, 
+"""
+f"""
+die Anmeldung für den [Summer Split 2021](https://www.primeleague.gg/de/leagues/prm/2126-summer-split-2021) hat begonnen, also let´s go!
+Mit dem Primebot startet ihr perfekt in den kommenden Split, ohne dass ihr jemals wieder etwas verpasst. 😱
+Übrigens gibt es den Primebot jetzt auch als 🔥[Discord-Bot](https://discord.com/api/oauth2/authorize?client_id=***REMOVED***&permissions=536964096&scope=bot)🔥. Nachdem ihr den Bot zum Server hinzugefügt habt, gebt einfach in einem Channel eurer Wahl `!start <TEAM-LINK>` ein. Falls ihr Hilfe benötigt, schreibt uns gerne direkt an.
+
+Sternige Grüße
+Grayknife und Orbis
+
+"""
+    }
 }
