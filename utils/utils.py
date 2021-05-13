@@ -27,7 +27,7 @@ def timestamp_to_datetime(x):
 
 
 def current_game_day():
-    start_date = datetime(2021, 2, 1).astimezone(pytz.timezone("Europe/Berlin"))
+    start_date = datetime(2021, 6, 7).astimezone(pytz.timezone("Europe/Berlin"))
     current_date = datetime.now().astimezone(pytz.timezone("Europe/Berlin"))
     game_day = ((current_date - start_date) / 7).days + 1
     return game_day
