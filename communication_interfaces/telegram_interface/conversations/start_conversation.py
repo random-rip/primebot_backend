@@ -13,10 +13,10 @@ from communication_interfaces.telegram_interface.commands.single_commands import
 from communication_interfaces.telegram_interface.keyboards import boolean_keyboard
 from communication_interfaces.telegram_interface.tg_singleton import TelegramMessagesWrapper
 from communication_interfaces.utils import mysql_has_gone_away_decorator
+from utils.exceptions import CouldNotParseURLException
 from utils.messages_logger import log_command, log_callbacks
-
-
 # TODO not used yet?
+from utils.utils import get_valid_team_id
 
 
 def chat_reassignment(update: Update, context: CallbackContext):
@@ -55,20 +55,6 @@ def chat_reassignment(update: Update, context: CallbackContext):
         text=f"{TEAM_ID_VALID}*{new_team.name}*\n{REGISTRATION_FINISH}",
     )
     return ConversationHandler.END
-
-
-def get_valid_team_id(response, update: Update):
-    try:
-        team_id = int(response)
-    except Exception as e:
-        try:
-            team_id = int(response.split("/teams/")[-1].split("-")[0])
-        except Exception as e:
-            update.message.reply_markdown(
-                TEAM_ID_NOT_VALID_TEXT,
-            )
-            return None
-    return team_id
 
 
 def just_wait_a_moment(chat_id, context: CallbackContext):
@@ -134,8 +120,12 @@ def team_has_chat_id(team_id):
 @log_command
 @mysql_has_gone_away_decorator
 def team_registration(update: Update, context: CallbackContext):
-    team_id = get_valid_team_id(update.message.text, update)
-    if team_id is None:
+    try:
+        team_id = get_valid_team_id(update.message.text)
+    except CouldNotParseURLException:
+        update.message.reply_markdown(
+            TEAM_ID_NOT_VALID_TEXT,
+        )
         return 1
     chat_id = get_chat_id(update)
     just_wait_a_moment(chat_id, context)

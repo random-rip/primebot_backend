@@ -62,3 +62,20 @@ def log_callbacks(fn):
 
 def send_command_to_dev_group(log):
     send_message(msg=log, chat_id=settings.TG_DEVELOPER_GROUP, parse_mode=ParseMode.HTML)
+
+
+async def log_from_discord(ctx):
+    channel = ctx.message.channel
+    author = ctx.message.author
+    content = ctx.message.content
+    log_text = (
+        f"DISCORD Channel: {channel.name} ({channel.id}) (User={author.name}#{author.discriminator}), "
+        f"CommandMessage='{content}', "
+        f"Servername='{author.guild.name}' ({author.guild.id}): {author.guild.member_count} Members."
+    )
+    logger.info(log_text)
+    try:
+        send_command_to_dev_group(log_text)
+    except Exception as e:
+        logger.error(e)
+    return True
