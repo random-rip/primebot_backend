@@ -1,8 +1,12 @@
 import os
 import re
+from io import BytesIO
 
+import aiohttp
+import discord
+import requests
 from asgiref.sync import sync_to_async
-from discord import Webhook, RequestsWebhookAdapter, Embed, Colour, Role
+from discord import Webhook, RequestsWebhookAdapter, Embed, Colour
 from discord.ext import commands
 
 from app_prime_league.models import Team
@@ -25,20 +29,25 @@ class DiscordBot(Bot):
     """
 
     def __init__(self):
+        help_command = commands.DefaultHelpCommand(
+            no_category='Commands'
+        )
+
         super().__init__(
             bot=commands.Bot,
             bot_config={
                 "token": settings.DISCORD_BOT_KEY,
-                "command_prefix": '!'
+                "command_prefix": '!',
+                "description": LanguagePack.DC_DESCRIPTION,
+                "help_command": help_command
             },
         )
 
     def _initialize(self):
-        @self.bot.command(name='start', help=LanguagePack.DC_HELP_TEXT_START, pass_context=True)
+        @self.bot.command(name='start', help=LanguagePack.DC_HELP_TEXT_START, pass_context=True, )
         @commands.check(mysql_has_gone_away)
         @commands.check(log_from_discord)
-        async def start(ctx, team_id_or_url):
-
+        async def start(ctx, team_id_or_url=None):
             try:
                 team_id = get_valid_team_id(team_id_or_url)
             except CouldNotParseURLException:
@@ -47,10 +56,10 @@ class DiscordBot(Bot):
                 return
 
             channel_id = ctx.message.channel.id
-            if get_registered_team_by_channel_id(channel_id=channel_id) is not None:
+            if await get_registered_team_by_channel_id(channel_id=channel_id) is not None:
                 await ctx.send(f"{LanguagePack.DC_CHANNEL_IN_USE} {LanguagePack.DC_USE_FIX}")
                 return
-            if get_registered_team_by_team_id(team_id) is not None:
+            if await get_registered_team_by_team_id(team_id) is not None:
                 await ctx.send(LanguagePack.DC_TEAM_IN_USE)
                 return
 
@@ -59,9 +68,10 @@ class DiscordBot(Bot):
                 # TODO: hier gibt es noch keine Meldung an den User
                 return
             await ctx.send(LanguagePack.WAIT_A_MOMENT_TEXT)
-            team = await sync_to_async(
-                register_team)(team_id=team_id, discord_webhook_id=webhook.id,
-                               discord_webhook_token=webhook.token, discord_channel_id=channel_id)
+            async with ctx.typing():
+                team = await sync_to_async(
+                    register_team)(team_id=team_id, discord_webhook_id=webhook.id,
+                                   discord_webhook_token=webhook.token, discord_channel_id=channel_id)
             response = LanguagePack.DC_REGISTRATION_FINISH.format(team_name=team.name)
             await ctx.send(response)
 
@@ -74,16 +84,15 @@ class DiscordBot(Bot):
             if team is None:
                 await ctx.send(LanguagePack.DC_CHANNEL_NOT_INITIALIZED)
                 return
-
-            webhook = await _create_new_webhook(ctx)
-            if webhook is None:
-                # TODO: hier gibt es noch keine Meldung an den User
-                return
-            team.discord_webhook_id = webhook.id
-            team.discord_webhook_token = webhook.token
-            await sync_to_async(team.save)()
+            async with ctx.typing():
+                webhook = await _create_new_webhook(ctx)
+                if webhook is None:
+                    # TODO: hier gibt es noch keine Meldung an den User
+                    return
+                team.discord_webhook_id = webhook.id
+                team.discord_webhook_token = webhook.token
+                await sync_to_async(team.save)()
             await ctx.send(LanguagePack.DC_WEBHOOK_RECREATED)
-            return
 
         @self.bot.command(name="role", help=LanguagePack.DC_HELP_TEXT_ROLE, pass_context=True)
         @commands.check(mysql_has_gone_away)
@@ -107,22 +116,18 @@ class DiscordBot(Bot):
                 return
             team.discord_role_id = role.id
             await sync_to_async(team.save)()
-            await ctx.send(f"{role.mention} Yo hier du geiler Babo")
-            return
+            await ctx.send(LanguagePack.DC_SET_ROLE.format(role_name=role.name))
 
-        @self.bot.command(name="bop", help=None, pass_context=True)
-        @commands.check(mysql_has_gone_away)
+        @self.bot.command(name="bop", help=LanguagePack.DC_HELP_TEXT_BOP, pass_context=True)
         @commands.check(log_from_discord)
         async def bop(ctx):
-            channel_id = ctx.message.channel.id
-            team = await get_registered_team_by_channel_id(channel_id=channel_id)
-            if team is None:
-                await ctx.send(LanguagePack.DC_CHANNEL_NOT_INITIALIZED)
-                return
-
-            embed = Embed(description="TEST 123", color=Colour.from_rgb(255, 255, 0))
-            await ctx.send(
-                **await sync_to_async(create_msg_arguments)(discord_role_id=team.discord_role_id, embed=embed))
+            contents = requests.get('https://random.dog/woof.json').json()
+            url = contents['url']
+            async with ctx.typing():
+                async with aiohttp.ClientSession() as session:
+                    async with session.get(url) as resp:
+                        buffer = BytesIO(await resp.read())
+            await ctx.send(file=discord.File(fp=buffer, filename="dog.png"))
 
         async def _create_new_webhook(ctx):
             channel = ctx.message.channel
@@ -162,20 +167,6 @@ class DiscordBot(Bot):
                     return i
             return None
 
-        def mask_mention(discord_role_id):
-            if discord_role_id is None:
-                return None
-            return f"{MENTION_PREFIX}{discord_role_id}{MENTION_POSTFIX}"
-
-        def mask_message_with_mention(*, discord_role_id, message: str):
-            return f"{mask_mention(discord_role_id)} {message}" if discord_role_id is not None else message
-
-        def create_msg_arguments(*, discord_role_id, **kwargs):
-            arguments = kwargs
-            if discord_role_id is not None:
-                arguments["content"] = mask_mention(discord_role_id)
-            return arguments
-
     def run(self):
         self.bot.run(self.token)
 
@@ -183,5 +174,21 @@ class DiscordBot(Bot):
     def send_message(*, msg: str, team, attach):
         webhook = Webhook.partial(team.discord_webhook_id, team.discord_webhook_token, adapter=RequestsWebhookAdapter())
         embed = Embed(description=msg, color=Colour.from_rgb(255, 255, 0))
-        webhook.send(**team.create_msg_arguments(discord_role_id=team.discord_role_id, embed=embed))
-        return
+        webhook.send(**DiscordBot.create_msg_arguments(discord_role_id=team.discord_role_id, embed=embed))
+
+    @staticmethod
+    def mask_mention(discord_role_id):
+        if discord_role_id is None:
+            return None
+        return f"{MENTION_PREFIX}{discord_role_id}{MENTION_POSTFIX}"
+
+    @staticmethod
+    def mask_message_with_mention(*, discord_role_id, message: str):
+        return f"{DiscordBot.mask_mention(discord_role_id)} {message}" if discord_role_id is not None else message
+
+    @staticmethod
+    def create_msg_arguments(*, discord_role_id, **kwargs):
+        arguments = kwargs
+        if discord_role_id is not None:
+            arguments["content"] = DiscordBot.mask_mention(discord_role_id)
+        return arguments
