@@ -1,18 +1,22 @@
 import os
+import re
 
 from asgiref.sync import sync_to_async
-from discord import Webhook, RequestsWebhookAdapter, Embed, Colour
+from discord import Webhook, RequestsWebhookAdapter, Embed, Colour, Role
 from discord.ext import commands
 
 from app_prime_league.models import Team
 from app_prime_league.teams import register_team
 from communication_interfaces.base_bot import Bot
-from communication_interfaces.languages.de_DE import WAIT_A_MOMENT_TEXT
+from communication_interfaces.languages import de_DE as LanguagePack
 from communication_interfaces.utils import mysql_has_gone_away
 from prime_league_bot import settings
 from utils.exceptions import CouldNotParseURLException
 from utils.messages_logger import log_from_discord
 from utils.utils import get_valid_team_id
+
+MENTION_PREFIX = "<@&"
+MENTION_POSTFIX = ">"
 
 
 class DiscordBot(Bot):
@@ -30,7 +34,7 @@ class DiscordBot(Bot):
         )
 
     def _initialize(self):
-        @self.bot.command(name='start', help='Registers new team (Format: !start <TEAM_ID oder TEAM_URL>)', pass_context=True)
+        @self.bot.command(name='start', help=LanguagePack.DC_HELP_TEXT_START, pass_context=True)
         @commands.check(mysql_has_gone_away)
         @commands.check(log_from_discord)
         async def start(ctx, team_id_or_url):
@@ -39,70 +43,86 @@ class DiscordBot(Bot):
                 team_id = get_valid_team_id(team_id_or_url)
             except CouldNotParseURLException:
                 await ctx.send(
-                    "Aus dem Übergabeparameter konnte keine ID gefunden werden. (Format !start <TEAM_ID oder TEAM_URL>)")
+                    LanguagePack.DC_TEAM_ID_NOT_VALID)
                 return
 
-            channel = ctx.message.channel
-            chat_existing = await sync_to_async(Team.objects.filter(discord_channel_id=channel.id).exists)()
-            team_existing = await sync_to_async(
-                Team.objects.filter(id=team_id, discord_webhook_id__isnull=False).exists)()
+            channel_id = ctx.message.channel.id
+            if get_registered_team_by_channel_id(channel_id=channel_id) is not None:
+                await ctx.send(f"{LanguagePack.DC_CHANNEL_IN_USE} {LanguagePack.DC_USE_FIX}")
+                return
+            if get_registered_team_by_team_id(team_id) is not None:
+                await ctx.send(LanguagePack.DC_TEAM_IN_USE)
+                return
 
-            if chat_existing:
-                await ctx.send(
-                    "Für diesen Channel ist bereits ein Team registriert! Solltet Ihr keine Nachrichten mehr bekommen, nutzt bitte !fix.")
-                return
-            if team_existing:
-                await ctx.send("Dieses Team ist bereits in einem anderen Channel registriert!")
-                return
             webhook = await _create_new_webhook(ctx)
-            if webhook is not None:
-                await ctx.send(WAIT_A_MOMENT_TEXT)
-                team = await sync_to_async(
-                    register_team)(team_id=team_id, discord_webhook_id=webhook.id,
-                                   discord_webhook_token=webhook.token, discord_channel_id=channel.id)
-                response = f"Channel {ctx.message.channel} wurde für Team {team.name} initialisiert!"
-                await ctx.send(response)
+            if webhook is None:
+                # TODO: hier gibt es noch keine Meldung an den User
+                return
+            await ctx.send(LanguagePack.WAIT_A_MOMENT_TEXT)
+            team = await sync_to_async(
+                register_team)(team_id=team_id, discord_webhook_id=webhook.id,
+                               discord_webhook_token=webhook.token, discord_channel_id=channel_id)
+            response = LanguagePack.DC_REGISTRATION_FINISH.format(team_name=team.name)
+            await ctx.send(response)
 
-        @self.bot.command(name="fix", help="Recreates the notifications webhook", pass_context=True)
+        @self.bot.command(name="fix", help=LanguagePack.DC_HELP_TEXT_FIX, pass_context=True)
         @commands.check(mysql_has_gone_away)
         @commands.check(log_from_discord)
         async def fix(ctx):
             channel = ctx.message.channel
-            team = await sync_to_async(Team.objects.filter(discord_channel_id=channel.id).first)()
-            if team is not None:
-                webhook = await _create_new_webhook(ctx)
-                if webhook is None:
-                    return
-                team.discord_webhook_id = webhook.id
-                team.discord_webhook_token = webhook.token
-                await sync_to_async(team.save)()
-                await ctx.send(
-                    "Webhook wurde neu erstellt. Sollten weiterhin Probleme auftreten, wendet euch bitte an den Support."
-                )
-            else:
-                await ctx.send("In diesem Channel ist derzeitig kein Team registriert. Benutzt dafür !start <TEAM_ID oder TEAM_URL>")
+            team = await get_registered_team_by_channel_id(channel_id=channel.id)
+            if team is None:
+                await ctx.send(LanguagePack.DC_CHANNEL_NOT_INITIALIZED)
                 return
 
-        @self.bot.command(name="role", help="Set or unset role to mention it in notifications", pass_context=True)
+            webhook = await _create_new_webhook(ctx)
+            if webhook is None:
+                # TODO: hier gibt es noch keine Meldung an den User
+                return
+            team.discord_webhook_id = webhook.id
+            team.discord_webhook_token = webhook.token
+            await sync_to_async(team.save)()
+            await ctx.send(LanguagePack.DC_WEBHOOK_RECREATED)
+            return
+
+        @self.bot.command(name="role", help=LanguagePack.DC_HELP_TEXT_ROLE, pass_context=True)
         @commands.check(mysql_has_gone_away)
+        @commands.check(log_from_discord)
         async def set_role(ctx, role_name=None):
-            # TODO: Check ob team initialisiert etc.
+
+            channel_id = ctx.message.channel.id
+            team = await get_registered_team_by_channel_id(channel_id=channel_id)
+            if team is None:
+                await ctx.send(LanguagePack.DC_CHANNEL_NOT_INITIALIZED)
+                return
             if role_name is None:
-                #TODO unset für Team
+                team.discord_role_id = None
+                await sync_to_async(team.save)()
+                await ctx.send(LanguagePack.DC_ROLE_MENTION_REMOVED)
                 return
 
-            roles = ctx.message.author.guild.roles
-            role = None
-            for i in roles:
-                if i.name == role_name:
-                    role = i
-                    break
+            role = await parse_role(role_name, roles=ctx.message.author.guild.roles)
             if role is None:
-                # TODO Role not found on server
+                await ctx.send(LanguagePack.DC_ROLE_NOT_FOUND.format(role_name=role_name))
                 return
-            # TODO role.mention speichern
+            team.discord_role_id = role.id
+            await sync_to_async(team.save)()
             await ctx.send(f"{role.mention} Yo hier du geiler Babo")
             return
+
+        @self.bot.command(name="bop", help=None, pass_context=True)
+        @commands.check(mysql_has_gone_away)
+        @commands.check(log_from_discord)
+        async def bop(ctx):
+            channel_id = ctx.message.channel.id
+            team = await get_registered_team_by_channel_id(channel_id=channel_id)
+            if team is None:
+                await ctx.send(LanguagePack.DC_CHANNEL_NOT_INITIALIZED)
+                return
+
+            embed = Embed(description="TEST 123", color=Colour.from_rgb(255, 255, 0))
+            await ctx.send(
+                **await sync_to_async(create_msg_arguments)(discord_role_id=team.discord_role_id, embed=embed))
 
         async def _create_new_webhook(ctx):
             channel = ctx.message.channel
@@ -114,12 +134,54 @@ class DiscordBot(Bot):
             webhook = await channel.create_webhook(name="PrimeBot", avatar=avatar)
             return webhook
 
+        async def get_registered_team_by_channel_id(channel_id):
+            """
+
+            :param channel_id: Integer
+            :return: Instance of class Team or None
+            """
+            return await sync_to_async(Team.objects.filter(discord_channel_id=channel_id).first)()
+
+        async def get_registered_team_by_team_id(team_id):
+            """
+
+            :param team_id: Integer
+            :return: Instance of class Team or None
+            """
+            return await sync_to_async(Team.objects.filter(id=team_id, discord_webhook_id__isnull=False).first)()
+
+        async def parse_role(value, roles):
+            match = re.match(pattern=f"{MENTION_PREFIX}(?P<role_id>[0-9]*){MENTION_POSTFIX}", string=value)
+            if match is not None:
+                role_id = int(match.group('role_id'))
+                for i in roles:
+                    if i.id == role_id:
+                        return i
+            for i in roles:
+                if i.name == value:
+                    return i
+            return None
+
+        def mask_mention(discord_role_id):
+            if discord_role_id is None:
+                return None
+            return f"{MENTION_PREFIX}{discord_role_id}{MENTION_POSTFIX}"
+
+        def mask_message_with_mention(*, discord_role_id, message: str):
+            return f"{mask_mention(discord_role_id)} {message}" if discord_role_id is not None else message
+
+        def create_msg_arguments(*, discord_role_id, **kwargs):
+            arguments = kwargs
+            if discord_role_id is not None:
+                arguments["content"] = mask_mention(discord_role_id)
+            return arguments
+
     def run(self):
         self.bot.run(self.token)
 
     @staticmethod
     def send_message(*, msg: str, team, attach):
         webhook = Webhook.partial(team.discord_webhook_id, team.discord_webhook_token, adapter=RequestsWebhookAdapter())
-        embed = Embed(description=f"@Primeleague  Notifications {msg}", color=Colour.from_rgb(255, 255, 0))
-        webhook.send(embed=embed)
+        embed = Embed(description=msg, color=Colour.from_rgb(255, 255, 0))
+        webhook.send(**team.create_msg_arguments(discord_role_id=team.discord_role_id, embed=embed))
         return

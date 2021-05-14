@@ -204,3 +204,24 @@ EXPLAIN_TEXT = "Dieser Bot ist nicht in Kooperation mit der PrimeLeague bzw. der
 
 CLOSE = "Schließen"
 CURRENTLY = "Derzeitig"
+
+DC_TEAM_ID_NOT_VALID = "Aus dem Übergabeparameter konnte keine ID gefunden werden. " \
+                       "(Format `!start <TEAM_ID oder TEAM_URL>`)"
+DC_CHANNEL_IN_USE = "Für diesen Channel ist bereits ein Team registriert."
+DC_TEAM_IN_USE = "Dieses Team ist bereits in einem anderen Channel registriert."
+DC_REGISTRATION_FINISH = "Perfekt, dieser Channel wurde für Team {team_name} initialisiert."
+DC_USE_FIX = "Wenn keine Notifications mehr in dem Channel ankommen, benutze bitte `!fix`."
+
+DC_WEBHOOK_RECREATED = "Webhook wurde neu erstellt. Sollten weiterhin Probleme auftreten, " \
+                       "wende dich bitte an den Support."
+DC_CHANNEL_NOT_INITIALIZED = "In diesem Channel ist derzeitig kein Team registriert. " \
+                             "Benutze dafür `!start <TEAM_ID oder TEAM_URL>`"
+DC_ROLE_MENTION_REMOVED = "Alles klar, ich habe die Rollenerwähnung entfernt. " \
+                          "Du kannst sie bei Bedarf wieder einschalten, benutze dazu einfach `!role <ROLE_NAME>`."
+DC_ROLE_NOT_FOUND = "Die Rolle {role_name} habe ich nicht gefunden. Stelle sicher, dass diese Rolle existiert."
+
+###
+DC_HELP_TEXT_START = "Registers new team (Format: !start <TEAM_ID oder TEAM_URL>)"
+DC_HELP_TEXT_FIX = "Recreates the notifications webhook"
+DC_HELP_TEXT_ROLE = "Set or unset role to mention it in notifications"
+DC_HELP_TEXT_BOP = "Whats boppin'?"
