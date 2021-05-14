@@ -223,7 +223,7 @@ DC_SET_ROLE = "Okay, ich informiere die Rolle **@{role_name}** ab jetzt bei neue
 ###
 DC_HELP_TEXT_START = "Registers new team (Format: !start <TEAM_ID oder TEAM_URL>)"
 DC_HELP_TEXT_FIX = "Recreates the notifications webhook"
-DC_HELP_TEXT_ROLE = "Set or unset role to mention it in notifications"
+DC_HELP_TEXT_ROLE = "Set role to mention it in notifications. To unset the role just type !role without any parameter"
 DC_HELP_TEXT_BOP = "Whats boppin'?"
 DC_DESCRIPTION = "Dieser Bot ist nicht in Kooperation mit der PrimeLeague bzw. der Freaks4u Gaming GmbH entstanden " \
                  "und hat damit keinen direkten Bezug zur PrimeLeague. " \

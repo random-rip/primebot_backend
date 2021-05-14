@@ -128,5 +128,20 @@ Sternige Grüße
 Grayknife und Orbis
 
 """
+    },
+12: {
+        "version": "1.15.1-beta",
+        "text":
+"""
+Hallo {team.name}, 
+"""
+f"""
+neben einem Hotfix für den 🔥Discord-Bot🔥 gibt es jetzt auch für diesen die Möglichkeit eine Gruppe anzugeben, sodass diese bei Benachrichtungen erwähnt wird.
+Das ganze kann auf Discord mit `!role <ROLE_NAME>` gesetzt werden.
+
+Sternige Grüße
+Grayknife und Orbis
+
+"""
     }
 }
