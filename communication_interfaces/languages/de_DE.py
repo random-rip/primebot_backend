@@ -209,7 +209,9 @@ DC_TEAM_ID_NOT_VALID = "Aus dem Übergabeparameter konnte keine ID gefunden werd
                        "(Format `!start <TEAM_ID oder TEAM_URL>`)"
 DC_CHANNEL_IN_USE = "Für diesen Channel ist bereits ein Team registriert."
 DC_TEAM_IN_USE = "Dieses Team ist bereits in einem anderen Channel registriert."
-DC_REGISTRATION_FINISH = "Perfekt, dieser Channel wurde für Team {team_name} initialisiert."
+DC_REGISTRATION_FINISH = "Perfekt, dieser Channel wurde für Team {team_name} initialisiert. " \
+                         "Wenn du möchtest, kannst du mit !role <ROLE_NAME> noch eine Rolle benennen, " \
+                         "die bei Benachrichtigungen erwähnt werden soll."
 DC_USE_FIX = "Wenn keine Notifications mehr in dem Channel ankommen, benutze bitte `!fix`."
 
 DC_WEBHOOK_RECREATED = "Webhook wurde neu erstellt. Sollten weiterhin Probleme auftreten, " \
