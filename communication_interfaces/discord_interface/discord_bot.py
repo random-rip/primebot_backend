@@ -65,6 +65,7 @@ class DiscordBot(Bot):
 
             webhook = await _create_new_webhook(ctx)
             if webhook is None:
+                await ctx.send(LanguagePack.DC_NO_PERMISSIONS_FOR_WEBHOOK)
                 # TODO: hier gibt es noch keine Meldung an den User
                 return
             await ctx.send(LanguagePack.WAIT_A_MOMENT_TEXT)
@@ -87,7 +88,7 @@ class DiscordBot(Bot):
             async with ctx.typing():
                 webhook = await _create_new_webhook(ctx)
                 if webhook is None:
-                    # TODO: hier gibt es noch keine Meldung an den User
+                    await ctx.send(LanguagePack.DC_NO_PERMISSIONS_FOR_WEBHOOK)
                     return
                 team.discord_webhook_id = webhook.id
                 team.discord_webhook_token = webhook.token
@@ -121,8 +122,8 @@ class DiscordBot(Bot):
         @self.bot.command(name="bop", help=LanguagePack.DC_HELP_TEXT_BOP, pass_context=True)
         @commands.check(log_from_discord)
         async def bop(ctx):
-            contents = requests.get('https://random.dog/woof.json').json()
-            url = contents['url']
+            contents = requests.get('https://dog.ceo/api/breeds/image/random').json()
+            url = contents['message']
             async with ctx.typing():
                 async with aiohttp.ClientSession() as session:
                     async with session.get(url) as resp:
@@ -131,12 +132,16 @@ class DiscordBot(Bot):
 
         async def _create_new_webhook(ctx):
             channel = ctx.message.channel
-            webhooks = [x for x in await channel.webhooks() if settings.DISCORD_APP_CLIENT_ID == x.user.id]
-            for webhook in webhooks:
-                await webhook.delete()
-            with open(os.path.join(settings.BASE_DIR, "documents", "primebot_logo.jpg"), "rb") as image_file:
-                avatar = image_file.read()
-            webhook = await channel.create_webhook(name="PrimeBot", avatar=avatar)
+            try:
+                webhooks = [x for x in await channel.webhooks() if settings.DISCORD_APP_CLIENT_ID == x.user.id]
+                with open(os.path.join(settings.BASE_DIR, "documents", "primebot_logo.jpg"), "rb") as image_file:
+                    avatar = image_file.read()
+                webhook = await channel.create_webhook(name="PrimeBot", avatar=avatar)
+                for webhook in webhooks:
+                    await webhook.delete()
+            except Exception as e:
+                await log_from_discord(ctx, optional=f"{e}")
+                return None
             return webhook
 
         async def get_registered_team_by_channel_id(channel_id):

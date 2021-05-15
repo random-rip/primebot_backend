@@ -209,6 +209,10 @@ DC_TEAM_ID_NOT_VALID = "Aus dem Übergabeparameter konnte keine ID gefunden werd
                        "(Format `!start <TEAM_ID oder TEAM_URL>`)"
 DC_CHANNEL_IN_USE = "Für diesen Channel ist bereits ein Team registriert."
 DC_TEAM_IN_USE = "Dieses Team ist bereits in einem anderen Channel registriert."
+DC_NO_PERMISSIONS_FOR_WEBHOOK = "Mir fehlt die Berechtigung, Webhooks zu verwalten. " \
+                                "Bitte stelle sicher, dass ich diese Berechtigung habe. " \
+                                "Gegebenenfalls warte eine Stunde, bevor du den Befehl wieder ausführst. " \
+                                "Falls es danach noch nicht gehen sollte, wende dich bitte an den Support."
 DC_REGISTRATION_FINISH = "Perfekt, dieser Channel wurde für Team {team_name} initialisiert. " \
                          "Wenn du möchtest, kannst du mit !role <ROLE_NAME> noch eine Rolle benennen, " \
                          "die bei Benachrichtigungen erwähnt werden soll."
@@ -222,7 +226,7 @@ DC_ROLE_MENTION_REMOVED = "Alles klar, ich habe die Rollenerwähnung entfernt. "
                           "Du kannst sie bei Bedarf wieder einschalten, benutze dazu einfach `!role <ROLE_NAME>`."
 DC_ROLE_NOT_FOUND = "Die Rolle {role_name} habe ich nicht gefunden. Stelle sicher, dass diese Rolle existiert."
 DC_SET_ROLE = "Okay, ich informiere die Rolle **@{role_name}** ab jetzt bei neuen Benachrichtigungen. 📯"
-###
+
 DC_HELP_TEXT_START = "Registers new team (Format: !start <TEAM_ID oder TEAM_URL>)"
 DC_HELP_TEXT_FIX = "Recreates the notifications webhook"
 DC_HELP_TEXT_ROLE = "Set role to mention it in notifications. To unset the role just type !role without any parameter"

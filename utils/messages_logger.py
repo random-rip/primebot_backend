@@ -64,7 +64,7 @@ def send_command_to_dev_group(log):
     send_message(msg=log, chat_id=settings.TG_DEVELOPER_GROUP, parse_mode=ParseMode.HTML)
 
 
-async def log_from_discord(ctx):
+async def log_from_discord(ctx, optional=None):
     channel = ctx.message.channel
     author = ctx.message.author
     content = ctx.message.content
@@ -73,9 +73,12 @@ async def log_from_discord(ctx):
         f"CommandMessage='{content}', "
         f"Servername='{author.guild.name}' ({author.guild.id}): {author.guild.member_count} Members."
     )
+    if optional is not None:
+        log_text = f"{log_text} ==OPTIONAL: {optional}"
     logger.info(log_text)
     try:
         send_command_to_dev_group(log_text)
     except Exception as e:
         logger.error(e)
-    return True
+    finally:
+        return True

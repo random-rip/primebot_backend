@@ -68,8 +68,8 @@ def set_logo(update: Update, context: CallbackContext):
 # /bop
 @log_command
 def bop(update: Update, context: CallbackContext):
-    contents = requests.get('https://random.dog/woof.json').json()
-    url = contents['url']
+    contents = requests.get('https://dog.ceo/api/breeds/image/random').json()
+    url = contents['message']
     chat_id = update.message.chat.id
     bot = context.bot
     successful = False

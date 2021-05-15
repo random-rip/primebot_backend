@@ -1,10 +1,10 @@
 import logging
 
 import django
-from asgiref.sync import async_to_sync, sync_to_async
 from django import db
 
 from app_prime_league.models import Team
+from utils.messages_logger import send_command_to_dev_group
 
 
 def mysql_has_gone_away_decorator(fn):
@@ -15,17 +15,18 @@ def mysql_has_gone_away_decorator(fn):
     """
 
     def wrapper(*args, **kwargs):
-        async_to_sync(mysql_has_gone_away)()
+        mysql_has_gone_away()
         return fn(*args, **kwargs)
 
     return wrapper
 
 
-async def mysql_has_gone_away(*args):
+def mysql_has_gone_away(*args):
     try:
-        await sync_to_async(Team.objects.exists)()
+        Team.objects.exists()
     except django.db.utils.OperationalError as e:
         log_text = f"{e}: TRY ESTABLISH NEW CONNECTION"
+        send_command_to_dev_group(log_text)
         logging.getLogger("commands_logger").info(log_text)
         db.close_old_connections()
     finally:
