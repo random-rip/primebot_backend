@@ -128,7 +128,7 @@ class DiscordBot(Bot):
                 async with aiohttp.ClientSession() as session:
                     async with session.get(url) as resp:
                         buffer = BytesIO(await resp.read())
-            await ctx.send(file=discord.File(fp=buffer, filename="dog.png"))
+            await ctx.send(file=discord.File(fp=buffer, filename="dog.jpg"))
 
         async def _create_new_webhook(ctx):
             channel = ctx.message.channel
