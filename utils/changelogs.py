@@ -1,16 +1,15 @@
-from utils.constants import EMOJI_ONE, EMOJI_TWO, EMOJI_ARROW_RIGHT, EMOJI_POST_HORN, EMOJI_PEACE, EMOJI_PARTY1, \
-    EMOJI_PARTY2
+from utils.constants import EMOJI_ONE, EMOJI_TWO, EMOJI_ARROW_RIGHT, EMOJI_POST_HORN, EMOJI_PEACE, EMOJI_PARTY2
 
 CHANGELOGS = {
     1: {
         "version": "1.12.0-beta",
         "text":
-"""
-Hallo {team.name}, 
-hier ein kurze Zusammenfassung der letzten Änderungen am PrimeBot.
-
-*Updates ({version}):*"""
-f"""
+            """
+            Hallo {team.name}, 
+            hier ein kurze Zusammenfassung der letzten Änderungen am PrimeBot.
+            
+            *Updates ({version}):*"""
+            f"""
 {EMOJI_ONE} /reassign : Dieses Kommando ist jetzt in /start integriert. Falls ihr also ein *anderes* Team für diesen Chat registrieren möchtet, führt /start aus. 
 {EMOJI_TWO} Team-Sperre: Um ein Team in einem anderen Chat neu zu registrieren muss unter /settings {EMOJI_ARROW_RIGHT} Team-Sperre dein Team vorher freigegeben werden.
 
@@ -43,10 +42,10 @@ Sternige Grüße
     5: {
         "version": "1.13.0-beta",
         "text":
-"""
-Hallo {team.name}, 
-"""
-f"""
+            """
+            Hallo {team.name}, 
+            """
+            f"""
 der Spring Split 2021 steht in den Startlöchern und der Primebot ist natürlich wieder am Start!
 Aufgrund der erhöhten Anzahl an Teams, die den Bot jetzt benutzen, kam es in den letzten Tagen leider zu einigen Ausfällen.
 Jedes Team, welches diese Nachricht erhält, ist auf jeden Fall erfolgreich in der Datenbank hinterlegt worden. Bei Problemen oder Fragen benutzt /issue.
@@ -68,12 +67,12 @@ Grayknife und Orbis
     8: {
         "version": "1.14.0-beta",
         "text":
-"""
-Hallo {team.name}, 
-hier ein kurze Zusammenfassung der Neuerungen am PrimeBot.
-
-*Updates ({version}):*"""
-f"""
+            """
+            Hallo {team.name}, 
+            hier ein kurze Zusammenfassung der Neuerungen am PrimeBot.
+            
+            *Updates ({version}):*"""
+            f"""
 {EMOJI_ONE} Der Primebot steht jetzt auch auf *Discord* zur Verfügung! {EMOJI_PARTY2} Wir möchten die letzten beiden Spieltage nutzen, mögliche Fehler bei dieser Integration zu finden und das im Rahmen einer Closed Beta. Wenn ihr also Interesse habt, schreibt uns gerne privat (@Grayknife oder @OrbisK), damit wir euch whitelisten können.
 
 *Bugfixes:*
@@ -98,28 +97,28 @@ Grayknife und Orbis
     10: {
         "version": "1.14.2-beta",
         "text":
-"""
-Hallo {team.name}, 
-
-die Gruppenphase des aktuellen PrimeLeague-Splits ist vorbei und damit geht der Primebot bis zum nächsten Split in eine kurze Pause.
-Die Tiebreakerspiele, die diese Woche noch stattfinden, werden von unserem Bot (noch) *nicht* berücksichtigt.
-
-Wir sammeln in der Pause fleißig Feedback zum Bot, zu seinen Funktionalitäten und zur Discordintegration. 🏆
-Aus dem Grund freuen wir uns, wenn ihr uns Feedback in diesem [PL Forenpost](https://www.primeleague.gg/de/forums/1418-league-of-legends/1469-off-topic/637268) oder uns privat gebt.  
-
-Wir haben auf jeden Fall Bock neue geile Features zu entwickeln! 🔥
-
-Sternige Grüße
-Grayknife und Orbis
-"""
+            """
+            Hallo {team.name}, 
+            
+            die Gruppenphase des aktuellen PrimeLeague-Splits ist vorbei und damit geht der Primebot bis zum nächsten Split in eine kurze Pause.
+            Die Tiebreakerspiele, die diese Woche noch stattfinden, werden von unserem Bot (noch) *nicht* berücksichtigt.
+            
+            Wir sammeln in der Pause fleißig Feedback zum Bot, zu seinen Funktionalitäten und zur Discordintegration. 🏆
+            Aus dem Grund freuen wir uns, wenn ihr uns Feedback in diesem [PL Forenpost](https://www.primeleague.gg/de/forums/1418-league-of-legends/1469-off-topic/637268) oder uns privat gebt.  
+            
+            Wir haben auf jeden Fall Bock neue geile Features zu entwickeln! 🔥
+            
+            Sternige Grüße
+            Grayknife und Orbis
+            """
     },
     11: {
         "version": "1.15-beta",
         "text":
-"""
-Hallo {team.name}, 
-"""
-f"""
+            """
+            Hallo {team.name}, 
+            """
+            f"""
 die Anmeldung für den [Summer Split 2021](https://www.primeleague.gg/de/leagues/prm/2126-summer-split-2021) hat begonnen, also let´s go!
 Mit dem Primebot startet ihr perfekt in den kommenden Split, ohne dass ihr jemals wieder etwas verpasst. 😱
 Übrigens gibt es den Primebot jetzt auch als 🔥[Discord-Bot](https://discord.com/api/oauth2/authorize?client_id=***REMOVED***&permissions=536964096&scope=bot)🔥. Nachdem ihr den Bot zum Server hinzugefügt habt, gebt einfach in einem Channel eurer Wahl `!start <TEAM-LINK>` ein. Falls ihr Hilfe benötigt, schreibt uns gerne direkt an.
@@ -129,13 +128,13 @@ Grayknife und Orbis
 
 """
     },
-12: {
+    12: {
         "version": "1.15.1-beta",
         "text":
-"""
-Hallo {team.name}, 
-"""
-f"""
+            """
+            Hallo {team.name}, 
+            """
+            f"""
 neben einem Hotfix für den 🔥Discord-Bot🔥 gibt es jetzt auch für diesen die Möglichkeit eine Gruppe anzugeben, sodass diese bei Benachrichtungen erwähnt wird.
 Das ganze kann auf Discord mit `!role <ROLE_NAME>` gesetzt werden.
 
@@ -143,5 +142,9 @@ Sternige Grüße
 Grayknife und Orbis
 
 """
+    },
+    13: {
+        "version": "1.15.2-beta",
+        "text": "Add more Changelog logic"
     }
 }
