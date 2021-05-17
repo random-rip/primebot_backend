@@ -70,13 +70,13 @@ async def log_from_discord(ctx, optional=None):
     author = ctx.message.author
     content = ctx.message.content
     log_text = (
-        f"DISCORD Channel: <i>{cgi.escape(channel.name)}</i> (User={cgi.escape(author.name)}#{cgi.escape(author.discriminator)}), "
-        f"CommandMessage=<code>{content}</code>, "
-        f"Servername='{cgi.escape(author.guild.name)}' "
-        f"({cgi.escape(author.guild.id)}): {cgi.escape(author.guild.member_count)} Members."
+        f"DISCORD Channel: <i>{cgi.escape(str(channel.name))}</i> "
+        f"(User={cgi.escape(str(author.name))}#{author.discriminator}), "
+        f"CommandMessage=<code>{cgi.escape(str(content))}</code>, "
+        f"Servername=<i>{cgi.escape(str(author.guild.name))}<i>: {author.guild.member_count} Members."
     )
     if optional is not None:
-        log_text = f"{log_text} ==OPTIONAL: {cgi.escape(optional)}"
+        log_text = f"{log_text} ==OPTIONAL: <code>{cgi.escape(str(optional))}</code>"
     try:
         logger.info(log_text)
         send_command_to_dev_group(log_text)
