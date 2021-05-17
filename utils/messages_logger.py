@@ -1,3 +1,4 @@
+import cgi
 import logging
 
 from django.conf import settings
@@ -60,8 +61,8 @@ def log_callbacks(fn):
     return wrapper
 
 
-def send_command_to_dev_group(log):
-    send_message(msg=log, chat_id=settings.TG_DEVELOPER_GROUP, parse_mode=ParseMode.HTML)
+def send_command_to_dev_group(log, parse_mode=ParseMode.HTML):
+    send_message(msg=log, chat_id=settings.TG_DEVELOPER_GROUP, parse_mode=parse_mode)
 
 
 async def log_from_discord(ctx, optional=None):
@@ -69,13 +70,14 @@ async def log_from_discord(ctx, optional=None):
     author = ctx.message.author
     content = ctx.message.content
     log_text = (
-        f"DISCORD Channel: {channel.name} ({channel.id}) (User={author.name}#{author.discriminator}), "
-        f"CommandMessage='{content}', "
-        f"Servername='{author.guild.name}' ({author.guild.id}): {author.guild.member_count} Members."
+        f"DISCORD Channel: <i>{cgi.escape(channel.name)}</i> (User={cgi.escape(author.name)}#{cgi.escape(author.discriminator)}), "
+        f"CommandMessage=<code>{content}</code>, "
+        f"Servername='{cgi.escape(author.guild.name)}' "
+        f"({cgi.escape(author.guild.id)}): {cgi.escape(author.guild.member_count)} Members."
     )
     if optional is not None:
-        log_text = f"{log_text} ==OPTIONAL: {optional}"
-    logger.info(log_text)
+        log_text = f"{log_text} ==OPTIONAL: {cgi.escape(optional)}"
+    logger.info()
     try:
         send_command_to_dev_group(log_text)
     except Exception as e:
