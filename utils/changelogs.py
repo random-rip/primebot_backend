@@ -146,5 +146,9 @@ Grayknife und Orbis
     13: {
         "version": "1.15.2-beta",
         "text": "Add more Changelog logic"
+    },
+    14: {
+        "version": "1.15.3-beta",
+        "text": "Hotfix Logging error"
     }
 }
