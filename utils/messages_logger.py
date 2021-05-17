@@ -73,7 +73,7 @@ async def log_from_discord(ctx, optional=None):
         f"DISCORD Channel: <i>{cgi.escape(str(channel.name))}</i> "
         f"(User={cgi.escape(str(author.name))}#{author.discriminator}), "
         f"CommandMessage=<code>{cgi.escape(str(content))}</code>, "
-        f"Servername=<i>{cgi.escape(str(author.guild.name))}<i>: {author.guild.member_count} Members."
+        f"Servername=<i>{cgi.escape(str(author.guild.name))}</i>: {author.guild.member_count} Members."
     )
     if optional is not None:
         log_text = f"{log_text} ==OPTIONAL: <code>{cgi.escape(str(optional))}</code>"
