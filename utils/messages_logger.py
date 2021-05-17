@@ -77,8 +77,8 @@ async def log_from_discord(ctx, optional=None):
     )
     if optional is not None:
         log_text = f"{log_text} ==OPTIONAL: {cgi.escape(optional)}"
-    logger.info()
     try:
+        logger.info(log_text)
         send_command_to_dev_group(log_text)
     except Exception as e:
         logger.error(e)
