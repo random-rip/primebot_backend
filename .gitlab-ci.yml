@@ -7,7 +7,7 @@ static-webpage:
     stage: deploy
     script:
         - mkdir public
-        - mv public/index.html ./public
+        - mv ressources/index.html ./public
     artifacts:
         paths:
             - public
