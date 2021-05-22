@@ -3,7 +3,7 @@ image: ubuntu:latest
 stages: 
     - deploy
 
-static-webpage:
+pages:
     stage: deploy
     script:
         - mkdir public
