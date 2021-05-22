@@ -1,0 +1,15 @@
+image: ubuntu:latest
+
+stages: 
+    - deploy
+
+static-webpage:
+    stage: deploy
+    script:
+        - mkdir public
+        - mv public/index.html ./public
+    artifacts:
+        paths:
+            - public
+    only:
+        - master
