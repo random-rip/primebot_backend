@@ -3,13 +3,13 @@ image: ubuntu:latest
 stages: 
     - deploy
 
-pages:
-    stage: deploy
-    script:
-        - mkdir public
-        - mv ressources/index.html ./public
-    artifacts:
-        paths:
-            - public
-    only:
-        - master
+#pages:
+#    stage: deploy
+#    script:
+#        - mkdir public
+#        - mv ressources/index.html ./public
+#    artifacts:
+#        paths:
+#            - public
+#    only:
+#        - master
