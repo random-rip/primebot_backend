@@ -29,10 +29,11 @@ def main():
 
         update_team(parser, team_id=team.id)
         team.refresh_from_db()
+        print(Team.objects.get_watched_teams().query)
         if team.division is not None:
             try:
                 add_or_update_players(parser.get_members(), team)
-                if team.telegram_id is not None:
+                if team.is_active():
                     game_ids = parser.get_matches()
                     if len(game_ids) != len(team.games_against.all()):
                         logger.debug(f"Checking {len(game_ids)} games for {team}... ")

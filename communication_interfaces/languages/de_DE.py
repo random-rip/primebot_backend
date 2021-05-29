@@ -44,11 +44,6 @@ FEEDBACK = f"Hast Du Feedback? Hinterlasse den Entwicklern gerne eine Nachricht 
 
 NEED_HELP = "Solltest Du Hilfe benötigen, benutze /help."
 
-# Antwort, wenn /start Team_id oder tg_id bereits vergeben
-TEAM_EXISTING = "Dieses Team ist bereits registriert und mit einem anderen Chat verknüpft oder\n" \
-                "für diesen Chat ist bereits ein anderes Team hinterlegt oder\n" \
-                "die Team ID wurde nicht gefunden.\n" \
-                f"Solltest Du Hilfe benötigen, benutze /help.\n{RETRY_TEXT}"
 
 CHAT_EXISTING = "In diesem Chat ist bereits ein Team registriert. Möchtest Du ein anderes Team für diesen Channel " \
                 "registrieren?\n" \
@@ -76,7 +71,7 @@ START_GROUP = "Sternige Grüße, \n" \
               " oder deine Team ID in den Chat.\n"
 
 TEAM_LOCKED = "Das Team *{team.name}* wurde nicht freigegeben.\n" \
-              "Bitte stelle sicher, dass in den Einstellungen von {team.name} die Team-Sperre *deaktiviert* ist!\n" \
+              "Bitte stelle sicher, dass in den Einstellungen der anderen Gruppe {team.name} die Team-Sperre *deaktiviert* ist!\n" \
               f"(/settings {EMOJI_ARROW_RIGHT} Team-Sperre)\n\n" \
               f"{NEED_HELP}"
 
@@ -216,7 +211,7 @@ DC_NO_PERMISSIONS_FOR_WEBHOOK = "Mir fehlt die Berechtigung, Webhooks zu verwalt
 DC_REGISTRATION_FINISH = "Perfekt, dieser Channel wurde für Team {team_name} initialisiert. " \
                          "Wenn du möchtest, kannst du mit !role <ROLE_NAME> noch eine Rolle benennen, " \
                          "die bei Benachrichtigungen erwähnt werden soll."
-DC_USE_FIX = "Wenn keine Notifications mehr in dem Channel ankommen, benutze bitte `!fix`."
+DC_USE_FIX = "Wenn keine Benachrichtigungen mehr in dem Channel ankommen, benutze bitte `!fix`."
 
 DC_WEBHOOK_RECREATED = "Webhook wurde neu erstellt. Sollten weiterhin Probleme auftreten, " \
                        "wende dich bitte an den Support."

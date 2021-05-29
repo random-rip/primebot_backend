@@ -1,4 +1,4 @@
-import cgi
+import html
 import logging
 
 from django.conf import settings
@@ -70,13 +70,13 @@ async def log_from_discord(ctx, optional=None):
     author = ctx.message.author
     content = ctx.message.content
     log_text = (
-        f"DISCORD Channel: <i>{cgi.escape(str(channel.name))}</i> "
-        f"(User={cgi.escape(str(author.name))}#{author.discriminator}), "
-        f"CommandMessage=<code>{cgi.escape(str(content))}</code>, "
-        f"Servername=<i>{cgi.escape(str(author.guild.name))}</i>: {author.guild.member_count} Members."
+        f"DISCORD Channel: <i>{html.escape(str(channel.name))}</i> "
+        f"(User={html.escape(str(author.name))}#{author.discriminator}), "
+        f"CommandMessage=<code>{html.escape(str(content))}</code>, "
+        f"Servername=<i>{html.escape(str(author.guild.name))}</i>: {author.guild.member_count} Members."
     )
     if optional is not None:
-        log_text = f"{log_text} ==OPTIONAL: <code>{cgi.escape(str(optional))}</code>"
+        log_text = f"{log_text} ==OPTIONAL: <code>{html.escape(str(optional))}</code>"
     try:
         logger.info(log_text)
         send_command_to_dev_group(log_text)

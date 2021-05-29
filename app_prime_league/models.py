@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 
 from parsing.parser import MatchWrapper, TeamWrapper
 
@@ -6,7 +7,7 @@ from parsing.parser import MatchWrapper, TeamWrapper
 class TeamManager(models.Manager):
 
     def get_watched_teams(self):
-        return self.model.objects.filter(telegram_id__isnull=False)
+        return self.model.objects.filter(Q(telegram_id__isnull=False)|Q(discord_channel_id__isnull=False))
 
     def get_watched_team_of_current_split(self):
         return self.model.objects.filter(telegram_id__isnull=False, division__isnull=False)
@@ -82,6 +83,9 @@ class Team(models.Model):
 
     def settings_dict(self):
         return dict(self.setting_set.all().values_list("attr_name", "attr_value"))
+
+    def is_active(self):
+        return self.telegram_id or self.discord_channel_id
 
 
 class Player(models.Model):
