@@ -6,7 +6,7 @@ import aiohttp
 import discord
 import requests
 from asgiref.sync import sync_to_async
-from discord import Webhook, RequestsWebhookAdapter, Embed, Colour
+from discord import Webhook, RequestsWebhookAdapter, Embed, Colour, NotFound
 from discord.ext import commands
 
 from app_prime_league.models import Team
@@ -135,13 +135,13 @@ class DiscordBot(Bot):
                 webhooks = [x for x in await channel.webhooks() if settings.DISCORD_APP_CLIENT_ID == x.user.id]
                 with open(os.path.join(settings.BASE_DIR, "documents", "primebot_logo.jpg"), "rb") as image_file:
                     avatar = image_file.read()
-                webhook = await channel.create_webhook(name="PrimeBot", avatar=avatar)
+                new_webhook = await channel.create_webhook(name="PrimeBot", avatar=avatar)
                 for webhook in webhooks:
                     await webhook.delete()
             except Exception as e:
                 await log_from_discord(ctx, optional=f"{e}")
                 return None
-            return webhook
+            return new_webhook
 
         async def get_registered_team_by_channel_id(channel_id):
             """
@@ -178,7 +178,23 @@ class DiscordBot(Bot):
     def send_message(*, msg: str, team, attach):
         webhook = Webhook.partial(team.discord_webhook_id, team.discord_webhook_token, adapter=RequestsWebhookAdapter())
         embed = Embed(description=msg, color=Colour.from_rgb(255, 255, 0))
-        webhook.send(**DiscordBot.create_msg_arguments(discord_role_id=team.discord_role_id, embed=embed))
+        try:
+            webhook.send(**DiscordBot.create_msg_arguments(discord_role_id=team.discord_role_id, embed=embed))
+        except NotFound as e:
+            pass
+            # try:
+            #     channel = Channel(team.discord_channel_id)
+            #     webhooks = [x for x in await channel.webhooks() if settings.DISCORD_APP_CLIENT_ID == x.user.id]
+            #     with open(os.path.join(settings.BASE_DIR, "documents", "primebot_logo.jpg"), "rb") as image_file:
+            #         avatar = image_file.read()
+            #     webhook = await channel.create_webhook(name="PrimeBot", avatar=avatar)
+            #     for webhook in webhooks:
+            #         await webhook.delete()
+            # except Exception as e:
+            #     await log_from_discord(ctx, optional=f"{e}")
+            #     return None
+            # return webhook
+
 
     @staticmethod
     def mask_mention(discord_role_id):
