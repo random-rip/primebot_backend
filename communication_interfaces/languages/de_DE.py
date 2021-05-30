@@ -172,12 +172,28 @@ NEW_LINEUP_TEXT = "[{enemy_team_tag}](" + \
                   "{game_id})) hat ein neues [Lineup]({op_link}) aufgestellt. " + \
                   EMOJI_LINEUP
 
+NEW_LINEUP_IN_CALIBRATION = "[{enemy_team_name}](" + \
+                  GENERAL_TEAM_LINK + \
+                  "{enemy_team_id}) hat für [Spiel {game_day}](" + \
+                  GENERAL_MATCH_LINK + \
+                  "{game_id}) ein neues [Lineup]({op_link}) aufgestellt. " + \
+                  EMOJI_LINEUP
+
 WEEKLY_UPDATE_TEXT = "Der nächste Spieltag:\n" + \
                      EMOJI_SOON + \
                      "[Spieltag {game_day}](" + \
                      GENERAL_MATCH_LINK + \
                      "{game_id}) gegen [{enemy_team_tag}](" + \
                      GENERAL_TEAM_LINK + \
+                     "{enemy_team_id}):\n" + \
+                     "Hier ist der [OP.GG Link]({op_link}) des Teams."
+
+NEXT_GAME_IN_CALIBRATION = "Euer nächstes Spiel in der Kalibrierungsphase:\n" + \
+                           EMOJI_SOON + \
+                     "[Spiel {game_day}](" + \
+                           GENERAL_MATCH_LINK + \
+                     "{game_id}) gegen [{enemy_team_tag}](" + \
+                           GENERAL_TEAM_LINK + \
                      "{enemy_team_id}):\n" + \
                      "Hier ist der [OP.GG Link]({op_link}) des Teams."
 
@@ -208,7 +224,7 @@ DC_NO_PERMISSIONS_FOR_WEBHOOK = "Mir fehlt die Berechtigung, Webhooks zu verwalt
                                 "Bitte stelle sicher, dass ich diese Berechtigung habe. " \
                                 "Gegebenenfalls warte eine Stunde, bevor du den Befehl wieder ausführst. " \
                                 "Falls es danach noch nicht gehen sollte, wende dich bitte an den Support."
-DC_REGISTRATION_FINISH = "Perfekt, dieser Channel wurde für Team {team_name} initialisiert. " \
+DC_REGISTRATION_FINISH = "Perfekt, dieser Channel wurde für Team {team_name} initialisiert.\n" \
                          "Wenn du möchtest, kannst du mit !role <ROLE_NAME> noch eine Rolle benennen, " \
                          "die bei Benachrichtigungen erwähnt werden soll."
 DC_USE_FIX = "Wenn keine Benachrichtigungen mehr in dem Channel ankommen, benutze bitte `!fix`."

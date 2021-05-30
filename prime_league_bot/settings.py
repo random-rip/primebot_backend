@@ -202,14 +202,14 @@ if not DEBUG:
             'main_handler': {
                 'level': 'INFO',
                 'class': 'logging.handlers.TimedRotatingFileHandler',
-                'filename': os.path.join(LOGGING_DIR, 'main.log'),
+                'filename': os.path.join(LOGGING_DIR, 'check_matches.log'),
                 'when': 'midnight',
                 'formatter': 'to_file',
             },
             'main_verbose_handler': {
                 'level': 'DEBUG',
                 'class': 'logging.handlers.TimedRotatingFileHandler',
-                'filename': os.path.join(LOGGING_DIR, 'main_verbose.log'),
+                'filename': os.path.join(LOGGING_DIR, 'check_matches_verbose.log'),
                 'when': 'midnight',
                 'formatter': 'to_file',
             },
@@ -233,7 +233,7 @@ if not DEBUG:
                 'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
                 'propagate': False,
             },
-            'main_logger': {
+            'check_matches_logger': {
                 'handlers': ['main_handler', 'main_verbose_handler'],
                 'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
                 'propagate': False,
@@ -249,6 +249,11 @@ if not DEBUG:
                 'propagate': False,
             },
             'commands_logger': {
+                'handlers': ['commands_handler', ],
+                'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+                'propagate': False,
+            },
+            'calibration_logger': {
                 'handlers': ['commands_handler', ],
                 'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
                 'propagate': False,

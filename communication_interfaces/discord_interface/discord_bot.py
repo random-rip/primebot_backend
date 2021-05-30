@@ -66,7 +66,6 @@ class DiscordBot(Bot):
             webhook = await _create_new_webhook(ctx)
             if webhook is None:
                 await ctx.send(LanguagePack.DC_NO_PERMISSIONS_FOR_WEBHOOK)
-                # TODO: hier gibt es noch keine Meldung an den User
                 return
             await ctx.send(LanguagePack.WAIT_A_MOMENT_TEXT)
             async with ctx.typing():

@@ -7,13 +7,19 @@ from parsing.parser import MatchWrapper, TeamWrapper
 class TeamManager(models.Manager):
 
     def get_watched_teams(self):
-        return self.model.objects.filter(Q(telegram_id__isnull=False)|Q(discord_channel_id__isnull=False))
+        return self.model.objects.filter(Q(telegram_id__isnull=False) | Q(discord_channel_id__isnull=False))
 
     def get_watched_team_of_current_split(self):
-        return self.model.objects.filter(telegram_id__isnull=False, division__isnull=False)
+        return self.model.objects.filter(Q(telegram_id__isnull=False) | Q(discord_channel_id__isnull=False),
+                                         division__isnull=False)
 
     def get_team(self, team_id):
         return self.model.objects.filter(id=team_id).first()
+
+    def get_calibration_teams(self):
+        # TODO neues Feld in model
+        return self.model.objects.filter(id__in=[116152, 146630, 135572, 153698])
+        # return self.model.objects.filter(Q(telegram_id__isnull=False) | Q(discord_channel_id__isnull=False))
 
 
 class GameManager(models.Manager):
@@ -86,6 +92,9 @@ class Team(models.Model):
 
     def is_active(self):
         return self.telegram_id or self.discord_channel_id
+
+    def get_next_open_game(self):
+        return self.games_against.filter(game_closed=False).order_by("game_day").first()
 
 
 class Player(models.Model):

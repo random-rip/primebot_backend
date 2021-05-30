@@ -1,19 +1,16 @@
 import concurrent.futures
 import logging
 import threading
-import time
-from datetime import datetime
 
 import requests
 
-from app_prime_league.models import Game
 from communication_interfaces.message_dispatcher import MessageDispatcher
 from communication_interfaces.messages import EnemyNewTimeSuggestionsNotificationMessage, \
     OwnNewTimeSuggestionsNotificationMessage, ScheduleConfirmationNotification, NewLineupNotificationMessage
 from comparing.game_comparer import GameMetaData, GameComparer
 
 thread_local = threading.local()
-main_logger = logging.getLogger("main_logger")
+check_matches_logger = logging.getLogger("check_matches_logger")
 notifications_logger = logging.getLogger("notifications_logger")
 
 
@@ -30,7 +27,7 @@ def check_match(match):
     cmp = GameComparer(match, gmd)
 
     log_message = f"New notification for {game_id} ({team}): "
-    main_logger.debug(f"Checking {game_id} ({team})...")
+    check_matches_logger.debug(f"Checking {game_id} ({team})...")
     dispatcher = MessageDispatcher(team)
     if cmp.compare_new_suggestion(of_enemy_team=True):
         notifications_logger.debug(f"{log_message}Neuer Zeitvorschlag der Gegner")
@@ -59,12 +56,3 @@ def check_match(match):
 def check(uncompleted_games):
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         executor.map(check_match, uncompleted_games)
-
-
-def run():
-    start_time = time.time()
-    uncompleted_games = Game.objects.get_uncompleted_games()
-    main_logger.info(f"Checking uncompleted games at {datetime.now()}...")
-    check(uncompleted_games=uncompleted_games)
-
-    main_logger.info(f"Checked uncompleted games ({len(uncompleted_games)}) in {time.time() - start_time} seconds")

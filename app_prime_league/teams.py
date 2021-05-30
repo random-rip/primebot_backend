@@ -149,7 +149,7 @@ def add_or_update_players(members, team: Team):
             player.save()
 
 
-def add_game(team, game_id):
+def add_game(team, game_id, ignore_lineup=False):
     gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=game_id, )
     game = Game.objects.get_game_by_team(game_id=game_id, team=team)
 
@@ -158,13 +158,14 @@ def add_game(team, game_id):
     gmd.get_enemy_team_data()
     game.update_from_gmd(gmd)
     game.update_enemy_team(gmd)
-    game.update_enemy_lineup(gmd)
+    if not ignore_lineup:
+        game.update_enemy_lineup(gmd)
     game.update_latest_suggestion(gmd)
     logging.getLogger("periodic_logger").debug(f"Updating {game}...")
 
 
-def add_games(game_ids, team: Team):
+def add_games(game_ids, team: Team, ignore_lineup=False):
     start_time = time.time()
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-        executor.map(lambda p: add_game(*p), ((team, game_id) for game_id in game_ids))
+        executor.map(lambda p: add_game(*p), ((team, game_id, ignore_lineup) for game_id in game_ids))
     duration = time.time() - start_time

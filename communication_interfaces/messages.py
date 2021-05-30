@@ -5,7 +5,7 @@ from babel import dates as babel
 from app_prime_league.models import Game, Team
 from communication_interfaces.languages.de_DE import WEEKLY_UPDATE_TEXT, NEW_LINEUP_TEXT, OWN_NEW_TIME_SUGGESTION_TEXT, \
     NEW_TIME_SUGGESTION_PREFIX, NEW_TIME_SUGGESTIONS_PREFIX, SCHEDULING_AUTO_CONFIRMATION_TEXT, \
-    SCHEDULING_CONFIRMATION_TEXT, GAME_BEGIN_CHANGE_TEXT
+    SCHEDULING_CONFIRMATION_TEXT, GAME_BEGIN_CHANGE_TEXT, NEXT_GAME_IN_CALIBRATION, NEW_LINEUP_IN_CALIBRATION
 from communication_interfaces.telegram_interface.tg_singleton import emoji_numbers
 from parsing.parser import LogSchedulingAutoConfirmation, LogSchedulingConfirmation, LogChangeTime
 from prime_league_bot import settings
@@ -54,6 +54,24 @@ class WeeklyNotificationMessage(BaseMessage):
         self.message = WEEKLY_UPDATE_TEXT.format(op_link=op_link, enemy_team_tag=enemy_team_tag, **vars(self.game))
 
 
+class NewGameNotification(BaseMessage):
+    msg_type = "new_game_notification"
+    _key = "new_game_notification"
+
+    def __init__(self, team: Team, game: Game):
+        super().__init__(team)
+        self.game = game
+        self._generate_message()
+
+    def _generate_message(self):
+        op_link = self.game.get_op_link_of_enemies(only_lineup=False)
+        enemy_team_tag = self.game.enemy_team.team_tag
+        if op_link is None:
+            raise Exception()
+        self.message = NEXT_GAME_IN_CALIBRATION.format(op_link=op_link, enemy_team_tag=enemy_team_tag,
+                                                       **vars(self.game))
+
+
 class NewLineupNotificationMessage(BaseMessage):
     msg_type = "new_lineup_notification"
     _key = "lineup_op_link"
@@ -69,6 +87,23 @@ class NewLineupNotificationMessage(BaseMessage):
         if op_link is None:
             raise Exception()
         self.message = NEW_LINEUP_TEXT.format(op_link=op_link, enemy_team_tag=enemy_team_tag, **vars(self.game))
+
+
+class NewLineupInCalibrationMessage(BaseMessage):
+    msg_type = "new_lineup_in_calibration"
+
+    def __init__(self, team: Team, game: Game):
+        super().__init__(team)
+        self.game = game
+        self._generate_message()
+
+    def _generate_message(self):
+        op_link = self.game.get_op_link_of_enemies(only_lineup=True)
+        enemy_team_name = self.game.enemy_team.name
+        if op_link is None:
+            raise Exception()
+        self.message = NEW_LINEUP_IN_CALIBRATION.format(op_link=op_link, enemy_team_name=enemy_team_name,
+                                                        **vars(self.game))
 
 
 class OwnNewTimeSuggestionsNotificationMessage(BaseMessage):
