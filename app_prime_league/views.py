@@ -18,7 +18,7 @@ class GlobalMessage(LoginRequiredMixin, TemplateView, ):
 
     def post(self, request, *args, **kwargs):
         msg = request.POST["message"]
-        teams = Team.objects.exclude(telegram_id__isnull=True)
+        teams = Team.objects.get_watched_teams()
         for team in teams:
             msg = msg.format(team_tag=team.team_tag, )
             send_message(msg=msg, chat_id=team.telegram_id)

@@ -29,7 +29,6 @@ def main():
 
         update_team(parser, team_id=team.id)
         team.refresh_from_db()
-        print(Team.objects.get_watched_teams().query)
         if team.division is not None:
             try:
                 add_or_update_players(parser.get_members(), team)

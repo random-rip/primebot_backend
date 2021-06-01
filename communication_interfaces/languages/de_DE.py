@@ -47,7 +47,7 @@ NEED_HELP = "Solltest Du Hilfe benötigen, benutze /help."
 
 CHAT_EXISTING = "In diesem Chat ist bereits ein Team registriert. Möchtest Du ein anderes Team für diesen Channel " \
                 "registrieren?\n" \
-                f"Dann gib jetzt deine *Team-URL* (Format: {GENERAL_TEAM_LINK}<TEAM ID>-<TEAM NAME>)" \
+                f"Dann gib jetzt deine *Team-URL* " \
                 "oder deine *Team ID* an. Wenn nicht, benutze /cancel.\n\n" \
                 f"{NEED_HELP}"
 
@@ -57,8 +57,8 @@ TEAM_ID_NOT_VALID_TEXT = "Die angegebene URL entspricht nicht dem richtigen Form
 TEAM_ID_VALID = "Dein registriertes Team:\n"
 
 TEAM_ID_NOT_CORRECT = "Die ID: *{id}* konnte *keinem* Team zugeordnet werden.\n\n" \
-                      f"Bitte kopiere deine Team-URL (Format: {GENERAL_TEAM_LINK}<TEAM ID>-<TEAM NAME>)" \
-                      " oder die Team ID in den Chat. Zum Abbrechen, benutze /cancel."
+                      f"Bitte kopiere deine *TEAM_URL* " \
+                      "oder deine *TEAM_ID* in den Chat. Zum Abbrechen, benutze /cancel."
 
 # Start Messages
 # Antwort auf /start, wenn man command in einer Gruppe aufruft
@@ -67,8 +67,8 @@ START_GROUP = "Sternige Grüße, \n" \
               f"Gut, dass ich hier bin:\n" \
               f"Ich schicke dir alle *Updates* als *Pushbenachrichtigung* {EMOJI_POST_HORN} " \
               f"in diesen Chat. {EMOJI_GIFT}\n\n" \
-              f"{EMOJI_ONE} Bitte kopiere dafür deine Team-URL (Format: {GENERAL_TEAM_LINK}<TEAM ID>-<TEAM NAME>)" \
-              " oder deine Team ID in den Chat.\n"
+              f"{EMOJI_ONE} Bitte kopiere dafür deine *TEAM_URL*" \
+              " oder deine *TEAM_ID* in den Chat.\n"
 
 TEAM_LOCKED = "Das Team *{team.name}* wurde nicht freigegeben.\n" \
               "Bitte stelle sicher, dass in den Einstellungen der anderen Gruppe {team.name} die Team-Sperre *deaktiviert* ist!\n" \
@@ -217,7 +217,7 @@ CLOSE = "Schließen"
 CURRENTLY = "Derzeitig"
 
 DC_TEAM_ID_NOT_VALID = "Aus dem Übergabeparameter konnte keine ID gefunden werden. " \
-                       "(Format `!start <TEAM_ID oder TEAM_URL>`)"
+                       "(Format `!start TEAM_ID_or_TEAM_URL`)"
 DC_CHANNEL_IN_USE = "Für diesen Channel ist bereits ein Team registriert."
 DC_TEAM_IN_USE = "Dieses Team ist bereits in einem anderen Channel registriert."
 DC_NO_PERMISSIONS_FOR_WEBHOOK = "Mir fehlt die Berechtigung, Webhooks zu verwalten. " \
@@ -225,22 +225,22 @@ DC_NO_PERMISSIONS_FOR_WEBHOOK = "Mir fehlt die Berechtigung, Webhooks zu verwalt
                                 "Gegebenenfalls warte eine Stunde, bevor du den Befehl wieder ausführst. " \
                                 "Falls es danach noch nicht gehen sollte, wende dich bitte an den Support."
 DC_REGISTRATION_FINISH = "Perfekt, dieser Channel wurde für Team {team_name} initialisiert.\n" \
-                         "Wenn du möchtest, kannst du mit !role <ROLE_NAME> noch eine Rolle benennen, " \
+                         "Wenn du möchtest, kannst du mit `!role ROLE_NAME` noch eine Rolle benennen, " \
                          "die bei Benachrichtigungen erwähnt werden soll."
 DC_USE_FIX = "Wenn keine Benachrichtigungen mehr in dem Channel ankommen, benutze bitte `!fix`."
 
 DC_WEBHOOK_RECREATED = "Webhook wurde neu erstellt. Sollten weiterhin Probleme auftreten, " \
                        "wende dich bitte an den Support."
 DC_CHANNEL_NOT_INITIALIZED = "In diesem Channel ist derzeitig kein Team registriert. " \
-                             "Benutze dafür `!start <TEAM_ID oder TEAM_URL>`"
+                             "Benutze dafür `!start TEAM_ID_oder_TEAM_URL`"
 DC_ROLE_MENTION_REMOVED = "Alles klar, ich habe die Rollenerwähnung entfernt. " \
-                          "Du kannst sie bei Bedarf wieder einschalten, benutze dazu einfach `!role <ROLE_NAME>`."
+                          "Du kannst sie bei Bedarf wieder einschalten, benutze dazu einfach `!role ROLE`."
 DC_ROLE_NOT_FOUND = "Die Rolle {role_name} habe ich nicht gefunden. Stelle sicher, dass diese Rolle existiert."
 DC_SET_ROLE = "Okay, ich informiere die Rolle **@{role_name}** ab jetzt bei neuen Benachrichtigungen. 📯"
 
-DC_HELP_TEXT_START = "Registers new team (Format: !start <TEAM_ID oder TEAM_URL>)"
-DC_HELP_TEXT_FIX = "Recreates the notifications webhook"
-DC_HELP_TEXT_ROLE = "Set role to mention it in notifications. To unset the role just type !role without any parameter"
+DC_HELP_TEXT_START = "Registriere dein Team im Channel (Format: !start TEAM_ID_or_TEAM_URL)"
+DC_HELP_TEXT_FIX = "Erstellt den Benachrichtigungswebhook neu"
+DC_HELP_TEXT_ROLE = "Setze eine Discordrolle, die in den Benachrichtigungen benutzt wird. Um die Rolle zu entfernen schreibe !role ohne Parameter"
 DC_HELP_TEXT_BOP = "Whats boppin'?"
 DC_DESCRIPTION = "Dieser Bot ist nicht in Kooperation mit der PrimeLeague bzw. der Freaks4u Gaming GmbH entstanden " \
                  "und hat damit keinen direkten Bezug zur PrimeLeague. " \
