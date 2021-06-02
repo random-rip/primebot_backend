@@ -1,7 +1,6 @@
 import concurrent.futures
 import logging
 import sys
-import time
 import traceback
 
 from telegram import ParseMode
@@ -10,6 +9,8 @@ from app_prime_league.models import Team, Player, Game, GameMetaData
 from communication_interfaces import send_message
 from parsing.parser import TeamHTMLParser, TeamWrapper
 from prime_league_bot import settings
+
+logger = logging.getLogger("django")
 
 
 def register_team(*, team_id, **kwargs):
@@ -31,7 +32,7 @@ def register_team(*, team_id, **kwargs):
                 send_message(
                     f"Ein Fehler ist beim Updaten von Team {team.id} {team.name} aufgetreten:\n<code>{trace}\n{e}</code>",
                     chat_id=settings.TG_DEVELOPER_GROUP, parse_mode=ParseMode.HTML)
-                logging.getLogger("periodic_logger").error(e)
+                logger.error(e)
 
         return team
     else:
@@ -106,7 +107,7 @@ def update_team(parser: TeamHTMLParser, team_id: int):
         team = Team.objects.get(id=team_id)
     except Team.DoesNotExist as e:
         return None
-    logging.getLogger("periodic_logger").debug(f"Updating {team}...")
+    logger.debug(f"Updating {team}...")
     team.name = name
     team.logo_url = logo
     team.team_tag = team_tag
@@ -133,7 +134,7 @@ def update_settings(tg_chat_id, settings: dict):
 def add_or_update_players(members, team: Team):
     for (id_, name, summoner_name, is_leader,) in members:
         player = Player.objects.filter(id=id_, name=name, summoner_name=summoner_name, is_leader=is_leader).first()
-        logging.getLogger("periodic_logger").debug(f"Updating {player}...")
+        logger.debug(f"Updating {player}...")
         if player is not None:
             continue
         player, created = Player.objects.get_or_create(id=id_, defaults={
@@ -161,11 +162,30 @@ def add_game(team, game_id, ignore_lineup=False):
     if not ignore_lineup:
         game.update_enemy_lineup(gmd)
     game.update_latest_suggestion(gmd)
-    logging.getLogger("periodic_logger").debug(f"Updating {game}...")
+    logger.debug(f"Updating {game}...")
 
 
-def add_games(game_ids, team: Team, ignore_lineup=False):
-    start_time = time.time()
-    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-        executor.map(lambda p: add_game(*p), ((team, game_id, ignore_lineup) for game_id in game_ids))
-    duration = time.time() - start_time
+def add_games(game_ids, team: Team, ignore_lineup=False, use_concurrency=True):
+    if use_concurrency:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+            executor.map(lambda p: add_game(*p), ((team, game_id, ignore_lineup) for game_id in game_ids))
+    else:
+        for i in game_ids:
+            add_game(team, game_id=i)
+
+
+def add_raw_game(team, game_id):
+    Game.objects.get_or_create(
+        game_id=game_id,
+        team=team,
+    )
+
+
+def add_raw_games(game_ids, team: Team, use_concurrency=True):
+    if use_concurrency:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+            executor.map(lambda p: add_raw_game(*p), ((team, game_id) for game_id in game_ids))
+        return
+    else:
+        for i in game_ids:
+            add_raw_game(team, game_id=i)

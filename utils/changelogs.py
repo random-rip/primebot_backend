@@ -150,5 +150,9 @@ Grayknife und Orbis
     14: {
         "version": "1.15.3-beta",
         "text": "Hotfix Logging error"
-    }
+    },
+    15: {
+        "version": "1.15.4-beta",
+        "text": "Little bugfixes",
+    },
 }

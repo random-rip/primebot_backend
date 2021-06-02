@@ -89,12 +89,11 @@ class TelegramBot(Bot):
             except CannotBePinnedError:
                 send_message(msg=MESSAGE_NOT_PINED_TEXT, chat_id=team.telegram_id)
             except telepot.exception.TelegramError:
-                logging.getLogger("notifications_logger").error(f"{team}: {CANT_PIN_MSG_IN_PRIVATE_CHAT}")
+                logging.getLogger("notifications").error(f"{team}: {CANT_PIN_MSG_IN_PRIVATE_CHAT}")
         return
 
 
 def error(update, context):
-    devs = [settings.TG_DEVELOPER_GROUP]
     try:
         if update is not None:
             if update.effective_message:
@@ -117,9 +116,8 @@ def error(update, context):
             text = "Ein Fehler ist aufgetreten (update is none)."
     except Exception as e:
         text = f"Ein gravierender Fehler ist aufgetreten.\n{e}"
-    for dev_id in devs:
-        context.bot.send_message(dev_id, text, parse_mode=ParseMode.HTML)  # TODO: catch connection errors
-    # we raise the error again, so the logger module catches it. If you don't use the logger module, use it.
+        # TODO: catch connection errors
+        context.bot.send_message(settings.TG_DEVELOPER_GROUP, text, parse_mode=ParseMode.HTML)
     try:
         raise
     except RuntimeError as e:

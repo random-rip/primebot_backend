@@ -7,7 +7,7 @@ from telegram.utils.helpers import mention_html
 
 from communication_interfaces.telegram_interface.tg_singleton import send_message
 
-logger = logging.getLogger("commands_logger")
+logger = logging.getLogger("commands")
 
 
 def log_command(fn):
@@ -76,7 +76,7 @@ async def log_from_discord(ctx, optional=None):
         f"Servername=<i>{html.escape(str(author.guild.name))}</i>: {author.guild.member_count} Members."
     )
     if optional is not None:
-        log_text = f"{log_text} ==OPTIONAL: <code>{html.escape(str(optional))}</code>"
+        log_text = f"{log_text}\n===\nOPTIONAL_RESULT: <code>{html.escape(str(optional))}</code>"
     try:
         logger.info(log_text)
         send_command_to_dev_group(log_text)

@@ -27,7 +27,7 @@ def mysql_has_gone_away(*args):
     except django.db.utils.OperationalError as e:
         log_text = f"{e}: TRY ESTABLISH NEW CONNECTION"
         send_command_to_dev_group(log_text)
-        logging.getLogger("commands_logger").info(log_text)
+        logging.getLogger("django").info(log_text)
         db.close_old_connections()
     finally:
         return True

@@ -9,8 +9,7 @@ from communication_interfaces.messages import NewLineupInCalibrationMessage
 from comparing.game_comparer import GameMetaData, GameComparer
 
 thread_local = threading.local()
-calibration_logger = logging.getLogger("calibration_logger")
-notifications_logger = logging.getLogger("notifications_logger")
+calibration_logger = logging.getLogger("calibration")
 
 
 def get_session():
@@ -29,7 +28,7 @@ def check_match(match):
     calibration_logger.debug(f"Checking {game_id} ({team})...")
     dispatcher = MessageDispatcher(team)
     if cmp.compare_lineup_confirmation():
-        notifications_logger.debug(f"{log_message}Neues Lineup des gegnerischen Teams")
+        calibration_logger.debug(f"{log_message}Neues Lineup des gegnerischen Teams")
         gmd.get_enemy_team_data()
         match.update_enemy_team(gmd)
         match.update_enemy_lineup(gmd)

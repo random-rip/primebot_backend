@@ -15,7 +15,6 @@ from communication_interfaces.telegram_interface.tg_singleton import TelegramMes
 from communication_interfaces.utils import mysql_has_gone_away_decorator
 from utils.exceptions import CouldNotParseURLException
 from utils.messages_logger import log_command, log_callbacks
-# TODO not used yet?
 from utils.utils import get_valid_team_id
 
 

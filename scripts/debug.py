@@ -1,17 +1,35 @@
-from app_prime_league.models import Team, Game
+from app_prime_league.models import Team
+from communication_interfaces.languages.de_DE import GENERAL_MATCH_LINK
 from communication_interfaces.message_dispatcher import MessageDispatcher
-from communication_interfaces.messages import WeeklyNotificationMessage, NewLineupNotificationMessage
-from parsing.parser import LogSchedulingAutoConfirmation
+from utils.constants import EMOJI_ARROW_RIGHT, EMOJI_FIGHT, EMOJI_FIRE
 
 
 def main():
-    team = Team.objects.get(id=125071)
-    game = Game.objects.get(game_id=696320)
-    message = WeeklyNotificationMessage(team, game)
-    log = LogSchedulingAutoConfirmation("1614976397", "Janek", "None")
-    # message = ScheduleConfirmationNotification(team, game, log)
-    lineup_message = NewLineupNotificationMessage(team, game)
-    MessageDispatcher(team=team).dispatch(NewLineupNotificationMessage, game=game, )
+    text = """
+Hallo **{team.name}**, 
+die Gruppenphase startet in ein paar Tagen und ihr spielt diesen Split in Division **{team.division}**. 
+
+**Eine Übersicht eurer Spiele:**
+
+"""
+    ende = """
+
+{emoji} Ich halte euch auf dem Laufenden. {emoji}
+GL & HF
+"""
+    teams = Team.objects.get_watched_team_of_current_split()
+    for team in teams:
+        try:
+            games_to_play = team.games_against.all().order_by("game_day")
+            a = [
+                f"[Spieltag {game.game_day}]({GENERAL_MATCH_LINK}{game.game_id}) {EMOJI_FIGHT} {game.enemy_team.name} {EMOJI_ARROW_RIGHT} [OP.gg]({game.get_op_link_of_enemies(only_lineup=False)})\n"
+                for game in games_to_play]
+            games_text = "\n".join(a)
+            dispatcher = MessageDispatcher(team)
+            msg = text.format(team=team) + games_text + ende.format(emoji=EMOJI_FIRE)
+            dispatcher.dispatch_raw_message(msg=msg)
+        except Exception as e:
+            print("ERROR", e)
 
 
 # Command to run this file:

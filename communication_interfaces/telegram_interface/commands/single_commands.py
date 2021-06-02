@@ -1,3 +1,4 @@
+import logging
 import os
 import urllib.request
 
@@ -15,7 +16,9 @@ from communication_interfaces.languages.de_DE import (
 from communication_interfaces.utils import mysql_has_gone_away_decorator
 from prime_league_bot.settings import STORAGE_DIR
 from utils.changelogs import CHANGELOGS
-from utils.messages_logger import log_command, logger
+from utils.messages_logger import log_command
+
+logger = logging.getLogger("notifications")
 
 
 def set_photo(chat_id, context: CallbackContext, url):

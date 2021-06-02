@@ -182,18 +182,6 @@ class DiscordBot(Bot):
             webhook.send(**DiscordBot.create_msg_arguments(discord_role_id=team.discord_role_id, embed=embed))
         except NotFound as e:
             pass
-            # try:
-            #     channel = Channel(team.discord_channel_id)
-            #     webhooks = [x for x in await channel.webhooks() if settings.DISCORD_APP_CLIENT_ID == x.user.id]
-            #     with open(os.path.join(settings.BASE_DIR, "documents", "primebot_logo.jpg"), "rb") as image_file:
-            #         avatar = image_file.read()
-            #     webhook = await channel.create_webhook(name="PrimeBot", avatar=avatar)
-            #     for webhook in webhooks:
-            #         await webhook.delete()
-            # except Exception as e:
-            #     await log_from_discord(ctx, optional=f"{e}")
-            #     return None
-            # return webhook
 
 
     @staticmethod

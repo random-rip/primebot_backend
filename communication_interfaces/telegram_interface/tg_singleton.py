@@ -27,7 +27,7 @@ def send_message(msg: str, chat_id: int = None, parse_mode=ParseMode.MARKDOWN):
     try:
         return bot.sendMessage(chat_id=chat_id, text=msg, parse_mode=parse_mode, disable_web_page_preview=True)
     except Exception as e:
-        logging.getLogger("notifications_logger").error(
+        logging.getLogger("notifications").error(
             f"Error Sending Message in Chat chat_id={chat_id} msg={msg}\n{e}")
 
 
@@ -57,4 +57,4 @@ class TelegramMessagesWrapper:
         except CannotBePinnedError:
             send_message(msg=MESSAGE_NOT_PINED_TEXT, chat_id=game.team.telegram_id)
         except telepot.exception.TelegramError:
-            logging.getLogger("notifications_logger").error(f"{game.team}: {CANT_PIN_MSG_IN_PRIVATE_CHAT}")
+            logging.getLogger("notifications").error(f"{game.team}: {CANT_PIN_MSG_IN_PRIVATE_CHAT}")

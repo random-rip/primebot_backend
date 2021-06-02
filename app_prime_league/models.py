@@ -25,7 +25,7 @@ class TeamManager(models.Manager):
 class GameManager(models.Manager):
 
     def get_uncompleted_games(self):
-        return self.model.objects.filter(game_closed=False)
+        return self.model.objects.filter(Q(game_closed=False) | Q(game_closed__isnull=True))
 
     def get_game_by_team(self, game_id, team):
         try:
@@ -182,13 +182,13 @@ class GameMetaData:
 
 class Game(models.Model):
     game_id = models.IntegerField()
-    game_day = models.IntegerField()
+    game_day = models.IntegerField(null=True)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="games_against")
-    enemy_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="games_as_enemy_team")
+    enemy_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="games_as_enemy_team", null=True)
 
     game_begin = models.DateTimeField(null=True)
     enemy_lineup = models.ManyToManyField(Player, )
-    game_closed = models.BooleanField()
+    game_closed = models.BooleanField(null=True)
     game_result = models.CharField(max_length=5, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

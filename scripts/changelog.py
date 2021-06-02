@@ -15,9 +15,6 @@ def main():
             dispatcher.dispatch_raw_message(msg=msg)
         except Exception as e:
             print("ERROR", e)
-        # if team.value_of_setting("changelog_update"):
-        #     msg = pattern.format(team=team, version=log["version"])
-        #     print(send_message(msg=msg, chat_id=team.telegram_id))
 
 
 def run():

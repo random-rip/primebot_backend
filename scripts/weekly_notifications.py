@@ -9,7 +9,7 @@ from utils.utils import current_game_day
 def main():
     game_day = current_game_day()
 
-    logger = logging.getLogger("notifications_logger")
+    logger = logging.getLogger("notifications")
     logger.info(f"Start Sending Weekly Notifications...")
     teams = Team.objects.get_watched_team_of_current_split()
     for team in teams:
