@@ -18,10 +18,12 @@ die Gruppenphase startet in ein paar Tagen und ihr spielt diesen Split in Divisi
 {emoji} GL & HF {emoji}
 """
     teams = Team.objects.get_watched_team_of_current_split()
+    teams = teams.filter(
+        id__in=[89678, 111914, 114430, 119395, 116152, 135184, 135572, 136932, 137796, 146630, 147718, 153698])
     for team in teams:
         print(team)
         try:
-            games_to_play = team.games_against.all().order_by("game_day")
+            games_to_play = team.games_against.filter(game_closed__isnull=True).order_by("game_day")
             a = [
                 f"[Spieltag {game.game_day}]({GENERAL_MATCH_LINK}{game.game_id}) {EMOJI_FIGHT} {game.enemy_team.name} {EMOJI_ARROW_RIGHT} [OP.gg]({game.get_op_link_of_enemies(only_lineup=False)})\n"
                 for game in games_to_play]
