@@ -208,8 +208,8 @@ if not DEBUG:
         },
         'loggers': {
             'django': {
-                'handlers': ['django_file'],
-                'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+                'handlers': ['django'],
+                'level': "DEBUG",
                 'propagate': False,
             },
             'notifications': {
