@@ -195,7 +195,6 @@ if not DEBUG:
                 'level': 'DEBUG',
                 'class': 'logging.handlers.WatchedFileHandler',
                 'filename': os.path.join(LOGGING_DIR, 'commands.log'),
-                'when': 'midnight',
                 'formatter': 'to_file',
             },
             'calibration': {
