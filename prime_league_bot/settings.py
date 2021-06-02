@@ -223,7 +223,7 @@ if not DEBUG:
                 'propagate': False,
             },
             'calibration': {
-                'handlers': ['calibration_handler', ],
+                'handlers': ['calibration', ],
                 'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
                 'propagate': False,
             }
