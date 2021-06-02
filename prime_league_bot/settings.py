@@ -193,7 +193,7 @@ if not DEBUG:
             },
             'commands': {
                 'level': 'DEBUG',
-                'class': 'logging.handlers.TimedRotatingFileHandler',
+                'class': 'logging.handlers.WatchedFileHandler',
                 'filename': os.path.join(LOGGING_DIR, 'commands.log'),
                 'when': 'midnight',
                 'formatter': 'to_file',
