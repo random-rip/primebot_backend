@@ -11,6 +11,7 @@ from comparing.game_comparer import GameMetaData, GameComparer
 
 thread_local = threading.local()
 django_logger = logging.getLogger("django")
+notifications_logger = logging.getLogger("notifications")
 
 
 def get_session():
@@ -29,21 +30,21 @@ def check_game(game):
     django_logger.debug(f"Checking {game_id} ({team})...")
     dispatcher = MessageDispatcher(team)
     if cmp.compare_new_suggestion(of_enemy_team=True):
-        django_logger.debug(f"{log_message}Neuer Zeitvorschlag der Gegner")
+        notifications_logger.debug(f"{log_message}Neuer Zeitvorschlag der Gegner")
         game.update_latest_suggestion(gmd)
         dispatcher.dispatch(EnemyNewTimeSuggestionsNotificationMessage, game=game)
     if cmp.compare_new_suggestion():
-        django_logger.debug(f"{log_message}Eigener neuer Zeitvorschlag")
+        notifications_logger.debug(f"{log_message}Eigener neuer Zeitvorschlag")
         game.update_latest_suggestion(gmd)
         dispatcher.dispatch(OwnNewTimeSuggestionsNotificationMessage, game=game)
     if cmp.compare_scheduling_confirmation():
-        django_logger.debug(f"{log_message}Termin wurde festgelegt")
+        notifications_logger.debug(f"{log_message}Termin wurde festgelegt")
         game.update_game_begin(gmd)
         dispatcher.dispatch(ScheduleConfirmationNotification, game=game,
                             latest_confirmation_log=gmd.latest_confirmation_log)
 
     if cmp.compare_lineup_confirmation():
-        django_logger.debug(f"{log_message}Neues Lineup des gegnerischen Teams")
+        notifications_logger.debug(f"{log_message}Neues Lineup des gegnerischen Teams")
         gmd.get_enemy_team_data()
         game.update_enemy_team(gmd)
         game.update_enemy_lineup(gmd)
