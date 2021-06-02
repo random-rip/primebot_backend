@@ -6,6 +6,7 @@ from utils.constants import EMOJI_ARROW_RIGHT, EMOJI_FIGHT, EMOJI_FIRE
 
 def main():
     text = """
+    __... a little upsi happened__
 Hallo **{team.name}**, 
 die Gruppenphase startet in ein paar Tagen und ihr spielt diesen Split in Division **{team.division}**. 
 
@@ -14,11 +15,11 @@ die Gruppenphase startet in ein paar Tagen und ihr spielt diesen Split in Divisi
 """
     ende = """
 
-{emoji} Ich halte euch auf dem Laufenden. {emoji}
-GL & HF
+{emoji} GL & HF {emoji}
 """
     teams = Team.objects.get_watched_team_of_current_split()
     for team in teams:
+        print(team)
         try:
             games_to_play = team.games_against.all().order_by("game_day")
             a = [
