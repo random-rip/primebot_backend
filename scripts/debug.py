@@ -6,7 +6,7 @@ from utils.constants import EMOJI_ARROW_RIGHT, EMOJI_FIGHT, EMOJI_FIRE
 
 def main():
     text = """
-    __... a little upsi happened__
+    _... a little upsi happened_
 Hallo **{team.name}**, 
 die Gruppenphase startet in ein paar Tagen und ihr spielt diesen Split in Division **{team.division}**. 
 
