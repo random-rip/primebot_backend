@@ -35,7 +35,7 @@ def main():
                 if team.is_active():
                     game_ids = parser.get_matches()
                     logger.debug(f"Checking {len(game_ids)} games for {team}... ")
-                    add_raw_games(game_ids, team, use_concurrency=False)
+                    add_raw_games(game_ids, team, use_concurrency=True)
             except Exception as e:
                 trace = "".join(traceback.format_tb(sys.exc_info()[2]))
                 send_message(
