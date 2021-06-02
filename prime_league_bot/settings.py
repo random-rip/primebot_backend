@@ -179,7 +179,7 @@ if not DEBUG:
                 'class': 'logging.StreamHandler',
             },
             'django': {
-                'level': os.getenv('DJANGO_LOG_LEVEL', 'WARNING'),
+                'level': "DEBUG",
                 'class': 'logging.handlers.TimedRotatingFileHandler',
                 'filename': os.path.join(LOGGING_DIR, 'django.log'),
                 'when': 'midnight',
@@ -214,7 +214,7 @@ if not DEBUG:
             },
             'notifications': {
                 'handlers': ['notifications'],
-                'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+                'level': "DEBUG",
                 'propagate': False,
             },
             'commands': {

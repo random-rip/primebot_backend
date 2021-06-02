@@ -52,6 +52,10 @@ def check_game(game):
     game.update_from_gmd(gmd)
 
 
-def update_uncompleted_games(games):
-    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-        executor.map(check_game, games)
+def update_uncompleted_games(games, use_concurrency=True):
+    if use_concurrency:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+            executor.map(check_game, games)
+    else:
+        for i in games:
+            check_game(game=i)

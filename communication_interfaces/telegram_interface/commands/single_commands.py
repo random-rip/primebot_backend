@@ -78,7 +78,6 @@ def bop(update: Update, context: CallbackContext):
     successful = False
     try:
         bot.send_photo(chat_id=chat_id, photo=url)
-        successful = set_photo(chat_id, context, url)
     except Exception as e:
         logger.error(e)
     finally:

@@ -14,5 +14,5 @@ def run():
     start_time = time.time()
     uncompleted_games = Game.objects.get_uncompleted_games()
     logger.info(f"Checking uncompleted games at {datetime.now()}...")
-    update_uncompleted_games(games=uncompleted_games)
+    update_uncompleted_games(games=uncompleted_games, use_concurrency=False)
     logger.info(f"Checked uncompleted games ({len(uncompleted_games)}) in {time.time() - start_time} seconds")
