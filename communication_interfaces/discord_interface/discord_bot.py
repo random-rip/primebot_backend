@@ -13,6 +13,7 @@ from app_prime_league.models import Team
 from app_prime_league.teams import register_team
 from communication_interfaces.base_bot import Bot
 from communication_interfaces.languages import de_DE as LanguagePack
+from communication_interfaces.messages import GamesOverview
 from communication_interfaces.utils import mysql_has_gone_away
 from prime_league_bot import settings
 from utils.exceptions import CouldNotParseURLException
@@ -72,6 +73,10 @@ class DiscordBot(Bot):
                 team = await sync_to_async(
                     register_team)(team_id=team_id, discord_webhook_id=webhook.id,
                                    discord_webhook_token=webhook.token, discord_channel_id=channel_id)
+
+            msg = await sync_to_async(GamesOverview)(team=team)
+            embed = Embed(description=msg.message, color=Colour.from_rgb(255, 255, 0))
+            await ctx.send(embed=embed)
             response = LanguagePack.DC_REGISTRATION_FINISH.format(team_name=team.name)
             await ctx.send(response)
 
@@ -129,6 +134,19 @@ class DiscordBot(Bot):
                         buffer = BytesIO(await resp.read())
             await ctx.send(file=discord.File(fp=buffer, filename="dog.jpg"))
 
+        @self.bot.command(name="overview", help=LanguagePack.DC_HELP_TEXT_OVERVIEW, pass_context=True)
+        @commands.check(mysql_has_gone_away)
+        @commands.check(log_from_discord)
+        async def overview(ctx, ):
+            channel_id = ctx.message.channel.id
+            team = await get_registered_team_by_channel_id(channel_id=channel_id)
+            if team is None:
+                await ctx.send(LanguagePack.DC_CHANNEL_NOT_INITIALIZED)
+                return
+            msg = await sync_to_async(GamesOverview)(team=team)
+            embed = Embed(description=msg.message, color=Colour.from_rgb(255, 255, 0))
+            await ctx.send(embed=embed)
+
         async def _create_new_webhook(ctx):
             channel = ctx.message.channel
             try:
@@ -182,7 +200,6 @@ class DiscordBot(Bot):
             webhook.send(**DiscordBot.create_msg_arguments(discord_role_id=team.discord_role_id, embed=embed))
         except NotFound as e:
             pass
-
 
     @staticmethod
     def mask_mention(discord_role_id):

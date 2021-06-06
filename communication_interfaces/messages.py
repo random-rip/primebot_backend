@@ -5,10 +5,12 @@ from babel import dates as babel
 from app_prime_league.models import Game, Team
 from communication_interfaces.languages.de_DE import WEEKLY_UPDATE_TEXT, NEW_LINEUP_TEXT, OWN_NEW_TIME_SUGGESTION_TEXT, \
     NEW_TIME_SUGGESTION_PREFIX, NEW_TIME_SUGGESTIONS_PREFIX, SCHEDULING_AUTO_CONFIRMATION_TEXT, \
-    SCHEDULING_CONFIRMATION_TEXT, GAME_BEGIN_CHANGE_TEXT, NEXT_GAME_IN_CALIBRATION, NEW_LINEUP_IN_CALIBRATION
+    SCHEDULING_CONFIRMATION_TEXT, GAME_BEGIN_CHANGE_TEXT, NEXT_GAME_IN_CALIBRATION, NEW_LINEUP_IN_CALIBRATION, \
+    GENERAL_MATCH_LINK
 from communication_interfaces.telegram_interface.tg_singleton import emoji_numbers
 from parsing.parser import LogSchedulingAutoConfirmation, LogSchedulingConfirmation, LogChangeTime
 from prime_league_bot import settings
+from utils.constants import EMOJI_FIGHT, EMOJI_ARROW_RIGHT
 
 
 def format_datetime(x):
@@ -164,3 +166,23 @@ class ScheduleConfirmationNotification(BaseMessage):
             message = GAME_BEGIN_CHANGE_TEXT
 
         self.message = message.format(time=time, enemy_team_tag=enemy_team_tag, **vars(self.game))
+
+
+class GamesOverview(BaseMessage):
+    msg_type = "overview"
+    _key = "overview"
+
+    def __init__(self, team: Team, ):
+        super().__init__(team)
+        self._generate_message()
+
+    def _generate_message(self):
+        games_to_play = self.team.games_against.filter(game_closed=False).order_by("game_day")
+        if len(games_to_play) == 0:
+            self.message = "Ihr habt aktuell keine offenen Spiele."
+            return
+        a = [
+            f"[Spieltag {game.game_day}]({GENERAL_MATCH_LINK}{game.game_id}) {EMOJI_FIGHT} {game.enemy_team.name} {EMOJI_ARROW_RIGHT} [OP.gg]({game.get_op_link_of_enemies(only_lineup=False)})\n"
+            for game in games_to_play]
+        games_text = "\n".join(a)
+        self.message = "**Eine Übersicht eurer offenen Spiele:**\n\n" + games_text

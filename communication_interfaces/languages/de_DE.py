@@ -241,6 +241,7 @@ DC_SET_ROLE = "Okay, ich informiere die Rolle **@{role_name}** ab jetzt bei neue
 DC_HELP_TEXT_START = "Registriere dein Team im Channel (Format: !start TEAM_ID_or_TEAM_URL)"
 DC_HELP_TEXT_FIX = "Erstellt den Benachrichtigungswebhook neu"
 DC_HELP_TEXT_ROLE = "Setze eine Discordrolle, die in den Benachrichtigungen benutzt wird. Um die Rolle zu entfernen schreibe !role ohne Parameter"
+DC_HELP_TEXT_OVERVIEW = "Erstellt eine Übersicht für die offenen Spiele"
 DC_HELP_TEXT_BOP = "Whats boppin'?"
 DC_DESCRIPTION = "Dieser Bot ist nicht in Kooperation mit der PrimeLeague bzw. der Freaks4u Gaming GmbH entstanden " \
                  "und hat damit keinen direkten Bezug zur PrimeLeague. " \

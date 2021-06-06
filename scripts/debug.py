@@ -33,7 +33,6 @@ die Gruppenphase startet in ein paar Tagen und ihr spielt diesen Split in Divisi
             print("ERROR", e)
 
 
-# Command to run this file:
 # python manage.py runscript debug
 def run():
     main()

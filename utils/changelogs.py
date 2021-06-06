@@ -152,7 +152,26 @@ Grayknife und Orbis
         "text": "Hotfix Logging error"
     },
     15: {
-        "version": "1.15.4-beta",
-        "text": "Little bugfixes",
+        "version": "1.16",
+        "text":
+            """
+            Hallo {team.name}, 
+            """
+            f"""
+wir haben Neuigkiten für euch:
+
+1️⃣ Entschuldigt bitte, falls ihr in den letzten Tagen vermehrt Nachrichten zum Start der Gruppenphase mit einer **Übersicht aller Spiele** bekommen habt (oder auch gar keine bekommen habt).
+Um jedem Team nochmal die Gelegenheit zu geben, eine korrekte Übersicht ihrer Spiele zu geben, haben wir den Befehl **!overview** (Discord) bzw. **/overview** (Telegram) hinzugefügt.
+
+2️⃣ Der Primebot hat jetzt eine eigene [Website](https://www.primebot.me/)! Unter anderem findet ihr dort nochmal die ganzen Vorteile des Bots aufgelistet, wie man sein Team beim Bot registrieren kann, und mögliche Problemlösungen wenn der Bot nicht das tut, was man ihm sagt.
+Falls euch der PrimeBot also gefällt und ihr andere Teams darauf aufmerksaam machen wollt, schickt ihnen einfach den Link zur Website. :)
+
+3️⃣ Der Primebot hat mit der neuen Website auch ein neues Gesicht bekommen (eventuell habt ihr es schon bemerkt). 
+Für die Teams auf Discord gilt: Um das neue Logo zu sehen, muss der Webhook neu erstellt werden. Gebt dazu einfach **!fix** in den Chat ein.
+
+🔥Viel Erfolg in diesem Split!🔥
+Sternige Grüße
+Grayknife und Orbis
+""",
     },
 }

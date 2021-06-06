@@ -45,6 +45,7 @@ class TelegramBot(Bot):
             CommandHandler("bop", single_commands.bop),
             CommandHandler("explain", single_commands.explain),
             CommandHandler("setlogo", single_commands.set_logo),
+            CommandHandler("overview", single_commands.overview),
             MessageHandler(Filters.status_update.migrate, settings_conversation.migrate_chat)  # Migration
         ]
 

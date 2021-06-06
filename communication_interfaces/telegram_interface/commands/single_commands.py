@@ -13,6 +13,7 @@ from communication_interfaces.languages.de_DE import (
     HELP_COMMAND_LIST, ISSUE, TEAM_NOT_IN_DB_TEXT, PHOTO_SUCESS_TEXT, PHOTO_ERROR_TEXT, HELP_TEXT, FEEDBACK,
     EXPLAIN_TEXT, CANCEL
 )
+from communication_interfaces.messages import GamesOverview
 from communication_interfaces.utils import mysql_has_gone_away_decorator
 from prime_league_bot.settings import STORAGE_DIR
 from utils.changelogs import CHANGELOGS
@@ -137,6 +138,27 @@ def explain(update: Update, context: CallbackContext):
     log = CHANGELOGS[sorted(CHANGELOGS.keys())[-1]]
     update.message.reply_markdown(
         EXPLAIN_TEXT.format(version=log["version"]),
+        reply_markup=ReplyKeyboardRemove(),
+        disable_web_page_preview=True,
+    )
+    return ConversationHandler.END
+
+
+@log_command
+@mysql_has_gone_away_decorator
+def overview(update: Update, context: CallbackContext):
+    chat_id = update.message.chat.id
+    try:
+        team = Team.objects.get(telegram_id=chat_id)
+    except Team.DoesNotExist:
+        update.message.reply_markdown(
+            TEAM_NOT_IN_DB_TEXT,
+        )
+        return ConversationHandler.END
+
+    msg = GamesOverview(team=team)
+    update.message.reply_markdown(
+        msg.message,
         reply_markup=ReplyKeyboardRemove(),
         disable_web_page_preview=True,
     )
