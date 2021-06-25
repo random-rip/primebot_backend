@@ -9,6 +9,7 @@ from app_prime_league.models import Team, Player, Game, GameMetaData
 from communication_interfaces import send_message
 from parsing.parser import TeamHTMLParser, TeamWrapper
 from prime_league_bot import settings
+from utils.messages_logger import log_exception
 
 logger = logging.getLogger("django")
 
@@ -150,6 +151,7 @@ def add_or_update_players(members, team: Team):
             player.save()
 
 
+@log_exception
 def add_game(team, game_id, ignore_lineup=False):
     gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=game_id, )
     game = Game.objects.get_game_by_team(game_id=game_id, team=team)
@@ -174,6 +176,7 @@ def add_games(game_ids, team: Team, ignore_lineup=False, use_concurrency=True):
             add_game(team, game_id=i)
 
 
+@log_exception
 def add_raw_game(team, game_id):
     Game.objects.get_or_create(
         game_id=game_id,

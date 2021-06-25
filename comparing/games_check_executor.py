@@ -8,6 +8,7 @@ from communication_interfaces.message_dispatcher import MessageDispatcher
 from communication_interfaces.messages import EnemyNewTimeSuggestionsNotificationMessage, \
     OwnNewTimeSuggestionsNotificationMessage, ScheduleConfirmationNotification, NewLineupNotificationMessage
 from comparing.game_comparer import GameMetaData, GameComparer
+from utils.messages_logger import log_exception
 
 thread_local = threading.local()
 django_logger = logging.getLogger("django")
@@ -19,7 +20,7 @@ def get_session():
         thread_local.session = requests.Session()
     return thread_local.session
 
-
+@log_exception
 def check_game(game):
     game_id = game.game_id
     team = game.team

@@ -84,3 +84,13 @@ async def log_from_discord(ctx, optional=None):
         logger.error(e)
     finally:
         return True
+
+
+def log_exception(fn):
+    def wrapper(*args, **kwargs):
+        try:
+            result = fn(*args, **kwargs)
+            return result
+        except Exception as e:
+            logging.getLogger("django").error(e)
+    return wrapper
