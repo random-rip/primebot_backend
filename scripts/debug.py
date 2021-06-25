@@ -1,36 +1,16 @@
-from app_prime_league.models import Team
-from communication_interfaces.languages.de_DE import GENERAL_MATCH_LINK
-from communication_interfaces.message_dispatcher import MessageDispatcher
-from utils.constants import EMOJI_ARROW_RIGHT, EMOJI_FIGHT, EMOJI_FIRE
+import time
+from datetime import datetime
+
+from app_prime_league.models import Game
+from comparing.games_check_executor import update_uncompleted_games
 
 
 def main():
-    text = """
-    _... a little upsi happened_
-Hallo **{team.name}**, 
-die Gruppenphase startet in ein paar Tagen und ihr spielt diesen Split in Division **{team.division}**. 
-
-**Eine Übersicht eurer Spiele:**
-
-"""
-    ende = """
-
-{emoji} GL & HF {emoji}
-"""
-    teams = Team.objects.get_watched_team_of_current_split()
-    for team in teams:
-        print(team)
-        try:
-            games_to_play = team.games_against.filter(game_closed=False).order_by("game_day")
-            a = [
-                f"[Spieltag {game.game_day}]({GENERAL_MATCH_LINK}{game.game_id}) {EMOJI_FIGHT} {game.enemy_team.name} {EMOJI_ARROW_RIGHT} [OP.gg]({game.get_op_link_of_enemies(only_lineup=False)})\n"
-                for game in games_to_play]
-            games_text = "\n".join(a)
-            dispatcher = MessageDispatcher(team)
-            msg = text.format(team=team) + games_text + ende.format(emoji=EMOJI_FIRE)
-            dispatcher.dispatch_raw_message(msg=msg)
-        except Exception as e:
-            print("ERROR", e)
+    start_time = time.time()
+    uncompleted_games = Game.objects.get(id=1203)
+    print(f"Checking uncompleted games at {datetime.now()}...")
+    update_uncompleted_games(games=uncompleted_games, use_concurrency=False)
+    print(f"Checked uncompleted games ({len(uncompleted_games)}) in {time.time() - start_time} seconds")
 
 
 # python manage.py runscript debug
