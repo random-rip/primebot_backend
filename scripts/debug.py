@@ -7,7 +7,7 @@ from comparing.games_check_executor import update_uncompleted_games
 
 def main():
     start_time = time.time()
-    uncompleted_games = Game.objects.get(id=1203)
+    uncompleted_games = Game.objects.filter(id=1203)
     print(f"Checking uncompleted games at {datetime.now()}...")
     update_uncompleted_games(games=uncompleted_games, use_concurrency=False)
     print(f"Checked uncompleted games ({len(uncompleted_games)}) in {time.time() - start_time} seconds")
