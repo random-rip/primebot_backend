@@ -7,9 +7,18 @@ from parsing.parser import MatchWrapper, TeamWrapper
 class TeamManager(models.Manager):
 
     def get_watched_teams(self):
+        """
+        Gibt alle Teams zurück, die entweder in einer Telegram-Gruppe oder in einem Discord-Channel registriert wurden.
+        :return: Queryset of Team Model
+        """
         return self.model.objects.filter(Q(telegram_id__isnull=False) | Q(discord_channel_id__isnull=False))
 
     def get_watched_team_of_current_split(self):
+        """
+        Gibt alle Teams zurück, die entweder in einer Telegram-Gruppe oder in einem Discord-Channel registriert wurden
+        und wo die Division gesetzt wurde!
+        :return: Queryset of Team Model
+        """
         return self.model.objects.filter(Q(telegram_id__isnull=False) | Q(discord_channel_id__isnull=False),
                                          division__isnull=False)
 
