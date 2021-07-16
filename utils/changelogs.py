@@ -174,4 +174,8 @@ Sternige Grüße
 Grayknife und Orbis
 """,
     },
+    16: {
+        "version": "1.16.1",
+        "text": "Ein Fehler wurde behoben, bei dem nicht alle Teams eine wöchentliche Benachrichtigung bekommen haben.",
+    }
 }

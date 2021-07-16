@@ -83,7 +83,11 @@ class TelegramBot(Bot):
 
     @staticmethod
     def send_message(*, msg: str, team, attach):
-        sent_message = send_message(msg=msg, chat_id=team.telegram_id)
+        try:
+            sent_message = send_message(msg=msg, chat_id=team.telegram_id)
+        except Exception as e:
+            logging.getLogger("notifications").error(f"Could not send message to {team}: '{msg}. -> {e}'")
+            return
         if attach:
             try:
                 pin_msg(sent_message)
