@@ -8,7 +8,11 @@ def main():
 Hallo {team.name}, 
 
 die Gruppenphase des aktuellen PrimeLeague-Splits ist vorbei und damit geht der Primebot bis zum nächsten Split in eine kurze Pause.
-Die Tiebreaker und Playoff-Spiele, die diese Woche noch stattfinden, werden von unserem Bot (noch) *nicht* berücksichtigt.
+Die Tiebreaker und Playoff-Spiele, die stattfinden, werden von unserem Bot (noch) **nicht** berücksichtigt.
+
+Wenn ihr uns noch kein Feedback gegeben habt, würden wir uns darüber freuen, sodass wir den Primebot weiter verbessern können.
+🔥 [Link zum Feedback](https://feedback.primebot.me/) 🔥
+
 
 Sternige Grüße
 Grayknife und Orbis
