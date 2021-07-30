@@ -8,7 +8,8 @@ def main():
 Hallo {team.name}, 
 
 die Gruppenphase des aktuellen PrimeLeague-Splits ist vorbei und damit geht der Primebot bis zum nächsten Split in eine kurze Pause.
-Die Tiebreaker und Playoff-Spiele, die stattfinden, werden von unserem Bot (noch) **nicht** berücksichtigt.
+Die Benachrichtigungen der Tiebreakerspiele befinden sich noch in der Betaphase, wir können also nicht garantieren, dass ihr 100% der Benachrichtigungen bekommt.
+Schaut aus diesem Grund also ab und zu selber auf die Webseite.
 
 Wenn ihr uns noch kein Feedback gegeben habt, würden wir uns darüber freuen, sodass wir den Primebot weiter verbessern können.
 🔥 [Link zum Feedback](https://feedback.primebot.me/) 🔥
