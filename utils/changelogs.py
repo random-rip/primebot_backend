@@ -177,5 +177,9 @@ Grayknife und Orbis
     16: {
         "version": "1.16.1",
         "text": "Ein Fehler wurde behoben, bei dem nicht alle Teams eine wöchentliche Benachrichtigung bekommen haben.",
-    }
+    },
+    17: {
+        "version": "1.17",
+        "text": "Added new log type lineup_fail. Also added team soft delete functionality, if the group or chat does not exist anymore.",
+    },
 }
