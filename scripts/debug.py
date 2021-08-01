@@ -1,16 +1,12 @@
-import time
-from datetime import datetime
-
-from app_prime_league.models import Game
-from comparing.games_check_executor import update_uncompleted_games
+from app_prime_league.models import Team
+from communication_interfaces.message_dispatcher import MessageDispatcher
 
 
 def main():
-    start_time = time.time()
-    uncompleted_games = Game.objects.filter(id=1203)
-    print(f"Checking uncompleted games at {datetime.now()}...")
-    update_uncompleted_games(games=uncompleted_games, use_concurrency=False)
-    print(f"Checked uncompleted games ({len(uncompleted_games)}) in {time.time() - start_time} seconds")
+    team = Team.objects.get(id=155398)
+    dispatcher = MessageDispatcher(team)
+    msg = "TEST"
+    dispatcher.dispatch_raw_message(msg=msg)
 
 
 # python manage.py runscript debug

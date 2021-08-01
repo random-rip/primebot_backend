@@ -7,7 +7,7 @@ import aiohttp
 import discord
 import requests
 from asgiref.sync import sync_to_async
-from discord import Webhook, RequestsWebhookAdapter, Embed, Colour
+from discord import Webhook, RequestsWebhookAdapter, Embed, Colour, NotFound
 from discord.ext import commands
 
 from app_prime_league.models import Team
@@ -199,6 +199,9 @@ class DiscordBot(Bot):
         embed = Embed(description=msg, color=Colour.from_rgb(255, 255, 0))
         try:
             webhook.send(**DiscordBot.create_msg_arguments(discord_role_id=team.discord_role_id, embed=embed))
+        except NotFound as e:
+            team.set_discord_null()
+            logging.getLogger("notifications").info(f"Could not send message to {team}: {e}. Soft deleted'")
         except Exception as e:
             logging.getLogger("notifications").error(f"Could not send message to {team}: '{msg}. -> {e}'")
 

@@ -1,4 +1,5 @@
 from telegram import Update, ParseMode
+from telegram.error import BadRequest
 from telegram.ext import CallbackContext, ConversationHandler
 
 from app_prime_league.models import Team
@@ -188,13 +189,16 @@ def set_optional_photo(update: Update, context: CallbackContext):
     if successful:
         finish_registration(update, context)
     else:
-        context.bot.edit_message_text(
-            chat_id=query.message.chat_id,
-            message_id=query.message.message_id,
-            text=PHOTO_RETRY_TEXT,
-            reply_markup=boolean_keyboard(0),
-            parse_mode=ParseMode.MARKDOWN,
-        )
+        try:
+            context.bot.edit_message_text(
+                chat_id=query.message.chat_id,
+                message_id=query.message.message_id,
+                text=PHOTO_RETRY_TEXT,
+                reply_markup=boolean_keyboard(0),
+                parse_mode=ParseMode.MARKDOWN,
+            )
+        except BadRequest:
+            pass
 
 
 @log_callbacks

@@ -7,6 +7,7 @@ from telegram import ParseMode
 from telegram.ext import Updater, CommandHandler, MessageHandler, ConversationHandler, CallbackQueryHandler
 from telegram.ext.filters import Filters
 from telegram.utils.helpers import mention_html
+from telepot.exception import BotWasKickedError, BotWasBlockedError
 
 from communication_interfaces import send_message
 from communication_interfaces.base_bot import Bot
@@ -84,7 +85,12 @@ class TelegramBot(Bot):
     @staticmethod
     def send_message(*, msg: str, team, attach):
         try:
-            sent_message = send_message(msg=msg, chat_id=team.telegram_id)
+            sent_message = send_message(msg=msg, chat_id=team.telegram_id, raise_again=True)
+        except (BotWasKickedError, BotWasBlockedError) as e:
+            logging.getLogger("notifications").error(f"Could not send message to {team}: '{msg}. -> {e}'")
+            team.set_telegram_null()
+            logging.getLogger("notifications").info(f"Could not send message to {team}: {e}. Soft deleted'")
+            return
         except Exception as e:
             logging.getLogger("notifications").error(f"Could not send message to {team}: '{msg}. -> {e}'")
             return

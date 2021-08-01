@@ -105,6 +105,28 @@ class Team(models.Model):
     def get_next_open_game(self):
         return self.games_against.filter(game_closed=False).order_by("game_day").first()
 
+    def set_telegram_null(self):
+        # self.telegram_id = None
+        self.save(update_fields=["telegram_id"])
+        self.soft_delete()
+
+    def set_discord_null(self):
+        self.discord_webhook_id = None
+        self.discord_channel_id = None
+        self.discord_webhook_token = None
+        self.discord_role_id = None
+        self.save(
+            update_fields=["discord_webhook_id", "discord_channel_id", "discord_webhook_token", "discord_role_id"])
+        self.soft_delete()
+
+    def soft_delete(self):
+        if self.telegram_id is None and self.discord_channel_id is None:
+            for game in self.games_against.all():
+                game.suggestion_set.all().delete()
+                game.enemy_lineup.all().delete()
+                game.delete()
+            self.setting_set.all().delete()
+
 
 class Player(models.Model):
     name = models.CharField(max_length=50)

@@ -257,6 +257,8 @@ class BaseLog:
             return LogChangeScore(*log)
         elif action == "score_report":
             return LogScoreReport(*log)
+        elif action == "lineup_fail":
+            return LogLineupFail(*log)
         return None
 
 
@@ -309,6 +311,12 @@ class LogDisqualified(BaseGameIsOverLog):
         super().__init__(timestamp, user, details)
 
 
+class LogLineupFail(BaseGameIsOverLog):
+
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+
+
 class LogChangeStatus(BaseLog):
     """
     self.details can currently be "finished" (Stand 21.03.2021)
@@ -324,6 +332,7 @@ class LogChangeScore(BaseLog):
     """
     Currently deprecated
     """
+
     def __init__(self, timestamp, user, details):
         super().__init__(timestamp, user, details)
         prefix = "Manually adjusted score to "
@@ -334,6 +343,7 @@ class LogScoreReport(BaseLog):
     """
     Currently deprecated
     """
+
     def __init__(self, timestamp, user, details):
         super().__init__(timestamp, user, details)
 

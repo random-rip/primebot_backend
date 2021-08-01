@@ -18,7 +18,7 @@ emoji_numbers = [
 bot = telepot.Bot(token=settings.TELEGRAM_BOT_KEY)
 
 
-def send_message(msg: str, chat_id: int = None, parse_mode=ParseMode.MARKDOWN):
+def send_message(msg: str, chat_id: int = None, parse_mode=ParseMode.MARKDOWN, raise_again=False):
     """
     Sends a Message using Markdown as default.
     """
@@ -29,6 +29,8 @@ def send_message(msg: str, chat_id: int = None, parse_mode=ParseMode.MARKDOWN):
     except Exception as e:
         logging.getLogger("notifications").error(
             f"Error Sending Message in Chat chat_id={chat_id} msg={msg}\n{e}")
+        if raise_again:
+            raise e
 
 
 def pin_msg(message) -> bool:
