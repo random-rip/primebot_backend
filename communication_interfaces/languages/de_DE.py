@@ -44,7 +44,6 @@ FEEDBACK = f"Hast Du Feedback? Hinterlasse den Entwicklern gerne eine Nachricht 
 
 NEED_HELP = "Solltest Du Hilfe benötigen, benutze /help."
 
-
 CHAT_EXISTING = "In diesem Chat ist bereits ein Team registriert. Möchtest Du ein anderes Team für diesen Channel " \
                 "registrieren?\n" \
                 f"Dann gib jetzt deine *Team-URL* " \
@@ -173,11 +172,11 @@ NEW_LINEUP_TEXT = "[{enemy_team_tag}](" + \
                   EMOJI_LINEUP
 
 NEW_LINEUP_IN_CALIBRATION = "[{enemy_team_name}](" + \
-                  GENERAL_TEAM_LINK + \
-                  "{enemy_team_id}) hat für [Spiel {game_day}](" + \
-                  GENERAL_MATCH_LINK + \
-                  "{game_id}) ein neues [Lineup]({op_link}) aufgestellt. " + \
-                  EMOJI_LINEUP
+                            GENERAL_TEAM_LINK + \
+                            "{enemy_team_id}) hat für [Spiel {game_day}](" + \
+                            GENERAL_MATCH_LINK + \
+                            "{game_id}) ein neues [Lineup]({op_link}) aufgestellt. " + \
+                            EMOJI_LINEUP
 
 WEEKLY_UPDATE_TEXT = "Der nächste Spieltag:\n" + \
                      EMOJI_SOON + \
@@ -190,12 +189,12 @@ WEEKLY_UPDATE_TEXT = "Der nächste Spieltag:\n" + \
 
 NEXT_GAME_IN_CALIBRATION = "Euer nächstes Spiel in der Kalibrierungsphase:\n" + \
                            EMOJI_SOON + \
-                     "[Spiel {game_day}](" + \
+                           "[Spiel {game_day}](" + \
                            GENERAL_MATCH_LINK + \
-                     "{game_id}) gegen [{enemy_team_tag}](" + \
+                           "{game_id}) gegen [{enemy_team_tag}](" + \
                            GENERAL_TEAM_LINK + \
-                     "{enemy_team_id}):\n" + \
-                     "Hier ist der [OP.GG Link]({op_link}) des Teams."
+                           "{enemy_team_id}):\n" + \
+                           "Hier ist der [OP.GG Link]({op_link}) des Teams."
 
 WAIT_A_MOMENT_TEXT = "Alles klar, ich schaue, was ich dazu finden kann.\nDas kann einen Moment dauern...⏳"
 NO_GROUP_CHAT = "Dieser Befehl kann nur in einer Telegram-Gruppe ausgeführt werden."
@@ -207,30 +206,29 @@ EXPLAIN_TEXT = "Dieser Bot ist nicht in Kooperation mit der PrimeLeague bzw. der
                "Dieser Bot wurde aufgrund von versäumten Matches entworfen und programmiert. " \
                "Der Bot wurde nach bestem Gewissen realisiert, und nach einer Testphase für andere Teams zur " \
                "Verfügung gestellt. Dennoch sind alle Angaben ohne Gewähr!\n" \
-               "*Funktionsweise:* Nach der Registrierung des Teams wird über die noch nicht gespielten Spiele " \
-               "iteriert und deren Website nach Änderungen abgesucht. Dies geschieht alle 30 Minuten. " \
-               "Das bedeutet, dass Updates maximal 30 Minuten alt sein können. Das wöchentliche Update geschieht " \
-               "einmal jeden Montag um 0Uhr nach Beginn des Splits bis zum Ende der Gruppenphase. " \
-               "Die gespeicherten Teams werden einmal pro Tag um 0Uhr aktualisiert. \n_Version: {version}_"
+               "\n_Version: {version}_"
 
 CLOSE = "Schließen"
 CURRENTLY = "Derzeitig"
 
-DC_TEAM_ID_NOT_VALID = "Aus dem Übergabeparameter konnte keine ID gefunden werden. " \
-                       "(Format `!start TEAM_ID_or_TEAM_URL`)"
-DC_CHANNEL_IN_USE = "Für diesen Channel ist bereits ein Team registriert."
-DC_TEAM_IN_USE = "Dieses Team ist bereits in einem anderen Channel registriert."
+DC_WEBSITE_LINK = "[Website](https://www.primebot.me/start/f%C3%BCr-discord)"
+DC_HELP_LINK_TEXT = f"Schaue auf unserer {DC_WEBSITE_LINK} nach Hilfe."
+DC_TEAM_ID_NOT_VALID = "Aus dem Übergabeparameter konnte keine ID gefunden werden " \
+                       f"(Format `!start TEAM_ID_or_TEAM_URL`). {DC_HELP_LINK_TEXT}"
+DC_CHANNEL_IN_USE = f"Für diesen Channel ist bereits ein Team registriert. {DC_HELP_LINK_TEXT}"
+DC_TEAM_IN_USE = f"Dieses Team ist bereits in einem anderen Channel registriert. {DC_HELP_LINK_TEXT}"
 DC_NO_PERMISSIONS_FOR_WEBHOOK = "Mir fehlt die Berechtigung, Webhooks zu verwalten. " \
                                 "Bitte stelle sicher, dass ich diese Berechtigung habe. " \
                                 "Gegebenenfalls warte eine Stunde, bevor du den Befehl wieder ausführst. " \
-                                "Falls es danach noch nicht gehen sollte, wende dich bitte an den Support."
+                                "Falls es danach noch nicht gehen sollte, , schaue auf unserer " \
+                       f"{DC_WEBSITE_LINK} > Probleme nach Hilfe."
 DC_REGISTRATION_FINISH = "Perfekt, dieser Channel wurde für Team {team_name} initialisiert.\n" \
                          "Wenn du möchtest, kannst du mit `!role ROLE_NAME` noch eine Rolle benennen, " \
                          "die bei Benachrichtigungen erwähnt werden soll."
 DC_USE_FIX = "Wenn keine Benachrichtigungen mehr in dem Channel ankommen, benutze bitte `!fix`."
 
-DC_WEBHOOK_RECREATED = "Webhook wurde neu erstellt. Sollten weiterhin Probleme auftreten, " \
-                       "wende dich bitte an den Support."
+DC_WEBHOOK_RECREATED = "Webhook wurde neu erstellt. Sollten weiterhin Probleme auftreten, schaue auf unserer " \
+                       f"{DC_WEBSITE_LINK} > Probleme nach Hilfe."
 DC_CHANNEL_NOT_INITIALIZED = "In diesem Channel ist derzeitig kein Team registriert. " \
                              "Benutze dafür `!start TEAM_ID_oder_TEAM_URL`"
 DC_ROLE_MENTION_REMOVED = "Alles klar, ich habe die Rollenerwähnung entfernt. " \
@@ -248,4 +246,4 @@ DC_DESCRIPTION = "Dieser Bot ist nicht in Kooperation mit der PrimeLeague bzw. d
                  "Dieser Bot wurde aufgrund von versäumten Matches entworfen und programmiert. " \
                  "Der Bot wurde nach bestem Gewissen realisiert, " \
                  "und nach einer Testphase für andere Teams zur Verfügung gestellt. " \
-                 "Dennoch sind alle Angaben ohne Gewähr!"
+                 "Dennoch sind alle Angaben ohne Gewähr! _Version: {version}_"

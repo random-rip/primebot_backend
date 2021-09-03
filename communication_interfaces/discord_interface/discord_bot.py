@@ -17,6 +17,7 @@ from communication_interfaces.languages import de_DE as LanguagePack
 from communication_interfaces.messages import GamesOverview
 from communication_interfaces.utils import mysql_has_gone_away
 from prime_league_bot import settings
+from utils.changelogs import CHANGELOGS
 from utils.exceptions import CouldNotParseURLException
 from utils.messages_logger import log_from_discord
 from utils.utils import get_valid_team_id
@@ -40,7 +41,8 @@ class DiscordBot(Bot):
             bot_config={
                 "token": settings.DISCORD_BOT_KEY,
                 "command_prefix": '!',
-                "description": LanguagePack.DC_DESCRIPTION,
+                "description": LanguagePack.DC_DESCRIPTION.format(
+                    version=CHANGELOGS[sorted(CHANGELOGS.keys())[-1]]["version"]),
                 "help_command": help_command
             },
         )
