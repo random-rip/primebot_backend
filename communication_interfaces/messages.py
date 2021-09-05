@@ -3,10 +3,7 @@ from abc import abstractmethod
 from babel import dates as babel
 
 from app_prime_league.models import Game, Team
-from communication_interfaces.languages.de_DE import WEEKLY_UPDATE_TEXT, NEW_LINEUP_TEXT, OWN_NEW_TIME_SUGGESTION_TEXT, \
-    NEW_TIME_SUGGESTION_PREFIX, NEW_TIME_SUGGESTIONS_PREFIX, SCHEDULING_AUTO_CONFIRMATION_TEXT, \
-    SCHEDULING_CONFIRMATION_TEXT, GAME_BEGIN_CHANGE_TEXT, NEXT_GAME_IN_CALIBRATION, NEW_LINEUP_IN_CALIBRATION, \
-    GENERAL_MATCH_LINK
+from communication_interfaces.languages import de_DE as LaP
 from communication_interfaces.telegram_interface.tg_singleton import emoji_numbers
 from parsing.parser import LogSchedulingAutoConfirmation, LogSchedulingConfirmation, LogChangeTime
 from prime_league_bot import settings
@@ -20,6 +17,8 @@ def format_datetime(x):
 
 class BaseMessage:
     _key = None
+    mentionable = False
+    title = None
 
     def __init__(self, team: Team, **kwargs):
         self.team = team
@@ -30,7 +29,10 @@ class BaseMessage:
     def _generate_message(self):
         pass
 
-    def notification_wanted(self):
+    def generate_title(self):
+        return self.title
+
+    def team_wants_notification(self):
         return self.team.value_of_setting(type(self)._key)
 
     def can_be_pinned(self):
@@ -41,6 +43,8 @@ class WeeklyNotificationMessage(BaseMessage):
     msg_type = "weekly_notification"
     _key = "weekly_op_link"
     _attachable_key = "pin_weekly_op_link"
+    title = LaP.TITLE_NEW_GAME_DAY
+    mentionable = True
 
     def __init__(self, team: Team, game: Game):
         super().__init__(team)
@@ -53,12 +57,14 @@ class WeeklyNotificationMessage(BaseMessage):
         enemy_team_tag = self.game.enemy_team.team_tag
         if op_link is None:
             raise Exception()
-        self.message = WEEKLY_UPDATE_TEXT.format(op_link=op_link, enemy_team_tag=enemy_team_tag, **vars(self.game))
+        self.message = LaP.WEEKLY_UPDATE_TEXT.format(op_link=op_link, enemy_team_tag=enemy_team_tag, **vars(self.game))
 
 
 class NewGameNotification(BaseMessage):
     msg_type = "new_game_notification"
     _key = "new_game_notification"
+    title = LaP.TITLE_NEW_GAME_DAY
+    mentionable = True
 
     def __init__(self, team: Team, game: Game):
         super().__init__(team)
@@ -70,13 +76,15 @@ class NewGameNotification(BaseMessage):
         enemy_team_tag = self.game.enemy_team.team_tag
         if op_link is None:
             raise Exception()
-        self.message = NEXT_GAME_IN_CALIBRATION.format(op_link=op_link, enemy_team_tag=enemy_team_tag,
-                                                       **vars(self.game))
+        self.message = LaP.NEXT_GAME_IN_CALIBRATION.format(op_link=op_link, enemy_team_tag=enemy_team_tag,
+                                                           **vars(self.game))
 
 
 class NewLineupNotificationMessage(BaseMessage):
     msg_type = "new_lineup_notification"
     _key = "lineup_op_link"
+    title = LaP.TITLE_NEW_LINEUP
+    mentionable = True
 
     def __init__(self, team: Team, game: Game):
         super().__init__(team)
@@ -88,11 +96,13 @@ class NewLineupNotificationMessage(BaseMessage):
         enemy_team_tag = self.game.enemy_team.team_tag
         if op_link is None:
             raise Exception()
-        self.message = NEW_LINEUP_TEXT.format(op_link=op_link, enemy_team_tag=enemy_team_tag, **vars(self.game))
+        self.message = LaP.NEW_LINEUP_TEXT.format(op_link=op_link, enemy_team_tag=enemy_team_tag, **vars(self.game))
 
 
 class NewLineupInCalibrationMessage(BaseMessage):
     msg_type = "new_lineup_in_calibration"
+    title = LaP.TITLE_NEW_LINEUP
+    mentionable = True
 
     def __init__(self, team: Team, game: Game):
         super().__init__(team)
@@ -104,13 +114,15 @@ class NewLineupInCalibrationMessage(BaseMessage):
         enemy_team_name = self.game.enemy_team.name
         if op_link is None:
             raise Exception()
-        self.message = NEW_LINEUP_IN_CALIBRATION.format(op_link=op_link, enemy_team_name=enemy_team_name,
-                                                        **vars(self.game))
+        self.message = LaP.NEW_LINEUP_IN_CALIBRATION.format(op_link=op_link, enemy_team_name=enemy_team_name,
+                                                            **vars(self.game))
 
 
 class OwnNewTimeSuggestionsNotificationMessage(BaseMessage):
     msg_type = "own_new_time_suggestion_notification"
     _key = "scheduling_suggestion"
+    title = LaP.TITLE_NEW_OWN_SUGGESTION
+    mentionable = True
 
     def __init__(self, team: Team, game: Game):
         super().__init__(team)
@@ -118,12 +130,14 @@ class OwnNewTimeSuggestionsNotificationMessage(BaseMessage):
         self._generate_message()
 
     def _generate_message(self):
-        self.message = OWN_NEW_TIME_SUGGESTION_TEXT.format(**vars(self.game))
+        self.message = LaP.OWN_NEW_TIME_SUGGESTION_TEXT.format(**vars(self.game))
 
 
 class EnemyNewTimeSuggestionsNotificationMessage(BaseMessage):
     msg_type = "enemy_new_time_suggestion_notification"
     _key = "scheduling_suggestion"
+    title = LaP.TITLE_NEW_SUGGESTION
+    mentionable = True
 
     def __init__(self, team: Team, game: Game):
         super().__init__(team)
@@ -135,9 +149,9 @@ class EnemyNewTimeSuggestionsNotificationMessage(BaseMessage):
         enemy_team_tag = self.game.enemy_team.team_tag
 
         if len(details) == 1:
-            prefix = NEW_TIME_SUGGESTION_PREFIX
+            prefix = LaP.NEW_TIME_SUGGESTION_PREFIX
         else:
-            prefix = NEW_TIME_SUGGESTIONS_PREFIX
+            prefix = LaP.NEW_TIME_SUGGESTIONS_PREFIX
         prefix = prefix.format(enemy_team_tag=enemy_team_tag, **vars(self.game))
 
         self.message = prefix + '\n'.join([f"{emoji_numbers[i]}{format_datetime(x)}" for i, x in enumerate(details)])
@@ -146,6 +160,8 @@ class EnemyNewTimeSuggestionsNotificationMessage(BaseMessage):
 class ScheduleConfirmationNotification(BaseMessage):
     msg_type = "schedule_confirmation_notification"
     _key = "scheduling_confirmation"
+    title = LaP.TITLE_GAME_CONFIRMATION
+    mentionable = True
 
     def __init__(self, team: Team, game: Game, latest_confirmation_log):
         super().__init__(team)
@@ -158,12 +174,12 @@ class ScheduleConfirmationNotification(BaseMessage):
         enemy_team_tag = self.game.enemy_team.team_tag
 
         if isinstance(self.latest_confirmation_log, LogSchedulingAutoConfirmation):
-            message = SCHEDULING_AUTO_CONFIRMATION_TEXT
+            message = LaP.SCHEDULING_AUTO_CONFIRMATION_TEXT
         elif isinstance(self.latest_confirmation_log, LogSchedulingConfirmation):
-            message = SCHEDULING_CONFIRMATION_TEXT
+            message = LaP.SCHEDULING_CONFIRMATION_TEXT
         else:
             assert isinstance(self.latest_confirmation_log, LogChangeTime)
-            message = GAME_BEGIN_CHANGE_TEXT
+            message = LaP.GAME_BEGIN_CHANGE_TEXT
 
         self.message = message.format(time=time, enemy_team_tag=enemy_team_tag, **vars(self.game))
 
@@ -171,6 +187,7 @@ class ScheduleConfirmationNotification(BaseMessage):
 class GamesOverview(BaseMessage):
     msg_type = "overview"
     _key = "overview"
+    mentionable = False
 
     def __init__(self, team: Team, ):
         super().__init__(team)
@@ -182,7 +199,8 @@ class GamesOverview(BaseMessage):
             self.message = "Ihr habt aktuell keine offenen Spiele."
             return
         a = [
-            f"[Spieltag {game.game_day}]({GENERAL_MATCH_LINK}{game.game_id}) {EMOJI_FIGHT} {game.enemy_team.name} {EMOJI_ARROW_RIGHT} [OP.gg]({game.get_op_link_of_enemies(only_lineup=False)})\n"
+            f"[Spieltag {game.game_day}]({LaP.GENERAL_MATCH_LINK}{game.game_id}) {EMOJI_FIGHT} {game.enemy_team.name}" \
+            f" {EMOJI_ARROW_RIGHT} [OP.gg]({game.get_op_link_of_enemies(only_lineup=False)})\n"
             for game in games_to_play]
         games_text = "\n".join(a)
         self.message = "**Eine Übersicht eurer offenen Spiele:**\n\n" + games_text

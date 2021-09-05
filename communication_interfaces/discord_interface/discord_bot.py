@@ -14,7 +14,7 @@ from app_prime_league.models import Team
 from app_prime_league.teams import register_team
 from communication_interfaces.base_bot import Bot
 from communication_interfaces.languages import de_DE as LanguagePack
-from communication_interfaces.messages import GamesOverview
+from communication_interfaces.messages import GamesOverview, BaseMessage
 from communication_interfaces.utils import mysql_has_gone_away
 from prime_league_bot import settings
 from utils.changelogs import CHANGELOGS
@@ -196,11 +196,10 @@ class DiscordBot(Bot):
         self.bot.run(self.token)
 
     @staticmethod
-    def send_message(*, msg: str, team, attach):
+    def send_message(*, msg: BaseMessage, team):
         webhook = Webhook.partial(team.discord_webhook_id, team.discord_webhook_token, adapter=RequestsWebhookAdapter())
-        embed = Embed(description=msg, color=Colour.from_rgb(255, 255, 0))
         try:
-            webhook.send(**DiscordBot.create_msg_arguments(discord_role_id=team.discord_role_id, embed=embed))
+            webhook.send(**DiscordBot._create_msg_arguments(discord_role_id=team.discord_role_id, msg=msg))
         except NotFound as e:
             team.set_discord_null()
             logging.getLogger("notifications").info(f"Could not send message to {team}: {e}. Soft deleted'")
@@ -214,12 +213,15 @@ class DiscordBot(Bot):
         return f"{MENTION_PREFIX}{discord_role_id}{MENTION_POSTFIX}"
 
     @staticmethod
-    def mask_message_with_mention(*, discord_role_id, message: str):
+    def mask_message_with_mention(*, discord_role_id, message: str = ""):
         return f"{DiscordBot.mask_mention(discord_role_id)} {message}" if discord_role_id is not None else message
 
     @staticmethod
-    def create_msg_arguments(*, discord_role_id, **kwargs):
+    def _create_msg_arguments(*, msg, discord_role_id, **kwargs):
         arguments = kwargs
-        if discord_role_id is not None:
-            arguments["content"] = DiscordBot.mask_mention(discord_role_id)
+        arguments["embed"] = Embed(description=msg.message, color=Colour.from_rgb(255, 255, 0))
+        arguments["content"] = DiscordBot.mask_message_with_mention(
+            discord_role_id=discord_role_id,
+            message=msg.generate_title()
+        )
         return arguments

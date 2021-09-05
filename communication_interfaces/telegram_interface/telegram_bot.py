@@ -11,7 +11,8 @@ from telepot.exception import BotWasKickedError, BotWasBlockedError
 
 from communication_interfaces import send_message
 from communication_interfaces.base_bot import Bot
-from communication_interfaces.languages.de_DE import MESSAGE_NOT_PINED_TEXT, CANT_PIN_MSG_IN_PRIVATE_CHAT
+from communication_interfaces.languages.de_DE import MESSAGE_NOT_PINNED_TEXT, CANT_PIN_MSG_IN_PRIVATE_CHAT
+from communication_interfaces.messages import BaseMessage
 from communication_interfaces.telegram_interface.commands import single_commands
 from communication_interfaces.telegram_interface.conversations import settings_conversation
 from communication_interfaces.telegram_interface.conversations import start_conversation
@@ -83,9 +84,9 @@ class TelegramBot(Bot):
         self.bot.idle()
 
     @staticmethod
-    def send_message(*, msg: str, team, attach):
+    def send_message(*, msg: BaseMessage, team):
         try:
-            sent_message = send_message(msg=msg, chat_id=team.telegram_id, raise_again=True)
+            sent_message = send_message(msg=msg.message, chat_id=team.telegram_id, raise_again=True)
         except (BotWasKickedError, BotWasBlockedError) as e:
             logging.getLogger("notifications").error(f"Could not send message to {team}: '{msg}. -> {e}'")
             team.set_telegram_null()
@@ -94,11 +95,11 @@ class TelegramBot(Bot):
         except Exception as e:
             logging.getLogger("notifications").error(f"Could not send message to {team}: '{msg}. -> {e}'")
             return
-        if attach:
+        if msg.can_be_pinned():
             try:
                 pin_msg(sent_message)
             except CannotBePinnedError:
-                send_message(msg=MESSAGE_NOT_PINED_TEXT, chat_id=team.telegram_id)
+                send_message(msg=MESSAGE_NOT_PINNED_TEXT, chat_id=team.telegram_id)
             except telepot.exception.TelegramError:
                 logging.getLogger("notifications").error(f"{team}: {CANT_PIN_MSG_IN_PRIVATE_CHAT}")
         return

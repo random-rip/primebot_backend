@@ -20,10 +20,10 @@ class MessageDispatcher:
     def dispatch(self, msg_class, **kwargs):
         assert issubclass(msg_class, BaseMessage)
         msg = msg_class(team=self.team, **kwargs)
-        if not msg.notification_wanted():
+        if not msg.team_wants_notification():
             return
         for bot in self.bots:
-            bot.send_message(msg=msg.message, team=self.team, attach=msg.can_be_pinned())
+            bot.send_message(msg=msg, team=self.team)
 
     def dispatch_raw_message(self, msg, **kwargs):
         for bot in self.bots:

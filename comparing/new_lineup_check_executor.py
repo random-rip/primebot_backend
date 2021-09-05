@@ -20,7 +20,7 @@ def get_session():
 
 def check_match(match):
     game_id = match.game_id
-    team = match.team
+    team = match.team_a
     gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=game_id, )
     cmp = GameComparer(match, gmd)
 

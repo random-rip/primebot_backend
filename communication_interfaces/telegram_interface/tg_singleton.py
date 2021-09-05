@@ -5,7 +5,7 @@ from telegram import ParseMode
 
 from app_prime_league.models import Game
 from communication_interfaces.languages.de_DE import (
-    WEEKLY_UPDATE_TEXT, MESSAGE_NOT_PINED_TEXT, CANT_PIN_MSG_IN_PRIVATE_CHAT
+    WEEKLY_UPDATE_TEXT, MESSAGE_NOT_PINNED_TEXT, CANT_PIN_MSG_IN_PRIVATE_CHAT
 )
 from prime_league_bot import settings
 from utils.constants import EMOJI_THREE, EMOJI_ONE, EMOJI_TWO
@@ -57,6 +57,6 @@ class TelegramMessagesWrapper:
         try:
             pin_msg(message)
         except CannotBePinnedError:
-            send_message(msg=MESSAGE_NOT_PINED_TEXT, chat_id=game.team.telegram_id)
+            send_message(msg=MESSAGE_NOT_PINNED_TEXT, chat_id=game.team.telegram_id)
         except telepot.exception.TelegramError:
             logging.getLogger("notifications").error(f"{game.team}: {CANT_PIN_MSG_IN_PRIVATE_CHAT}")

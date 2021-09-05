@@ -116,10 +116,10 @@ PHOTO_ERROR_TEXT = f"Bild konnte nicht gesetzt werden."
 PHOTO_RETRY_TEXT = f"Profilbild konnte nicht geändert werden. Dazu werden Adminrechte benötigt.\n" \
                    f"_Soll ich das Teambild aus der PrimeLeague importieren?_"
 
-MESSAGE_NOT_PINED_TEXT = f"Die wöchentliche Nachricht konnte nicht angeheftet werden. Dazu werden Adminrechte benötigt. " \
-                         f"Falls Du nicht möchtest, dass die wöchentliche Benachrichtigung angeheftet wird, " \
-                         f"benutze bitte /settings {EMOJI_ARROW_RIGHT} 'Wochenübersicht anheften' {EMOJI_ARROW_RIGHT} " \
-                         f"'Deaktivieren'."
+MESSAGE_NOT_PINNED_TEXT = f"Die wöchentliche Nachricht konnte nicht angeheftet werden. Dazu werden Adminrechte benötigt. " \
+                          f"Falls Du nicht möchtest, dass die wöchentliche Benachrichtigung angeheftet wird, " \
+                          f"benutze bitte /settings {EMOJI_ARROW_RIGHT} 'Wochenübersicht anheften' {EMOJI_ARROW_RIGHT} " \
+                          f"'Deaktivieren'."
 
 CANT_PIN_MSG_IN_PRIVATE_CHAT = "Man kann keine Nachricht in einem privaten Chat anpinnen."
 
@@ -221,7 +221,7 @@ DC_NO_PERMISSIONS_FOR_WEBHOOK = "Mir fehlt die Berechtigung, Webhooks zu verwalt
                                 "Bitte stelle sicher, dass ich diese Berechtigung habe. " \
                                 "Gegebenenfalls warte eine Stunde, bevor du den Befehl wieder ausführst. " \
                                 "Falls es danach noch nicht gehen sollte, , schaue auf unserer " \
-                       f"{DC_WEBSITE_LINK} > Probleme nach Hilfe."
+                                f"{DC_WEBSITE_LINK} > Probleme nach Hilfe."
 DC_REGISTRATION_FINISH = "Perfekt, dieser Channel wurde für Team {team_name} initialisiert.\n" \
                          "Wenn du möchtest, kannst du mit `!role ROLE_NAME` noch eine Rolle benennen, " \
                          "die bei Benachrichtigungen erwähnt werden soll."
@@ -247,3 +247,9 @@ DC_DESCRIPTION = "Dieser Bot ist nicht in Kooperation mit der PrimeLeague bzw. d
                  "Der Bot wurde nach bestem Gewissen realisiert, " \
                  "und nach einer Testphase für andere Teams zur Verfügung gestellt. " \
                  "Dennoch sind alle Angaben ohne Gewähr! _Version: {version}_"
+
+TITLE_NEW_GAME_DAY = "Neuer Spieltag"
+TITLE_NEW_LINEUP = "Neues Lineup"
+TITLE_NEW_OWN_SUGGESTION = "Eigener neuer Zeitvorschlag"
+TITLE_NEW_SUGGESTION = "Neuer Zeitvorschlag eines Gegners"
+TITLE_GAME_CONFIRMATION = "Neuer Zeitvorschlag eines Gegners"
