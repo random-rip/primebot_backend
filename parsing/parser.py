@@ -1,12 +1,13 @@
 import json
-import re
 
 from bs4 import BeautifulSoup
-import requests
 
 from data_crawling.api import crawler
-from utils.patterns import TEAM_NAME
 from utils.utils import timestamp_to_datetime, string_to_datetime
+
+
+class WebsiteIsNoneException(Exception):
+    pass
 
 
 class MatchWrapper:
@@ -23,8 +24,7 @@ class TeamWrapper:
     def __init__(self, team_id):
         website = crawler.get_team_website(team_id)
         if website is None:
-            print("Website is none")
-            raise Exception()
+            raise WebsiteIsNoneException(f"Website is None of team {team_id}")
         self.parser = TeamHTMLParser(website, )
 
 
@@ -58,13 +58,17 @@ class TeamHTMLParser(BaseHTMLParser):
 
     def get_members(self):
         team_li = self.bs4.find_all("ul", class_="content-portrait-grid-l")[0].find_all("li")
-        is_leader = ["Leader", "Captain"]
-        members = [(
-            i.a.get("href").split("/users/")[-1].split("-")[0],
-            i.h3.contents[0],
-            i.span.contents[0],
-            i.find("div", class_="txt-subtitle").contents[0] in is_leader,
-        ) for i in team_li]
+        leader_choices = ["Leader", "Captain"]
+        members = []
+        for i in team_li:
+            try:
+                user_id = i.a.get("href").split("/users/")[-1].split("-")[0]
+                h3_content = i.h3.contents[0]
+                span_content = i.span.contents[0]
+                is_leader = i.find("div", class_="txt-subtitle").contents[0] in leader_choices
+                members.append((user_id, h3_content, span_content, is_leader))
+            except IndexError:
+                continue
         return members
 
     def get_matches(self):
@@ -143,8 +147,7 @@ class MatchHTMLParser(BaseHTMLParser):
 
     def get_game_closed(self):
         for log in self.logs:
-            if isinstance(log, LogPlayed) or isinstance(log, LogLineupMissing) or \
-                    isinstance(log, LogLineupNotReady) or isinstance(log, LogDisqualified):
+            if isinstance(log, BaseGameIsOverLog):
                 return True
         return False
 
@@ -187,24 +190,28 @@ class MatchHTMLParser(BaseHTMLParser):
         team_2_id = team_2_div.contents[1].contents[1].get("href").split("/teams/")[1].split("-")[0]
         return team_2_id if self.team_is_team_1 else team_1_id
 
-    def get_game_day(self):
+    def get_game_day(self) -> int:
         match_info_div = self.bs4.find_all("div", class_="content-match-subtitles")[0]
         game_day_div = match_info_div.find_all("div", class_="txt-subtitle")[1]
         game_day = game_day_div.contents[0].split(" ")[1]
-        return game_day
+        return int(game_day)
 
     def get_comments(self):
         comments_from_json = self.json_comments["comments"]
         match_id_from_json = self.json_match["match_id"]
-        comments = [(
-            match_id_from_json,
-            x["id"],
-            x["parent"] if not x["parent"] == 0 else None,
-            x["content_orig"][:3000 if (len_of_comment := len(x["content_orig"])) >= 3000 else len_of_comment],
-            len_of_comment > 3000,
-            x["user_name"],
-            x["user_id"]
-        ) for x in comments_from_json]
+
+        comments = []
+        for x in comments_from_json:
+            len_of_comment = len(x["content_orig"])
+            comments.append((
+                match_id_from_json,
+                x["id"],
+                x["parent"] if not x["parent"] == 0 else None,
+                x["content_orig"][:3000 if len_of_comment >= 3000 else len_of_comment],
+                len_of_comment > 3000,
+                x["user_name"],
+                x["user_id"]
+            ))
         # TODO: Childen Parsen @Grayknife
         return None if len(comments) == 0 else comments
 
@@ -243,6 +250,11 @@ class BaseLog:
         return None
 
 
+class BaseGameIsOverLog(BaseLog):
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+
+
 class LogSuggestion(BaseLog):
 
     def __init__(self, timestamp, user, details):
@@ -263,25 +275,25 @@ class LogSchedulingAutoConfirmation(BaseLog):
         super().__init__(timestamp, user, details)
 
 
-class LogPlayed(BaseLog):
+class LogPlayed(BaseGameIsOverLog):
 
     def __init__(self, timestamp, user, details):
         super().__init__(timestamp, user, details)
 
 
-class LogLineupMissing(BaseLog):
+class LogLineupMissing(BaseGameIsOverLog):
 
     def __init__(self, timestamp, user, details):
         super().__init__(timestamp, user, details)
 
 
-class LogLineupNotReady(BaseLog):
+class LogLineupNotReady(BaseGameIsOverLog):
 
     def __init__(self, timestamp, user, details):
         super().__init__(timestamp, user, details)
 
 
-class LogDisqualified(BaseLog):
+class LogDisqualified(BaseGameIsOverLog):
 
     def __init__(self, timestamp, user, details):
         super().__init__(timestamp, user, details)
@@ -298,5 +310,5 @@ class LogLineupSubmit(BaseLog):
 class LogChangeTime(BaseLog):
     def __init__(self, timestamp, user, details):
         super().__init__(timestamp, user, details)
-        # prefix = "Manually adjusted time to "
-        # self.details = string_to_datetime(self.details[0][len(prefix):], timestamp_format="%Y-%m-%d %H:%M %z")
+        prefix = "Manually adjusted time to "
+        self.details = string_to_datetime(self.details[0][len(prefix):], timestamp_format="%Y-%m-%d %H:%M %z")

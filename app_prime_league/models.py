@@ -59,6 +59,9 @@ class Team(models.Model):
     team_tag = models.CharField(max_length=100, null=True)
     division = models.CharField(max_length=20, null=True)
     telegram_id = models.CharField(max_length=50, null=True, unique=True)
+    discord_webhook_id = models.CharField(max_length=50, null=True, unique=True)
+    discord_webhook_token = models.CharField(max_length=100, null=True)
+    discord_channel_id = models.CharField(max_length=50, unique=True, null=True)
     logo_url = models.CharField(max_length=1000, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -125,6 +128,9 @@ class GameMetaData:
                f"\nGame Result: {self.game_result}" \
                f"\nLatestSuggestion: {self.latest_suggestion}, " \
                f"\nSuggestionConfirmed: {self.game_begin}, "
+
+    def __str__(self):
+        return self.__repr__()
 
     @staticmethod
     def create_game_meta_data_from_website(team: Team, game_id):

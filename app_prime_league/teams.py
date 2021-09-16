@@ -1,25 +1,38 @@
 import concurrent.futures
 import logging
+import sys
 import time
+import traceback
 
-from django.db.models import Q
+from telegram import ParseMode
 
 from app_prime_league.models import Team, Player, Game, GameMetaData
+from communication_interfaces import send_message
 from parsing.parser import TeamHTMLParser, TeamWrapper
+from prime_league_bot import settings
 
 
-def register_team(team_id, telegram_id=None):
+def register_team(*, team_id, **kwargs):
     """
     Add or Update a Team, Add or Update Players, Add or Update Games. Optionally set telegram_id of the team.
     """
-    team = add_or_update_team(team_id, telegram_id)
+    team = add_or_update_team(team_id=team_id, **kwargs)
     if team is not None:
         try:
             wrapper = TeamWrapper(team_id=team.id)
         except Exception:
             return None
-        add_or_update_players(wrapper.parser.get_members(), team)
-        add_games(wrapper.parser.get_matches(), team)
+        if team.division is not None:
+            try:
+                add_or_update_players(wrapper.parser.get_members(), team)
+                add_games(wrapper.parser.get_matches(), team)
+            except Exception as e:
+                trace = "".join(traceback.format_tb(sys.exc_info()[2]))
+                send_message(
+                    f"Ein Fehler ist beim Updaten von Team {team.id} {team.name} aufgetreten:\n<code>{trace}\n{e}</code>",
+                    chat_id=settings.TG_DEVELOPER_GROUP, parse_mode=ParseMode.HTML)
+                logging.getLogger("periodic_logger").error(e)
+
         return team
     else:
         return None
@@ -51,12 +64,12 @@ def reassign_chat(team_id, tg_group_id):
         new_team.telegram_id = tg_group_id
         new_team.save()
     except Team.DoesNotExist as e:
-        new_team = register_team(team_id, tg_group_id)
+        new_team = register_team(team_id=team_id, telegram_id=tg_group_id)
 
     return new_team
 
 
-def add_or_update_team(team_id, tg_group_id=None):
+def add_or_update_team(*, team_id, **kwargs):
     try:
         wrapper = TeamWrapper(team_id=team_id)
         parser = wrapper.parser
@@ -64,16 +77,18 @@ def add_or_update_team(team_id, tg_group_id=None):
         print("Wrapper is None")
         return None
 
-    team, created = Team.objects.get_or_create(id=team_id, defaults={
+    defaults = {
         "name": parser.get_team_name(),
         "team_tag": parser.get_team_tag(),
         "division": parser.get_current_division(),
-        "telegram_id": tg_group_id,
         "logo_url": parser.get_logo(),
-    })
+    }
+    defaults = {**defaults, **kwargs}
+
+    team, created = Team.objects.get_or_create(id=team_id, defaults=defaults)
     if not created:
+        Team.objects.filter(id=team.id).update(**kwargs)
         team = update_team(parser, team_id)
-        team.telegram_id = tg_group_id
         team.save()
     return team
 

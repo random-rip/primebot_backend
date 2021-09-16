@@ -20,14 +20,14 @@ from prime_league_bot import settings
 # payload in the respective if clause
 def error(update, context):
     # add all the dev user_ids in this list. You can also add ids of channels or groups.
-    devs = [-490819576]
+    devs = [settings.TG_DEVELOPER_GROUP]
     # we want to notify the user of this problem. This will always work, but not notify users if the update is an
     # callback or inline query, or a poll update. In case you want this, keep in mind that sending the message
     # could fail
     try:
         if update is not None:
             if update.effective_message:
-                text = "Hey. I'm sorry to inform you that an error happened while I tried to handle your update. " \
+                text = "Hey. I'm sorry to inform you that an error happened while I tried to handle your request. " \
                        "My developer(s) will be notified."
                 update.effective_message.reply_text(text)
             # This traceback is created with accessing the traceback object from the sys.exc_info, which is returned as the
@@ -116,8 +116,5 @@ class BotFather:
         for i in callback_query_settings_handlers:
             dp.add_handler(i)
         updater.start_polling()  # TODO: try catch connection errors
-
-        from django import db
-        db.close_old_connections()  # Possible Fix for MySQL has gone away
 
         updater.idle()
