@@ -50,6 +50,7 @@ class WeeklyNotificationMessage(BaseMessage):
         super().__init__(team)
         self.game = game
         self._attachable = self.team.value_of_setting(self._attachable_key)
+        self.message = None
         self._generate_message()
 
     def _generate_message(self):
