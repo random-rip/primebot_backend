@@ -23,7 +23,7 @@ def get_session():
 @log_exception
 def check_game(game):
     game_id = game.game_id
-    team = game.team_a
+    team = game.team
     gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=game_id, )
     cmp = GameComparer(game, gmd)
 
