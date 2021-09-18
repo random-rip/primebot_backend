@@ -20,7 +20,7 @@ def main():
     start_time = time.time()
     logger = logging.getLogger("calibration")
     logger.info(f"Starting Team Updates at {datetime.now()}")
-    teams = Team.objects.get_calibration_teams()
+    teams = Team.objects.get_watched_teams()
 
     for team in teams:
         logger.info(f"Checking {team}... ")
