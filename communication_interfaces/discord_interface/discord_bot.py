@@ -105,13 +105,14 @@ class DiscordBot(Bot):
         @self.bot.command(name="role", help=LanguagePack.DC_HELP_TEXT_ROLE, pass_context=True)
         @commands.check(mysql_has_gone_away)
         @commands.check(log_from_discord)
-        async def set_role(ctx, role_name=None):
+        async def set_role(ctx, *role_name, ):
 
             channel_id = ctx.message.channel.id
             team = await get_registered_team_by_channel_id(channel_id=channel_id)
             if team is None:
                 await ctx.send(LanguagePack.DC_CHANNEL_NOT_INITIALIZED)
                 return
+            role_name = " ".join(role_name) if len(role_name) > 0 else None
             if role_name is None:
                 team.discord_role_id = None
                 await sync_to_async(team.save)()

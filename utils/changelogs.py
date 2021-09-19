@@ -182,4 +182,8 @@ Grayknife und Orbis
         "version": "1.17.2",
         "text": "Added new log type lineup_fail. Added team soft delete functionality, if the group or chat does not exist anymore. Set Split to new date and added links to discord command errors. ",
     },
+    18: {
+        "version": "1.17.3",
+        "text": "Es können jetzt Rollen mit Leerzeichen als Parameter übergeben werden.",
+    },
 }
