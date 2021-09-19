@@ -64,7 +64,7 @@ class WeeklyNotificationMessage(BaseMessage):
 class NewGameNotification(BaseMessage):
     msg_type = "new_game_notification"
     _key = "new_game_notification"
-    title = LaP.TITLE_NEW_GAME_DAY
+    title = LaP.TITLE_NEW_GAME
     mentionable = True
 
     def __init__(self, team: Team, game: Game):

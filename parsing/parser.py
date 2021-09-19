@@ -119,7 +119,6 @@ class MatchHTMLParser(BaseHTMLParser):
         team_1_div = self.bs4.find_all("div", class_="content-match-head-team content-match-head-team1")[0]
         team_1_id = int(team_1_div.contents[1].contents[1].get("href").split("/teams/")[1].split("-")[0])
         self.team_is_team_1 = team_1_id == team.id
-        self.team = team
         self.website = website
 
     def _parse_logs(self):
@@ -351,6 +350,7 @@ class LogScoreReport(BaseLog):
 class LogLineupSubmit(BaseLog):
 
     def __init__(self, timestamp, user, details):
+        print(timestamp, user, details)
         super().__init__(timestamp, user, details)
         self.details = [(*x.split(":"),) for x in self.details[0].split(", ")]
         self.details = [(int(id_), name) for id_, name in self.details]

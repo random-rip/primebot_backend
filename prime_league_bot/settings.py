@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django_extensions',
     # own
     'app_prime_league',
+    'data_crawling',
 ]
 
 MIDDLEWARE = [

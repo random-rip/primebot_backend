@@ -5,11 +5,10 @@ import requests
 from prime_league_bot import settings
 
 
-def get_local_response(file_name):
-    file_path = os.path.join(settings.STORAGE_DIR, file_name)
+def get_local_response(file_name, file_path=None):
+    file_path = os.path.join(settings.STORAGE_DIR if file_path is None else file_path, file_name)
     with open(file_path, 'r', encoding='utf8') as f:
         text = f.read()
-    print("Object loaded from: {}".format(file_path))
     return text
 
 
@@ -17,7 +16,6 @@ def save_object_to_file(obj, file_name):
     file_path = os.path.join(settings.STORAGE_DIR, file_name)
     with open(file_path, 'w', encoding='utf8') as f:
         f.write(obj)
-    print("Object saved into: {} ".format(file_path))
 
 
 class Api:

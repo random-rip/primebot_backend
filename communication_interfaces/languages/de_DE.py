@@ -249,6 +249,7 @@ DC_DESCRIPTION = "Dieser Bot ist nicht in Kooperation mit der PrimeLeague bzw. d
                  "Dennoch sind alle Angaben ohne Gewähr! _Version: {version}_"
 
 TITLE_NEW_GAME_DAY = "Neuer Spieltag"
+TITLE_NEW_GAME = "Neues Spiel"
 TITLE_NEW_LINEUP = "Neues Lineup"
 TITLE_NEW_OWN_SUGGESTION = "Eigener neuer Zeitvorschlag"
 TITLE_NEW_SUGGESTION = "Neuer Zeitvorschlag eines Gegners"
