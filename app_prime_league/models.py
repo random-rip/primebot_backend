@@ -63,6 +63,7 @@ class Team(models.Model):
     discord_webhook_token = models.CharField(max_length=100, null=True)
     discord_channel_id = models.CharField(max_length=50, unique=True, null=True)
     logo_url = models.CharField(max_length=1000, null=True)
+    scouting_website = models.ForeignKey("app_prime_league.ScoutingWebsite", on_delete=models.SET_DEFAULT, default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -82,6 +83,19 @@ class Team(models.Model):
 
     def settings_dict(self):
         return dict(self.setting_set.all().values_list("attr_name", "attr_value"))
+
+    def get_scouting_link_of_enemies(self, game, only_lineup=True):
+        if only_lineup:
+            names = list(game.enemy_lineup.all().values_list("summoner_name", flat=True))
+            if len(names) == 0:
+                return None
+        else:
+            names = list(game.enemy_team.player_set.all().values_list("summoner_name", flat=True))
+
+
+        self.value_of_setting("scouting_website")
+        url = ",".join([x.replace(" ", "") for x in names])
+        return "https://euw.op.gg/multi/?query={}".format(url)
 
 
 class Player(models.Model):
@@ -240,15 +254,20 @@ class Game(models.Model):
             self.enemy_lineup.add(*players)
         self.save()
 
-    def get_op_link_of_enemies(self, only_lineup=True):
-        if only_lineup:
-            names = list(self.enemy_lineup.all().values_list("summoner_name", flat=True))
-            if len(names) == 0:
-                return None
-        else:
-            names = list(self.enemy_team.player_set.all().values_list("summoner_name", flat=True))
-        url = ",".join([x.replace(" ", "") for x in names])
-        return "https://euw.op.gg/multi/?query={}".format(url)
+
+class ScoutingWebsite(models.Model):
+    name = models.CharField(max_length=20, unique=True)
+    base_url = models.CharField(max_length=200)
+    separator = models.CharField(max_length=5)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+    class Meta:
+        db_table = "scouting_websites"
+
+    def generate_link(self, lineup):
+        return self.base_url.format(self.separator.join(lineup))
 
 
 class Suggestion(models.Model):

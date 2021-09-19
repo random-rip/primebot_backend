@@ -47,7 +47,7 @@ class WeeklyNotificationMessage(BaseMessage):
         self._generate_message()
 
     def _generate_message(self):
-        op_link = self.game.get_op_link_of_enemies(only_lineup=False)
+        op_link = self.game.get_scouting_link_of_enemies(only_lineup=False)
         enemy_team_tag = self.game.enemy_team.team_tag
         if op_link is None:
             raise Exception()
@@ -64,7 +64,7 @@ class NewLineupNotificationMessage(BaseMessage):
         self._generate_message()
 
     def _generate_message(self):
-        op_link = self.game.get_op_link_of_enemies(only_lineup=True)
+        op_link = self.game.get_scouting_link_of_enemies(only_lineup=True)
         enemy_team_tag = self.game.enemy_team.team_tag
         if op_link is None:
             raise Exception()

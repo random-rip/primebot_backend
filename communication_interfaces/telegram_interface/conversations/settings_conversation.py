@@ -59,7 +59,7 @@ SETTINGS = {
         "title": "Team-Sperre",
         "text": "Möchtet ihr, dass euer Team in einem anderen Chat *nicht* neu initialisiert werden darf?",
         "callback_data": "7",
-    }
+    },
 }
 
 
