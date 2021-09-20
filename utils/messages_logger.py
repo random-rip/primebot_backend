@@ -31,7 +31,7 @@ def log_command(fn):
         try:
             send_command_to_dev_group(log_text)
         except Exception as e:
-            logger.error(e)
+            logger.exception(e)
         return result
 
     return wrapper
@@ -55,7 +55,7 @@ def log_callbacks(fn):
         try:
             send_command_to_dev_group(log_text)
         except Exception as e:
-            logger.error(e)
+            logger.exception(e)
         return result
 
     return wrapper
@@ -81,7 +81,7 @@ async def log_from_discord(ctx, optional=None):
         logger.info(log_text)
         send_command_to_dev_group(log_text)
     except Exception as e:
-        logger.error(e)
+        logger.exception(e)
     finally:
         return True
 
@@ -92,5 +92,5 @@ def log_exception(fn):
             result = fn(*args, **kwargs)
             return result
         except Exception as e:
-            logging.getLogger("django").error(e)
+            logging.getLogger("django").exception(e)
     return wrapper

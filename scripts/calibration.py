@@ -47,7 +47,7 @@ def main():
                 f"Ein Fehler ist beim Kalibrierungsphase-Script von Team {team.id} {team.name} aufgetreten:\n"
                 f"<code>{trace}\n{e}</code>",
                 chat_id=settings.TG_DEVELOPER_GROUP, parse_mode=ParseMode.HTML)
-            logger.error(e)
+            logger.exception(e)
     check(Game.objects.get_uncompleted_games())
     logger.info(f"Finished Teamupdates ({len(teams)}) in {time.time() - start_time} seconds")
 

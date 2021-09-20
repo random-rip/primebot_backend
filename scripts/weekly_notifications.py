@@ -19,7 +19,7 @@ def main():
                 logger.debug(f"Sending Weekly Notification to {team}...")
                 MessageDispatcher(team=team).dispatch(WeeklyNotificationMessage, game=next_match)
         except Exception as e:
-            logger.error(f"Error {team}: {e}")
+            logger.exception(f"Error {team}: {e}")
 
 
 def run():

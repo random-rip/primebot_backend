@@ -41,7 +41,7 @@ def main():
                 send_message(
                     f"Ein Fehler ist beim Updaten von Team {team.id} {team.name} aufgetreten:\n<code>{trace}\n{e}</code>",
                     chat_id=settings.TG_DEVELOPER_GROUP, parse_mode=ParseMode.HTML)
-                logger.error(e)
+                logger.exception(e)
 
     logger.info(f"Finished Teamupdates ({len(teams)}) in {time.time() - start_time} seconds")
 

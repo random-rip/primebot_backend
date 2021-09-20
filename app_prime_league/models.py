@@ -258,7 +258,6 @@ class Game(models.Model):
 
     def update_enemy_team(self, gmd):
         team_dict = gmd.enemy_team
-        print(team_dict)
         enemy_team, created = Team.objects.get_or_create(id=team_dict["id"], defaults={
             "name": team_dict["name"],
             "team_tag": team_dict["tag"],

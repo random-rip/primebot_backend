@@ -41,7 +41,7 @@ def set_photo(chat_id, context: CallbackContext, url):
     except (FileNotFoundError, telegram.error.BadRequest) as e:
         return False
     except Exception as e:
-        logger.error(e)
+        logger.exception(e)
         return False
     return True
 
@@ -80,7 +80,7 @@ def bop(update: Update, context: CallbackContext):
     try:
         bot.send_photo(chat_id=chat_id, photo=url)
     except Exception as e:
-        logger.error(e)
+        logger.exception(e)
     finally:
         if not successful:
             update.message.reply_markdown(
