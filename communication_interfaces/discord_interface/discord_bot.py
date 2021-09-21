@@ -205,7 +205,7 @@ class DiscordBot(Bot):
             team.set_discord_null()
             logging.getLogger("notifications").info(f"Could not send message to {team}: {e}. Soft deleted'")
         except Exception as e:
-            logging.getLogger("notifications").error(f"Could not send message to {team}: '{msg}. -> {e}'")
+            logging.getLogger("notifications").exception(f"Could not send message to {team}: '{msg}. -> {e}'")
 
     @staticmethod
     def mask_mention(discord_role_id):
