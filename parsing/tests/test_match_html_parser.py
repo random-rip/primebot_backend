@@ -20,20 +20,19 @@ class MatchHTMLParserTests(TestCase):
 
     def test_logs(self):
         logs = self.team_html_parser.get_logs()
-        print(logs)
         correct_values = [
+            # TODO
         ]
 
         self.assertListEqual(logs, correct_values, "Match logs could not be parsed.")
 
     def test_enemy_team_id(self):
         enemy_team_id = self.team_html_parser.get_enemy_team_id()
-        correct_value = '151662'
-        self.assertEqual(enemy_team_id, correct_value, "Logo could not be parsed.")
+        correct_value = '151662' # TODO
+        self.assertEqual(enemy_team_id, correct_value, "Enemy TeamID could not be parsed.")
 
     def test_comments(self):
         comments = self.team_html_parser.get_comments()
-        print(comments)
         correct_values = [
             (793210, 6245777, None, 'Könntet ihr auch unter der Woche nächste Woche?', False, 'Rifftac', 1577698),
             (793210, 6246665, None, 'Prinzipell ja, es hängt nur von unseren support und Toplaner ab', False,
@@ -42,34 +41,36 @@ class MatchHTMLParserTests(TestCase):
              'Schlagt einfach mal was für nächste Woche vor an Terminen wann es euch passt. Ich denke wir sollten da schon was finden',
              False, 'Tillter', 1489058)]
 
-        self.assertEqual(comments, correct_values, "Team tag could not be parsed.")
+        self.assertEqual(comments, correct_values, "Comments could not be parsed.")
 
     def test_game_day(self):
         game_day = self.team_html_parser.get_game_day()
         correct_value = 3
-        self.assertEqual(game_day, correct_value, "Team name could not be parsed.")
+        self.assertEqual(game_day, correct_value, "Game day could not be parsed.")
 
     def test_game_begin(self):
         game_begin = self.team_html_parser.get_game_begin()
-        correct_values = ""
-        self.assertEqual(game_begin, correct_values, "Summoner names could not be parsed.")
+        correct_value = ""  # TODO
+        self.assertEqual(game_begin, correct_value, "Game begin could not be parsed.")
 
     def test_enemy_lineup(self):
         enemy_lineup = self.team_html_parser.get_enemy_lineup()
-        correct_values = "Swiss Starter"
-        self.assertEqual(enemy_lineup, correct_values, "Current Division could not be parsed.")
+        correct_values = [
+            # TODO
+        ]
+        self.assertListEqual(enemy_lineup, correct_values, "Enemy lineup could not be parsed.")
 
     def test_game_closed(self):
         game_closed = self.team_html_parser.get_game_closed()
-        correct_value = ""
-        self.assertEqual(game_closed, correct_value, "Team tag could not be parsed.")
+        correct_value = ""  # TODO
+        self.assertEqual(game_closed, correct_value, "Game closed could not be parsed.")
 
     def test_game_result(self):
         game_result = self.team_html_parser.get_game_result()
-        correct_value = ['800094', '801721', '802813', '805889', '806945', '807419']
-        self.assertEqual(game_result, correct_value, "Match IDs could not be parsed.")
+        correct_value = ""  # TODO
+        self.assertEqual(game_result, correct_value, "Game result could not be parsed.")
 
     def test_latest_suggestion(self):
         latest_suggestion = self.team_html_parser.get_latest_suggestion()
-        correct_value = ['800094', '801721', '802813', '805889', '806945', '807419']
-        self.assertEqual(latest_suggestion, correct_value, "Match IDs could not be parsed.")
+        correct_value = ""  # TODO
+        self.assertEqual(latest_suggestion, correct_value, "Latest suggestion could not be parsed.")
