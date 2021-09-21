@@ -5,7 +5,7 @@ from app_prime_league.models import Setting, Team
 from app_prime_league.teams import update_settings
 from communication_interfaces.languages.de_DE import ENABLED, SETTINGS_MAIN_MENU, DISABLED, BOOLEAN_KEYBOARD_OPTIONS, CLOSE, \
     SETTINGS_FINISHED, CURRENTLY
-from communication_interfaces.utils import mysql_has_gone_away
+from communication_interfaces.utils import mysql_has_gone_away_decorator
 from communication_interfaces.validation_messages import wrong_chat_type, team_not_exists
 from utils.messages_logger import log_command, log_callbacks
 
@@ -65,7 +65,7 @@ SETTINGS = {
 
 # /settings
 @log_command
-@mysql_has_gone_away
+@mysql_has_gone_away_decorator
 def start_settings(update: Update, context: CallbackContext):
     chat_type = update.message.chat.type
     if chat_type not in ["group", "supergroup"]:
@@ -81,7 +81,7 @@ def start_settings(update: Update, context: CallbackContext):
 
 
 @log_callbacks
-@mysql_has_gone_away
+@mysql_has_gone_away_decorator
 def main_settings_menu(update: Update, context: CallbackContext):
     query = update.callback_query
     context.bot.edit_message_text(
@@ -94,7 +94,7 @@ def main_settings_menu(update: Update, context: CallbackContext):
 
 
 @log_callbacks
-@mysql_has_gone_away
+@mysql_has_gone_away_decorator
 def main_settings_menu_close(update: Update, context: CallbackContext):
     query = update.callback_query
     context.bot.edit_message_text(
@@ -105,7 +105,7 @@ def main_settings_menu_close(update: Update, context: CallbackContext):
     )
 
 
-@mysql_has_gone_away
+@mysql_has_gone_away_decorator
 def migrate_chat(update: Update, context: CallbackContext):
     if update.message.chat.type == "supergroup":
         return

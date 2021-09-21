@@ -1,0 +1,2 @@
+class CouldNotParseURLException(Exception):
+    pass

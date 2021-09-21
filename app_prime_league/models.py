@@ -1,25 +1,40 @@
 from django.db import models
+from django.db.models import Q
 
-from data_crawling.api import crawler
-from parsing.parser import TeamHTMLParser, MatchWrapper, TeamWrapper
+from parsing.parser import MatchWrapper, TeamWrapper
 
 
 class TeamManager(models.Manager):
 
     def get_watched_teams(self):
-        return self.model.objects.filter(telegram_id__isnull=False)
+        """
+        Gibt alle Teams zurück, die entweder in einer Telegram-Gruppe oder in einem Discord-Channel registriert wurden.
+        :return: Queryset of Team Model
+        """
+        return self.model.objects.filter(Q(telegram_id__isnull=False) | Q(discord_channel_id__isnull=False))
 
     def get_watched_team_of_current_split(self):
-        return self.model.objects.filter(telegram_id__isnull=False, division__isnull=False)
+        """
+        Gibt alle Teams zurück, die entweder in einer Telegram-Gruppe oder in einem Discord-Channel registriert wurden
+        und wo die Division gesetzt wurde!
+        :return: Queryset of Team Model
+        """
+        return self.model.objects.filter(Q(telegram_id__isnull=False) | Q(discord_channel_id__isnull=False),
+                                         division__isnull=False)
 
     def get_team(self, team_id):
         return self.model.objects.filter(id=team_id).first()
+
+    def get_calibration_teams(self):
+        # TODO neues Feld in model
+        return self.model.objects.filter(id__in=[116152, 146630, 135572, 153698])
+        # return self.model.objects.filter(Q(telegram_id__isnull=False) | Q(discord_channel_id__isnull=False))
 
 
 class GameManager(models.Manager):
 
     def get_uncompleted_games(self):
-        return self.model.objects.filter(game_closed=False)
+        return self.model.objects.filter(Q(game_closed=False) | Q(game_closed__isnull=True))
 
     def get_game_by_team(self, game_id, team):
         try:
@@ -62,6 +77,7 @@ class Team(models.Model):
     discord_webhook_id = models.CharField(max_length=50, null=True, unique=True)
     discord_webhook_token = models.CharField(max_length=100, null=True)
     discord_channel_id = models.CharField(max_length=50, unique=True, null=True)
+    discord_role_id = models.CharField(max_length=50, null=True)
     logo_url = models.CharField(max_length=1000, null=True)
     scouting_website = models.ForeignKey("app_prime_league.ScoutingWebsite", on_delete=models.SET_DEFAULT, default=1)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -83,6 +99,34 @@ class Team(models.Model):
 
     def settings_dict(self):
         return dict(self.setting_set.all().values_list("attr_name", "attr_value"))
+
+    def is_active(self):
+        return self.telegram_id or self.discord_channel_id
+
+    def get_next_open_game(self):
+        return self.games_against.filter(game_closed=False).order_by("game_day").first()
+
+    def set_telegram_null(self):
+        # self.telegram_id = None
+        self.save(update_fields=["telegram_id"])
+        self.soft_delete()
+
+    def set_discord_null(self):
+        self.discord_webhook_id = None
+        self.discord_channel_id = None
+        self.discord_webhook_token = None
+        self.discord_role_id = None
+        self.save(
+            update_fields=["discord_webhook_id", "discord_channel_id", "discord_webhook_token", "discord_role_id"])
+        self.soft_delete()
+
+    def soft_delete(self):
+        if self.telegram_id is None and self.discord_channel_id is None:
+            for game in self.games_against.all():
+                game.suggestion_set.all().delete()
+                game.enemy_lineup.all().delete()
+                game.delete()
+            self.setting_set.all().delete()
 
     def get_scouting_link_of_enemies(self, game, only_lineup=True):
         if only_lineup:
@@ -183,13 +227,13 @@ class GameMetaData:
 
 class Game(models.Model):
     game_id = models.IntegerField()
-    game_day = models.IntegerField()
+    game_day = models.IntegerField(null=True)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="games_against")
-    enemy_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="games_as_enemy_team")
+    enemy_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="games_as_enemy_team", null=True)
 
     game_begin = models.DateTimeField(null=True)
     enemy_lineup = models.ManyToManyField(Player, )
-    game_closed = models.BooleanField()
+    game_closed = models.BooleanField(null=True)
     game_result = models.CharField(max_length=5, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -228,7 +272,7 @@ class Game(models.Model):
 
     def update_enemy_team(self, gmd):
         team_dict = gmd.enemy_team
-        enemy_team, created = Team.objects.get_or_create(id=self.enemy_team.id, defaults={
+        enemy_team, created = Team.objects.get_or_create(id=team_dict["id"], defaults={
             "name": team_dict["name"],
             "team_tag": team_dict["tag"],
             "division": team_dict["division"],

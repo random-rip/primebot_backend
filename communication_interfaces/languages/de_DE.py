@@ -44,15 +44,9 @@ FEEDBACK = f"Hast Du Feedback? Hinterlasse den Entwicklern gerne eine Nachricht 
 
 NEED_HELP = "Solltest Du Hilfe benötigen, benutze /help."
 
-# Antwort, wenn /start Team_id oder tg_id bereits vergeben
-TEAM_EXISTING = "Dieses Team ist bereits registriert und mit einem anderen Chat verknüpft oder\n" \
-                "für diesen Chat ist bereits ein anderes Team hinterlegt oder\n" \
-                "die Team ID wurde nicht gefunden.\n" \
-                f"Solltest Du Hilfe benötigen, benutze /help.\n{RETRY_TEXT}"
-
 CHAT_EXISTING = "In diesem Chat ist bereits ein Team registriert. Möchtest Du ein anderes Team für diesen Channel " \
                 "registrieren?\n" \
-                f"Dann gib jetzt deine *Team-URL* (Format: {GENERAL_TEAM_LINK}<TEAM ID>-<TEAM NAME>)" \
+                f"Dann gib jetzt deine *Team-URL* " \
                 "oder deine *Team ID* an. Wenn nicht, benutze /cancel.\n\n" \
                 f"{NEED_HELP}"
 
@@ -62,8 +56,8 @@ TEAM_ID_NOT_VALID_TEXT = "Die angegebene URL entspricht nicht dem richtigen Form
 TEAM_ID_VALID = "Dein registriertes Team:\n"
 
 TEAM_ID_NOT_CORRECT = "Die ID: *{id}* konnte *keinem* Team zugeordnet werden.\n\n" \
-                      f"Bitte kopiere deine Team-URL (Format: {GENERAL_TEAM_LINK}<TEAM ID>-<TEAM NAME>)" \
-                      " oder die Team ID in den Chat. Zum Abbrechen, benutze /cancel."
+                      f"Bitte kopiere deine *TEAM_URL* " \
+                      "oder deine *TEAM_ID* in den Chat. Zum Abbrechen, benutze /cancel."
 
 # Start Messages
 # Antwort auf /start, wenn man command in einer Gruppe aufruft
@@ -72,11 +66,11 @@ START_GROUP = "Sternige Grüße, \n" \
               f"Gut, dass ich hier bin:\n" \
               f"Ich schicke dir alle *Updates* als *Pushbenachrichtigung* {EMOJI_POST_HORN} " \
               f"in diesen Chat. {EMOJI_GIFT}\n\n" \
-              f"{EMOJI_ONE} Bitte kopiere dafür deine Team-URL (Format: {GENERAL_TEAM_LINK}<TEAM ID>-<TEAM NAME>)" \
-              " oder deine Team ID in den Chat.\n"
+              f"{EMOJI_ONE} Bitte kopiere dafür deine *TEAM_URL*" \
+              " oder deine *TEAM_ID* in den Chat.\n"
 
 TEAM_LOCKED = "Das Team *{team.name}* wurde nicht freigegeben.\n" \
-              "Bitte stelle sicher, dass in den Einstellungen von {team.name} die Team-Sperre *deaktiviert* ist!\n" \
+              "Bitte stelle sicher, dass in den Einstellungen der anderen Gruppe {team.name} die Team-Sperre *deaktiviert* ist!\n" \
               f"(/settings {EMOJI_ARROW_RIGHT} Team-Sperre)\n\n" \
               f"{NEED_HELP}"
 
@@ -122,10 +116,10 @@ PHOTO_ERROR_TEXT = f"Bild konnte nicht gesetzt werden."
 PHOTO_RETRY_TEXT = f"Profilbild konnte nicht geändert werden. Dazu werden Adminrechte benötigt.\n" \
                    f"_Soll ich das Teambild aus der PrimeLeague importieren?_"
 
-MESSAGE_NOT_PINED_TEXT = f"Die wöchentliche Nachricht konnte nicht angeheftet werden. Dazu werden Adminrechte benötigt. " \
-                         f"Falls Du nicht möchtest, dass die wöchentliche Benachrichtigung angeheftet wird, " \
-                         f"benutze bitte /settings {EMOJI_ARROW_RIGHT} 'Wochenübersicht anheften' {EMOJI_ARROW_RIGHT} " \
-                         f"'Deaktivieren'."
+MESSAGE_NOT_PINNED_TEXT = f"Die wöchentliche Nachricht konnte nicht angeheftet werden. Dazu werden Adminrechte benötigt. " \
+                          f"Falls Du nicht möchtest, dass die wöchentliche Benachrichtigung angeheftet wird, " \
+                          f"benutze bitte /settings {EMOJI_ARROW_RIGHT} 'Wochenübersicht anheften' {EMOJI_ARROW_RIGHT} " \
+                          f"'Deaktivieren'."
 
 CANT_PIN_MSG_IN_PRIVATE_CHAT = "Man kann keine Nachricht in einem privaten Chat anpinnen."
 
@@ -177,6 +171,13 @@ NEW_LINEUP_TEXT = "[{enemy_team_tag}](" + \
                   "{game_id})) hat ein neues [Lineup]({op_link}) aufgestellt. " + \
                   EMOJI_LINEUP
 
+NEW_LINEUP_IN_CALIBRATION = "[{enemy_team_name}](" + \
+                            GENERAL_TEAM_LINK + \
+                            "{enemy_team_id}) hat für [Spiel {game_day}](" + \
+                            GENERAL_MATCH_LINK + \
+                            "{game_id}) ein neues [Lineup]({op_link}) aufgestellt. " + \
+                            EMOJI_LINEUP
+
 WEEKLY_UPDATE_TEXT = "Der nächste Spieltag:\n" + \
                      EMOJI_SOON + \
                      "[Spieltag {game_day}](" + \
@@ -185,6 +186,15 @@ WEEKLY_UPDATE_TEXT = "Der nächste Spieltag:\n" + \
                      GENERAL_TEAM_LINK + \
                      "{enemy_team_id}):\n" + \
                      "Hier ist der [OP.GG Link]({op_link}) des Teams."
+
+NEXT_GAME_IN_CALIBRATION = "Euer nächstes Spiel in der Kalibrierungsphase:\n" + \
+                           EMOJI_SOON + \
+                           "[Spiel {game_day}](" + \
+                           GENERAL_MATCH_LINK + \
+                           "{game_id}) gegen [{enemy_team_tag}](" + \
+                           GENERAL_TEAM_LINK + \
+                           "{enemy_team_id}):\n" + \
+                           "Hier ist der [OP.GG Link]({op_link}) des Teams."
 
 WAIT_A_MOMENT_TEXT = "Alles klar, ich schaue, was ich dazu finden kann.\nDas kann einen Moment dauern...⏳"
 NO_GROUP_CHAT = "Dieser Befehl kann nur in einer Telegram-Gruppe ausgeführt werden."
@@ -196,11 +206,51 @@ EXPLAIN_TEXT = "Dieser Bot ist nicht in Kooperation mit der PrimeLeague bzw. der
                "Dieser Bot wurde aufgrund von versäumten Matches entworfen und programmiert. " \
                "Der Bot wurde nach bestem Gewissen realisiert, und nach einer Testphase für andere Teams zur " \
                "Verfügung gestellt. Dennoch sind alle Angaben ohne Gewähr!\n" \
-               "*Funktionsweise:* Nach der Registrierung des Teams wird über die noch nicht gespielten Spiele " \
-               "iteriert und deren Website nach Änderungen abgesucht. Dies geschieht alle 30 Minuten. " \
-               "Das bedeutet, dass Updates maximal 30 Minuten alt sein können. Das wöchentliche Update geschieht " \
-               "einmal jeden Montag um 0Uhr nach Beginn des Splits bis zum Ende der Gruppenphase. " \
-               "Die gespeicherten Teams werden einmal pro Tag um 0Uhr aktualisiert. \n_Version: {version}_"
+               "\n_Version: {version}_"
 
 CLOSE = "Schließen"
 CURRENTLY = "Derzeitig"
+
+DC_WEBSITE_LINK = "[Website](https://www.primebot.me/start/f%C3%BCr-discord)"
+DC_HELP_LINK_TEXT = f"Schaue auf unserer {DC_WEBSITE_LINK} nach Hilfe."
+DC_TEAM_ID_NOT_VALID = "Aus dem Übergabeparameter konnte keine ID gefunden werden " \
+                       f"(Format `!start TEAM_ID_or_TEAM_URL`). {DC_HELP_LINK_TEXT}"
+DC_CHANNEL_IN_USE = f"Für diesen Channel ist bereits ein Team registriert. {DC_HELP_LINK_TEXT}"
+DC_TEAM_IN_USE = f"Dieses Team ist bereits in einem anderen Channel registriert. {DC_HELP_LINK_TEXT}"
+DC_NO_PERMISSIONS_FOR_WEBHOOK = "Mir fehlt die Berechtigung, Webhooks zu verwalten. " \
+                                "Bitte stelle sicher, dass ich diese Berechtigung habe. " \
+                                "Gegebenenfalls warte eine Stunde, bevor du den Befehl wieder ausführst. " \
+                                "Falls es danach noch nicht gehen sollte, , schaue auf unserer " \
+                                f"{DC_WEBSITE_LINK} > Probleme nach Hilfe."
+DC_REGISTRATION_FINISH = "Perfekt, dieser Channel wurde für Team {team_name} initialisiert.\n" \
+                         "Wenn du möchtest, kannst du mit `!role ROLE_NAME` noch eine Rolle benennen, " \
+                         "die bei Benachrichtigungen erwähnt werden soll."
+DC_USE_FIX = "Wenn keine Benachrichtigungen mehr in dem Channel ankommen, benutze bitte `!fix`."
+
+DC_WEBHOOK_RECREATED = "Webhook wurde neu erstellt. Sollten weiterhin Probleme auftreten, schaue auf unserer " \
+                       f"{DC_WEBSITE_LINK} > Probleme nach Hilfe."
+DC_CHANNEL_NOT_INITIALIZED = "In diesem Channel ist derzeitig kein Team registriert. " \
+                             "Benutze dafür `!start TEAM_ID_oder_TEAM_URL`"
+DC_ROLE_MENTION_REMOVED = "Alles klar, ich habe die Rollenerwähnung entfernt. " \
+                          "Du kannst sie bei Bedarf wieder einschalten, benutze dazu einfach `!role ROLE_NAME`."
+DC_ROLE_NOT_FOUND = "Die Rolle {role_name} habe ich nicht gefunden. Stelle sicher, dass diese Rolle existiert."
+DC_SET_ROLE = "Okay, ich informiere die Rolle **@{role_name}** ab jetzt bei neuen Benachrichtigungen. 📯"
+
+DC_HELP_TEXT_START = "Registriere dein Team im Channel (Format: !start TEAM_ID_or_TEAM_URL)"
+DC_HELP_TEXT_FIX = "Erstellt den Benachrichtigungswebhook neu"
+DC_HELP_TEXT_ROLE = "Setze eine Discordrolle, die in den Benachrichtigungen benutzt wird. Um die Rolle zu entfernen schreibe !role ohne Parameter"
+DC_HELP_TEXT_OVERVIEW = "Erstellt eine Übersicht für die offenen Spiele"
+DC_HELP_TEXT_BOP = "Whats boppin'?"
+DC_DESCRIPTION = "Dieser Bot ist nicht in Kooperation mit der PrimeLeague bzw. der Freaks4u Gaming GmbH entstanden " \
+                 "und hat damit keinen direkten Bezug zur PrimeLeague. " \
+                 "Dieser Bot wurde aufgrund von versäumten Matches entworfen und programmiert. " \
+                 "Der Bot wurde nach bestem Gewissen realisiert, " \
+                 "und nach einer Testphase für andere Teams zur Verfügung gestellt. " \
+                 "Dennoch sind alle Angaben ohne Gewähr! _Version: {version}_"
+
+TITLE_NEW_GAME_DAY = "Neuer Spieltag"
+TITLE_NEW_GAME = "Neues Spiel"
+TITLE_NEW_LINEUP = "Neues Lineup"
+TITLE_NEW_OWN_SUGGESTION = "Eigener neuer Zeitvorschlag"
+TITLE_NEW_SUGGESTION = "Neuer Zeitvorschlag eines Gegners"
+TITLE_GAME_CONFIRMATION = "Neuer Zeitvorschlag eines Gegners"

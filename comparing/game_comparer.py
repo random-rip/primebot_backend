@@ -1,6 +1,6 @@
 from typing import Union
 
-from app_prime_league.models import Game, GameMetaData, Player
+from app_prime_league.models import Game, GameMetaData
 
 
 class GameComparer:

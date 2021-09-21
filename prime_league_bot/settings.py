@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django_extensions',
     # own
     'app_prime_league',
+    'data_crawling',
 ]
 
 MIDDLEWARE = [
@@ -145,9 +146,8 @@ TELEGRAM_LIVETICKER_KEY = env.str("TELEGRAM_LIVETICKER_API_KEY")
 
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
-DISCORD_BOT_KEY = env.str("DISCORD_API_KEY")
-DISCORD_APP_CLIENT_ID = env.int("DISCORD_APP_CLIENT_ID")
-DISCORD_DEFAULT_GUILD = "***REMOVED***"
+DISCORD_BOT_KEY = env.str("DISCORD_API_KEY", None)
+DISCORD_APP_CLIENT_ID = env.int("DISCORD_APP_CLIENT_ID", None)
 
 LOGIN_URL = "/admin/login/"
 
@@ -178,78 +178,51 @@ if not DEBUG:
                 'formatter': 'to_console',
                 'class': 'logging.StreamHandler',
             },
-            'django_file': {
-                'level': os.getenv('DJANGO_LOG_LEVEL', 'WARNING'),
+            'django': {
+                'level': "DEBUG",
                 'class': 'logging.handlers.TimedRotatingFileHandler',
                 'filename': os.path.join(LOGGING_DIR, 'django.log'),
                 'when': 'midnight',
                 'formatter': 'to_file',
             },
-            'periodic_handler': {
-                'level': 'INFO',
-                'class': 'logging.handlers.TimedRotatingFileHandler',
-                'filename': os.path.join(LOGGING_DIR, 'periodic.log'),
-                'when': 'midnight',
-                'formatter': 'to_file',
-            },
-            'periodic_verbose_handler': {
-                'level': 'DEBUG',
-                'class': 'logging.handlers.TimedRotatingFileHandler',
-                'filename': os.path.join(LOGGING_DIR, 'periodic_verbose.log'),
-                'when': 'midnight',
-                'formatter': 'to_file',
-            },
-            'main_handler': {
-                'level': 'INFO',
-                'class': 'logging.handlers.TimedRotatingFileHandler',
-                'filename': os.path.join(LOGGING_DIR, 'main.log'),
-                'when': 'midnight',
-                'formatter': 'to_file',
-            },
-            'main_verbose_handler': {
-                'level': 'DEBUG',
-                'class': 'logging.handlers.TimedRotatingFileHandler',
-                'filename': os.path.join(LOGGING_DIR, 'main_verbose.log'),
-                'when': 'midnight',
-                'formatter': 'to_file',
-            },
-            'notifications_handler': {
+            'notifications': {
                 'level': 'DEBUG',
                 'class': 'logging.handlers.WatchedFileHandler',
                 'filename': os.path.join(LOGGING_DIR, 'notifications.log'),
                 'formatter': 'to_file',
             },
-            'commands_handler': {
+            'commands': {
+                'level': 'DEBUG',
+                'class': 'logging.handlers.WatchedFileHandler',
+                'filename': os.path.join(LOGGING_DIR, 'commands.log'),
+                'formatter': 'to_file',
+            },
+            'calibration': {
                 'level': 'DEBUG',
                 'class': 'logging.handlers.TimedRotatingFileHandler',
-                'filename': os.path.join(LOGGING_DIR, 'commands.log'),
+                'filename': os.path.join(LOGGING_DIR, 'calibration.log'),
                 'when': 'midnight',
                 'formatter': 'to_file',
             }
         },
         'loggers': {
             'django': {
-                'handlers': ['console', 'django_file'],
-                'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+                'handlers': ['django'],
+                'level': "DEBUG",
                 'propagate': False,
             },
-            'main_logger': {
-                'handlers': ['main_handler', 'main_verbose_handler'],
+            'notifications': {
+                'handlers': ['notifications'],
+                'level': "DEBUG",
+                'propagate': False,
+            },
+            'commands': {
+                'handlers': ['commands', ],
                 'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
                 'propagate': False,
             },
-            'periodic_logger': {
-                'handlers': ['periodic_handler', 'periodic_verbose_handler'],
-                'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
-                'propagate': False,
-            },
-            'notifications_logger': {
-                'handlers': ['notifications_handler'],
-                'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
-                'propagate': False,
-            },
-            'commands_logger': {
-                'handlers': ['commands_handler', ],
+            'calibration': {
+                'handlers': ['calibration', ],
                 'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
                 'propagate': False,
             }

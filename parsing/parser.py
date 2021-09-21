@@ -119,7 +119,6 @@ class MatchHTMLParser(BaseHTMLParser):
         team_1_div = self.bs4.find_all("div", class_="content-match-head-team content-match-head-team1")[0]
         team_1_id = int(team_1_div.contents[1].contents[1].get("href").split("/teams/")[1].split("-")[0])
         self.team_is_team_1 = team_1_id == team.id
-        self.team = team
         self.website = website
 
     def _parse_logs(self):
@@ -149,6 +148,10 @@ class MatchHTMLParser(BaseHTMLParser):
         for log in self.logs:
             if isinstance(log, BaseGameIsOverLog):
                 return True
+            if isinstance(log, LogChangeStatus) and log.details == "finished":
+                return True
+        if len([x for x in self.logs if isinstance(x, LogScoreReport)]) == 2:
+            return True
         return False
 
     def get_game_result(self):
@@ -247,6 +250,14 @@ class BaseLog:
             return LogLineupNotReady(*log)
         elif action == "change_time":
             return LogChangeTime(*log)
+        elif action == "change_status":
+            return LogChangeStatus(*log)
+        elif action == "change_score":
+            return LogChangeScore(*log)
+        elif action == "score_report":
+            return LogScoreReport(*log)
+        elif action == "lineup_fail":
+            return LogLineupFail(*log)
         return None
 
 
@@ -299,9 +310,47 @@ class LogDisqualified(BaseGameIsOverLog):
         super().__init__(timestamp, user, details)
 
 
+class LogLineupFail(BaseGameIsOverLog):
+
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+
+
+class LogChangeStatus(BaseLog):
+    """
+    self.details can currently be "finished" (Stand 21.03.2021)
+    """
+
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+        prefix = "Manually adjusted status to "
+        self.details = self.details[0][len(prefix):]
+
+
+class LogChangeScore(BaseLog):
+    """
+    Currently deprecated
+    """
+
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+        prefix = "Manually adjusted score to "
+        self.details = self.details[0][len(prefix):]
+
+
+class LogScoreReport(BaseLog):
+    """
+    Currently deprecated
+    """
+
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+
+
 class LogLineupSubmit(BaseLog):
 
     def __init__(self, timestamp, user, details):
+        print(timestamp, user, details)
         super().__init__(timestamp, user, details)
         self.details = [(*x.split(":"),) for x in self.details[0].split(", ")]
         self.details = [(int(id_), name) for id_, name in self.details]
