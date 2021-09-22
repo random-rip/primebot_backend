@@ -129,12 +129,12 @@ class MatchHTMLParser(BaseHTMLParser):
             time = tr.find("span", class_="itime").get('data-time')
             user = tr.find_all("span", class_="table-cell-container")[1].contents[-1]
             action = tr.find_all("span", class_="table-cell-container")[2].contents[-1]
-            details = [x.extract() for x in tr.find_all("span", class_="table-cell-container")[-1]] # TODO @Robin: hält momentan keinerlei relevanter Daten
+            details = [x for x in tr.find_all("span", class_="table-cell-container")[-1] if isinstance(x, str)]
             log = BaseLog.return_specified_log(
                 timestamp=time,
                 user=user.split(" (Team")[0],
                 action=action,
-                details=details if len(details) > 0 else None,
+                details=details,
             )
             if log is not None:
                 self.logs.append(log)
@@ -351,6 +351,7 @@ class LogLineupSubmit(BaseLog):
 
     def __init__(self, timestamp, user, details):
         super().__init__(timestamp, user, details)
+        print(timestamp, user, details)
         self.details = [(*x.split(":"),) for x in self.details[0].split(", ")]
         self.details = [(int(id_), name) for id_, name in self.details]
 

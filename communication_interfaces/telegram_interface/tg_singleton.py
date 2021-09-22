@@ -51,7 +51,7 @@ class TelegramMessagesWrapper:
 
     @staticmethod
     def send_next_game_day_after_registration(game: Game):
-        op_link = game.get_scouting_link_of_enemies(only_lineup=False)
+        op_link = game.team.get_scouting_link_of_enemies(only_lineup=False)
         text = WEEKLY_UPDATE_TEXT.format(op_link=op_link, enemy_team_tag=game.enemy_team.team_tag, **vars(game))
         message = send_message(msg=text, chat_id=game.team.telegram_id)
         try:
