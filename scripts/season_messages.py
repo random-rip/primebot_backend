@@ -47,7 +47,7 @@ def main():
         try:
             print(team)
             dispatcher = MessageDispatcher(team)
-            msg = NotificationToTeamMessage(team=team, message=message)
+            msg = NotificationToTeamMessage(team=team, custom_message=message)
             dispatcher.dispatch_raw_message(msg=msg)
         except Exception as e:
             print("ERROR", e)
