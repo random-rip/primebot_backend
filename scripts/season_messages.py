@@ -31,9 +31,9 @@ Grayknife und Orbis
 message = """
 Hallo {team.name}, 
 
-der Wintersplit beginnt bald und einigen Teams hat der Bot bei der Kalibrierungsphase schon geholfen.
+der Wintersplit beginnt bald und einigen Teams hat der PrimeBot bei der Kalibrierungsphase schon geholfen.
 Heute wurden die Gruppen und die Spiele  erstellt, die ihr auf der Website schon einsehen könnt,  jedoch kommt es von unserer Seite aus momentan zu Fehlern bei der Datenabfrage. #wirsitzendran
-Wir melden uns, sobald der Bot wieder voll funktionsfähig ist (vrstl. im Laufe des heutigen Abends).
+Wir melden uns, sobald der PrimeBot wieder voll funktionsfähig ist. (vrstl. im Laufe des heutigen Abends)
 
 Sternige Grüße
 Grayknife und Orbis
