@@ -27,4 +27,4 @@ class MessageDispatcher:
 
     def dispatch_raw_message(self, msg, **kwargs):
         for bot in self.bots:
-            bot.send_message(msg=msg, team=self.team, attach=False)
+            bot.send_message(msg=msg, team=self.team, )
