@@ -20,11 +20,16 @@ def get_session():
         thread_local.session = requests.Session()
     return thread_local.session
 
+
 @log_exception
 def check_game(game):
     game_id = game.game_id
     team = game.team
-    gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=game_id, )
+    try:
+        gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=game_id, )
+    except Exception as e:
+        django_logger.exception(e)
+        return
     cmp = GameComparer(game, gmd)
 
     log_message = f"New notification for {game_id} ({team}): "
