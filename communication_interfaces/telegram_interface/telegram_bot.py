@@ -88,12 +88,12 @@ class TelegramBot(Bot):
         try:
             sent_message = send_message(msg=msg.message, chat_id=team.telegram_id, raise_again=True)
         except (BotWasKickedError, BotWasBlockedError) as e:
-            logging.getLogger("notifications").error(f"Could not send message to {team}: '{msg}. -> {e}'")
+            logging.getLogger("notifications").exception(f"Could not send message to {team}: '{msg}. -> {e}'")
             team.set_telegram_null()
             logging.getLogger("notifications").info(f"Could not send message to {team}: {e}. Soft deleted'")
             return
         except Exception as e:
-            logging.getLogger("notifications").error(f"Could not send message to {team}: '{msg}. -> {e}'")
+            logging.getLogger("notifications").exception(f"Could not send message to {team}: '{msg}. -> {e}'")
             return
         if msg.can_be_pinned():
             try:
@@ -101,7 +101,7 @@ class TelegramBot(Bot):
             except CannotBePinnedError:
                 send_message(msg=MESSAGE_NOT_PINNED_TEXT, chat_id=team.telegram_id)
             except telepot.exception.TelegramError:
-                logging.getLogger("notifications").error(f"{team}: {CANT_PIN_MSG_IN_PRIVATE_CHAT}")
+                logging.getLogger("notifications").exception(f"{team}: {CANT_PIN_MSG_IN_PRIVATE_CHAT}")
         return
 
 
@@ -126,6 +126,7 @@ def error(update, context):
                    f"</code>"
         else:
             text = "Ein Fehler ist aufgetreten (update is none)."
+        context.bot.send_message(settings.TG_DEVELOPER_GROUP, text, parse_mode=ParseMode.HTML)
     except Exception as e:
         text = f"Ein gravierender Fehler ist aufgetreten.\n{e}"
         # TODO: catch connection errors
@@ -133,4 +134,4 @@ def error(update, context):
     try:
         raise
     except RuntimeError as e:
-        logging.getLogger("django").critical(e)
+        logging.getLogger("django").exception(e)

@@ -64,7 +64,7 @@ class WeeklyNotificationMessage(BaseMessage):
 class NewGameNotification(BaseMessage):
     msg_type = "new_game_notification"
     _key = "new_game_notification"
-    title = LaP.TITLE_NEW_GAME_DAY
+    title = LaP.TITLE_NEW_GAME
     mentionable = True
 
     def __init__(self, team: Team, game: Game):
@@ -205,3 +205,16 @@ class GamesOverview(BaseMessage):
             for game in games_to_play]
         games_text = "\n".join(a)
         self.message = "**Eine Übersicht eurer offenen Spiele:**\n\n" + games_text
+
+
+class NotificationToTeamMessage(BaseMessage):
+    msg_type = "custom_message"
+    _key = "custom_message"
+    mentionable = True
+
+    def __init__(self, team: Team, message, **kwargs):
+        super().__init__(team, **kwargs)
+        self.message = message
+
+    def _generate_message(self):
+        return self.message.format(team=self.team)

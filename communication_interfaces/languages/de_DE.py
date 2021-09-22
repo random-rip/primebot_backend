@@ -232,7 +232,7 @@ DC_WEBHOOK_RECREATED = "Webhook wurde neu erstellt. Sollten weiterhin Probleme a
 DC_CHANNEL_NOT_INITIALIZED = "In diesem Channel ist derzeitig kein Team registriert. " \
                              "Benutze dafür `!start TEAM_ID_oder_TEAM_URL`"
 DC_ROLE_MENTION_REMOVED = "Alles klar, ich habe die Rollenerwähnung entfernt. " \
-                          "Du kannst sie bei Bedarf wieder einschalten, benutze dazu einfach `!role ROLE`."
+                          "Du kannst sie bei Bedarf wieder einschalten, benutze dazu einfach `!role ROLE_NAME`."
 DC_ROLE_NOT_FOUND = "Die Rolle {role_name} habe ich nicht gefunden. Stelle sicher, dass diese Rolle existiert."
 DC_SET_ROLE = "Okay, ich informiere die Rolle **@{role_name}** ab jetzt bei neuen Benachrichtigungen. 📯"
 
@@ -249,6 +249,7 @@ DC_DESCRIPTION = "Dieser Bot ist nicht in Kooperation mit der PrimeLeague bzw. d
                  "Dennoch sind alle Angaben ohne Gewähr! _Version: {version}_"
 
 TITLE_NEW_GAME_DAY = "Neuer Spieltag"
+TITLE_NEW_GAME = "Neues Spiel"
 TITLE_NEW_LINEUP = "Neues Lineup"
 TITLE_NEW_OWN_SUGGESTION = "Eigener neuer Zeitvorschlag"
 TITLE_NEW_SUGGESTION = "Neuer Zeitvorschlag eines Gegners"

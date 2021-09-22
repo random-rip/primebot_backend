@@ -1,5 +1,6 @@
 from app_prime_league.models import Team
 from communication_interfaces.message_dispatcher import MessageDispatcher
+from communication_interfaces.messages import NotificationToTeamMessage
 
 season_end_message = """
 Hallo {team.name}, 
@@ -46,7 +47,7 @@ def main():
         try:
             print(team)
             dispatcher = MessageDispatcher(team)
-            msg = message.format(team=team, )
+            msg = NotificationToTeamMessage(team=team, message=message)
             dispatcher.dispatch_raw_message(msg=msg)
         except Exception as e:
             print("ERROR", e)
