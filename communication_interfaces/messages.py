@@ -211,10 +211,12 @@ class NotificationToTeamMessage(BaseMessage):
     msg_type = "custom_message"
     _key = "custom_message"
     mentionable = True
+    title = "Entwicklerbenachrichtigung"
 
     def __init__(self, team: Team, custom_message, **kwargs):
         super().__init__(team, **kwargs)
         self.custom_message = custom_message
+        self._generate_message()
 
     def _generate_message(self):
         self.message = self.custom_message.format(team=self.team)
