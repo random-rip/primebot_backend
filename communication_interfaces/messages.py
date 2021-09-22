@@ -54,7 +54,7 @@ class WeeklyNotificationMessage(BaseMessage):
         self._generate_message()
 
     def _generate_message(self):
-        op_link = self.game.get_scouting_link_of_enemies(only_lineup=False)
+        op_link = self.game.team.get_scouting_link_of_enemies(game=self.game, only_lineup=False)
         enemy_team_tag = self.game.enemy_team.team_tag
         if op_link is None:
             raise Exception()
@@ -73,7 +73,7 @@ class NewGameNotification(BaseMessage):
         self._generate_message()
 
     def _generate_message(self):
-        op_link = self.game.get_op_link_of_enemies(only_lineup=False)
+        op_link = self.team.get_scouting_link_of_enemies(game=self.game, only_lineup=False)
         enemy_team_tag = self.game.enemy_team.team_tag
         if op_link is None:
             raise Exception()
@@ -93,7 +93,7 @@ class NewLineupNotificationMessage(BaseMessage):
         self._generate_message()
 
     def _generate_message(self):
-        op_link = self.game.get_scouting_link_of_enemies(only_lineup=True)
+        op_link = self.game.team.get_scouting_link_of_enemies(game=self.game, only_lineup=True)
         enemy_team_tag = self.game.enemy_team.team_tag
         if op_link is None:
             raise Exception()
@@ -111,7 +111,7 @@ class NewLineupInCalibrationMessage(BaseMessage):
         self._generate_message()
 
     def _generate_message(self):
-        op_link = self.game.get_op_link_of_enemies(only_lineup=True)
+        op_link = self.team.get_scouting_link_of_enemies(game=self.game, only_lineup=True)
         enemy_team_name = self.game.enemy_team.name
         if op_link is None:
             raise Exception()
@@ -201,7 +201,7 @@ class GamesOverview(BaseMessage):
             return
         a = [
             f"[Spieltag {game.game_day}]({LaP.GENERAL_MATCH_LINK}{game.game_id}) {EMOJI_FIGHT} {game.enemy_team.name}" \
-            f" {EMOJI_ARROW_RIGHT} [OP.gg]({game.get_op_link_of_enemies(only_lineup=False)})\n"
+            f" {EMOJI_ARROW_RIGHT} [OP.gg]({game.team.get_scouting_link_of_enemies(game=game, only_lineup=False)})\n"
             for game in games_to_play]
         games_text = "\n".join(a)
         self.message = "**Eine Übersicht eurer offenen Spiele:**\n\n" + games_text

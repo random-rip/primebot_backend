@@ -136,10 +136,9 @@ class Team(models.Model):
         else:
             names = list(game.enemy_team.player_set.all().values_list("summoner_name", flat=True))
 
-
-        self.value_of_setting("scouting_website")
-        url = ",".join([x.replace(" ", "") for x in names])
-        return "https://euw.op.gg/multi/?query={}".format(url)
+        base_url = self.scouting_website.base_url
+        parameters = f"{self.scouting_website.separator}".join([x.replace(" ", "") for x in names])
+        return base_url.format(parameters)
 
 
 class Player(models.Model):
@@ -305,7 +304,6 @@ class ScoutingWebsite(models.Model):
     separator = models.CharField(max_length=5)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
 
     class Meta:
         db_table = "scouting_websites"

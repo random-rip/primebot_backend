@@ -258,6 +258,8 @@ class BaseLog:
             return LogScoreReport(*log)
         elif action == "lineup_fail":
             return LogLineupFail(*log)
+        elif action == "change_score_status":
+            return LogChangeScoreStatus(*log)
         return None
 
 
@@ -347,11 +349,18 @@ class LogScoreReport(BaseLog):
         super().__init__(timestamp, user, details)
 
 
+class LogChangeScoreStatus(BaseGameIsOverLog):
+
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+        prefix = "Manually adjusted score to "
+        self.details = self.details[0][len(prefix):len(prefix) + 3]
+
+
 class LogLineupSubmit(BaseLog):
 
     def __init__(self, timestamp, user, details):
         super().__init__(timestamp, user, details)
-        print(timestamp, user, details)
         self.details = [(*x.split(":"),) for x in self.details[0].split(", ")]
         self.details = [(int(id_), name) for id_, name in self.details]
 
