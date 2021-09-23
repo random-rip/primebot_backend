@@ -107,7 +107,7 @@ class Team(models.Model):
         return self.games_against.filter(game_closed=False).order_by("game_day").first()
 
     def set_telegram_null(self):
-        # self.telegram_id = None
+        self.telegram_id = None
         self.save(update_fields=["telegram_id"])
         self.soft_delete()
 
