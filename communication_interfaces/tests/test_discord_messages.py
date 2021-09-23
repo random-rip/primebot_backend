@@ -6,15 +6,15 @@ from communication_interfaces.messages import WeeklyNotificationMessage, NewGame
 
 class DiscordMessageTests(TestCase):
 
-    def setUp(self) -> None:
-        self.team_a = Team.objects.create(name="ABC", team_tag="abc", )
-        self.team_b = Team.objects.create(name="XYZ", team_tag="xyz", )
+    def setUp(self):
+        self.team_a = Team.objects.create(id=1, name="ABC", team_tag="abc", )
+        self.team_b = Team.objects.create(id=2, name="XYZ", team_tag="xyz", )
         self.game = Game.objects.create(game_id=1, team=self.team_a, enemy_team=self.team_b, game_day=1)
-        Player.objects.create(name="player 1", summoner_name="player 1", team=self.team_b)
-        Player.objects.create(name="player 2", summoner_name="player 2", team=self.team_b)
-        Player.objects.create(name="player 3", summoner_name="player 3", team=self.team_b)
-        Player.objects.create(name="player 4", summoner_name="player 4", team=self.team_b)
-        Player.objects.create(name="player 5", summoner_name="player 5", team=self.team_b)
+        Player.objects.create(name="player 1", summoner_name="player1", team=self.team_b)
+        Player.objects.create(name="player 2", summoner_name="player2", team=self.team_b)
+        Player.objects.create(name="player 3", summoner_name="player3", team=self.team_b)
+        Player.objects.create(name="player 4", summoner_name="player4", team=self.team_b)
+        Player.objects.create(name="player 5", summoner_name="player5", team=self.team_b)
 
     def test_weekly_notification(self):
         msg = WeeklyNotificationMessage(game=self.game, team=self.team_a)

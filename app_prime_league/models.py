@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.db.models import Q
 
@@ -136,8 +137,9 @@ class Team(models.Model):
         else:
             names = list(game.enemy_team.player_set.all().values_list("summoner_name", flat=True))
 
-        base_url = self.scouting_website.base_url
-        parameters = f"{self.scouting_website.separator}".join([x.replace(" ", "") for x in names])
+        base_url = settings.DEFAULT_SCOUTING_URL if self.scouting_website is None else self.scouting_website.base_url
+        separator = settings.DEFAULT_SCOUTING_SEP if self.scouting_website is None else self.scouting_website.separator
+        parameters = f"{separator}".join([x.replace(" ", "") for x in names])
         return base_url.format(parameters)
 
 
@@ -301,7 +303,7 @@ class Game(models.Model):
 class ScoutingWebsite(models.Model):
     name = models.CharField(max_length=20, unique=True)
     base_url = models.CharField(max_length=200)
-    separator = models.CharField(max_length=5)
+    separator = models.CharField(max_length=5, default=settings.DEFAULT_SCOUTING_SEP)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

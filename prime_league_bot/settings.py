@@ -159,6 +159,10 @@ except OSError as exc:
         raise exc
     pass
 
+DEFAULT_SCOUTING_NAME = "op.gg"
+DEFAULT_SCOUTING_URL = "https://euw.op.gg/multi/?query={}"
+DEFAULT_SCOUTING_SEP = ","
+
 if not DEBUG:
     LOGGING = {
         'version': 1,
