@@ -231,36 +231,24 @@ class BaseLog:
 
     @staticmethod
     def return_specified_log(timestamp, user, action, details):
-        log = (timestamp, user, details)
-        if action == "scheduling_suggest":
-            return LogSuggestion(*log)
-        elif action == "scheduling_confirm":
-            return LogSchedulingConfirmation(*log)
-        elif action == "lineup_submit":
-            return LogLineupSubmit(*log)
-        elif action == "played":
-            return LogPlayed(*log)
-        elif action == "scheduling_autoconfirm":
-            return LogSchedulingAutoConfirmation(*log)
-        elif action == "disqualify":
-            return LogDisqualified(*log)
-        elif action == "lineup_missing":
-            return LogLineupMissing(*log)
-        elif action == "lineup_notready":
-            return LogLineupNotReady(*log)
-        elif action == "change_time":
-            return LogChangeTime(*log)
-        elif action == "change_status":
-            return LogChangeStatus(*log)
-        elif action == "change_score":
-            return LogChangeScore(*log)
-        elif action == "score_report":
-            return LogScoreReport(*log)
-        elif action == "lineup_fail":
-            return LogLineupFail(*log)
-        elif action == "change_score_status":
-            return LogChangeScoreStatus(*log)
-        return None
+        log_dict = {
+            "scheduling_suggest": LogSuggestion,
+            "scheduling_confirm": LogSchedulingConfirmation,
+            "lineup_submit": LogLineupSubmit,
+            "played": LogPlayed,
+            "scheduling_autoconfirm": LogSchedulingAutoConfirmation,
+            "disqualify": LogDisqualified,
+            "lineup_missing": LogLineupMissing,
+            "lineup_notready": LogPlayed,
+            "change_time": LogLineupNotReady,
+            "change_status": LogChangeStatus,
+            "change_score": LogChangeScore,
+            "score_report": LogScoreReport,
+            "lineup_fail": LogLineupFail,
+            "change_score_status": LogChangeScoreStatus,
+        }
+        Log = log_dict.get(action, None)
+        return None if not Log else Log(timestamp, user, details)
 
 
 class BaseGameIsOverLog(BaseLog):

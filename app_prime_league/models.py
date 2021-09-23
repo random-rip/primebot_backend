@@ -80,7 +80,7 @@ class Team(models.Model):
     discord_channel_id = models.CharField(max_length=50, unique=True, null=True)
     discord_role_id = models.CharField(max_length=50, null=True)
     logo_url = models.CharField(max_length=1000, null=True)
-    scouting_website = models.ForeignKey("app_prime_league.ScoutingWebsite", on_delete=models.SET_DEFAULT, default=1)
+    scouting_website = models.ForeignKey("app_prime_league.ScoutingWebsite", on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -137,8 +137,8 @@ class Team(models.Model):
         else:
             names = list(game.enemy_team.player_set.all().values_list("summoner_name", flat=True))
 
-        base_url = settings.DEFAULT_SCOUTING_URL if self.scouting_website is None else self.scouting_website.base_url
-        separator = settings.DEFAULT_SCOUTING_SEP if self.scouting_website is None else self.scouting_website.separator
+        base_url = settings.DEFAULT_SCOUTING_URL if not self.scouting_website else self.scouting_website.base_url
+        separator = settings.DEFAULT_SCOUTING_SEP if not self.scouting_website else self.scouting_website.separator
         parameters = f"{separator}".join([x.replace(" ", "") for x in names])
         return base_url.format(parameters)
 
