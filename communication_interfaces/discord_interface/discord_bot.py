@@ -10,7 +10,7 @@ from asgiref.sync import sync_to_async
 from discord import Webhook, RequestsWebhookAdapter, Embed, Colour, NotFound
 from discord.ext import commands
 
-from app_prime_league.models import Team
+from app_prime_league.models import Team, ScoutingWebsite
 from app_prime_league.teams import register_team
 from communication_interfaces.base_bot import Bot
 from communication_interfaces.languages import de_DE as LanguagePack
@@ -126,6 +126,30 @@ class DiscordBot(Bot):
             team.discord_role_id = role.id
             await sync_to_async(team.save)()
             await ctx.send(LanguagePack.DC_SET_ROLE.format(role_name=role.name))
+
+        @self.bot.command(name="scouting", help=LanguagePack.DC_HELP_TEXT_SCOUTING, pass_context=True)
+        @commands.check(mysql_has_gone_away)
+        @commands.check(log_from_discord)
+        async def set_scouting(ctx, scouting_id=None, ):
+            channel_id = ctx.message.channel.id
+            team = await get_registered_team_by_channel_id(channel_id=channel_id)
+            if team is None:
+                await ctx.send(LanguagePack.DC_CHANNEL_NOT_INITIALIZED)
+                return
+
+            if scouting_id is None:
+                team.scouting_website = await sync_to_async(ScoutingWebsite.objects.get)(id=1)
+                await sync_to_async(team.save)()
+                await ctx.send(LanguagePack.DC_SCOUTING_REMOVED)
+                return
+            try:
+                scouting_website = await sync_to_async(ScoutingWebsite.objects.get)(scouting_id)
+            except ScoutingWebsite.DoesNotExist:
+                await ctx.send(LanguagePack.DC_SCOUTING_NOT_FOUND)
+                return
+            team.scouting_website = scouting_website
+            await sync_to_async(team.save)()
+            await ctx.send(LanguagePack.DC_SET_SCOUTING.format(scouting_website=scouting_website.name))
 
         @self.bot.command(name="bop", help=LanguagePack.DC_HELP_TEXT_BOP, pass_context=True)
         @commands.check(log_from_discord)

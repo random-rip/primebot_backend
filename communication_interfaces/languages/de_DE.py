@@ -233,12 +233,17 @@ DC_CHANNEL_NOT_INITIALIZED = "In diesem Channel ist derzeitig kein Team registri
                              "Benutze dafür `!start TEAM_ID_oder_TEAM_URL`"
 DC_ROLE_MENTION_REMOVED = "Alles klar, ich habe die Rollenerwähnung entfernt. " \
                           "Du kannst sie bei Bedarf wieder einschalten, benutze dazu einfach `!role ROLE_NAME`."
+DC_SCOUTING_REMOVED = "Alles klar, die Scouting Website wurde auf den Standard (op.gg) zurückgesetzt. " \
+                          "Du kannst sie bei Bedarf wieder einschalten, benutze dazu einfach `!role ROLE_NAME`."
 DC_ROLE_NOT_FOUND = "Die Rolle {role_name} habe ich nicht gefunden. Stelle sicher, dass diese Rolle existiert."
+DC_SCOUTING_NOT_FOUND = "Die Scouting Website habe ich nicht gefunden. Wähle aus folgenden eine aus: 1=OP.GG, 2=U.GG, 3=XDX.GG."
 DC_SET_ROLE = "Okay, ich informiere die Rolle **@{role_name}** ab jetzt bei neuen Benachrichtigungen. 📯"
+DC_SET_SCOUTING = "Okay, ich habe die Website auf {scouting_website} geändert. 📯"
 
 DC_HELP_TEXT_START = "Registriere dein Team im Channel (Format: !start TEAM_ID_or_TEAM_URL)"
 DC_HELP_TEXT_FIX = "Erstellt den Benachrichtigungswebhook neu"
 DC_HELP_TEXT_ROLE = "Setze eine Discordrolle, die in den Benachrichtigungen benutzt wird. Um die Rolle zu entfernen schreibe !role ohne Parameter"
+DC_HELP_TEXT_SCOUTING = "Setze eine Scouting Website, die in den Benachrichtigungen benutzt wird. Um die Einstellung zurückzusetzen schreibe !scouting ohne Parameter, 1=OP.GG, 2=U.GG 3=XDX.GG"
 DC_HELP_TEXT_OVERVIEW = "Erstellt eine Übersicht für die offenen Spiele"
 DC_HELP_TEXT_BOP = "Whats boppin'?"
 DC_DESCRIPTION = "Dieser Bot ist nicht in Kooperation mit der PrimeLeague bzw. der Freaks4u Gaming GmbH entstanden " \
