@@ -1,5 +1,7 @@
 import os
+import time
 
+import numpy as np
 import requests
 
 from prime_league_bot import settings
@@ -18,26 +20,111 @@ def save_object_to_file(obj, file_name):
         f.write(obj)
 
 
+user_agent_list = (
+    "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/525.19",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/94.0.4606.52 Mobile/15E148 Safari/604.1",
+    "Mozilla/5.0 (iPad; CPU OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/94.0.4606.52 Mobile/15E148 Safari/604.1",
+    "Mozilla/5.0 (iPod; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/94.0.4606.52 Mobile/15E148 Safari/604.1",
+    "Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Mobile Safari/537.36",
+    "Mozilla/5.0 (Linux; Android 10; SM-A205U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Mobile Safari/537.36",
+    "Mozilla/5.0 (Linux; Android 10; SM-A102U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Mobile Safari/537.36",
+    "Mozilla/5.0 (Linux; Android 10; SM-G960U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Mobile Safari/537.36",
+    "Mozilla/5.0 (Linux; Android 10; SM-N960U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Mobile Safari/537.36",
+    "Mozilla/5.0 (Linux; Android 10; LM-Q720) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Mobile Safari/537.36",
+    "Mozilla/5.0 (Linux; Android 10; LM-X420) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Mobile Safari/537.36",
+    "Mozilla/5.0 (Linux; Android 10; LM-Q710(FGN)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Mobile Safari/537.36",
+    # ===
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:92.0) Gecko/20100101 Firefox/92.0",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 11.6; rv:92.0) Gecko/20100101 Firefox/92.0",
+    "Mozilla/5.0 (X11; Linux i686; rv:92.0) Gecko/20100101 Firefox/92.0",
+    "Mozilla/5.0 (Linux x86_64; rv:92.0) Gecko/20100101 Firefox/92.0",
+    "Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:92.0) Gecko/20100101 Firefox/92.0",
+    "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:92.0) Gecko/20100101 Firefox/92.0",
+    "Mozilla/5.0 (X11; Fedora; Linux x86_64; rv:92.0) Gecko/20100101 Firefox/92.0",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 11_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/37.0 Mobile/15E148 Safari/605.1.15",
+    "Mozilla/5.0 (iPad; CPU OS 11_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/37.0 Mobile/15E148 Safari/605.1.15",
+    "Mozilla/5.0 (iPod touch; CPU iPhone OS 11_6 like Mac OS X) AppleWebKit/604.5.6 (KHTML, like Gecko) FxiOS/37.0 Mobile/15E148 Safari/605.1.15",
+    "Mozilla/5.0 (Android 11; Mobile; rv:68.0) Gecko/68.0 Firefox/92.0",
+    "Mozilla/5.0 (Android 11; Mobile; LG-M255; rv:92.0) Gecko/92.0 Firefox/92.0",
+    # ===
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Safari/605.1.15",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1",
+    "Mozilla/5.0 (iPad; CPU OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1",
+    "Mozilla/5.0 (iPod touch; CPU iPhone 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1",
+)
+
+
 class Api:
     def __init__(self):
         self.base_uri = settings.LEAGUES_URI
         self.base_uri_ajax = settings.AJAX_URI
+        self.apply_blacklist_robustness = settings.DEBUG
 
-    def json_handler(self, endpoint, request=requests.post, post_params=None):
+    def _get_html_headers(self):
+        return {
+            'user-agent': self._get_random_user_agent(),
+            'referer': 'https://www.primeleague.gg/',
+            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+            'accept-encoding': 'gzip, deflate, br',
+            'accept-language': 'de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7',
+            'cache-control': 'max-age=0',
+            'upgrade-insecure-requests': "1",
+            'sec-ch-ua': 'Google Chrome";v="93", " Not;A Brand";v="99", "Chromium";v="93"',
+            "sec-ch-ua-mobile": '?0',
+            "sec-ch-ua-platform": 'Windows',
+            "sec-fetch-dest": 'document',
+            "sec-fetch-mode": 'navigate',
+            "sec-fetch-site": 'same-origin',
+            "sec-fetch-user": '?1',
+        }
+
+    def delay(self, min_milliseconds=100, max_milliseconds=4000, constant_milliseconds=None):
+        if constant_milliseconds is not None:
+            assert isinstance(constant_milliseconds, int), "constant_milliseconds is no integer!"
+            time.sleep(constant_milliseconds / 1000)
+        else:
+            time.sleep(np.random.randint(min_milliseconds, max_milliseconds) / 1000)
+
+    def _get_json_headers(self):
+        return {
+            'user-agent': self._get_random_user_agent(),
+            'referer': 'https://www.primeleague.gg/',
+            'accept': '*/*',
+            'accept-encoding': 'gzip, deflate, br',
+            'accept-language': 'de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7',
+            'cache-control': ' max-age=0',
+            'x-requested-with': 'XMLHttpRequest',
+            'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        }
+
+    def _get_random_user_agent(self):
+        return user_agent_list[np.random.randint(0, len(user_agent_list))]
+
+    def json_handler(self, endpoint, request=requests.post, post_params=None, ):
         if endpoint is None:
             raise Exception("Endpoint not found")
 
         path = f"{self.base_uri_ajax}{endpoint}/"
-        response = request(url=path, data=post_params, )
+        if self.apply_blacklist_robustness:
+            self.delay()
+        response = request(url=path, data=post_params, headers=self._get_html_headers())
         return response
 
-    def html_handler(self, endpoint, request=requests.get, query_params=None, team_id=None):
+    def html_handler(self, endpoint, request=requests.get, query_params=None, ):
         if endpoint is None:
             raise Exception("Endpoint not found")
 
         path = f"{self.base_uri}{endpoint}"
         path += "/".join(str(x) for x in [query_params]) if query_params is not None else ""
-        response = request(path)
+
+        if self.apply_blacklist_robustness:
+            self.delay()
+        response = request(path, headers=self._get_html_headers())
         return response
 
 

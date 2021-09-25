@@ -16,3 +16,6 @@ mysqlclient==2.0.1
 django-extensions==3.0.2
 django-environ==0.4.5
 discord.py==1.6.0
+numpy~=1.21.2
+aiohttp~=3.6.2
+asgiref~=3.2.10
