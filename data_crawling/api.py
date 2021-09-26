@@ -63,7 +63,7 @@ class Api:
     def __init__(self):
         self.base_uri = settings.LEAGUES_URI
         self.base_uri_ajax = settings.AJAX_URI
-        self.apply_blacklist_robustness = settings.DEBUG
+        self.apply_blacklist_robustness = not settings.DEBUG
 
     def _get_html_headers(self):
         return {
@@ -84,7 +84,7 @@ class Api:
         }
 
     def delay(self, min_milliseconds=100, max_milliseconds=4000, constant_milliseconds=None):
-        if not self.apply_blacklist_robustness:
+        if self.apply_blacklist_robustness:
             return
         if constant_milliseconds is not None:
             assert isinstance(constant_milliseconds, int), "constant_milliseconds is no integer!"
