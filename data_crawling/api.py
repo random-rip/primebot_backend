@@ -84,7 +84,7 @@ class Api:
         }
 
     def delay(self, min_milliseconds=100, max_milliseconds=4000, constant_milliseconds=None):
-        if self.apply_blacklist_robustness:
+        if not self.apply_blacklist_robustness:
             return
         if constant_milliseconds is not None:
             assert isinstance(constant_milliseconds, int), "constant_milliseconds is no integer!"
