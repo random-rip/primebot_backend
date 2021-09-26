@@ -196,9 +196,8 @@ NEXT_GAME_IN_CALIBRATION = "Euer nächstes Spiel in der Kalibrierungsphase:\n" +
                            "{enemy_team_id}):\n" + \
                            "Hier ist der [OP.GG Link]({op_link}) des Teams."
 
-WAIT_A_MOMENT_TEXT = "Alles klar, ich schaue, was ich dazu finden kann.\nDas kann einen Moment dauern...⏳\n\n" \
-                     "🔥 Aktuell gibt es bei unserem Serverprovider Probleme, weswegen es zu Verzögerungen kommen" \
-                     " kann. Wenn es keine weiteren Nachrichten gibt, versuche es in ein paar Stunden erneut. 🔥"
+WAIT_A_MOMENT_TEXT = "Alles klar, ich schaue, was ich dazu finden kann.\nDas kann einen Moment dauern...⏳\n" \
+                     "🔥 Aktuell hat uns die Primeleague geblacklisted. Aus diesem Grund kann der Service momentan nicht garantiert werden. 🔥"
 NO_GROUP_CHAT = "Dieser Befehl kann nur in einer Telegram-Gruppe ausgeführt werden."
 TEAM_NOT_IN_DB_TEXT = "Die Telegram-Gruppe wurde noch nicht initialisiert (/start)."
 TEAM_NOT_FOUND = "Dieses Team wurde noch nicht initialisiert (/start)."

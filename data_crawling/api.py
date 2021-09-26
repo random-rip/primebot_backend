@@ -84,6 +84,8 @@ class Api:
         }
 
     def delay(self, min_milliseconds=100, max_milliseconds=4000, constant_milliseconds=None):
+        if not self.apply_blacklist_robustness:
+            return
         if constant_milliseconds is not None:
             assert isinstance(constant_milliseconds, int), "constant_milliseconds is no integer!"
             time.sleep(constant_milliseconds / 1000)
@@ -110,20 +112,17 @@ class Api:
             raise Exception("Endpoint not found")
 
         path = f"{self.base_uri_ajax}{endpoint}/"
-        if self.apply_blacklist_robustness:
-            self.delay()
+        self.delay()
         response = request(url=path, data=post_params, headers=self._get_html_headers())
         return response
 
     def html_handler(self, endpoint, request=requests.get, query_params=None, ):
         if endpoint is None:
             raise Exception("Endpoint not found")
-
         path = f"{self.base_uri}{endpoint}"
         path += "/".join(str(x) for x in [query_params]) if query_params is not None else ""
 
-        if self.apply_blacklist_robustness:
-            self.delay()
+        self.delay()
         response = request(path, headers=self._get_html_headers())
         return response
 
