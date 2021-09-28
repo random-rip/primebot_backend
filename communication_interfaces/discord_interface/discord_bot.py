@@ -76,7 +76,8 @@ class DiscordBot(Bot):
                 team = await sync_to_async(
                     register_team)(team_id=team_id, discord_webhook_id=webhook.id,
                                    discord_webhook_token=webhook.token, discord_channel_id=channel_id)
-
+            if team is None:
+                raise Exception()
             msg = await sync_to_async(GamesOverview)(team=team)
             embed = Embed(description=msg.message, color=Colour.from_rgb(255, 255, 0))
             await ctx.send(embed=embed)

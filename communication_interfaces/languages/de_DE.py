@@ -211,8 +211,8 @@ EXPLAIN_TEXT = "Dieser Bot ist nicht in Kooperation mit der PrimeLeague bzw. der
 CLOSE = "Schließen"
 CURRENTLY = "Derzeitig"
 
-DC_WEBSITE_LINK = "[Website](https://www.primebot.me/start/f%C3%BCr-discord)"
-DC_HELP_LINK_TEXT = f"Schaue auf unserer {DC_WEBSITE_LINK} nach Hilfe."
+WEBSITE_LINK_TO_DISCORD = "https://www.primebot.me/start/f%C3%BCr-discord/"
+DC_HELP_LINK_TEXT = f"Schaue auf unserer {WEBSITE_LINK_TO_DISCORD} nach Hilfe."
 DC_TEAM_ID_NOT_VALID = "Aus dem Übergabeparameter konnte keine ID gefunden werden " \
                        f"(Format `!start TEAM_ID_or_TEAM_URL`). {DC_HELP_LINK_TEXT}"
 DC_CHANNEL_IN_USE = f"Für diesen Channel ist bereits ein Team registriert. {DC_HELP_LINK_TEXT}"
@@ -221,14 +221,14 @@ DC_NO_PERMISSIONS_FOR_WEBHOOK = "Mir fehlt die Berechtigung, Webhooks zu verwalt
                                 "Bitte stelle sicher, dass ich diese Berechtigung habe. " \
                                 "Gegebenenfalls warte eine Stunde, bevor du den Befehl wieder ausführst. " \
                                 "Falls es danach noch nicht gehen sollte, , schaue auf unserer " \
-                                f"{DC_WEBSITE_LINK} > Probleme nach Hilfe."
+                                f"{WEBSITE_LINK_TO_DISCORD} > Probleme nach Hilfe."
 DC_REGISTRATION_FINISH = "Perfekt, dieser Channel wurde für Team {team_name} initialisiert.\n" \
                          "Wenn du möchtest, kannst du mit `!role ROLE_NAME` noch eine Rolle benennen, " \
                          "die bei Benachrichtigungen erwähnt werden soll."
 DC_USE_FIX = "Wenn keine Benachrichtigungen mehr in dem Channel ankommen, benutze bitte `!fix`."
 
 DC_WEBHOOK_RECREATED = "Webhook wurde neu erstellt. Sollten weiterhin Probleme auftreten, schaue auf unserer " \
-                       f"{DC_WEBSITE_LINK} > Probleme nach Hilfe."
+                       f"{WEBSITE_LINK_TO_DISCORD} > Probleme nach Hilfe."
 DC_CHANNEL_NOT_INITIALIZED = "In diesem Channel ist derzeitig kein Team registriert. " \
                              "Benutze dafür `!start TEAM_ID_oder_TEAM_URL`"
 DC_ROLE_MENTION_REMOVED = "Alles klar, ich habe die Rollenerwähnung entfernt. " \

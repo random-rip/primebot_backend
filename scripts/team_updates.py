@@ -9,7 +9,8 @@ from telegram import ParseMode
 from app_prime_league.models import Team
 from app_prime_league.teams import add_or_update_players, update_team, add_raw_games
 from communication_interfaces.telegram_interface.tg_singleton import send_message
-from parsing.parser import TeamWrapper, WebsiteIsNoneException
+from parsing.parser import TeamDataProvider
+from utils.exceptions import WebsiteIsNoneException
 from prime_league_bot import settings
 
 
@@ -22,18 +23,18 @@ def main():
     for team in teams:
         logger.info(f"Checking {team}... ")
         try:
-            parser = TeamWrapper(team_id=team.id).parser
+            provider = TeamDataProvider(team.id)
         except WebsiteIsNoneException as e:
             logger.info(f"{e}, Skipping!")
             continue
 
-        update_team(parser, team_id=team.id)
+        update_team(provider, team_id=team.id)
         team.refresh_from_db()
         if team.division is not None:
             try:
-                add_or_update_players(parser.get_members(), team)
+                add_or_update_players(provider.get_members(), team)
                 if team.is_active():
-                    game_ids = parser.get_matches()
+                    game_ids = provider.get_matches()
                     logger.debug(f"Checking {len(game_ids)} games for {team}... ")
                     add_raw_games(game_ids, team, use_concurrency=True)
             except Exception as e:

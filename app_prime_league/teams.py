@@ -7,7 +7,8 @@ from telegram import ParseMode
 
 from app_prime_league.models import Team, Player, Game, GameMetaData
 from communication_interfaces import send_message
-from parsing.parser import TeamHTMLParser, TeamWrapper
+from parsing.parser import TeamHTMLParser, TeamDataProvider
+from utils.exceptions import WebsiteIsNoneException
 from prime_league_bot import settings
 from utils.messages_logger import log_exception
 
@@ -18,16 +19,15 @@ def register_team(*, team_id, **kwargs):
     """
     Add or Update a Team, Add or Update Players, Add or Update Games. Optionally set telegram_id of the team.
     """
-    team = add_or_update_team(team_id=team_id, **kwargs)
+    try:
+        team, provider = add_or_update_team(team_id=team_id, **kwargs)
+    except Exception:
+        return None
     if team is not None:
-        try:
-            wrapper = TeamWrapper(team_id=team.id)
-        except Exception:
-            return None
         if team.division is not None:
             try:
-                add_or_update_players(wrapper.parser.get_members(), team)
-                add_games(wrapper.parser.get_matches(), team)
+                add_or_update_players(provider.get_members(), team)
+                add_games(provider.get_matches(), team)
             except Exception as e:
                 trace = "".join(traceback.format_tb(sys.exc_info()[2]))
                 send_message(
@@ -72,27 +72,29 @@ def reassign_chat(team_id, tg_group_id):
 
 
 def add_or_update_team(*, team_id, **kwargs):
-    try:
-        wrapper = TeamWrapper(team_id=team_id)
-        parser = wrapper.parser
-    except Exception:
-        print("Wrapper is None")
-        return None
+    """
+
+    :param team_id:
+    :param kwargs:
+    :return: team and provider of team
+    :raises WebsiteIsNoneException
+    """
+    provider = TeamDataProvider(team_id=team_id)
 
     defaults = {
-        "name": parser.get_team_name(),
-        "team_tag": parser.get_team_tag(),
-        "division": parser.get_current_division(),
-        "logo_url": parser.get_logo(),
+        "name": provider.get_team_name(),
+        "team_tag": provider.get_team_tag(),
+        "division": provider.get_current_division(),
+        "logo_url": provider.get_logo(),
     }
     defaults = {**defaults, **kwargs}
 
     team, created = Team.objects.get_or_create(id=team_id, defaults=defaults)
     if not created:
         Team.objects.filter(id=team.id).update(**kwargs)
-        team = update_team(parser, team_id)
+        team = update_team(provider, team_id)
         team.save()
-    return team
+    return team, provider
 
 
 def update_team(parser: TeamHTMLParser, team_id: int):

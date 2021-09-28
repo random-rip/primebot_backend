@@ -18,7 +18,7 @@ class MatchHTMLParserTests(TestCase):
         json_match = get_local_response(file_name="match_details_json_793210.txt", file_path=test_dir)
         json_comments = get_local_response(file_name="comments_json_793210.txt", file_path=test_dir)
         team = Team.objects.create(id=116152)
-        self.team_html_parser = MatchHTMLParser(website, team, json_match, json_comments)
+        self.team_html_parser = MatchHTMLParser(website, json_match, json_comments, team, )
 
     def assertEqualListTypes(self, actual, expected, msg):
         self.assertEqual(type(actual), list, "Actual value is not of type list.")

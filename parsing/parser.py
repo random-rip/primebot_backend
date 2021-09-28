@@ -6,28 +6,6 @@ from data_crawling.api import crawler
 from utils.utils import timestamp_to_datetime, string_to_datetime
 
 
-class WebsiteIsNoneException(Exception):
-    pass
-
-
-class MatchWrapper:
-
-    def __init__(self, match_id, team):
-        website = crawler.get_match_website(match_id)
-        json_match = crawler.get_match_details_json(match_id)
-        json_comments = crawler.get_comments_json(match_id)
-        self.parser = MatchHTMLParser(website, team, json_match, json_comments)
-
-
-class TeamWrapper:
-
-    def __init__(self, team_id):
-        website = crawler.get_team_website(team_id)
-        if website is None:
-            raise WebsiteIsNoneException(f"Website is None of team {team_id}")
-        self.parser = TeamHTMLParser(website, )
-
-
 class BaseHTMLParser:
     """
     BaseParserClass. Provides methods used in TeamHTMLParser and MatchHTMLParser.
@@ -112,7 +90,7 @@ class MatchHTMLParser(BaseHTMLParser):
     ParserClass for a match website.
     """
 
-    def __init__(self, website, team, json_match, json_comments):
+    def __init__(self, website, json_match, json_comments, team, ):
         super().__init__(website)
         self.json_match = json.loads(json_match)
         self.json_comments = json.loads(json_comments)
@@ -358,3 +336,19 @@ class LogChangeTime(BaseLog):
         super().__init__(timestamp, user, details)
         prefix = "Manually adjusted time to "
         self.details = string_to_datetime(self.details[0][len(prefix):], timestamp_format="%Y-%m-%d %H:%M %z")
+
+
+class MatchDataProvider(MatchHTMLParser, ):
+
+    def __init__(self, match_id, team, ):
+        website = crawler.get_match_website(match_id)
+        json_match = crawler.get_match_details_json(match_id)
+        json_comments = crawler.get_comments_json(match_id)
+        super().__init__(website, team, json_match, json_comments)
+
+
+class TeamDataProvider(TeamHTMLParser):
+
+    def __init__(self, team_id):
+        website = crawler.get_team_website(team_id)
+        super().__init__(website)

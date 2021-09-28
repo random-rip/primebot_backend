@@ -12,7 +12,8 @@ from communication_interfaces.message_dispatcher import MessageDispatcher
 from communication_interfaces.messages import NewGameNotification
 from communication_interfaces.telegram_interface.tg_singleton import send_message
 from comparing.new_lineup_check_executor import check
-from parsing.parser import TeamWrapper, WebsiteIsNoneException
+from parsing.parser import TeamDataProvider
+from utils.exceptions import WebsiteIsNoneException
 from prime_league_bot import settings
 
 
@@ -25,14 +26,14 @@ def main():
     for team in teams:
         logger.info(f"Checking {team}... ")
         try:
-            parser = TeamWrapper(team_id=team.id).parser
+            provider = TeamDataProvider(team_id=team.id)
         except WebsiteIsNoneException as e:
             logger.info(f"{e}, Skipping!")
             continue
 
         try:
             if team.is_active():
-                game_ids = parser.get_matches()
+                game_ids = provider.get_matches()
                 game_ids = [int(i) for i in game_ids]
                 existing_games = list(team.games_against.all().values_list("game_id", flat=True))
                 new_games = list(set(game_ids) - set(existing_games))
