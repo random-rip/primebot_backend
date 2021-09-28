@@ -187,9 +187,9 @@ class Crawler:
             return get_local_response(f"match_details_json_{match}.txt")
         resp = self.api.json_handler(f"leagues_match", post_params={"id": match, "action": "init", "language": "de"})
         if resp.status_code == 404:
-            return None
+            raise TeamWebsite404Exception()
         if resp.status_code == 429:
-            raise Exception("Error Statuscode 429: Too many Requests")
+            raise PrimeLeagueConnectionException("Error Statuscode 429: Too many Requests")
         if self.save_requests:
             save_object_to_file(resp.text, f"match_details_json_{match}.txt")
         return resp.text
@@ -204,9 +204,9 @@ class Crawler:
             "i": match
         })
         if resp.status_code == 404:
-            return None
+            raise TeamWebsite404Exception()
         if resp.status_code == 429:
-            raise Exception("Error Statuscode 429: Too many Requests")
+            raise PrimeLeagueConnectionException("Error Statuscode 429: Too many Requests")
         if self.save_requests:
             save_object_to_file(resp.text, f"comments_json_{match}.txt")
         return resp.text

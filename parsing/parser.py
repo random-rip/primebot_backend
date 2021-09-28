@@ -341,6 +341,11 @@ class LogChangeTime(BaseLog):
 class MatchDataProvider(MatchHTMLParser, ):
 
     def __init__(self, match_id, team, ):
+        """
+        :raises PrimeLeagueConnectionException, TeamWebsite404Exception
+        :param match_id:
+        :param team:
+        """
         website = crawler.get_match_website(match_id)
         json_match = crawler.get_match_details_json(match_id)
         json_comments = crawler.get_comments_json(match_id)
@@ -350,5 +355,9 @@ class MatchDataProvider(MatchHTMLParser, ):
 class TeamDataProvider(TeamHTMLParser):
 
     def __init__(self, team_id):
+        """
+        :raises PrimeLeagueConnectionException, TeamWebsite404Exception
+        :param team_id:
+        """
         website = crawler.get_team_website(team_id)
         super().__init__(website)
