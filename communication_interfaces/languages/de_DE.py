@@ -208,10 +208,13 @@ EXPLAIN_TEXT = "Dieser Bot ist nicht in Kooperation mit der PrimeLeague bzw. der
                "Verfügung gestellt. Dennoch sind alle Angaben ohne Gewähr!\n" \
                "\n_Version: {version}_"
 
+WEBSITE_LINK_TO_HELP = "https://www.primebot.me/primebot-crew-kontakt/"
+WEBSITE_LINK_TO_DISCORD = "https://www.primebot.me/start/f%C3%BCr-discord/"
 CLOSE = "Schließen"
 CURRENTLY = "Derzeitig"
-
-WEBSITE_LINK_TO_DISCORD = "https://www.primebot.me/start/f%C3%BCr-discord/"
+PL_CONNECTION_ERROR = "Momentan kann keine Verbindung zu der PrimeLeague Website hergestellt werden. Probiere es in ein paar Stunden noch einmal.\n" \
+                      f"Wenn es später immer noch nicht funktioniert, schaue auf {WEBSITE_LINK_TO_HELP} nach Hilfe."
+PL_TEAM_NOT_FOUND = "Das Team wurde nicht auf der PrimeLeague Website gefunden. Stelle sicher, dass du das richtige Team initialisierst."
 DC_HELP_LINK_TEXT = f"Schaue auf unserer {WEBSITE_LINK_TO_DISCORD} nach Hilfe."
 DC_TEAM_ID_NOT_VALID = "Aus dem Übergabeparameter konnte keine ID gefunden werden " \
                        f"(Format `!start TEAM_ID_or_TEAM_URL`). {DC_HELP_LINK_TEXT}"
@@ -220,8 +223,8 @@ DC_TEAM_IN_USE = f"Dieses Team ist bereits in einem anderen Channel registriert.
 DC_NO_PERMISSIONS_FOR_WEBHOOK = "Mir fehlt die Berechtigung, Webhooks zu verwalten. " \
                                 "Bitte stelle sicher, dass ich diese Berechtigung habe. " \
                                 "Gegebenenfalls warte eine Stunde, bevor du den Befehl wieder ausführst. " \
-                                "Falls es danach noch nicht gehen sollte, , schaue auf unserer " \
-                                f"{WEBSITE_LINK_TO_DISCORD} > Probleme nach Hilfe."
+                                "Falls es danach noch nicht gehen sollte, schaue auf " \
+                                f"{WEBSITE_LINK_TO_DISCORD} nach Hilfe."
 DC_REGISTRATION_FINISH = "Perfekt, dieser Channel wurde für Team {team_name} initialisiert.\n" \
                          "Wenn du möchtest, kannst du mit `!role ROLE_NAME` noch eine Rolle benennen, " \
                          "die bei Benachrichtigungen erwähnt werden soll."
@@ -234,7 +237,7 @@ DC_CHANNEL_NOT_INITIALIZED = "In diesem Channel ist derzeitig kein Team registri
 DC_ROLE_MENTION_REMOVED = "Alles klar, ich habe die Rollenerwähnung entfernt. " \
                           "Du kannst sie bei Bedarf wieder einschalten, benutze dazu einfach `!role ROLE_NAME`."
 DC_SCOUTING_REMOVED = "Alles klar, die Scouting Website wurde auf den Standard (op.gg) zurückgesetzt. " \
-                          "Du kannst sie bei Bedarf wieder einschalten, benutze dazu einfach `!role ROLE_NAME`."
+                      "Du kannst sie bei Bedarf wieder einschalten, benutze dazu einfach `!role ROLE_NAME`."
 DC_ROLE_NOT_FOUND = "Die Rolle {role_name} habe ich nicht gefunden. Stelle sicher, dass diese Rolle existiert."
 DC_SCOUTING_NOT_FOUND = "Die Scouting Website habe ich nicht gefunden. Wähle aus folgenden eine aus: 1=OP.GG, 2=U.GG, 3=XDX.GG."
 DC_SET_ROLE = "Okay, ich informiere die Rolle **@{role_name}** ab jetzt bei neuen Benachrichtigungen. 📯"

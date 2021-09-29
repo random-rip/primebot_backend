@@ -8,8 +8,8 @@ from telegram import ParseMode
 from app_prime_league.models import Team, Player, Game, GameMetaData
 from communication_interfaces import send_message
 from parsing.parser import TeamHTMLParser, TeamDataProvider
-from utils.exceptions import WebsiteIsNoneException
 from prime_league_bot import settings
+from utils.exceptions import WebsiteIsNoneException
 from utils.messages_logger import log_exception
 
 logger = logging.getLogger("django")
@@ -21,7 +21,7 @@ def register_team(*, team_id, **kwargs):
     """
     try:
         team, provider = add_or_update_team(team_id=team_id, **kwargs)
-    except Exception:
+    except WebsiteIsNoneException:
         return None
     if team is not None:
         if team.division is not None:

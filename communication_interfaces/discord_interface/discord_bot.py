@@ -18,7 +18,7 @@ from communication_interfaces.messages import GamesOverview, BaseMessage
 from communication_interfaces.utils import mysql_has_gone_away
 from prime_league_bot import settings
 from utils.changelogs import CHANGELOGS
-from utils.exceptions import CouldNotParseURLException
+from utils.exceptions import CouldNotParseURLException, PrimeLeagueConnectionException, TeamWebsite404Exception
 from utils.messages_logger import log_from_discord
 from utils.utils import get_valid_team_id
 
@@ -73,11 +73,19 @@ class DiscordBot(Bot):
                 return
             await ctx.send(LanguagePack.WAIT_A_MOMENT_TEXT)
             async with ctx.typing():
-                team = await sync_to_async(
-                    register_team)(team_id=team_id, discord_webhook_id=webhook.id,
-                                   discord_webhook_token=webhook.token, discord_channel_id=channel_id)
-            if team is None:
-                raise Exception()
+                try:
+                    team = await sync_to_async(
+                        register_team)(team_id=team_id, discord_webhook_id=webhook.id,
+                                       discord_webhook_token=webhook.token, discord_channel_id=channel_id)
+                except PrimeLeagueConnectionException:
+                    response = LanguagePack.PL_CONNECTION_ERROR
+                    await ctx.send(response)
+                    return
+                except TeamWebsite404Exception:
+                    response = LanguagePack.PL_TEAM_NOT_FOUND
+                    await ctx.send(response)
+                    return
+
             msg = await sync_to_async(GamesOverview)(team=team)
             embed = Embed(description=msg.message, color=Colour.from_rgb(255, 255, 0))
             await ctx.send(embed=embed)
