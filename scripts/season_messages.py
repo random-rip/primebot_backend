@@ -31,9 +31,8 @@ Grayknife und Orbis
 message = """
 Hallo {team.name}, 
 
-#gehtwieder
-
-Falls ihr dennoch keine Benachrichtigungen bekommt, schreibt uns gerne: 🔥 [Kontakt PrimeBot](https://www.primebot.me/primebot-crew-kontakt) 🔥
+momentan sind die Server unseres Serverhosts überlastet, weswegen es momentan zu Verzögerungen kommen kann.
+Wir haben darauf keinen Einfluss aber #siesitzendran.
 
 Sternige Grüße
 Grayknife und Orbis

@@ -88,12 +88,10 @@ class TelegramBot(Bot):
         try:
             sent_message = send_message(msg=msg.message, chat_id=team.telegram_id, raise_again=True)
         except (BotWasKickedError, BotWasBlockedError) as e:
-            logging.getLogger("notifications").exception(f"Could not send message to {team}: '{msg}. -> {e}'")
             team.set_telegram_null()
-            logging.getLogger("notifications").info(f"Could not send message to {team}: {e}. Soft deleted'")
+            logging.getLogger("notifications").info(f"Soft deleted Telegram {team}'")
             return
-        except Exception as e:
-            logging.getLogger("notifications").exception(f"Could not send message to {team}: '{msg}. -> {e}'")
+        except:
             return
         if msg.can_be_pinned():
             try:
