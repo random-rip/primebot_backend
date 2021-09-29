@@ -8,13 +8,14 @@ from communication_interfaces import send_message
 from communication_interfaces.languages.de_DE import (
     START_GROUP, START_CHAT, TEAM_ID_VALID, REGISTRATION_FINISH,
     WAIT_A_MOMENT_TEXT, TEAM_ID_NOT_VALID_TEXT, SET_PHOTO_TEXT,
-    PHOTO_SUCESS_TEXT, PHOTO_RETRY_TEXT, CHAT_EXISTING, TEAM_LOCKED, GROUP_REASSIGNED, TEAM_ID_NOT_CORRECT
+    PHOTO_SUCESS_TEXT, PHOTO_RETRY_TEXT, CHAT_EXISTING, TEAM_LOCKED, GROUP_REASSIGNED, TEAM_ID_NOT_CORRECT,
+    PL_CONNECTION_ERROR
 )
 from communication_interfaces.telegram_interface.commands.single_commands import set_photo
 from communication_interfaces.telegram_interface.keyboards import boolean_keyboard
 from communication_interfaces.telegram_interface.tg_singleton import TelegramMessagesWrapper
 from communication_interfaces.utils import mysql_has_gone_away_decorator
-from utils.exceptions import CouldNotParseURLException
+from utils.exceptions import CouldNotParseURLException, PrimeLeagueConnectionException, TeamWebsite404Exception
 from utils.messages_logger import log_command, log_callbacks
 from utils.utils import get_valid_team_id
 
@@ -35,8 +36,14 @@ def chat_reassignment(update: Update, context: CallbackContext):
     old_team = Team.objects.get(telegram_id=chat_id)
     new_team = Team.objects.filter(id=team_id).first()
     if new_team is None:
-        new_team = register_team(team_id=team_id)
-        if new_team is None:
+        try:
+            new_team = register_team(team_id=team_id)
+        except PrimeLeagueConnectionException:
+            update.message.reply_markdown(
+                text=PL_CONNECTION_ERROR,
+            )
+            return 2
+        except TeamWebsite404Exception:
             update.message.reply_markdown(
                 text=TEAM_ID_NOT_VALID_TEXT,
             )
@@ -147,7 +154,18 @@ def team_registration(update: Update, context: CallbackContext):
     if team_exists(team_id):
         new_team_old_chat_id = Team.objects.get_team(team_id).telegram_id
 
-    new_team = register_team(team_id=team_id, telegram_id=chat_id)
+    try:
+        new_team = register_team(team_id=team_id, telegram_id=chat_id)
+    except PrimeLeagueConnectionException:
+        update.message.reply_markdown(
+            text=PL_CONNECTION_ERROR,
+        )
+        return 1
+    except TeamWebsite404Exception:
+        update.message.reply_markdown(
+            text=TEAM_ID_NOT_VALID_TEXT,
+        )
+        return 1
 
     if new_team is None and old_team is not None:
         old_team.telegram_id = old_team_chat_id

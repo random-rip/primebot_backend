@@ -14,7 +14,7 @@ def main():
             msg = pattern.format(team=team, version=log["version"])
             dispatcher.dispatch_raw_message(msg=msg)
         except Exception as e:
-            print("ERROR", e)
+            print(e)
 
 
 def run():

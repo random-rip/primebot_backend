@@ -13,8 +13,8 @@ from communication_interfaces.messages import NewGameNotification
 from communication_interfaces.telegram_interface.tg_singleton import send_message
 from comparing.new_lineup_check_executor import check
 from parsing.parser import TeamDataProvider
-from utils.exceptions import WebsiteIsNoneException
 from prime_league_bot import settings
+from utils.exceptions import TeamWebsite404Exception, PrimeLeagueConnectionException
 
 
 def main():
@@ -27,8 +27,8 @@ def main():
         logger.info(f"Checking {team}... ")
         try:
             provider = TeamDataProvider(team_id=team.id)
-        except WebsiteIsNoneException as e:
-            logger.info(f"{e}, Skipping!")
+        except (PrimeLeagueConnectionException, TeamWebsite404Exception) as e:
+            logger.exception(e)
             continue
 
         try:

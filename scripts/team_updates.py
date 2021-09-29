@@ -10,8 +10,8 @@ from app_prime_league.models import Team
 from app_prime_league.teams import add_or_update_players, update_team, add_raw_games
 from communication_interfaces.telegram_interface.tg_singleton import send_message
 from parsing.parser import TeamDataProvider
-from utils.exceptions import WebsiteIsNoneException
 from prime_league_bot import settings
+from utils.exceptions import TeamWebsite404Exception, PrimeLeagueConnectionException
 
 
 def main():
@@ -24,8 +24,8 @@ def main():
         logger.info(f"Checking {team}... ")
         try:
             provider = TeamDataProvider(team.id)
-        except WebsiteIsNoneException as e:
-            logger.info(f"{e}, Skipping!")
+        except (PrimeLeagueConnectionException, TeamWebsite404Exception) as e:
+            logger.exception(e)
             continue
 
         update_team(provider, team_id=team.id)

@@ -22,7 +22,7 @@ Grayknife und Orbis
             msg = pattern.format(team=team, )
             dispatcher.dispatch_raw_message(msg=msg)
         except Exception as e:
-            print("ERROR", e)
+            print(e)
 
 
 # python manage.py runscript debug

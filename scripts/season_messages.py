@@ -49,7 +49,7 @@ def main():
             msg = NotificationToTeamMessage(team=team, custom_message=message)
             dispatcher.dispatch_raw_message(msg=msg)
         except Exception as e:
-            print("ERROR", e)
+            print(e)
 
 
 # python manage.py runscript debug

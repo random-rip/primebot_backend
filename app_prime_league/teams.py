@@ -9,7 +9,6 @@ from app_prime_league.models import Team, Player, Game, GameMetaData
 from communication_interfaces import send_message
 from parsing.parser import TeamHTMLParser, TeamDataProvider
 from prime_league_bot import settings
-from utils.exceptions import WebsiteIsNoneException
 from utils.messages_logger import log_exception
 
 logger = logging.getLogger("django")
@@ -18,11 +17,9 @@ logger = logging.getLogger("django")
 def register_team(*, team_id, **kwargs):
     """
     Add or Update a Team, Add or Update Players, Add or Update Games. Optionally set telegram_id of the team.
+    :raises PrimeLeagueConnectionException, TeamWebsite404Exception
     """
-    try:
-        team, provider = add_or_update_team(team_id=team_id, **kwargs)
-    except WebsiteIsNoneException:
-        return None
+    team, provider = add_or_update_team(team_id=team_id, **kwargs)
     if team is not None:
         if team.division is not None:
             try:
@@ -40,44 +37,13 @@ def register_team(*, team_id, **kwargs):
         return None
 
 
-def reassign_team(team_id, tg_group_id):
-    try:
-        team = Team.objects.get(id=team_id)
-    except Team.DoesNotExist as e:
-        return None
-
-    team.telegram_id = tg_group_id
-    team.save()
-    return team
-
-
-def reassign_chat(team_id, tg_group_id):
-    try:
-        old_team = Team.objects.get(telegram_id=tg_group_id)
-    except Team.DoesNotExist as e:
-        return None
-
-    old_team.telegram_id = None
-    # TODO old team chat bescheid geben
-    old_team.save()
-
-    try:
-        new_team = Team.objects.get(id=team_id)
-        new_team.telegram_id = tg_group_id
-        new_team.save()
-    except Team.DoesNotExist as e:
-        new_team = register_team(team_id=team_id, telegram_id=tg_group_id)
-
-    return new_team
-
-
 def add_or_update_team(*, team_id, **kwargs):
     """
 
     :param team_id:
     :param kwargs:
     :return: team and provider of team
-    :raises WebsiteIsNoneException
+    :raises PrimeLeagueConnectionException, TeamWebsite404Exception
     """
     provider = TeamDataProvider(team_id=team_id)
 
