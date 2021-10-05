@@ -349,7 +349,7 @@ class MatchDataProvider(MatchHTMLParser, ):
         website = crawler.get_match_website(match_id)
         json_match = crawler.get_match_details_json(match_id)
         json_comments = crawler.get_comments_json(match_id)
-        super().__init__(website, team, json_match, json_comments)
+        super().__init__(website, json_match, json_comments, team, )
 
 
 class TeamDataProvider(TeamHTMLParser):

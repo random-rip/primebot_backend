@@ -31,8 +31,10 @@ Grayknife und Orbis
 message = """
 Hallo {team.name}, 
 
-momentan sind die Server unseres Serverhosts überlastet, weswegen es momentan zu Verzögerungen kommen kann.
-Wir haben darauf keinen Einfluss aber #siesitzendran.
+der PrimeBot ist jetzt wieder verfügbar. Das bedeutet, dass ihr Updates zu allen Spielen, die ab diesem Zeitpunkt gemacht werden, wieder benachrichtigt werdet.
+Aufgrund der hohen Nachfrage des Services stehen wir weiterhin in Kontakt zu der Prime League um eine dauerhafte Lösung zu finden.
+
+Wir wünschen euch viel Erfolg! 
 
 Sternige Grüße
 Grayknife und Orbis
