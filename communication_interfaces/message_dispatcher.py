@@ -23,8 +23,7 @@ class MessageDispatcher:
         if not msg.team_wants_notification():
             return
         for bot in self.bots:
-            pass
-            # bot.send_message(msg=msg, team=self.team)
+            bot.send_message(msg=msg, team=self.team)
 
     def dispatch_raw_message(self, msg, **kwargs):
         for bot in self.bots:
