@@ -212,4 +212,4 @@ class Crawler:
         return resp.text
 
 
-crawler = Crawler(local=True)
+crawler = Crawler(local=settings.FILES_FROM_STORAGE)

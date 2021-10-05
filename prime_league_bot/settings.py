@@ -232,3 +232,5 @@ if not DEBUG:
             }
         }
     }
+
+FILES_FROM_STORAGE = env.bool("FILES_FROM_STORAGE", False)
