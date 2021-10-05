@@ -40,7 +40,7 @@ ISSUE = f"Hast Du einen Fehler bemerkt? Bitte schreibe den Entwicklern eine Nach
 
 # Antwort auf /feedback
 FEEDBACK = f"Hast Du Feedback? Hinterlasse den Entwicklern gerne eine Nachricht im " \
-           f"[Primeleague-Forenthread]({PRIME_LEAGUE_FORUM_LINK})."
+           f"[Prime League-Forenthread]({PRIME_LEAGUE_FORUM_LINK})."
 
 NEED_HELP = "Solltest Du Hilfe benötigen, benutze /help."
 
@@ -62,7 +62,7 @@ TEAM_ID_NOT_CORRECT = "Die ID: *{id}* konnte *keinem* Team zugeordnet werden.\n\
 # Start Messages
 # Antwort auf /start, wenn man command in einer Gruppe aufruft
 START_GROUP = "Sternige Grüße, \n" \
-              "Du bist es Leid, jeden Tag auf den PrimeLeague-Seiten mühsam nach neuen Updates zu suchen?\n" \
+              "Du bist es Leid, jeden Tag auf den Prime League-Seiten mühsam nach neuen Updates zu suchen?\n" \
               f"Gut, dass ich hier bin:\n" \
               f"Ich schicke dir alle *Updates* als *Pushbenachrichtigung* {EMOJI_POST_HORN} " \
               f"in diesen Chat. {EMOJI_GIFT}\n\n" \
@@ -110,11 +110,11 @@ SETTINGS_MAIN_MENU = {
     "text": "*Hauptmenü:*\nWelche Einstellung soll angepasst werden?",
 }
 
-SET_PHOTO_TEXT = f"Soll ich das Teambild aus der PrimeLeague importieren?\n_Dazu werden Adminrechte benötigt._"
+SET_PHOTO_TEXT = f"Soll ich das Teambild aus der Prime League importieren?\n_Dazu werden Adminrechte benötigt._"
 PHOTO_SUCESS_TEXT = f"{EMOJI_SUCCESS}"
 PHOTO_ERROR_TEXT = f"Bild konnte nicht gesetzt werden."
 PHOTO_RETRY_TEXT = f"Profilbild konnte nicht geändert werden. Dazu werden Adminrechte benötigt.\n" \
-                   f"_Soll ich das Teambild aus der PrimeLeague importieren?_"
+                   f"_Soll ich das Teambild aus der Prime League importieren?_"
 
 MESSAGE_NOT_PINNED_TEXT = f"Die wöchentliche Nachricht konnte nicht angeheftet werden. Dazu werden Adminrechte benötigt. " \
                           f"Falls Du nicht möchtest, dass die wöchentliche Benachrichtigung angeheftet wird, " \
@@ -197,14 +197,14 @@ NEXT_GAME_IN_CALIBRATION = "Euer nächstes Spiel in der Kalibrierungsphase:\n" +
                            "Hier ist der [OP.GG Link]({op_link}) des Teams."
 
 WAIT_A_MOMENT_TEXT = "Alles klar, ich schaue, was ich dazu finden kann.\nDas kann einen Moment dauern...⏳\n" \
-                     "🔥 Aktuell hat uns die Primeleague geblacklisted. Aus diesem Grund kann der Service momentan nicht garantiert werden. " \
-                     "Wir stehen aber bereits in Kontakt und bemühen uns um eine Lösung. 🔥"
+                     "🔥 Aktuell kann es aufgrund der hohen Nachfrage des Services zu Verzögerungen bei den Abfragen " \
+                     "zur Prime League kommen. Wir stehen dazu aber bereits in Kontakt und bemühen uns um eine Lösung. 🔥"
 NO_GROUP_CHAT = "Dieser Befehl kann nur in einer Telegram-Gruppe ausgeführt werden."
 TEAM_NOT_IN_DB_TEXT = "Die Telegram-Gruppe wurde noch nicht initialisiert (/start)."
 TEAM_NOT_FOUND = "Dieses Team wurde noch nicht initialisiert (/start)."
 
-EXPLAIN_TEXT = "Dieser Bot ist nicht in Kooperation mit der PrimeLeague bzw. der Freaks4u Gaming GmbH entstanden " \
-               "und hat damit keinen direkten Bezug zur PrimeLeague. " \
+EXPLAIN_TEXT = "Dieser Bot ist nicht in Kooperation mit der Prime League bzw. der Freaks4u Gaming GmbH entstanden " \
+               "und hat damit keinen direkten Bezug zur Prime League. " \
                "Dieser Bot wurde aufgrund von versäumten Matches entworfen und programmiert. " \
                "Der Bot wurde nach bestem Gewissen realisiert, und nach einer Testphase für andere Teams zur " \
                "Verfügung gestellt. Dennoch sind alle Angaben ohne Gewähr!\n" \
@@ -251,8 +251,8 @@ DC_HELP_TEXT_ROLE = "Setze eine Discordrolle, die in den Benachrichtigungen benu
 DC_HELP_TEXT_SCOUTING = "Setze eine Scouting Website, die in den Benachrichtigungen benutzt wird. Um die Einstellung zurückzusetzen schreibe !scouting ohne Parameter, 1=OP.GG, 2=U.GG 3=XDX.GG"
 DC_HELP_TEXT_OVERVIEW = "Erstellt eine Übersicht für die offenen Spiele"
 DC_HELP_TEXT_BOP = "Whats boppin'?"
-DC_DESCRIPTION = "Dieser Bot ist nicht in Kooperation mit der PrimeLeague bzw. der Freaks4u Gaming GmbH entstanden " \
-                 "und hat damit keinen direkten Bezug zur PrimeLeague. " \
+DC_DESCRIPTION = "Dieser Bot ist nicht in Kooperation mit der Prime League bzw. der Freaks4u Gaming GmbH entstanden " \
+                 "und hat damit keinen direkten Bezug zur Prime League. " \
                  "Dieser Bot wurde aufgrund von versäumten Matches entworfen und programmiert. " \
                  "Der Bot wurde nach bestem Gewissen realisiert, " \
                  "und nach einer Testphase für andere Teams zur Verfügung gestellt. " \
