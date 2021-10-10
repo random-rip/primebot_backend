@@ -55,10 +55,12 @@ class WeeklyNotificationMessage(BaseMessage):
 
     def _generate_message(self):
         op_link = self.game.team.get_scouting_link_of_enemies(game=self.game, only_lineup=False)
+        website_name = settings.DEFAULT_SCOUTING_NAME if not self.team.scouting_website else self.team.scouting_website.name
         enemy_team_tag = self.game.enemy_team.team_tag
         if op_link is None:
             raise Exception()
-        self.message = LaP.WEEKLY_UPDATE_TEXT.format(op_link=op_link, enemy_team_tag=enemy_team_tag, **vars(self.game))
+        self.message = LaP.WEEKLY_UPDATE_TEXT.format(website_name=website_name, op_link=op_link,
+                                                     enemy_team_tag=enemy_team_tag, **vars(self.game))
 
 
 class NewGameNotification(BaseMessage):
@@ -74,11 +76,12 @@ class NewGameNotification(BaseMessage):
 
     def _generate_message(self):
         op_link = self.team.get_scouting_link_of_enemies(game=self.game, only_lineup=False)
+        website_name = settings.DEFAULT_SCOUTING_NAME if not self.team.scouting_website else self.team.scouting_website.name
         enemy_team_tag = self.game.enemy_team.team_tag
         if op_link is None:
             raise Exception()
-        self.message = LaP.NEXT_GAME_IN_CALIBRATION.format(op_link=op_link, enemy_team_tag=enemy_team_tag,
-                                                           **vars(self.game))
+        self.message = LaP.NEXT_GAME_IN_CALIBRATION.format(website_name=website_name, op_link=op_link,
+                                                           enemy_team_tag=enemy_team_tag, **vars(self.game))
 
 
 class NewLineupNotificationMessage(BaseMessage):
@@ -196,12 +199,13 @@ class GamesOverview(BaseMessage):
 
     def _generate_message(self):
         games_to_play = self.team.games_against.filter(game_closed=False).order_by("game_day")
+        website_name = settings.DEFAULT_SCOUTING_NAME if not self.team.scouting_website else self.team.scouting_website.name
         if len(games_to_play) == 0:
             self.message = "Ihr habt aktuell keine offenen Spiele."
             return
         a = [
             f"[Spieltag {game.game_day}]({LaP.GENERAL_MATCH_LINK}{game.game_id}) {EMOJI_FIGHT} {game.enemy_team.name}" \
-            f" {EMOJI_ARROW_RIGHT} [OP.gg]({game.team.get_scouting_link_of_enemies(game=game, only_lineup=False)})\n"
+            f" {EMOJI_ARROW_RIGHT} [{website_name}]({game.team.get_scouting_link_of_enemies(game=game, only_lineup=False)})\n"
             for game in games_to_play]
         games_text = "\n".join(a)
         self.message = "**Eine Übersicht eurer offenen Spiele:**\n\n" + games_text

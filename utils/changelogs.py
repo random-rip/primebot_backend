@@ -186,4 +186,25 @@ Grayknife und Orbis
         "version": "1.17.3",
         "text": "Es können jetzt Rollen mit Leerzeichen als Parameter übergeben werden.",
     },
+    19: {
+        "version": "1.18",
+        "text":
+            """
+Hallo {team.name}, 
+hier ein kurze Zusammenfassung der Neuerungen am PrimeBot.
+
+*Updates ({version}):*
+
+1️⃣ Allgemein: Ihr könnt jetzt mit !scouting (Telegram: /scouting) eine andere Scouting Website auswählen. Standardmäßig ist weiterhin OP.GG ausgewählt. Gebt uns gerne Feedback zu dem Feature oder wenn euch noch Scouting Websites fehlen.
+
+2️⃣ Discord: Es können jetzt Rollen mit Leerzeichen als Parameter übergeben werden.
+
+3️⃣ Allgemein: Ein Fehler wurde behoben, bei dem nicht alle Teams eine wöchentliche Benachrichtigung bekommen haben. Der Gamelog `lineup_fail` wird jetzt berücksichtigt. Referenzen auf Channels und Gruppen die gelöscht wurden, werden jetzt nach 1h entfernt.
+        
+Ein Hinweis für Teams aus dem *Division 1 und Pro-Division*: Derzeitig können wir noch keinen Service für diese anbieten.  
+
+Sternige Grüße
+Grayknife und Orbis
+"""
+    }
 }

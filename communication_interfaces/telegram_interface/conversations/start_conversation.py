@@ -1,4 +1,4 @@
-from telegram import Update, ParseMode
+from telegram import Update, ParseMode, ReplyKeyboardRemove
 from telegram.error import BadRequest
 from telegram.ext import CallbackContext, ConversationHandler
 
@@ -11,9 +11,9 @@ from communication_interfaces.languages.de_DE import (
     PHOTO_SUCESS_TEXT, PHOTO_RETRY_TEXT, CHAT_EXISTING, TEAM_LOCKED, GROUP_REASSIGNED, TEAM_ID_NOT_CORRECT,
     PL_CONNECTION_ERROR
 )
+from communication_interfaces.messages import GamesOverview
 from communication_interfaces.telegram_interface.commands.single_commands import set_photo
 from communication_interfaces.telegram_interface.keyboards import boolean_keyboard
-from communication_interfaces.telegram_interface.tg_singleton import TelegramMessagesWrapper
 from communication_interfaces.utils import mysql_has_gone_away_decorator
 from utils.exceptions import CouldNotParseURLException, PrimeLeagueConnectionException, TeamWebsite404Exception
 from utils.messages_logger import log_command, log_callbacks
@@ -241,6 +241,10 @@ def finish_registration(update: Update, context: CallbackContext):
         parse_mode=ParseMode.MARKDOWN,
     )
 
-    next_match = team.games_against.filter(game_closed=False).order_by("game_day").first()
-    if next_match is not None:
-        TelegramMessagesWrapper.send_next_game_day_after_registration(next_match)
+    msg = GamesOverview(team=team)
+    context.bot.send_message(
+        text=msg.message,
+        chat_id=chat_id,
+        disable_web_page_preview=True,
+        parse_mode=ParseMode.MARKDOWN,
+    )

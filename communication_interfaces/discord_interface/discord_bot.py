@@ -147,18 +147,18 @@ class DiscordBot(Bot):
                 return
 
             if scouting_id is None:
-                team.scouting_website = await sync_to_async(ScoutingWebsite.objects.get)(id=1)
+                team.scouting_website = None
                 await sync_to_async(team.save)()
                 await ctx.send(LanguagePack.DC_SCOUTING_REMOVED)
                 return
             try:
-                scouting_website = await sync_to_async(ScoutingWebsite.objects.get)(scouting_id)
+                scouting_website = await sync_to_async(ScoutingWebsite.objects.get)(id=scouting_id)
             except ScoutingWebsite.DoesNotExist:
                 await ctx.send(LanguagePack.DC_SCOUTING_NOT_FOUND)
                 return
             team.scouting_website = scouting_website
             await sync_to_async(team.save)()
-            await ctx.send(LanguagePack.DC_SET_SCOUTING.format(scouting_website=scouting_website.name))
+            await ctx.send(LanguagePack.SET_SCOUTING.format(scouting_website=scouting_website.name))
 
         @self.bot.command(name="bop", help=LanguagePack.DC_HELP_TEXT_BOP, pass_context=True)
         @commands.check(log_from_discord)

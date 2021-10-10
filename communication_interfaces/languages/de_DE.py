@@ -12,11 +12,13 @@ SKIP = "Überspringen"
 SETTINGS_FINISHED = "Alles klar, ich habe die Einstellungen gespeichert."
 REGISTRATION_FINISH = "Perfekt! Ich sende dir jetzt Benachrichtigungen in diese Gruppe, " \
                       f"wenn es neue Updates zu kommenden Matches gibt. {EMOJI_TROPHY}\n" \
-                      f"Du kannst mit /settings deine Benachrichtigungen personalisieren."
+                      f"Du kannst mit /settings deine Benachrichtigungen personalisieren " \
+                      f"und mit /scouting eine Scouting Website festlegen."
 CANCEL = "Vorgang abgebrochen. \n" \
          f"Wenn Du Hilfe brauchst, benutze /help. {EMJOI_MAGN_GLASS}"
 RETRY_TEXT = "Bitte versuche es erneut oder /cancel."
 
+IT_REMAINS_AS_IT_IS = "Okay, es bleibt alles so, wie es ist."
 GENERAL_MATCH_LINK = settings.MATCH_URI
 GENERAL_TEAM_LINK = settings.TEAM_URI
 
@@ -185,7 +187,7 @@ WEEKLY_UPDATE_TEXT = "Der nächste Spieltag:\n" + \
                      "{game_id}) gegen [{enemy_team_tag}](" + \
                      GENERAL_TEAM_LINK + \
                      "{enemy_team_id}):\n" + \
-                     "Hier ist der [OP.GG Link]({op_link}) des Teams."
+                     "Hier ist der [{website_name} Link]({op_link}) des Teams."
 
 NEXT_GAME_IN_CALIBRATION = "Euer nächstes Spiel in der Kalibrierungsphase:\n" + \
                            EMOJI_SOON + \
@@ -194,7 +196,7 @@ NEXT_GAME_IN_CALIBRATION = "Euer nächstes Spiel in der Kalibrierungsphase:\n" +
                            "{game_id}) gegen [{enemy_team_tag}](" + \
                            GENERAL_TEAM_LINK + \
                            "{enemy_team_id}):\n" + \
-                           "Hier ist der [OP.GG Link]({op_link}) des Teams."
+                           "Hier ist der [{website_name} Link]({op_link}) des Teams."
 
 WAIT_A_MOMENT_TEXT = "Alles klar, ich schaue, was ich dazu finden kann.\nDas kann einen Moment dauern...⏳\n" \
                      "🔥 Aktuell kann es aufgrund der hohen Nachfrage des Services zu Verzögerungen bei den Abfragen " \
@@ -210,6 +212,13 @@ EXPLAIN_TEXT = "Dieser Bot ist nicht in Kooperation mit der Prime League bzw. de
                "Verfügung gestellt. Dennoch sind alle Angaben ohne Gewähr!\n" \
                "\n_Version: {version}_"
 
+TG_HELP_TEXT_SCOUTING = "Standardmäßg ist OP.GG als Scouting Website gesetzt.\nMöchtest du lieber U.GG benutzen, " \
+                        "so schreibe `/scouting 1`.\nMöchtest du XDX.GG benutzen, schreibe `/scouting 2`.\n" \
+                        "Wenn du wieder OP.GG benutzen möchtest, so schreibe `/scouting` ohne Parameter."
+TG_SCOUTING_REMOVED = f"Alles klar, die Scouting Website wurde auf OP.GG zurückgesetzt.\n{TG_HELP_TEXT_SCOUTING}"
+TG_SCOUTING_NOT_FOUND = f"Die Scouting Website habe ich nicht gefunden.\n{TG_HELP_TEXT_SCOUTING}"
+
+WHICH_SCOUTING_WEBSITE = "Welche Scouting Website möchtest du benutzen?"
 WEBSITE_LINK_TO_HELP = "https://www.primebot.me/primebot-crew-kontakt/"
 WEBSITE_LINK_TO_DISCORD = "https://www.primebot.me/start/f%C3%BCr-discord/"
 CLOSE = "Schließen"
@@ -228,8 +237,8 @@ DC_NO_PERMISSIONS_FOR_WEBHOOK = "Mir fehlt die Berechtigung, Webhooks zu verwalt
                                 "Falls es danach noch nicht gehen sollte, schaue auf " \
                                 f"{WEBSITE_LINK_TO_DISCORD} nach Hilfe."
 DC_REGISTRATION_FINISH = "Perfekt, dieser Channel wurde für Team {team_name} initialisiert.\n" \
-                         "Wenn du möchtest, kannst du mit `!role ROLE_NAME` noch eine Rolle benennen, " \
-                         "die bei Benachrichtigungen erwähnt werden soll."
+                         "Wenn Du möchtest, kannst du mit `!role ROLE_NAME` noch eine Rolle benennen, " \
+                         "die bei Benachrichtigungen erwähnt werden soll und mit `!scouting` eine Scouting Website festlegen."
 DC_USE_FIX = "Wenn keine Benachrichtigungen mehr in dem Channel ankommen, benutze bitte `!fix`."
 
 DC_WEBHOOK_RECREATED = "Webhook wurde neu erstellt. Sollten weiterhin Probleme auftreten, schaue auf unserer " \
@@ -238,17 +247,15 @@ DC_CHANNEL_NOT_INITIALIZED = "In diesem Channel ist derzeitig kein Team registri
                              "Benutze dafür `!start TEAM_ID_oder_TEAM_URL`"
 DC_ROLE_MENTION_REMOVED = "Alles klar, ich habe die Rollenerwähnung entfernt. " \
                           "Du kannst sie bei Bedarf wieder einschalten, benutze dazu einfach `!role ROLE_NAME`."
-DC_SCOUTING_REMOVED = "Alles klar, die Scouting Website wurde auf den Standard (op.gg) zurückgesetzt. " \
-                      "Du kannst sie bei Bedarf wieder einschalten, benutze dazu einfach `!role ROLE_NAME`."
 DC_ROLE_NOT_FOUND = "Die Rolle {role_name} habe ich nicht gefunden. Stelle sicher, dass diese Rolle existiert."
-DC_SCOUTING_NOT_FOUND = "Die Scouting Website habe ich nicht gefunden. Wähle aus folgenden eine aus: 1=OP.GG, 2=U.GG, 3=XDX.GG."
+
 DC_SET_ROLE = "Okay, ich informiere die Rolle **@{role_name}** ab jetzt bei neuen Benachrichtigungen. 📯"
-DC_SET_SCOUTING = "Okay, ich habe die Website auf {scouting_website} geändert. 📯"
+SET_SCOUTING = "Okay, ich habe die Website auf {scouting_website} geändert. 📯"
 
 DC_HELP_TEXT_START = "Registriere dein Team im Channel (Format: !start TEAM_ID_or_TEAM_URL)"
 DC_HELP_TEXT_FIX = "Erstellt den Benachrichtigungswebhook neu"
 DC_HELP_TEXT_ROLE = "Setze eine Discordrolle, die in den Benachrichtigungen benutzt wird. Um die Rolle zu entfernen schreibe !role ohne Parameter"
-DC_HELP_TEXT_SCOUTING = "Setze eine Scouting Website, die in den Benachrichtigungen benutzt wird. Um die Einstellung zurückzusetzen schreibe !scouting ohne Parameter, 1=OP.GG, 2=U.GG 3=XDX.GG"
+DC_HELP_TEXT_SCOUTING = "Standardmäßg ist OP.GG als Scouting Website gesetzt. Möchtest du lieber U.GG benutzen, so schreibe '!scouting 1'. Möchtest du XDX.GG benutzen, schreibe '!scouting 2'. Wenn du wieder OP.GG benutzen möchtest, so schreibe '!scouting' ohne Parameter."
 DC_HELP_TEXT_OVERVIEW = "Erstellt eine Übersicht für die offenen Spiele"
 DC_HELP_TEXT_BOP = "Whats boppin'?"
 DC_DESCRIPTION = "Dieser Bot ist nicht in Kooperation mit der Prime League bzw. der Freaks4u Gaming GmbH entstanden " \
@@ -258,6 +265,9 @@ DC_DESCRIPTION = "Dieser Bot ist nicht in Kooperation mit der Prime League bzw. 
                  "und nach einer Testphase für andere Teams zur Verfügung gestellt. " \
                  "Dennoch sind alle Angaben ohne Gewähr! _Version: {version}_"
 
+DC_SCOUTING_REMOVED = "Alles klar, die Scouting Website wurde auf OP.GG zurückgesetzt.\n" \
+                      f"{DC_HELP_TEXT_SCOUTING}"
+DC_SCOUTING_NOT_FOUND = f"Die Scouting Website habe ich nicht gefunden.\n{DC_HELP_TEXT_SCOUTING}"
 TITLE_NEW_GAME_DAY = "Neuer Spieltag"
 TITLE_NEW_GAME = "Neues Spiel"
 TITLE_NEW_LINEUP = "Neues Lineup"

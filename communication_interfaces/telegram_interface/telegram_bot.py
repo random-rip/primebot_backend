@@ -14,7 +14,7 @@ from communication_interfaces.base_bot import Bot
 from communication_interfaces.languages.de_DE import MESSAGE_NOT_PINNED_TEXT, CANT_PIN_MSG_IN_PRIVATE_CHAT
 from communication_interfaces.messages import BaseMessage
 from communication_interfaces.telegram_interface.commands import single_commands
-from communication_interfaces.telegram_interface.conversations import settings_conversation
+from communication_interfaces.telegram_interface.conversations import settings_conversation, scouting_conversation
 from communication_interfaces.telegram_interface.conversations import start_conversation
 from communication_interfaces.telegram_interface.conversations.settings_conversation import \
     callback_query_settings_handlers
@@ -72,6 +72,9 @@ class TelegramBot(Bot):
         dp.add_handler(CallbackQueryHandler(settings_conversation.main_settings_menu_close, pattern='close'))
         dp.add_handler(CallbackQueryHandler(start_conversation.finish_registration, pattern='0no'))
         dp.add_handler(CallbackQueryHandler(start_conversation.set_optional_photo, pattern='0yes'))
+        dp.add_handler(CommandHandler('scouting', scouting_conversation.scouting))
+        dp.add_handler(
+            CallbackQueryHandler(scouting_conversation.finish_scouting, pattern='OP.GG|U.GG|XDX.GG|schließen'))
         # Chat Migration
 
         dp.add_error_handler(error)
@@ -91,7 +94,8 @@ class TelegramBot(Bot):
             team.set_telegram_null()
             logging.getLogger("notifications").info(f"Soft deleted Telegram {team}'")
             return
-        except:
+        except Exception as e:
+            print(e)
             return
         if msg.can_be_pinned():
             try:
