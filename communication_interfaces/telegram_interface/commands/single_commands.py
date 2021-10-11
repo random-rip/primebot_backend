@@ -76,16 +76,10 @@ def bop(update: Update, context: CallbackContext):
     url = contents['message']
     chat_id = update.message.chat.id
     bot = context.bot
-    successful = False
     try:
         bot.send_photo(chat_id=chat_id, photo=url)
     except Exception as e:
         logger.exception(e)
-    finally:
-        if not successful:
-            update.message.reply_markdown(
-                PHOTO_ERROR_TEXT,
-            )
 
 
 # /cancel
