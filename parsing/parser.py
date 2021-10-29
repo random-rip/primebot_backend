@@ -217,8 +217,8 @@ class BaseLog:
             "scheduling_autoconfirm": LogSchedulingAutoConfirmation,
             "disqualify": LogDisqualified,
             "lineup_missing": LogLineupMissing,
-            "lineup_notready": LogPlayed,
-            "change_time": LogLineupNotReady,
+            "lineup_notready": LogLineupNotReady,
+            "change_time": LogChangeTime,
             "change_status": LogChangeStatus,
             "change_score": LogChangeScore,
             "score_report": LogScoreReport,
@@ -284,6 +284,14 @@ class LogLineupFail(BaseGameIsOverLog):
         super().__init__(timestamp, user, details)
 
 
+class LogChangeScoreStatus(BaseGameIsOverLog):
+
+    def __init__(self, timestamp, user, details):
+        super().__init__(timestamp, user, details)
+        prefix = "Manually adjusted score to "
+        self.details = self.details[0][len(prefix):len(prefix) + 3]
+
+
 class LogChangeStatus(BaseLog):
     """
     self.details can currently be "finished" (Stand 21.03.2021)
@@ -313,14 +321,6 @@ class LogScoreReport(BaseLog):
 
     def __init__(self, timestamp, user, details):
         super().__init__(timestamp, user, details)
-
-
-class LogChangeScoreStatus(BaseGameIsOverLog):
-
-    def __init__(self, timestamp, user, details):
-        super().__init__(timestamp, user, details)
-        prefix = "Manually adjusted score to "
-        self.details = self.details[0][len(prefix):len(prefix) + 3]
 
 
 class LogLineupSubmit(BaseLog):
