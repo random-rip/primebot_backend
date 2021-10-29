@@ -187,7 +187,7 @@ Grayknife und Orbis
         "text": "Es können jetzt Rollen mit Leerzeichen als Parameter übergeben werden.",
     },
     19: {
-        "version": "1.18",
+        "version": "1.18.1",
         "text":
             """
 Hallo {team.name}, 

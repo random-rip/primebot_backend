@@ -64,7 +64,7 @@ class Api:
     def __init__(self):
         self.base_uri = settings.LEAGUES_URI
         self.base_uri_ajax = settings.AJAX_URI
-        self.apply_blacklist_robustness = not settings.DEBUG
+        self.apply_blacklist_robustness = False
 
     def _get_html_headers(self):
         return {
