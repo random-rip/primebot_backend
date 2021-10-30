@@ -87,7 +87,7 @@ class DiscordBot(Bot):
                     return
 
             msg = await sync_to_async(GamesOverview)(team=team)
-            embed = Embed(description=msg.message, color=Colour.from_rgb(255, 255, 0))
+            embed = await sync_to_async(msg.discord_embed)()
             await ctx.send(embed=embed)
             response = LanguagePack.DC_REGISTRATION_FINISH.format(team_name=team.name)
             await ctx.send(response)
@@ -181,8 +181,28 @@ class DiscordBot(Bot):
                 await ctx.send(LanguagePack.DC_CHANNEL_NOT_INITIALIZED)
                 return
             msg = await sync_to_async(GamesOverview)(team=team)
-            embed = Embed(description=msg.message, color=Colour.from_rgb(255, 255, 0))
+            embed = await sync_to_async(msg.discord_embed)()
             await ctx.send(embed=embed)
+
+        @self.bot.command(name="delete", help=LanguagePack.DC_HELP_TEXT_DELETE, pass_context=True)
+        @commands.check(mysql_has_gone_away)
+        @commands.check(log_from_discord)
+        async def delete(ctx, ):
+
+            channel = ctx.message.channel
+            team = await get_registered_team_by_channel_id(channel_id=channel.id)
+            if team is None:
+                await ctx.send(LanguagePack.DC_CHANNEL_NOT_INITIALIZED)
+                return
+            async with ctx.typing():
+                await ctx.send(LanguagePack.DC_DELETE)
+            await sync_to_async(team.set_discord_null)()
+            async with ctx.typing():
+                webhooks = [x for x in await channel.webhooks() if settings.DISCORD_APP_CLIENT_ID == x.user.id]
+                await ctx.send(LanguagePack.DC_BYE)
+                for webhook in webhooks:
+                    await webhook.delete()
+            return
 
         async def _create_new_webhook(ctx):
             channel = ctx.message.channel

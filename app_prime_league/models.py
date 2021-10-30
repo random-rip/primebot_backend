@@ -129,11 +129,15 @@ class Team(models.Model):
                 game.delete()
             self.setting_set.all().delete()
 
-    def get_scouting_link_of_enemies(self, game, only_lineup=True):
-        if only_lineup:
+    def get_scouting_link(self, game, lineup=True):
+        """
+
+        :param game:
+        :param lineup: If lineup=True and a lineup is available returns just the lineup link
+        :return:
+        """
+        if lineup and game.lineup_available:
             names = list(game.enemy_lineup.all().values_list("summoner_name", flat=True))
-            if len(names) == 0:
-                return None
         else:
             names = list(game.enemy_team.player_set.all().values_list("summoner_name", flat=True))
 
@@ -298,6 +302,10 @@ class Game(models.Model):
             players = Player.objects.create_or_update_players(gmd.enemy_lineup, self.enemy_team)
             self.enemy_lineup.add(*players)
         self.save()
+
+    @property
+    def lineup_available(self):
+        return self.enemy_lineup.all().count() > 0
 
 
 class ScoutingWebsite(models.Model):

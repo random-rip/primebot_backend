@@ -1,13 +1,15 @@
 from abc import abstractmethod
 
+import discord
 from babel import dates as babel
+from discord import Colour
 
 from app_prime_league.models import Game, Team
 from communication_interfaces.languages import de_DE as LaP
 from communication_interfaces.telegram_interface.tg_singleton import emoji_numbers
 from parsing.parser import LogSchedulingAutoConfirmation, LogSchedulingConfirmation, LogChangeTime
 from prime_league_bot import settings
-from utils.constants import EMOJI_FIGHT, EMOJI_ARROW_RIGHT
+from utils.emojis import EMOJI_FIGHT, EMOJI_ARROW_RIGHT, EMOJI_CALENDAR, EMOJI_BOOKMARK, EMJOI_MAGN_GLASS
 
 
 def format_datetime(x):
@@ -54,7 +56,7 @@ class WeeklyNotificationMessage(BaseMessage):
         self._generate_message()
 
     def _generate_message(self):
-        op_link = self.game.team.get_scouting_link_of_enemies(game=self.game, only_lineup=False)
+        op_link = self.game.team.get_scouting_link(game=self.game, lineup=False)
         website_name = settings.DEFAULT_SCOUTING_NAME if not self.team.scouting_website else self.team.scouting_website.name
         enemy_team_tag = self.game.enemy_team.team_tag
         if op_link is None:
@@ -75,7 +77,7 @@ class NewGameNotification(BaseMessage):
         self._generate_message()
 
     def _generate_message(self):
-        op_link = self.team.get_scouting_link_of_enemies(game=self.game, only_lineup=False)
+        op_link = self.team.get_scouting_link(game=self.game, lineup=False)
         website_name = settings.DEFAULT_SCOUTING_NAME if not self.team.scouting_website else self.team.scouting_website.name
         enemy_team_tag = self.game.enemy_team.team_tag
         if op_link is None:
@@ -96,7 +98,7 @@ class NewLineupNotificationMessage(BaseMessage):
         self._generate_message()
 
     def _generate_message(self):
-        op_link = self.game.team.get_scouting_link_of_enemies(game=self.game, only_lineup=True)
+        op_link = self.game.team.get_scouting_link(game=self.game, lineup=True)
         enemy_team_tag = self.game.enemy_team.team_tag
         if op_link is None:
             raise Exception()
@@ -114,7 +116,7 @@ class NewLineupInCalibrationMessage(BaseMessage):
         self._generate_message()
 
     def _generate_message(self):
-        op_link = self.team.get_scouting_link_of_enemies(game=self.game, only_lineup=True)
+        op_link = self.team.get_scouting_link(game=self.game, lineup=True)
         enemy_team_name = self.game.enemy_team.name
         if op_link is None:
             raise Exception()
@@ -201,14 +203,43 @@ class GamesOverview(BaseMessage):
         games_to_play = self.team.games_against.filter(game_closed=False).order_by("game_day")
         website_name = settings.DEFAULT_SCOUTING_NAME if not self.team.scouting_website else self.team.scouting_website.name
         if len(games_to_play) == 0:
-            self.message = "Ihr habt aktuell keine offenen Spiele."
+            self.message = LaP.NO_CURRENT_GAMES
             return
         a = [
-            f"[Spieltag {game.game_day}]({LaP.GENERAL_MATCH_LINK}{game.game_id}) {EMOJI_FIGHT} {game.enemy_team.name}" \
-            f" {EMOJI_ARROW_RIGHT} [{website_name}]({game.team.get_scouting_link_of_enemies(game=game, only_lineup=False)})\n"
+            f"[{LaP.GAME_DAY} {game.game_day}]({LaP.GENERAL_MATCH_LINK}{game.game_id}) {EMOJI_FIGHT} {game.enemy_team.name}" \
+            f" {EMOJI_ARROW_RIGHT} [{website_name}]({game.team.get_scouting_link(game=game, lineup=False)})\n"
             for game in games_to_play]
         games_text = "\n".join(a)
-        self.message = "**Eine Übersicht eurer offenen Spiele:**\n\n" + games_text
+        self.message = f"**{LaP.OVERVIEW}**\n\n" + games_text
+
+    def discord_embed(self):
+        games_to_play = self._get_open_games_ordered()
+        website_name = settings.DEFAULT_SCOUTING_NAME if not self.team.scouting_website else self.team.scouting_website.name
+        embed = discord.Embed(color=Colour.from_rgb(255, 255, 0))
+        if len(games_to_play) == 0:
+            embed.title = LaP.NO_CURRENT_GAMES
+        else:
+            embed.title = LaP.OVERVIEW
+
+        for game in games_to_play:
+            name = f"{EMOJI_FIGHT} {LaP.GAME_DAY} {game.game_day}"
+            scouting_link = game.team.get_scouting_link(game=game, lineup=True)
+            value = f"[{LaP.VS} {game.enemy_team.name}]({LaP.GENERAL_MATCH_LINK}{game.game_id})" \
+                    f"\n> {EMJOI_MAGN_GLASS} [{website_name}]({scouting_link})"
+
+            if game.game_begin is not None:
+                value += f"\n> {EMOJI_CALENDAR} {format_datetime(game.game_begin)}"
+
+            if game.lineup_available:
+                lineup_link = game.team.get_scouting_link(game=game, lineup=True)
+                value += f"\n> {EMOJI_BOOKMARK} [{LaP.CURRENT_LINEUP}]({lineup_link})"
+
+            embed.add_field(name=name, value=value, inline=False)
+        # embed.set_footer(text="Hier könnte eure Werbung stehen.")
+        return embed
+
+    def _get_open_games_ordered(self):
+        return self.team.games_against.filter(game_closed=False).order_by("game_day")
 
 
 class NotificationToTeamMessage(BaseMessage):

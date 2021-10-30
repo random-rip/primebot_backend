@@ -1,4 +1,4 @@
-from utils.constants import EMOJI_ONE, EMOJI_TWO, EMOJI_ARROW_RIGHT, EMOJI_POST_HORN, EMOJI_PEACE, EMOJI_PARTY2
+from utils.emojis import EMOJI_ONE, EMOJI_TWO, EMOJI_ARROW_RIGHT, EMOJI_POST_HORN, EMOJI_PEACE, EMOJI_PARTY2
 
 CHANGELOGS = {
     1: {
@@ -187,7 +187,7 @@ Grayknife und Orbis
         "text": "Es können jetzt Rollen mit Leerzeichen als Parameter übergeben werden.",
     },
     19: {
-        "version": "1.18.1",
+        "version": "1.18",
         "text":
             """
 Hallo {team.name}, 
@@ -206,5 +206,9 @@ Ein Hinweis für Teams aus dem *Division 1 und Pro-Division*: Derzeitig können 
 Sternige Grüße
 Grayknife und Orbis
 """
-    }
+    },
+    20: {
+        "version": "1.18.1",
+        "text": "Overviewüberarbeitung, Fix in Bezug auf TimeChangeLog, Delete für Discord und Telegram"
+    },
 }

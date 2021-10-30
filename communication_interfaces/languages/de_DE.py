@@ -1,7 +1,7 @@
 # Variablen
 from prime_league_bot import settings
-from utils.constants import EMOJI_ONE, EMOJI_TWO, EMOJI_THREE, EMOJI_CLOVER, EMOJI_POST_HORN, EMOJI_TROPHY, \
-    EMJOI_MAGN_GLASS, EMOJI_SUCCESS, EMOJI_ARROW_RIGHT, EMOJI_GIFT, EMOJI_SOON, EMOJI_LINEUP, EMOJI_FIGHT
+from utils.emojis import EMOJI_ONE, EMOJI_TWO, EMOJI_THREE, EMOJI_CLOVER, EMOJI_POST_HORN, EMOJI_TROPHY, \
+    EMJOI_MAGN_GLASS, EMOJI_SUCCESS, EMOJI_ARROW_RIGHT, EMOJI_GIFT, EMOJI_SOON, EMOJI_LINEUP, EMOJI_FIGHT, EMOJI_PEACE
 
 SUPPORT_GROUP_LINK = "https://t.me/joinchat/IUH8NhsKTYUtFKaqQMWhKA"
 PRIME_LEAGUE_FORUM_LINK = "https://www.primeleague.gg/de/forums/1418-league-of-legends/1469-off-topic/637268-pl-spieltag-updates-als-push-benachrichtigung-aufs-handy"
@@ -216,6 +216,9 @@ TG_HELP_TEXT_SCOUTING = "Standardmäßg ist OP.GG als Scouting Website gesetzt.\
                         "so schreibe `/scouting 1`.\nMöchtest du XDX.GG benutzen, schreibe `/scouting 2`.\n" \
                         "Wenn du wieder OP.GG benutzen möchtest, so schreibe `/scouting` ohne Parameter."
 TG_SCOUTING_REMOVED = f"Alles klar, die Scouting Website wurde auf OP.GG zurückgesetzt.\n{TG_HELP_TEXT_SCOUTING}"
+TG_DELETE = "Alles klar, ich habe alle Verknüpfungen zu dieser Gruppe und dem Team gelöscht. " \
+            f"Gebt uns gerne Feedback, falls euch Funktionalitäten fehlen oder nicht gefallen. Bye! {EMOJI_PEACE}\n" \
+         f"_Das Team kann jetzt in einem anderen Channel registriert werden, oder ein anderes Team kann in diesem Channel registriert werden._"
 TG_SCOUTING_NOT_FOUND = f"Die Scouting Website habe ich nicht gefunden.\n{TG_HELP_TEXT_SCOUTING}"
 
 WHICH_SCOUTING_WEBSITE = "Welche Scouting Website möchtest du benutzen?"
@@ -258,6 +261,7 @@ DC_HELP_TEXT_ROLE = "Setze eine Discordrolle, die in den Benachrichtigungen benu
 DC_HELP_TEXT_SCOUTING = "Standardmäßg ist OP.GG als Scouting Website gesetzt. Möchtest du lieber U.GG benutzen, so schreibe '!scouting 2'. Möchtest du XDX.GG benutzen, schreibe '!scouting 3'. Wenn du wieder OP.GG benutzen möchtest, so schreibe '!scouting' ohne Parameter."
 DC_HELP_TEXT_OVERVIEW = "Erstellt eine Übersicht für die offenen Spiele"
 DC_HELP_TEXT_BOP = "Whats boppin'?"
+DC_HELP_TEXT_DELETE = "Löscht die Channelverknüpfungen zum Team. Achtung, danach werden keine weiteren Benachrichtigungen gesendet."
 DC_DESCRIPTION = "Dieser Bot ist nicht in Kooperation mit der Prime League bzw. der Freaks4u Gaming GmbH entstanden " \
                  "und hat damit keinen direkten Bezug zur Prime League. " \
                  "Dieser Bot wurde aufgrund von versäumten Matches entworfen und programmiert. " \
@@ -267,6 +271,10 @@ DC_DESCRIPTION = "Dieser Bot ist nicht in Kooperation mit der Prime League bzw. 
 
 DC_SCOUTING_REMOVED = "Alles klar, die Scouting Website wurde auf OP.GG zurückgesetzt.\n" \
                       f"{DC_HELP_TEXT_SCOUTING}"
+
+DC_DELETE = "Alles klar ich lösche alle Verknüpfungen zu diesem Channel und dem Team."
+DC_BYE = f"Alles gelöscht. Gebt uns gerne Feedback, falls euch Funktionalitäten fehlen oder nicht gefallen. Bye! {EMOJI_PEACE}\n" \
+         f"_Das Team kann jetzt in einem anderen Channel registriert werden, oder ein anderes Team kann in diesem Channel registriert werden._"
 DC_SCOUTING_NOT_FOUND = f"Die Scouting Website habe ich nicht gefunden.\n{DC_HELP_TEXT_SCOUTING}"
 TITLE_NEW_GAME_DAY = "Neuer Spieltag"
 TITLE_NEW_GAME = "Neues Spiel"
@@ -274,3 +282,9 @@ TITLE_NEW_LINEUP = "Neues Lineup"
 TITLE_NEW_OWN_SUGGESTION = "Eigener neuer Zeitvorschlag"
 TITLE_NEW_SUGGESTION = "Neuer Zeitvorschlag eines Gegners"
 TITLE_GAME_CONFIRMATION = "Spielzeitbestätigung"
+
+NO_CURRENT_GAMES = "Ihr habt aktuell keine offenen Spiele."
+OVERVIEW = "Eine Übersicht eurer offenen Spiele:"
+GAME_DAY = "Spieltag"
+CURRENT_LINEUP = "Aktuelles Lineup"
+VS = "vs."

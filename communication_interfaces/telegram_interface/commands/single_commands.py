@@ -11,7 +11,7 @@ from telegram.ext import CallbackContext, ConversationHandler
 from app_prime_league.models import Team
 from communication_interfaces.languages.de_DE import (
     HELP_COMMAND_LIST, ISSUE, TEAM_NOT_IN_DB_TEXT, PHOTO_SUCESS_TEXT, PHOTO_ERROR_TEXT, HELP_TEXT, FEEDBACK,
-    EXPLAIN_TEXT, CANCEL
+    EXPLAIN_TEXT, CANCEL, TG_DELETE
 )
 from communication_interfaces.messages import GamesOverview
 from communication_interfaces.utils import mysql_has_gone_away_decorator
@@ -155,5 +155,23 @@ def overview(update: Update, context: CallbackContext):
         msg.message,
         reply_markup=ReplyKeyboardRemove(),
         disable_web_page_preview=True,
+    )
+    return ConversationHandler.END
+
+
+# /set_logo
+@log_command
+@mysql_has_gone_away_decorator
+def delete(update: Update, context: CallbackContext):
+    chat_id = update.message.chat.id
+    if not Team.objects.filter(telegram_id=chat_id).exists():
+        update.message.reply_markdown(
+            TEAM_NOT_IN_DB_TEXT,
+        )
+        return ConversationHandler.END
+    team = Team.objects.get(telegram_id=chat_id)
+    team.set_telegram_null()
+    update.message.reply_markdown(
+        TG_DELETE,
     )
     return ConversationHandler.END

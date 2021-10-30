@@ -48,6 +48,7 @@ class TelegramBot(Bot):
             CommandHandler("explain", single_commands.explain),
             CommandHandler("setlogo", single_commands.set_logo),
             CommandHandler("overview", single_commands.overview),
+            CommandHandler("delete", single_commands.delete),
             MessageHandler(Filters.status_update.migrate, settings_conversation.migrate_chat)  # Migration
         ]
 
