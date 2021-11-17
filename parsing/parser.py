@@ -171,11 +171,14 @@ class MatchHTMLParser(BaseHTMLParser):
         team_2_id = team_2_div.contents[1].contents[1].get("href").split("/teams/")[1].split("-")[0]
         return team_2_id if self.team_is_team_1 else team_1_id
 
-    def get_game_day(self) -> int:
+    def get_game_day(self):
         match_info_div = self.bs4.find_all("div", class_="content-match-subtitles")[0]
         game_day_div = match_info_div.find_all("div", class_="txt-subtitle")[1]
-        game_day = game_day_div.contents[0].split(" ")[1]
-        return int(game_day)
+        try:
+            game_day = game_day_div.contents[0].split(" ")[1]  # wirft IndexError bei "Tiebreaker" als game_day
+            return int(game_day)
+        except IndexError:
+            return None
 
     def get_comments(self):
         comments_from_json = self.json_comments["comments"]

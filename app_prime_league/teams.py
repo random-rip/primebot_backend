@@ -24,7 +24,7 @@ def register_team(*, team_id, **kwargs):
         if team.division is not None:
             try:
                 add_or_update_players(provider.get_members(), team)
-                add_games(provider.get_matches(), team)
+                add_games(provider.get_matches(), team, use_concurrency=True)
             except Exception as e:
                 trace = "".join(traceback.format_tb(sys.exc_info()[2]))
                 send_message(

@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.db import models
-from django.db.models import Q
+from django.db.models import Q, F
 
 from parsing.parser import MatchDataProvider, TeamDataProvider
 
@@ -105,7 +105,7 @@ class Team(models.Model):
         return self.telegram_id or self.discord_channel_id
 
     def get_next_open_game(self):
-        return self.games_against.filter(game_closed=False).order_by("game_day").first()
+        return self.get_open_games_ordered().first()
 
     def set_telegram_null(self):
         self.telegram_id = None
@@ -145,6 +145,9 @@ class Team(models.Model):
         separator = settings.DEFAULT_SCOUTING_SEP if not self.scouting_website else self.scouting_website.separator
         parameters = f"{separator}".join([x.replace(" ", "") for x in names])
         return base_url.format(parameters)
+
+    def get_open_games_ordered(self):
+        return self.games_against.filter(game_closed=False).order_by(F('game_day').desc(nulls_last=True))
 
 
 class Player(models.Model):

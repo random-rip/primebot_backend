@@ -200,20 +200,20 @@ class GamesOverview(BaseMessage):
         self._generate_message()
 
     def _generate_message(self):
-        games_to_play = self.team.games_against.filter(game_closed=False).order_by("game_day")
+        games_to_play = self.team.get_open_games_ordered()
         website_name = settings.DEFAULT_SCOUTING_NAME if not self.team.scouting_website else self.team.scouting_website.name
         if len(games_to_play) == 0:
             self.message = LaP.NO_CURRENT_GAMES
             return
         a = [
-            f"[{LaP.GAME_DAY} {game.game_day}]({LaP.GENERAL_MATCH_LINK}{game.game_id}) {EMOJI_FIGHT} {game.enemy_team.name}" \
+            f"[{LaP.GAME_DAY} {game.game_day if game.game_day else LaP.TIEBREAKER}]({LaP.GENERAL_MATCH_LINK}{game.game_id}) {EMOJI_FIGHT} {game.enemy_team.name}" \
             f" {EMOJI_ARROW_RIGHT} [{website_name}]({game.team.get_scouting_link(game=game, lineup=False)})\n"
             for game in games_to_play]
         games_text = "\n".join(a)
         self.message = f"**{LaP.OVERVIEW}**\n\n" + games_text
 
     def discord_embed(self):
-        games_to_play = self._get_open_games_ordered()
+        games_to_play = self.team.get_open_games_ordered()
         website_name = settings.DEFAULT_SCOUTING_NAME if not self.team.scouting_website else self.team.scouting_website.name
         embed = discord.Embed(color=Colour.from_rgb(255, 255, 0))
         if len(games_to_play) == 0:
@@ -222,7 +222,8 @@ class GamesOverview(BaseMessage):
             embed.title = LaP.OVERVIEW
 
         for game in games_to_play:
-            name = f"{EMOJI_FIGHT} {LaP.GAME_DAY} {game.game_day}"
+            name = f"{EMOJI_FIGHT} "
+            name += f"{LaP.GAME_DAY} {game.game_day}" if game.game_day else f"{LaP.TIEBREAKER}"
             scouting_link = game.team.get_scouting_link(game=game, lineup=True)
             value = f"[{LaP.VS} {game.enemy_team.name}]({LaP.GENERAL_MATCH_LINK}{game.game_id})" \
                     f"\n> {EMJOI_MAGN_GLASS} [{website_name}]({scouting_link})"
@@ -237,9 +238,6 @@ class GamesOverview(BaseMessage):
             embed.add_field(name=name, value=value, inline=False)
         # embed.set_footer(text="Hier könnte eure Werbung stehen.")
         return embed
-
-    def _get_open_games_ordered(self):
-        return self.team.games_against.filter(game_closed=False).order_by("game_day")
 
 
 class NotificationToTeamMessage(BaseMessage):
