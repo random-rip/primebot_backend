@@ -95,6 +95,7 @@ class MatchHTMLParser(BaseHTMLParser):
         self.json_match = json.loads(json_match)
         self.json_comments = json.loads(json_comments)
         team_1_div = self.bs4.find_all("div", class_="content-match-head-team content-match-head-team1")[0]
+        # TODO: Die Zeile wirft einen Index Error, wenn bei einem Match nur ein Team vorhanden ist
         team_1_id = int(team_1_div.contents[1].contents[1].get("href").split("/teams/")[1].split("-")[0])
         self.team_is_team_1 = team_1_id == team.id
         self.website = website
