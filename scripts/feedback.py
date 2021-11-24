@@ -7,9 +7,11 @@ def main():
     pattern = """
 Hallo {team.name}, 
 
-wir freuen uns über euer Feedback!
+die Gruppenphasen- und Tiebreakerspiele sind zuende, und damit geht der PrimeBot in die Winterpause.
+Die kommenden Tage sind noch Playoffs, wo wir den Teams viel Erfolg wünschen. 🏆
+Außerdem freuen uns über euer Feedback!
 Da wir bemüht sind den Primebot weiterhin zu verbessern, möchten wir in einem kurzen Feedback fragen,
-welche Benachrichtigungen euch wirklich interessieren und welche euch noch fehlen.
+welche Features euch wirklich interessieren und welche Features euch noch fehlen.
 Link zum 🔥[Feedback](https://feedback.primebot.me/)🔥.
 
 Sternige Grüße
