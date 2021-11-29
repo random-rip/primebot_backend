@@ -174,8 +174,8 @@ class MatchHTMLParser(BaseHTMLParser):
 
     def get_game_day(self):
         match_info_div = self.bs4.find_all("div", class_="content-match-subtitles")[0]
-        game_day_div = match_info_div.find_all("div", class_="txt-subtitle")[1]
         try:
+            game_day_div = match_info_div.find_all("div", class_="txt-subtitle")[1] # Wirft IndexError bei Playoff-Spielen
             game_day = game_day_div.contents[0].split(" ")[1]  # wirft IndexError bei "Tiebreaker" als game_day
             return int(game_day)
         except IndexError:
