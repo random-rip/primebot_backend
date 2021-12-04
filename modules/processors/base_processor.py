@@ -8,6 +8,9 @@ class BaseProcessor:
     BaseProviderClass.
     """
 
+    def __init__(self, **kwargs):
+        pass
+
 
 class BaseConnector:
     """
@@ -18,7 +21,7 @@ class BaseConnector:
         self.provider = connector()
         self.json = self._provider_method(**kwargs)
 
-    @abstractmethod
     @property
+    @abstractmethod
     def _provider_method(self):
         pass
