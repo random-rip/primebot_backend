@@ -6,8 +6,8 @@ from django.conf import settings
 from django.test import TestCase
 
 from app_prime_league.models import Team
-from data_crawling.api import get_local_response
-from parsing.parser import MatchHTMLParser, LogPlayed, LogLineupSubmit, LogSchedulingConfirmation, LogSuggestion
+from modules.data_crawling import get_local_response
+from modules.parsing.parser import MatchHTMLParser, LogPlayed, LogLineupSubmit, LogSchedulingConfirmation, LogSuggestion
 
 
 class MatchHTMLParserTests(TestCase):

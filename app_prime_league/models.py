@@ -2,7 +2,8 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Q, F
 
-from parsing.parser import MatchDataProvider, TeamDataProvider
+from modules.processors.match_processor import MatchDataProcessor
+from modules.processors.team_processor import TeamDataProcessor
 
 
 class TeamManager(models.Manager):
@@ -202,35 +203,35 @@ class GameMetaData:
     def create_game_meta_data_from_website(team: Team, game_id):
 
         gmd = GameMetaData()
-        provider = MatchDataProvider(game_id, team)
+        processor = MatchDataProcessor(game_id, team.id)
 
         gmd.game_id = game_id
-        gmd.game_day = provider.get_game_day()
+        gmd.game_day = processor.get_game_day()
         gmd.team = team
         gmd.enemy_team = {
-            "id": provider.get_enemy_team_id(),
+            "id": processor.get_enemy_team_id(),
         }
-        gmd.enemy_lineup = provider.get_enemy_lineup()
+        gmd.enemy_lineup = processor.get_enemy_lineup()
         if gmd.enemy_lineup is not None:
             enemy_tuples = []
             for i in gmd.enemy_lineup:
                 enemy_tuples.append((*i,))
             gmd.enemy_lineup = enemy_tuples
-        gmd.game_closed = provider.get_game_closed()
-        gmd.latest_suggestion = provider.get_latest_suggestion()
-        gmd.game_begin, gmd.latest_confirmation_log = provider.get_game_begin()
-        gmd.game_result = provider.get_game_result()
+        gmd.game_closed = processor.get_game_closed()
+        gmd.latest_suggestion = processor.get_latest_suggestion()
+        gmd.game_begin, gmd.latest_confirmation_log = processor.get_game_begin()
+        gmd.game_result = processor.get_game_result()
         return gmd
 
     def get_enemy_team_data(self):
         if self.enemy_team is None:
             print("GMD is not initialized yet. Aborting...")
             return
-        provider = TeamDataProvider(team_id=self.enemy_team["id"])
-        self.enemy_team["members"] = provider.get_members()
-        self.enemy_team["name"] = provider.get_team_name()
-        self.enemy_team["tag"] = provider.get_team_tag()
-        self.enemy_team["division"] = provider.get_current_division()
+        processor = TeamDataProcessor(team_id=self.enemy_team["id"])
+        self.enemy_team["members"] = processor.get_members()
+        self.enemy_team["name"] = processor.get_team_name()
+        self.enemy_team["tag"] = processor.get_team_tag()
+        self.enemy_team["division"] = processor.get_current_division()
 
 
 class Game(models.Model):

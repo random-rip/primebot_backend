@@ -7,7 +7,7 @@ from telegram import ParseMode
 
 from app_prime_league.models import Team, Player, Game, GameMetaData
 from communication_interfaces import send_message
-from parsing.parser import TeamHTMLParser, TeamDataProvider
+from modules.processors.team_processor import TeamDataProcessor
 from prime_league_bot import settings
 from utils.messages_logger import log_exception
 
@@ -45,29 +45,29 @@ def add_or_update_team(*, team_id, **kwargs):
     :return: team and provider of team
     :raises PrimeLeagueConnectionException, TeamWebsite404Exception
     """
-    provider = TeamDataProvider(team_id=team_id)
+    processor = TeamDataProcessor(team_id=team_id)
 
     defaults = {
-        "name": provider.get_team_name(),
-        "team_tag": provider.get_team_tag(),
-        "division": provider.get_current_division(),
-        "logo_url": provider.get_logo(),
+        "name": processor.get_team_name(),
+        "team_tag": processor.get_team_tag(),
+        "division": processor.get_current_division(),
+        "logo_url": processor.get_logo(),
     }
     defaults = {**defaults, **kwargs}
 
     team, created = Team.objects.get_or_create(id=team_id, defaults=defaults)
     if not created:
         Team.objects.filter(id=team.id).update(**kwargs)
-        team = update_team(provider, team_id)
+        team = update_team(processor, team_id)
         team.save()
-    return team, provider
+    return team, processor
 
 
-def update_team(parser: TeamHTMLParser, team_id: int):
-    name = parser.get_team_name()
-    logo = parser.get_logo()
-    team_tag = parser.get_team_tag()
-    division = parser.get_current_division()
+def update_team(processor: TeamDataProcessor, team_id: int):
+    name = processor.get_team_name()
+    logo = processor.get_logo()
+    team_tag = processor.get_team_tag()
+    division = processor.get_current_division()
 
     team = Team.objects.filter(id=team_id, name=name, logo_url=logo, team_tag=team_tag, division=division)
     if team.exists():

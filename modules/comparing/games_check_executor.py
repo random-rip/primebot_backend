@@ -7,7 +7,7 @@ import requests
 from communication_interfaces.message_dispatcher import MessageDispatcher
 from communication_interfaces.messages import EnemyNewTimeSuggestionsNotificationMessage, \
     OwnNewTimeSuggestionsNotificationMessage, ScheduleConfirmationNotification, NewLineupNotificationMessage
-from comparing.game_comparer import GameMetaData, GameComparer
+from modules.comparing.game_comparer import GameMetaData, GameComparer
 from utils.messages_logger import log_exception
 
 thread_local = threading.local()

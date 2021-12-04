@@ -2,7 +2,6 @@ import json
 
 from bs4 import BeautifulSoup
 
-from data_crawling.api import crawler
 from utils.utils import timestamp_to_datetime, string_to_datetime
 
 
@@ -342,26 +341,3 @@ class LogChangeTime(BaseLog):
         self.details = string_to_datetime(self.details[0][len(prefix):], timestamp_format="%Y-%m-%d %H:%M %z")
 
 
-class MatchDataProvider(MatchHTMLParser, ):
-
-    def __init__(self, match_id, team, ):
-        """
-        :raises PrimeLeagueConnectionException, TeamWebsite404Exception
-        :param match_id:
-        :param team:
-        """
-        website = crawler.get_match_website(match_id)
-        json_match = crawler.get_match_details_json(match_id)
-        json_comments = crawler.get_comments_json(match_id)
-        super().__init__(website, json_match, json_comments, team, )
-
-
-class TeamDataProvider(TeamHTMLParser):
-
-    def __init__(self, team_id):
-        """
-        :raises PrimeLeagueConnectionException, TeamWebsite404Exception
-        :param team_id:
-        """
-        website = crawler.get_team_website(team_id)
-        super().__init__(website)

@@ -4,7 +4,7 @@ import time
 from datetime import datetime
 
 from app_prime_league.models import Game
-from comparing.games_check_executor import update_uncompleted_games
+from modules.comparing.games_check_executor import update_uncompleted_games
 
 thread_local = threading.local()
 logger = logging.getLogger("django")

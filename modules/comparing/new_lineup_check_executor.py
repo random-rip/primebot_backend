@@ -6,7 +6,7 @@ import requests
 
 from communication_interfaces.message_dispatcher import MessageDispatcher
 from communication_interfaces.messages import NewLineupInCalibrationMessage
-from comparing.game_comparer import GameMetaData, GameComparer
+from modules.comparing.game_comparer import GameMetaData, GameComparer
 
 thread_local = threading.local()
 calibration_logger = logging.getLogger("calibration")

@@ -11,8 +11,8 @@ from app_prime_league.teams import add_games
 from communication_interfaces.message_dispatcher import MessageDispatcher
 from communication_interfaces.messages import NewGameNotification
 from communication_interfaces.telegram_interface.tg_singleton import send_message
-from comparing.new_lineup_check_executor import check
-from parsing.parser import TeamDataProvider
+from modules.comparing.new_lineup_check_executor import check
+from modules.processors.team_processor import TeamDataProcessor
 from prime_league_bot import settings
 from utils.exceptions import TeamWebsite404Exception, PrimeLeagueConnectionException
 
@@ -26,14 +26,14 @@ def main():
     for team in teams:
         logger.info(f"Checking {team}... ")
         try:
-            provider = TeamDataProvider(team_id=team.id)
+            processor = TeamDataProcessor(team_id=team.id)
         except (PrimeLeagueConnectionException, TeamWebsite404Exception) as e:
             logger.exception(e)
             continue
 
         try:
             if team.is_active():
-                game_ids = provider.get_matches()
+                game_ids = processor.get_matches()
                 game_ids = [int(i) for i in game_ids]
                 existing_games = list(team.games_against.all().values_list("game_id", flat=True))
                 new_games = list(set(game_ids) - set(existing_games))
