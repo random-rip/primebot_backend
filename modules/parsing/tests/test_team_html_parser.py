@@ -2,7 +2,6 @@ import os
 
 from django.conf import settings
 from django.test import TestCase
-
 from modules.data_crawling import get_local_response
 from modules.parsing.parser import TeamHTMLParser
 
@@ -42,17 +41,10 @@ class TeamHTMLParserTests(TestCase):
         expected = "Insignum Gaming"
         self.assertEqual(team_name, expected, "Team name could not be parsed.")
 
-    def test_summoner_names(self):
-        summoner_names = self.team_html_parser.get_summoner_names()
-        expected = ['Gwens Extase', 'I bims 1 Biene', 'MTY', 'ImLostBro', 'TraceVII', 'Meraldis', 'WHlTEBEARD',
-                    'NiceLikeIce']
-        self.assertListEqual(summoner_names, expected, "Summoner names could not be parsed.")
-
     def test_current_division(self):
         current_division = self.team_html_parser.get_current_division()
         expected = "Swiss Starter"
         self.assertEqual(current_division, expected, "Current Division could not be parsed.")
-
 
     def test_matches(self):
         matches = self.team_html_parser.get_matches()

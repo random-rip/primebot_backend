@@ -1,13 +1,9 @@
 from abc import abstractmethod
 
-from modules.processors.base_processor import BaseConnector, BaseProcessor
+from modules.providers.maker import Maker
 
 
-class BaseTeamProcessor(BaseProcessor):
-
-    @abstractmethod
-    def get_summoner_names(self):
-        pass
+class _TeamDataFunctions:
 
     @abstractmethod
     def get_members(self):
@@ -34,35 +30,13 @@ class BaseTeamProcessor(BaseProcessor):
         pass
 
 
-class TeamDataProcessor(BaseTeamProcessor, BaseConnector):
+class TeamDataProcessor(Maker, _TeamDataFunctions, ):
     """
     Converting json data to functions and providing these.
     """
-
-    @property
-    def _provider_method(self):
-        return self.provider.get_team
-
-    def get_summoner_names(self):
-        pass
-
-    def get_team_tag(self):
-        pass
-
-    def get_members(self):
-        pass
-
-    def get_matches(self):
-        pass
-
-    def get_team_name(self):
-        pass
-
-    def get_current_division(self):
-        pass
-
-    def get_logo(self):
-        pass
+    ROLE_PLAYER = 10
+    ROLE_CAPTAIN = 20
+    ROLE_LEADER = 30
 
     def __init__(self, team_id: int):
         """
@@ -70,3 +44,35 @@ class TeamDataProcessor(BaseTeamProcessor, BaseConnector):
         :param team_id:
         """
         super().__init__(team_id=team_id)
+
+    @property
+    def _provider_method(self):
+        return self.provider.get_team
+
+    @property
+    def data_team(self):
+        return self.data.get("team", {})
+
+    def get_team_tag(self):
+        return self.data_team.get("team_short")
+
+    def get_members(self):
+        def _parse_member(x):
+            return x["user_id"], x["user_name"], x["account_value"], x["tu_status"] in [self.ROLE_LEADER,
+                                                                                        self.ROLE_CAPTAIN]
+
+        members = [_parse_member(x) for x in self.data.get("members", [])]
+        return members
+
+    def get_matches(self):
+        return self.data.get("matches", [])
+
+    def get_team_name(self):
+        return self.data_team.get("team_name")
+
+    def get_current_division(self):
+        # TODO Last Item of "stages", but is currently an empty list
+        pass
+
+    def get_logo(self):
+        return self.data_team.get("team_logo_img_url")

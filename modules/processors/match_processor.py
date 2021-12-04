@@ -1,9 +1,9 @@
 from abc import abstractmethod
 
-from modules.processors.base_processor import BaseProcessor, BaseConnector
+from modules.providers.maker import Maker
 
 
-class BaseMatchProcessor(BaseProcessor):
+class _MatchDataFunctions:
 
     @abstractmethod
     def get_enemy_lineup(self):
@@ -38,10 +38,19 @@ class BaseMatchProcessor(BaseProcessor):
         pass
 
 
-class MatchDataProcessor(BaseMatchProcessor, BaseConnector):
+class MatchDataProcessor(Maker, _MatchDataFunctions, ):
     """
     Converting json data to functions and providing these.
     """
+
+    def __init__(self, match_id: int, team_id: int):
+        """
+        :raises PrimeLeagueConnectionException, TeamWebsite404Exception
+        :param match_id:
+        :param team_id: team's point of view to the match. For example to determine enemy_team of the match.
+        """
+        super().__init__(match_id=match_id, team_id=team_id)
+        self.team_id = team_id
 
     def _provider_method(self):
         return self.provider.get_match
@@ -69,12 +78,3 @@ class MatchDataProcessor(BaseMatchProcessor, BaseConnector):
 
     def get_comments(self):
         pass
-
-    def __init__(self, match_id: int, team_id: int):
-        """
-        :raises PrimeLeagueConnectionException, TeamWebsite404Exception
-        :param match_id:
-        :param team_id: team's point of view to the match. For example to determine enemy_team of the match.
-        """
-        super(BaseConnector, self).__init__(match_id=match_id, team_id=team_id)
-        self.team_id = team_id

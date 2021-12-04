@@ -27,12 +27,6 @@ class TeamHTMLParser(BaseHTMLParser):
     ParserClass for a team website.
     """
 
-    def get_summoner_names(self):
-        # TODO WICHTIG! check auf "richtige" Liste und anschließende Neuauswahl
-        team_li = self.bs4.find_all("ul", class_="content-portrait-grid-l")[0].find_all("li")
-        names = [i.span.contents[0] for i in team_li]
-        return names
-
     def get_members(self):
         team_li = self.bs4.find_all("ul", class_="content-portrait-grid-l")[0].find_all("li")
         leader_choices = ["Leader", "Captain"]
@@ -174,7 +168,8 @@ class MatchHTMLParser(BaseHTMLParser):
     def get_game_day(self):
         match_info_div = self.bs4.find_all("div", class_="content-match-subtitles")[0]
         try:
-            game_day_div = match_info_div.find_all("div", class_="txt-subtitle")[1] # Wirft IndexError bei Playoff-Spielen
+            game_day_div = match_info_div.find_all("div", class_="txt-subtitle")[
+                1]  # Wirft IndexError bei Playoff-Spielen
             game_day = game_day_div.contents[0].split(" ")[1]  # wirft IndexError bei "Tiebreaker" als game_day
             return int(game_day)
         except IndexError:
@@ -339,5 +334,3 @@ class LogChangeTime(BaseLog):
         super().__init__(timestamp, user, details)
         prefix = "Manually adjusted time to "
         self.details = string_to_datetime(self.details[0][len(prefix):], timestamp_format="%Y-%m-%d %H:%M %z")
-
-

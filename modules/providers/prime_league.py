@@ -1,8 +1,14 @@
+import json
 import os
 
-from modules.connector import PrimeLeagueConnector
+from modules.api import PrimeLeagueAPI
 from prime_league_bot import settings
 from utils.exceptions import TeamWebsite404Exception, PrimeLeagueConnectionException
+
+LOCAL = settings.FILES_FROM_STORAGE
+SAVE_REQUEST = settings.DEBUG and not LOCAL
+if SAVE_REQUEST:
+    print("Consider using the local file system in development to reduce the number of requests.")
 
 
 class PrimeLeagueProvider:
@@ -12,53 +18,50 @@ class PrimeLeagueProvider:
     """
     __TEAM_FILE_PATTERN = "team_%s.json"
     __MATCH_FILE_PATTERN = "match_%s.json"
+    api = PrimeLeagueAPI
 
-    def __init__(self):
-        self.local = settings.FILES_FROM_STORAGE
-        self.api = PrimeLeagueConnector()
-        self.save_requests = settings.DEBUG and not self.local
-        if self.save_requests:
-            print("Consider using the local file system in development to reduce the number of requests.")
-
-    def get_match(self, match_id):
+    @classmethod
+    def get_match(cls, match_id):
         file_name = f"match_{match_id}.json"
-        if self.local:
-            return self.__get_local_response(file_name)
-        resp = self.api.match(match_id)
+        if LOCAL:
+            return cls.__get_local_json(file_name)
+        resp = cls.api.request_match(match_id)
         if resp.status_code == 404:
             return None
         if resp.status_code == 429:
             raise Exception("Error Statuscode 429: Too many Requests")
-        if self.save_requests:
-            self.__save_object_to_file(resp.text, file_name)
-        return resp.text
+        if SAVE_REQUEST:
+            cls.__save_object_to_file(resp.text, file_name)
+        return resp.json()
 
-    def get_team(self, team_id):
+    @classmethod
+    def get_team(cls, team_id):
         """
 
         :param team_id:
         :return:
         :raises, TeamWebsite404Exception, PrimeLeagueConnectionException,
         """
-        if self.local:
-            text = self.__get_local_team_response(team_id)
-            return text
-        resp = self.api.team(team_id)
-        if resp.status_code == 404:
-            raise TeamWebsite404Exception()
-        if resp.status_code == 429:
-            raise PrimeLeagueConnectionException("Error Statuscode 429: Too many Requests")
-        if self.save_requests:
-            self.__save_team_to_file(resp.text, team_id)
-        return resp.text
+        if LOCAL:
+            text_json = cls.__get_local_team_response(team_id)
+        else:
+            resp = cls.api.request_team(team_id)
+            if resp.status_code == 404:
+                raise TeamWebsite404Exception()
+            if resp.status_code == 429:
+                raise PrimeLeagueConnectionException("Error Statuscode 429: Too many Requests")
+            if SAVE_REQUEST:
+                cls.__save_team_to_file(resp.text, team_id)
+            text_json = resp.json()
+        return text_json
 
     @classmethod
     def __get_local_team_response(cls, team_id):
-        return cls.__get_local_response(cls.__TEAM_FILE_PATTERN % team_id)
+        return cls.__get_local_json(cls.__TEAM_FILE_PATTERN % team_id)
 
     @classmethod
     def __get_local_match_response(cls, match_id):
-        return cls.__get_local_response(cls.__MATCH_FILE_PATTERN % match_id)
+        return cls.__get_local_json(cls.__MATCH_FILE_PATTERN % match_id)
 
     @classmethod
     def __save_team_to_file(cls, obj, team_id):
@@ -69,11 +72,11 @@ class PrimeLeagueProvider:
         return cls.__save_object_to_file(obj, cls.__MATCH_FILE_PATTERN % match_id)
 
     @classmethod
-    def __get_local_response(cls, file_name, file_path=None):
+    def __get_local_json(cls, file_name, file_path=None):
         file_path = os.path.join(settings.STORAGE_DIR if file_path is None else file_path, file_name)
         with open(file_path, 'r', encoding='utf8') as f:
             text = f.read()
-        return text
+        return json.loads(text)
 
     @classmethod
     def __save_object_to_file(cls, obj, file_name):
