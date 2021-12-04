@@ -81,6 +81,27 @@ def bop(update: Update, context: CallbackContext):
     except Exception as e:
         logger.exception(e)
 
+@log_command
+def tac(update: Update, context: CallbackContext):
+    url = 'https://cataas.com/cat'
+    chat_id = update.message.chat.id
+    bot = context.bot
+    try:
+        bot.send_photo(chat_id=chat_id, photo=url)
+    except Exception as e:
+        logger.exception(e)
+
+@log_command
+def tac_gif(update: Update, context: CallbackContext):
+    url = 'https://cataas.com/cat/gif'
+    chat_id = update.message.chat.id
+    bot = context.bot
+    try:
+        bot.send_animation(chat_id=chat_id, animation=url)
+    except Exception as e:
+        logger.exception(e)
+
+
 
 # /cancel
 @log_command

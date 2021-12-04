@@ -261,6 +261,8 @@ DC_HELP_TEXT_ROLE = "Setze eine Discordrolle, die in den Benachrichtigungen benu
 DC_HELP_TEXT_SCOUTING = "Standardmäßg ist OP.GG als Scouting Website gesetzt. Möchtest du lieber U.GG benutzen, so schreibe '!scouting 2'. Möchtest du XDX.GG benutzen, schreibe '!scouting 3'. Wenn du wieder OP.GG benutzen möchtest, so schreibe '!scouting' ohne Parameter."
 DC_HELP_TEXT_OVERVIEW = "Erstellt eine Übersicht für die offenen Spiele"
 DC_HELP_TEXT_BOP = "Whats boppin'?"
+DC_HELP_TEXT_TAC = "Pushing things off tables :|"
+DC_HELP_TEXT_TAC_GIF = "They do some weird sh*t x)"
 DC_HELP_TEXT_DELETE = "Löscht die Channelverknüpfungen zum Team. Achtung, danach werden keine weiteren Benachrichtigungen gesendet."
 DC_DESCRIPTION = "Dieser Bot ist nicht in Kooperation mit der Prime League bzw. der Freaks4u Gaming GmbH entstanden " \
                  "und hat damit keinen direkten Bezug zur Prime League. " \

@@ -142,7 +142,6 @@ STORAGE_DIR = os.path.join(BASE_DIR, "storage", )
 
 TELEGRAM_BOT_KEY = env.str("TELEGRAM_BOT_API_KEY")
 TG_DEVELOPER_GROUP = env.int("TG_DEVELOPER_GROUP")
-TELEGRAM_LIVETICKER_KEY = env.str("TELEGRAM_LIVETICKER_API_KEY")
 
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 

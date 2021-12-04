@@ -171,6 +171,26 @@ class DiscordBot(Bot):
                         buffer = BytesIO(await resp.read())
             await ctx.send(file=discord.File(fp=buffer, filename="dog.jpg"))
 
+        @self.bot.command(name="tac", help=LanguagePack.DC_HELP_TEXT_TAC, pass_context=True)
+        @commands.check(log_from_discord)
+        async def tac(ctx):
+            url = 'https://cataas.com/cat'
+            async with ctx.typing():
+                async with aiohttp.ClientSession() as session:
+                    async with session.get(url) as resp:
+                        buffer = BytesIO(await resp.read())
+            await ctx.send(file=discord.File(fp=buffer, filename="cat.jpg"))
+
+        @self.bot.command(name="tac_gif", help=LanguagePack.DC_HELP_TEXT_TAC_GIF, pass_context=True)
+        @commands.check(log_from_discord)
+        async def tac_gif(ctx):
+            url = 'https://cataas.com/cat/gif'
+            async with ctx.typing():
+                async with aiohttp.ClientSession() as session:
+                    async with session.get(url) as resp:
+                        buffer = BytesIO(await resp.read())
+            await ctx.send(file=discord.File(fp=buffer, filename="cat.gif"))
+
         @self.bot.command(name="overview", help=LanguagePack.DC_HELP_TEXT_OVERVIEW, pass_context=True)
         @commands.check(mysql_has_gone_away)
         @commands.check(log_from_discord)

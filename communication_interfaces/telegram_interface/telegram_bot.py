@@ -45,6 +45,8 @@ class TelegramBot(Bot):
             CommandHandler("issue", single_commands.issue),
             CommandHandler("feedback", single_commands.feedback),
             CommandHandler("bop", single_commands.bop),
+            CommandHandler("tac", single_commands.tac),
+            CommandHandler("tac_gif", single_commands.tac_gif),
             CommandHandler("explain", single_commands.explain),
             CommandHandler("setlogo", single_commands.set_logo),
             CommandHandler("overview", single_commands.overview),
