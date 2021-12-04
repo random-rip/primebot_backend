@@ -5,8 +5,8 @@ from babel import dates as babel
 from discord import Colour
 
 from app_prime_league.models import Game, Team
-from communication_interfaces.languages import de_DE as LaP
-from communication_interfaces.telegram_interface.tg_singleton import emoji_numbers
+from bots.languages import de_DE as LaP
+from bots.telegram_interface.tg_singleton import emoji_numbers
 from modules.parsing.html_parser import LogSchedulingAutoConfirmation, LogSchedulingConfirmation, LogChangeTime
 from prime_league_bot import settings
 from utils.emojis import EMOJI_FIGHT, EMOJI_ARROW_RIGHT, EMOJI_CALENDAR, EMOJI_BOOKMARK, EMJOI_MAGN_GLASS

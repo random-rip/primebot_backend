@@ -1,10 +1,10 @@
 from django.conf import settings
 from telegram import Update, ParseMode
 from telegram.ext import CallbackContext, ConversationHandler
-from communication_interfaces.languages import de_DE as LanguagePack
+from bots.languages import de_DE as LanguagePack
 from app_prime_league.models import Team, ScoutingWebsite
-from communication_interfaces.telegram_interface.keyboards import scouting_keyboard
-from communication_interfaces.utils import mysql_has_gone_away_decorator
+from bots.telegram_interface.keyboards import scouting_keyboard
+from bots.utils import mysql_has_gone_away_decorator
 from utils.messages_logger import log_command
 
 

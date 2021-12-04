@@ -1,5 +1,5 @@
 from app_prime_league.models import Team
-from communication_interfaces.message_dispatcher import MessageDispatcher
+from bots.message_dispatcher import MessageDispatcher
 
 
 def main():

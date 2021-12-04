@@ -5,22 +5,21 @@ from utils.exceptions import PrimeLeagueConnectionException
 
 
 class PrimeLeagueConnector:
-    _MATCH = ""
-    _TEAM = ""
+    _TEAM = "/team/%s/"
+    _MATCH = "/match/%s/"
 
     def __init__(self):
-        self.base_uri = settings.LEAGUES_URI
-        self.base_uri_ajax = settings.AJAX_URI
+        self.base_url = settings.GAME_SPORTS_BASE_URL
 
     def _get_json_headers(self):
         return {
-            'referer': 'https://www.primeleague.gg/',
-            'accept': '*/*',
-            'accept-encoding': 'gzip, deflate, br',
-            'accept-language': 'de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7',
-            'cache-control': ' max-age=0',
-            'x-requested-with': 'XMLHttpRequest',
-            'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            # 'referer': 'https://www.primeleague.gg/',
+            # 'accept': '*/*',
+            # 'accept-encoding': 'gzip, deflate, br',
+            # 'accept-language': 'de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7',
+            # 'cache-control': ' max-age=0',
+            # 'x-requested-with': 'XMLHttpRequest',
+            # 'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
         }
 
     def json_handler(self, endpoint, request=requests.get, query_params=None, ):
@@ -33,7 +32,7 @@ class PrimeLeagueConnector:
         """
         if endpoint is None:
             raise Exception("Endpoint cannot be None")
-        path = f"{self.base_uri_ajax}{endpoint}/"
+        path = f"{self.base_url}{endpoint}/"
         if query_params:
             path += "?"
             path += "&".join(str(x) for x in [query_params])
@@ -42,7 +41,7 @@ class PrimeLeagueConnector:
             response = request(url=path, headers=self._get_json_headers())
         except requests.exceptions.ConnectionError:
             raise PrimeLeagueConnectionException()
-        return response
+        return response.json()
 
     def match(self, match_id):
         return self.json_handler(self._MATCH % match_id)

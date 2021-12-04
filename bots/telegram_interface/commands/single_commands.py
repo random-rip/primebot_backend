@@ -9,12 +9,12 @@ from telegram import Update, ReplyKeyboardRemove
 from telegram.ext import CallbackContext, ConversationHandler
 
 from app_prime_league.models import Team
-from communication_interfaces.languages.de_DE import (
+from bots.languages.de_DE import (
     HELP_COMMAND_LIST, ISSUE, TEAM_NOT_IN_DB_TEXT, PHOTO_SUCESS_TEXT, PHOTO_ERROR_TEXT, HELP_TEXT, FEEDBACK,
     EXPLAIN_TEXT, CANCEL, TG_DELETE
 )
-from communication_interfaces.messages import GamesOverview
-from communication_interfaces.utils import mysql_has_gone_away_decorator
+from bots.messages import GamesOverview
+from bots.utils import mysql_has_gone_away_decorator
 from prime_league_bot.settings import STORAGE_DIR
 from utils.changelogs import CHANGELOGS
 from utils.messages_logger import log_command

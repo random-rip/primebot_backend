@@ -10,7 +10,7 @@ from telegram import ParseMode
 
 from app_prime_league.models import Team
 from app_prime_league.teams import update_team, add_or_update_players, add_raw_games
-from communication_interfaces import send_message
+from bots import send_message
 from modules.processors.team_processor import TeamDataProcessor
 from utils.exceptions import PrimeLeagueConnectionException, TeamWebsite404Exception
 

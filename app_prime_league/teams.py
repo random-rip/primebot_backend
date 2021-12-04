@@ -6,7 +6,7 @@ import traceback
 from telegram import ParseMode
 
 from app_prime_league.models import Team, Player, Game, GameMetaData
-from communication_interfaces import send_message
+from bots import send_message
 from modules.processors.team_processor import TeamDataProcessor
 from prime_league_bot import settings
 from utils.messages_logger import log_exception

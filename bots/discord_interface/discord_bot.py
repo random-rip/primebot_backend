@@ -12,10 +12,10 @@ from discord.ext import commands
 
 from app_prime_league.models import Team, ScoutingWebsite
 from app_prime_league.teams import register_team
-from communication_interfaces.base_bot import Bot
-from communication_interfaces.languages import de_DE as LanguagePack
-from communication_interfaces.messages import GamesOverview, BaseMessage
-from communication_interfaces.utils import mysql_has_gone_away
+from bots.base_bot import Bot
+from bots.languages import de_DE as LanguagePack
+from bots.messages import GamesOverview, BaseMessage
+from bots.utils import mysql_has_gone_away
 from prime_league_bot import settings
 from utils.changelogs import CHANGELOGS
 from utils.exceptions import CouldNotParseURLException, PrimeLeagueConnectionException, TeamWebsite404Exception

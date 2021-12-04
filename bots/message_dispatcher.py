@@ -1,7 +1,7 @@
 from app_prime_league.models import Team
-from communication_interfaces.discord_interface.discord_bot import DiscordBot
-from communication_interfaces.messages import BaseMessage
-from communication_interfaces.telegram_interface.telegram_bot import TelegramBot
+from bots.discord_interface.discord_bot import DiscordBot
+from bots.messages import BaseMessage
+from bots.telegram_interface.telegram_bot import TelegramBot
 
 
 class MessageDispatcher:

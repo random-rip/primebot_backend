@@ -1,0 +1,1 @@
+from bots.telegram_interface.tg_singleton import send_message

@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 
 from app_prime_league.models import Team
-from communication_interfaces import send_message
+from bots import send_message
 
 
 class GlobalMessage(LoginRequiredMixin, TemplateView, ):

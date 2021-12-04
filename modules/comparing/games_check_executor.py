@@ -4,8 +4,8 @@ import threading
 
 import requests
 
-from communication_interfaces.message_dispatcher import MessageDispatcher
-from communication_interfaces.messages import EnemyNewTimeSuggestionsNotificationMessage, \
+from bots.message_dispatcher import MessageDispatcher
+from bots.messages import EnemyNewTimeSuggestionsNotificationMessage, \
     OwnNewTimeSuggestionsNotificationMessage, ScheduleConfirmationNotification, NewLineupNotificationMessage
 from modules.comparing.game_comparer import GameMetaData, GameComparer
 from utils.messages_logger import log_exception

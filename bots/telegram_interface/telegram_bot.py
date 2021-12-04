@@ -9,16 +9,16 @@ from telegram.ext.filters import Filters
 from telegram.utils.helpers import mention_html
 from telepot.exception import BotWasKickedError, BotWasBlockedError
 
-from communication_interfaces import send_message
-from communication_interfaces.base_bot import Bot
-from communication_interfaces.languages.de_DE import MESSAGE_NOT_PINNED_TEXT, CANT_PIN_MSG_IN_PRIVATE_CHAT
-from communication_interfaces.messages import BaseMessage
-from communication_interfaces.telegram_interface.commands import single_commands
-from communication_interfaces.telegram_interface.conversations import settings_conversation, scouting_conversation
-from communication_interfaces.telegram_interface.conversations import start_conversation
-from communication_interfaces.telegram_interface.conversations.settings_conversation import \
+from bots import send_message
+from bots.base_bot import Bot
+from bots.languages.de_DE import MESSAGE_NOT_PINNED_TEXT, CANT_PIN_MSG_IN_PRIVATE_CHAT
+from bots.messages import BaseMessage
+from bots.telegram_interface.commands import single_commands
+from bots.telegram_interface.conversations import settings_conversation, scouting_conversation
+from bots.telegram_interface.conversations import start_conversation
+from bots.telegram_interface.conversations.settings_conversation import \
     callback_query_settings_handlers
-from communication_interfaces.telegram_interface.tg_singleton import pin_msg, CannotBePinnedError
+from bots.telegram_interface.tg_singleton import pin_msg, CannotBePinnedError
 from prime_league_bot import settings
 
 

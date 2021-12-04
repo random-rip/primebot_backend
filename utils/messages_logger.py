@@ -5,7 +5,7 @@ from django.conf import settings
 from telegram import ParseMode
 from telegram.utils.helpers import mention_html
 
-from communication_interfaces.telegram_interface.tg_singleton import send_message
+from bots.telegram_interface.tg_singleton import send_message
 
 logger = logging.getLogger("commands")
 

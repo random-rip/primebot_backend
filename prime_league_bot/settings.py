@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     # own
     'app_prime_league',
     'modules',
+    'bots',
 ]
 
 MIDDLEWARE = [
@@ -130,13 +131,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-LEAGUES_URI = "https://www.primeleague.gg/de/leagues/"
-AJAX_URI = "https://www.primeleague.gg/ajax/"
+GAME_SPORTS_BASE_URL = "https://api.gamesports.net/leagues/primebot"
 
 MATCH_URI = "https://www.primeleague.gg/de/leagues/matches/"
 TEAM_URI = "https://www.primeleague.gg/de/leagues/teams/"
 
-DEFAULT_TELEGRAM_CHAT_ID = env.str("TG_CHAT_ID", None)
 
 STORAGE_DIR = os.path.join(BASE_DIR, "storage", )
 

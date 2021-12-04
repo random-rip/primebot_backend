@@ -4,8 +4,8 @@ import threading
 
 import requests
 
-from communication_interfaces.message_dispatcher import MessageDispatcher
-from communication_interfaces.messages import NewLineupInCalibrationMessage
+from bots.message_dispatcher import MessageDispatcher
+from bots.messages import NewLineupInCalibrationMessage
 from modules.comparing.game_comparer import GameMetaData, GameComparer
 
 thread_local = threading.local()

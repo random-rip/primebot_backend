@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 from app_prime_league.models import Team, Game, Player
-from communication_interfaces.messages import WeeklyNotificationMessage, NewGameNotification
+from bots.messages import WeeklyNotificationMessage, NewGameNotification
 
 
 class DiscordMessageTests(TestCase):

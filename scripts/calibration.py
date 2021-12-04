@@ -8,9 +8,9 @@ from telegram import ParseMode
 
 from app_prime_league.models import Team, Game
 from app_prime_league.teams import add_games
-from communication_interfaces.message_dispatcher import MessageDispatcher
-from communication_interfaces.messages import NewGameNotification
-from communication_interfaces.telegram_interface.tg_singleton import send_message
+from bots.message_dispatcher import MessageDispatcher
+from bots.messages import NewGameNotification
+from bots.telegram_interface.tg_singleton import send_message
 from modules.comparing.new_lineup_check_executor import check
 from modules.processors.team_processor import TeamDataProcessor
 from prime_league_bot import settings

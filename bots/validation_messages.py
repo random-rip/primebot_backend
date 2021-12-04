@@ -1,7 +1,7 @@
 from telegram import Update, ParseMode
 from telegram.ext import CallbackContext, ConversationHandler
 
-from communication_interfaces.languages.de_DE import TEAM_NOT_IN_DB_TEXT, NO_GROUP_CHAT
+from bots.languages.de_DE import TEAM_NOT_IN_DB_TEXT, NO_GROUP_CHAT
 
 
 def team_not_exists(update: Update, context: CallbackContext):

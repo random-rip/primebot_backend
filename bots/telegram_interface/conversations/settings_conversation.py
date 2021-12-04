@@ -3,10 +3,10 @@ from telegram.ext import CallbackContext, CallbackQueryHandler
 
 from app_prime_league.models import Setting, Team
 from app_prime_league.teams import update_settings
-from communication_interfaces.languages.de_DE import ENABLED, SETTINGS_MAIN_MENU, DISABLED, BOOLEAN_KEYBOARD_OPTIONS, CLOSE, \
+from bots.languages.de_DE import ENABLED, SETTINGS_MAIN_MENU, DISABLED, BOOLEAN_KEYBOARD_OPTIONS, CLOSE, \
     SETTINGS_FINISHED, CURRENTLY
-from communication_interfaces.utils import mysql_has_gone_away_decorator
-from communication_interfaces.validation_messages import wrong_chat_type, team_not_exists
+from bots.utils import mysql_has_gone_away_decorator
+from bots.validation_messages import wrong_chat_type, team_not_exists
 from utils.messages_logger import log_command, log_callbacks
 
 SETTINGS = {

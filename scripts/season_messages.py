@@ -1,6 +1,6 @@
 from app_prime_league.models import Team
-from communication_interfaces.message_dispatcher import MessageDispatcher
-from communication_interfaces.messages import NotificationToTeamMessage
+from bots.message_dispatcher import MessageDispatcher
+from bots.messages import NotificationToTeamMessage
 
 season_end_message = """
 Hallo {team.name}, 

@@ -4,17 +4,17 @@ from telegram.ext import CallbackContext, ConversationHandler
 
 from app_prime_league.models import Team
 from app_prime_league.teams import register_team
-from communication_interfaces import send_message
-from communication_interfaces.languages.de_DE import (
+from bots import send_message
+from bots.languages.de_DE import (
     START_GROUP, START_CHAT, TEAM_ID_VALID, REGISTRATION_FINISH,
     WAIT_A_MOMENT_TEXT, TEAM_ID_NOT_VALID_TEXT, SET_PHOTO_TEXT,
     PHOTO_SUCESS_TEXT, PHOTO_RETRY_TEXT, CHAT_EXISTING, TEAM_LOCKED, GROUP_REASSIGNED, TEAM_ID_NOT_CORRECT,
     PL_CONNECTION_ERROR
 )
-from communication_interfaces.messages import GamesOverview
-from communication_interfaces.telegram_interface.commands.single_commands import set_photo
-from communication_interfaces.telegram_interface.keyboards import boolean_keyboard
-from communication_interfaces.utils import mysql_has_gone_away_decorator
+from bots.messages import GamesOverview
+from bots.telegram_interface.commands.single_commands import set_photo
+from bots.telegram_interface.keyboards import boolean_keyboard
+from bots.utils import mysql_has_gone_away_decorator
 from utils.exceptions import CouldNotParseURLException, PrimeLeagueConnectionException, TeamWebsite404Exception
 from utils.messages_logger import log_command, log_callbacks
 from utils.utils import get_valid_team_id

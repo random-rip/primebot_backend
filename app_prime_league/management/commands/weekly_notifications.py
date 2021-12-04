@@ -3,8 +3,8 @@ import logging
 from django.core.management import BaseCommand
 
 from app_prime_league.models import Team
-from communication_interfaces.message_dispatcher import MessageDispatcher
-from communication_interfaces.messages import WeeklyNotificationMessage
+from bots.message_dispatcher import MessageDispatcher
+from bots.messages import WeeklyNotificationMessage
 from utils.utils import current_game_day
 
 

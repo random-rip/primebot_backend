@@ -1,6 +1,6 @@
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 
-from communication_interfaces.languages.de_DE import YES, NO
+from bots.languages.de_DE import YES, NO
 
 
 def boolean_keyboard(callback_data_prefix: int):
