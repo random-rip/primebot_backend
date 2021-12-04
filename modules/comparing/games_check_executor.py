@@ -22,7 +22,7 @@ def get_session():
 
 
 @log_exception
-def check_game(game):
+def check_match(game):
     game_id = game.game_id
     team = game.team
     try:
@@ -59,10 +59,10 @@ def check_game(game):
     game.update_from_gmd(gmd)
 
 
-def update_uncompleted_games(games, use_concurrency=True):
+def update_uncompleted_matches(matches, use_concurrency=True):
     if use_concurrency:
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-            executor.map(check_game, games)
+            executor.map(check_match, matches)
     else:
-        for i in games:
-            check_game(game=i)
+        for i in matches:
+            check_match(game=i)

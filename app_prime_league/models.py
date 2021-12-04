@@ -363,14 +363,3 @@ class Comment(models.Model):
     class Meta:
         db_table = "comments"
         unique_together = [("game", "comment_id"), ]
-
-
-class TeamWatcher(models.Model):
-    telegram_id = models.CharField(max_length=50, null=True)
-    team = models.ForeignKey(Team, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        db_table = "watched_teams"
-        unique_together = [("telegram_id", "team"), ]
