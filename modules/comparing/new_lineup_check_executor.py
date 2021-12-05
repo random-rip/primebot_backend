@@ -18,7 +18,7 @@ def get_session():
     return thread_local.session
 
 
-def check_match(match):
+def check_calibration_match(match):
     game_id = match.game_id
     team = match.team
     gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=game_id, )
@@ -39,4 +39,4 @@ def check_match(match):
 
 def check(uncompleted_games):
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-        executor.map(check_match, uncompleted_games)
+        executor.map(check_calibration_match, uncompleted_games)

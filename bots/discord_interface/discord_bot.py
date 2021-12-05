@@ -198,7 +198,7 @@ class DiscordBot(Bot):
                 await ctx.send(LanguagePack.DC_DELETE)
             await sync_to_async(team.set_discord_null)()
             async with ctx.typing():
-                webhooks = [x for x in await channel.webhooks() if settings.DISCORD_APP_CLIENT_ID == x.user.id]
+                webhooks = [x for x in await channel.webhooks() if settings.DISCORD_APP_CLIENT_ID == x.user_id.id]
                 await ctx.send(LanguagePack.DC_BYE)
                 for webhook in webhooks:
                     await webhook.delete()
@@ -207,7 +207,7 @@ class DiscordBot(Bot):
         async def _create_new_webhook(ctx):
             channel = ctx.message.channel
             try:
-                webhooks = [x for x in await channel.webhooks() if settings.DISCORD_APP_CLIENT_ID == x.user.id]
+                webhooks = [x for x in await channel.webhooks() if settings.DISCORD_APP_CLIENT_ID == x.user_id.id]
                 with open(os.path.join(settings.BASE_DIR, "documents", "primebot_logo.jpg"), "rb") as image_file:
                     avatar = image_file.read()
                 new_webhook = await channel.create_webhook(name="PrimeBot", avatar=avatar)

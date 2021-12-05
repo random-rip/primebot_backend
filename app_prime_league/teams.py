@@ -104,8 +104,6 @@ def add_or_update_players(members, team: Team):
     for (id_, name, summoner_name, is_leader,) in members:
         player = Player.objects.filter(id=id_, name=name, summoner_name=summoner_name, is_leader=is_leader).first()
         logger.debug(f"Updating {player}...")
-        if player is not None:
-            continue
         player, created = Player.objects.get_or_create(id=id_, defaults={
             "name": name,
             "team": team,

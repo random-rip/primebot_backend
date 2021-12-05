@@ -2,6 +2,8 @@ import json
 
 from bs4 import BeautifulSoup
 
+from modules.parsing.logs import LogSchedulingConfirmation, LogSchedulingAutoConfirmation, LogSuggestion, LogChangeTime, \
+    BaseGameIsOverLog, LogChangeStatus, LogScoreReport, BaseLog
 from utils.utils import timestamp_to_datetime, string_to_datetime
 
 
@@ -104,7 +106,7 @@ class MatchHTMLParser(BaseHTMLParser):
             details = [x for x in tr.find_all("span", class_="table-cell-container")[-1] if isinstance(x, str)]
             log = BaseLog.return_specified_log(
                 timestamp=time,
-                user=user.split(" (Team")[0],
+                user_id=user.split(" (Team")[0],
                 action=action,
                 details=details,
             )
@@ -195,142 +197,4 @@ class MatchHTMLParser(BaseHTMLParser):
         return None if len(comments) == 0 else comments
 
 
-class BaseLog:
 
-    def __init__(self, timestamp, user, details):
-        self.timestamp = timestamp_to_datetime(timestamp)
-        self.user = user
-        self.details = details
-
-    def __repr__(self):
-        return f"{self.__class__.__name__} von {self.user} um {self.timestamp} === Details: {self.details}"
-
-    @staticmethod
-    def return_specified_log(timestamp, user, action, details):
-        log_dict = {
-            "scheduling_suggest": LogSuggestion,
-            "scheduling_confirm": LogSchedulingConfirmation,
-            "lineup_submit": LogLineupSubmit,
-            "played": LogPlayed,
-            "scheduling_autoconfirm": LogSchedulingAutoConfirmation,
-            "disqualify": LogDisqualified,
-            "lineup_missing": LogLineupMissing,
-            "lineup_notready": LogLineupNotReady,
-            "change_time": LogChangeTime,
-            "change_status": LogChangeStatus,
-            "change_score": LogChangeScore,
-            "score_report": LogScoreReport,
-            "lineup_fail": LogLineupFail,
-            "change_score_status": LogChangeScoreStatus,
-        }
-        Log = log_dict.get(action, None)
-        return None if not Log else Log(timestamp, user, details)
-
-
-class BaseGameIsOverLog(BaseLog):
-    def __init__(self, timestamp, user, details):
-        super().__init__(timestamp, user, details)
-
-
-class LogSuggestion(BaseLog):
-
-    def __init__(self, timestamp, user, details):
-        super().__init__(timestamp, user, details)
-        self.details = [string_to_datetime(x[3:]) for x in self.details]
-
-
-class LogSchedulingConfirmation(BaseLog):
-
-    def __init__(self, timestamp, user, details):
-        super().__init__(timestamp, user, details)
-        self.details = string_to_datetime(self.details[0])
-
-
-class LogSchedulingAutoConfirmation(BaseLog):
-
-    def __init__(self, timestamp, user, details):
-        super().__init__(timestamp, user, details)
-
-
-class LogPlayed(BaseGameIsOverLog):
-
-    def __init__(self, timestamp, user, details):
-        super().__init__(timestamp, user, details)
-
-
-class LogLineupMissing(BaseGameIsOverLog):
-
-    def __init__(self, timestamp, user, details):
-        super().__init__(timestamp, user, details)
-
-
-class LogLineupNotReady(BaseGameIsOverLog):
-
-    def __init__(self, timestamp, user, details):
-        super().__init__(timestamp, user, details)
-
-
-class LogDisqualified(BaseGameIsOverLog):
-
-    def __init__(self, timestamp, user, details):
-        super().__init__(timestamp, user, details)
-
-
-class LogLineupFail(BaseGameIsOverLog):
-
-    def __init__(self, timestamp, user, details):
-        super().__init__(timestamp, user, details)
-
-
-class LogChangeScoreStatus(BaseGameIsOverLog):
-
-    def __init__(self, timestamp, user, details):
-        super().__init__(timestamp, user, details)
-        prefix = "Manually adjusted score to "
-        self.details = self.details[0][len(prefix):len(prefix) + 3]
-
-
-class LogChangeStatus(BaseLog):
-    """
-    self.details can currently be "finished" (Stand 21.03.2021)
-    """
-
-    def __init__(self, timestamp, user, details):
-        super().__init__(timestamp, user, details)
-        prefix = "Manually adjusted status to "
-        self.details = self.details[0][len(prefix):]
-
-
-class LogChangeScore(BaseLog):
-    """
-    Currently deprecated
-    """
-
-    def __init__(self, timestamp, user, details):
-        super().__init__(timestamp, user, details)
-        prefix = "Manually adjusted score to "
-        self.details = self.details[0][len(prefix):]
-
-
-class LogScoreReport(BaseLog):
-    """
-    Currently deprecated
-    """
-
-    def __init__(self, timestamp, user, details):
-        super().__init__(timestamp, user, details)
-
-
-class LogLineupSubmit(BaseLog):
-
-    def __init__(self, timestamp, user, details):
-        super().__init__(timestamp, user, details)
-        self.details = [(*x.split(":"),) for x in self.details[0].split(", ")]
-        self.details = [(int(id_), name) for id_, name in self.details]
-
-
-class LogChangeTime(BaseLog):
-    def __init__(self, timestamp, user, details):
-        super().__init__(timestamp, user, details)
-        prefix = "Manually adjusted time to "
-        self.details = string_to_datetime(self.details[0][len(prefix):], timestamp_format="%Y-%m-%d %H:%M %z")

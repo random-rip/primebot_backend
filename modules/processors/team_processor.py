@@ -72,7 +72,7 @@ class TeamDataProcessor(Maker, _TeamDataFunctions, ):
 
     def get_current_division(self):
         # TODO Last Item of "stages", but is currently an empty list
-        pass
+        return "4.4"
 
     def get_logo(self):
         return self.data_team.get("team_logo_img_url")

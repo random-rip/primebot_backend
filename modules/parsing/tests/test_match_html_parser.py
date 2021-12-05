@@ -96,5 +96,5 @@ class MatchHTMLParserTests(TestCase):
             datetime.datetime(2021, 6, 27, 15, 0, tzinfo=pytz.UTC),
             datetime.datetime(2021, 6, 27, 13, 0, tzinfo=pytz.UTC)
         ]
-        self.assertEqual(latest_suggestion.user, expected_user, "User of latest suggestion is not correct.")
+        self.assertEqual(latest_suggestion.user_id, expected_user, "User of latest suggestion is not correct.")
         self.assertEqual(latest_suggestion.details, expected_details, "Details of latest suggestion are not correct.")

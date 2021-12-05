@@ -19,7 +19,7 @@ class GameComparer:
         if self.game_new.latest_suggestion is None:
             return False
 
-        new_suggestion_user = self.game_new.latest_suggestion.user
+        new_suggestion_user = self.game_new.latest_suggestion.user_id
         old_suggestion = self.game_old.get_first_suggested_game_begin
         team_leaders = list(self.game_old.team.player_set.all().filter(is_leader=True).values_list("name", flat=True))
         if old_suggestion is not None and old_suggestion == self.game_new.latest_suggestion.details[0]:
@@ -37,7 +37,7 @@ class GameComparer:
             return False
         old_lineup = list(self.game_old.enemy_lineup.all().values_list("id", flat=True))
 
-        new_lineup = [int(x[0]) for x in self.game_new.enemy_lineup]
+        new_lineup = self.game_new.enemy_lineup
         for i in new_lineup:
             if i in old_lineup:
                 continue
