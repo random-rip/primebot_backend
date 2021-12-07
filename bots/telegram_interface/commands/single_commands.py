@@ -13,7 +13,7 @@ from bots.languages.de_DE import (
     HELP_COMMAND_LIST, ISSUE, TEAM_NOT_IN_DB_TEXT, PHOTO_SUCESS_TEXT, PHOTO_ERROR_TEXT, HELP_TEXT, FEEDBACK,
     EXPLAIN_TEXT, CANCEL, TG_DELETE
 )
-from bots.messages import GamesOverview
+from bots.messages import MatchesOverview
 from bots.utils import mysql_has_gone_away_decorator
 from prime_league_bot.settings import STORAGE_DIR
 from utils.changelogs import CHANGELOGS
@@ -150,7 +150,7 @@ def overview(update: Update, context: CallbackContext):
         )
         return ConversationHandler.END
 
-    msg = GamesOverview(team=team)
+    msg = MatchesOverview(team=team)
     update.message.reply_markdown(
         msg.message,
         reply_markup=ReplyKeyboardRemove(),

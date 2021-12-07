@@ -9,7 +9,7 @@ from django.core.management import BaseCommand
 from telegram import ParseMode
 
 from app_prime_league.models import Team
-from app_prime_league.teams import update_team, add_or_update_players, add_raw_games
+from app_prime_league.teams import update_team, add_or_update_players, add_raw_matches
 from bots import send_message
 from modules.processors.team_processor import TeamDataProcessor
 from utils.exceptions import PrimeLeagueConnectionException, TeamWebsite404Exception
@@ -36,9 +36,9 @@ class Command(BaseCommand):
                 try:
                     add_or_update_players(processor.get_members(), team)
                     if team.is_active():
-                        game_ids = processor.get_matches()
-                        logger.debug(f"Checking {len(game_ids)} games for {team}... ")
-                        add_raw_games(game_ids, team, use_concurrency=True)
+                        match_ids = processor.get_matches()
+                        logger.debug(f"Checking {len(match_ids)} matches for {team}... ")
+                        add_raw_matches(match_ids, team, use_concurrency=True)
                 except Exception as e:
                     trace = "".join(traceback.format_tb(sys.exc_info()[2]))
                     send_message(

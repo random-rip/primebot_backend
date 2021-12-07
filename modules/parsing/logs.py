@@ -33,7 +33,7 @@ class BaseLog:
         return None if not Log else Log(timestamp, user_id, details)
 
 
-class BaseGameIsOverLog(BaseLog):
+class BaseMatchIsOverLog(BaseLog):
     def __init__(self, timestamp, user_id, details):
         super().__init__(timestamp, user_id, details)
 
@@ -58,37 +58,37 @@ class LogSchedulingAutoConfirmation(BaseLog):
         super().__init__(timestamp, user_id, details)
 
 
-class LogPlayed(BaseGameIsOverLog):
+class LogPlayed(BaseMatchIsOverLog):
 
     def __init__(self, timestamp, user_id, details):
         super().__init__(timestamp, user_id, details)
 
 
-class LogLineupMissing(BaseGameIsOverLog):
+class LogLineupMissing(BaseMatchIsOverLog):
 
     def __init__(self, timestamp, user_id, details):
         super().__init__(timestamp, user_id, details)
 
 
-class LogLineupNotReady(BaseGameIsOverLog):
+class LogLineupNotReady(BaseMatchIsOverLog):
 
     def __init__(self, timestamp, user_id, details):
         super().__init__(timestamp, user_id, details)
 
 
-class LogDisqualified(BaseGameIsOverLog):
+class LogDisqualified(BaseMatchIsOverLog):
 
     def __init__(self, timestamp, user_id, details):
         super().__init__(timestamp, user_id, details)
 
 
-class LogLineupFail(BaseGameIsOverLog):
+class LogLineupFail(BaseMatchIsOverLog):
 
     def __init__(self, timestamp, user_id, details):
         super().__init__(timestamp, user_id, details)
 
 
-class LogChangeScoreStatus(BaseGameIsOverLog):
+class LogChangeScoreStatus(BaseMatchIsOverLog):
 
     def __init__(self, timestamp, user_id, details):
         super().__init__(timestamp, user_id, details)

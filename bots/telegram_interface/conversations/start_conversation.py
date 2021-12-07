@@ -11,7 +11,7 @@ from bots.languages.de_DE import (
     PHOTO_SUCESS_TEXT, PHOTO_RETRY_TEXT, CHAT_EXISTING, TEAM_LOCKED, GROUP_REASSIGNED, TEAM_ID_NOT_CORRECT,
     PL_CONNECTION_ERROR
 )
-from bots.messages import GamesOverview
+from bots.messages import MatchesOverview
 from bots.telegram_interface.commands.single_commands import set_photo
 from bots.telegram_interface.keyboards import boolean_keyboard
 from bots.utils import mysql_has_gone_away_decorator
@@ -241,7 +241,7 @@ def finish_registration(update: Update, context: CallbackContext):
         parse_mode=ParseMode.MARKDOWN,
     )
 
-    msg = GamesOverview(team=team)
+    msg = MatchesOverview(team=team)
     context.bot.send_message(
         text=msg.message,
         chat_id=chat_id,

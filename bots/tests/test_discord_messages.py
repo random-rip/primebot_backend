@@ -1,7 +1,7 @@
 from django.test import TestCase
 
-from app_prime_league.models import Team, Game, Player
-from bots.messages import WeeklyNotificationMessage, NewGameNotification
+from app_prime_league.models import Team, Match, Player
+from bots.messages import WeeklyNotificationMessage, NewMatchNotification
 
 
 class DiscordMessageTests(TestCase):
@@ -9,7 +9,7 @@ class DiscordMessageTests(TestCase):
     def setUp(self):
         self.team_a = Team.objects.create(id=1, name="ABC", team_tag="abc", )
         self.team_b = Team.objects.create(id=2, name="XYZ", team_tag="xyz", )
-        self.game = Game.objects.create(game_id=1, team=self.team_a, enemy_team=self.team_b, game_day=1)
+        self.match = Match.objects.create(match_id=1, team=self.team_a, enemy_team=self.team_b, match_day=1)
         Player.objects.create(name="player 1", summoner_name="player1", team=self.team_b)
         Player.objects.create(name="player 2", summoner_name="player2", team=self.team_b)
         Player.objects.create(name="player 3", summoner_name="player3", team=self.team_b)
@@ -17,7 +17,7 @@ class DiscordMessageTests(TestCase):
         Player.objects.create(name="player 5", summoner_name="player5", team=self.team_b)
 
     def test_weekly_notification(self):
-        msg = WeeklyNotificationMessage(game=self.game, team=self.team_a)
+        msg = WeeklyNotificationMessage(match=self.match, team=self.team_a)
 
         self.assertEqual(msg.msg_type, "weekly_notification", )
         self.assertEqual(msg._key, "weekly_op_link", )
@@ -30,8 +30,8 @@ class DiscordMessageTests(TestCase):
                          "(https://euw.op.gg/multi/?query=player1,player2,player3,player4,player5) des Teams.")
         self.assertEqual(msg.message, assertion_msg, )
 
-    def test_new_game_notification(self):
-        msg = NewGameNotification(game=self.game, team=self.team_a)
+    def test_new_match_notification(self):
+        msg = NewMatchNotification(match=self.match, team=self.team_a)
 
         self.assertEqual(msg.msg_type, "new_game_notification", )
         self.assertEqual(msg._key, "new_game_notification", )

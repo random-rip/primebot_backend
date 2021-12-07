@@ -14,7 +14,7 @@ from app_prime_league.models import Team, ScoutingWebsite
 from app_prime_league.teams import register_team
 from bots.base_bot import Bot
 from bots.languages import de_DE as LanguagePack
-from bots.messages import GamesOverview, BaseMessage
+from bots.messages import MatchesOverview, BaseMessage
 from bots.utils import mysql_has_gone_away
 from prime_league_bot import settings
 from utils.changelogs import CHANGELOGS
@@ -86,7 +86,7 @@ class DiscordBot(Bot):
                     await ctx.send(response)
                     return
 
-            msg = await sync_to_async(GamesOverview)(team=team)
+            msg = await sync_to_async(MatchesOverview)(team=team)
             embed = await sync_to_async(msg.discord_embed)()
             await ctx.send(embed=embed)
             response = LanguagePack.DC_REGISTRATION_FINISH.format(team_name=team.name)
@@ -180,7 +180,7 @@ class DiscordBot(Bot):
             if team is None:
                 await ctx.send(LanguagePack.DC_CHANNEL_NOT_INITIALIZED)
                 return
-            msg = await sync_to_async(GamesOverview)(team=team)
+            msg = await sync_to_async(MatchesOverview)(team=team)
             embed = await sync_to_async(msg.discord_embed)()
             await ctx.send(embed=embed)
 

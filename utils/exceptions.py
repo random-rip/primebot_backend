@@ -8,3 +8,7 @@ class PrimeLeagueConnectionException(Exception):
 
 class TeamWebsite404Exception(Exception):
     pass
+
+
+class GMDNotInitialisedException(Exception):
+    pass

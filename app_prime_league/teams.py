@@ -5,7 +5,8 @@ import traceback
 
 from telegram import ParseMode
 
-from app_prime_league.models import Team, Player, Game, GameMetaData
+from app_prime_league.models import Team, Player, Match
+from modules.comparing.match_comparer import PrimeLeagueMatchData
 from bots import send_message
 from modules.processors.team_processor import TeamDataProcessor
 from prime_league_bot import settings
@@ -16,7 +17,7 @@ logger = logging.getLogger("django")
 
 def register_team(*, team_id, **kwargs):
     """
-    Add or Update a Team, Add or Update Players, Add or Update Games. Optionally set telegram_id of the team.
+    Add or Update a Team, Add or Update Players, Add or Update Matches. Optionally set telegram_id of the team.
     :raises PrimeLeagueConnectionException, TeamWebsite404Exception
     """
     team, provider = add_or_update_team(team_id=team_id, **kwargs)
@@ -24,7 +25,7 @@ def register_team(*, team_id, **kwargs):
         if team.division is not None:
             try:
                 add_or_update_players(provider.get_members(), team)
-                add_games(provider.get_matches(), team, use_concurrency=True)
+                add_matches(provider.get_matches(), team, use_concurrency=True)
             except Exception as e:
                 trace = "".join(traceback.format_tb(sys.exc_info()[2]))
                 send_message(
@@ -118,43 +119,43 @@ def add_or_update_players(members, team: Team):
 
 
 @log_exception
-def add_game(team, game_id, ignore_lineup=False):
-    gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=game_id, )
-    game = Game.objects.get_game_by_team(game_id=game_id, team=team)
+def add_match(team, match_id, ignore_lineup=False):
+    gmd = PrimeLeagueMatchData.create_from_website(team=team, match_id=match_id, )
+    match = Match.objects.get_match_of_team(match_id=match_id, team=team)
 
-    if game is None:
-        game = Game()
+    if match is None:
+        match = Match()
     gmd.get_enemy_team_data()
-    game.update_from_gmd(gmd)
-    game.update_enemy_team(gmd)
+    match.update_from_gmd(gmd)
+    match.update_enemy_team(gmd)
     if not ignore_lineup:
-        game.update_enemy_lineup(gmd)
-    game.update_latest_suggestion(gmd)
-    logger.debug(f"Updating {game}...")
+        match.update_enemy_lineup(gmd)
+    match.update_latest_suggestion(gmd)
+    logger.debug(f"Updating {match}...")
 
 
-def add_games(game_ids, team: Team, ignore_lineup=False, use_concurrency=True):
+def add_matches(match_ids, team: Team, ignore_lineup=False, use_concurrency=True):
     if use_concurrency:
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-            executor.map(lambda p: add_game(*p), ((team, game_id, ignore_lineup) for game_id in game_ids))
+            executor.map(lambda p: add_match(*p), ((team, match_id, ignore_lineup) for match_id in match_ids))
     else:
-        for i in game_ids:
-            add_game(team, game_id=i)
+        for i in match_ids:
+            add_match(team, match_id=i)
 
 
 @log_exception
-def add_raw_game(team, game_id):
-    Game.objects.get_or_create(
-        game_id=game_id,
+def add_raw_match(team, match_id):
+    Match.objects.get_or_create(
+        match_id=match_id,
         team=team,
     )
 
 
-def add_raw_games(game_ids, team: Team, use_concurrency=True):
+def add_raw_matches(match_ids, team: Team, use_concurrency=True):
     if use_concurrency:
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-            executor.map(lambda p: add_raw_game(*p), ((team, game_id) for game_id in game_ids))
+            executor.map(lambda p: add_raw_match(*p), ((team, match_id) for match_id in match_ids))
         return
     else:
-        for i in game_ids:
-            add_raw_game(team, game_id=i)
+        for i in match_ids:
+            add_raw_match(team, match_id=i)

@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
             new_name='telegram_id',
         ),
         migrations.AddField(
-            model_name='game',
+            model_name='match',
             name='game_result',
             field=models.CharField(max_length=5, null=True),
         ),

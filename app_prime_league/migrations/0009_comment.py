@@ -22,12 +22,12 @@ class Migration(migrations.Migration):
                 ('author_id', models.IntegerField()),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('game', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app_prime_league.Game')),
+                ('match', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app_prime_league.Game')),
                 ('parent', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app_prime_league.Comment')),
             ],
             options={
                 'db_table': 'comments',
-                'unique_together': {('game', 'comment_id')},
+                'unique_together': {('match', 'comment_id')},
             },
         ),
     ]

@@ -11,12 +11,12 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterField(
-            model_name='game',
+            model_name='match',
             name='game_closed',
             field=models.BooleanField(null=True),
         ),
         migrations.AlterField(
-            model_name='game',
+            model_name='match',
             name='game_day',
             field=models.IntegerField(null=True),
         ),

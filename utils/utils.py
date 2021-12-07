@@ -29,11 +29,11 @@ def timestamp_to_datetime(x):
     return datetime.fromtimestamp(x).astimezone(pytz.utc)
 
 
-def current_game_day():
+def current_match_day():
     start_date = datetime(2021, 9, 27).astimezone(pytz.timezone("Europe/Berlin"))
     current_date = datetime.now().astimezone(pytz.timezone("Europe/Berlin"))
-    game_day = ((current_date - start_date) / 7).days + 1
-    return game_day
+    match_day = ((current_date - start_date) / 7).days + 1
+    return match_day
 
 
 def get_valid_team_id(response):

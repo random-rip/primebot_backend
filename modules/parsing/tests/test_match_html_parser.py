@@ -59,12 +59,12 @@ class MatchHTMLParserTests(TestCase):
         self.assertEqual(comments, expected, "Comments could not be parsed.")
 
     def test_game_day(self):
-        game_day = self.team_html_parser.get_game_day()
+        game_day = self.team_html_parser.get_match_day()
         expected = 3
         self.assertEqual(game_day, expected, "Game day could not be parsed.")
 
     def test_game_begin(self):
-        game_begin, log = self.team_html_parser.get_game_begin()
+        game_begin, log = self.team_html_parser.get_match_begin()
         expected = datetime.datetime(2021, 6, 27, 13, 0, tzinfo=pytz.UTC)
         self.assertEqual(game_begin, expected, "Game begin could not be parsed.")
 
@@ -80,12 +80,12 @@ class MatchHTMLParserTests(TestCase):
         self.assertListEqual(enemy_lineup, expected, "Enemy lineup could not be parsed.")
 
     def test_game_closed(self):
-        game_closed = self.team_html_parser.get_game_closed()
+        game_closed = self.team_html_parser.get_match_closed()
         expected = True
         self.assertEqual(game_closed, expected, "Game closed could not be parsed.")
 
     def test_game_result(self):
-        game_result = self.team_html_parser.get_game_result()
+        game_result = self.team_html_parser.get_match_result()
         expected = "1:1"
         self.assertEqual(game_result, expected, "Game result could not be parsed.")
 

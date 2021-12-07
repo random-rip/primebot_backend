@@ -11,11 +11,11 @@ class _MatchDataFunctions:
         pass
 
     @abstractmethod
-    def get_game_closed(self):
+    def get_match_closed(self):
         pass
 
     @abstractmethod
-    def get_game_result(self):
+    def get_match_result(self):
         pass
 
     @abstractmethod
@@ -23,7 +23,7 @@ class _MatchDataFunctions:
         pass
 
     @abstractmethod
-    def get_game_begin(self):
+    def get_match_begin(self):
         pass
 
     @abstractmethod
@@ -31,7 +31,7 @@ class _MatchDataFunctions:
         pass
 
     @abstractmethod
-    def get_game_day(self):
+    def get_match_day(self):
         pass
 
     @abstractmethod
@@ -88,15 +88,15 @@ class MatchDataProcessor(Maker, _MatchDataFunctions, ):
         lineup = self.data.get("line_ups", [])
         return [x["user_id"] for x in lineup if x["team_id"] != self.team_id]
 
-    def get_game_closed(self):
+    def get_match_closed(self):
         """
         possible match_status: ["upcoming", "pending", "finished"]
         """
         return self.data_match.get("match_status", None) == "finished"
 
-    def get_game_result(self):
+    def get_match_result(self):
         """
-        If game_result is set, the first number indicates the score that the team reached.
+        If match_result is set, the first number indicates the score that the team reached.
         """
         match_score_1 = self.data_match.get('match_score_1', None)
         match_score_2 = self.data_match.get('match_score_2', None)
@@ -119,9 +119,9 @@ class MatchDataProcessor(Maker, _MatchDataFunctions, ):
         # TODO parse
         return status == self.team_is_team_1, [x for x in suggestions if x]
 
-    def get_game_begin(self):
+    def get_match_begin(self):
         """
-        :return: default game_begin or set game_begin
+        :return: default match_begin or agreed match_begin
         """
         # TODO parse
         return self.data_match.get("match_time")
@@ -129,7 +129,7 @@ class MatchDataProcessor(Maker, _MatchDataFunctions, ):
     def get_enemy_team_id(self):
         return self.data_match.get("team_id_2") if self.team_is_team_1 else self.data_match.get("team_id_1")
 
-    def get_game_day(self):
+    def get_match_day(self):
         return self.data_match.get("match_playday")
 
     def get_comments(self):
@@ -137,7 +137,7 @@ class MatchDataProcessor(Maker, _MatchDataFunctions, ):
 
     def get_match_time_set(self):
         """
-        :return: Tuple(game_begin, latest confirmation_log or change_time_log)
+        :return: Tuple(match_begin, latest confirmation_log or change_time_log)
         """
         specified_log = None
         for log in self.logs:
@@ -146,4 +146,4 @@ class MatchDataProcessor(Maker, _MatchDataFunctions, ):
                 break
         if specified_log is None:
             return None, None
-        return self.get_game_begin(), specified_log
+        return self.get_match_begin(), specified_log

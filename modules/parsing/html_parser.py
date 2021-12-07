@@ -3,7 +3,7 @@ import json
 from bs4 import BeautifulSoup
 
 from modules.parsing.logs import LogSchedulingConfirmation, LogSchedulingAutoConfirmation, LogSuggestion, LogChangeTime, \
-    BaseGameIsOverLog, LogChangeStatus, LogScoreReport, BaseLog
+    BaseMatchIsOverLog, LogChangeStatus, LogScoreReport, BaseLog
 from utils.utils import timestamp_to_datetime, string_to_datetime
 
 
@@ -120,7 +120,7 @@ class MatchHTMLParser(BaseHTMLParser):
 
     def get_game_closed(self):
         for log in self.logs:
-            if isinstance(log, BaseGameIsOverLog):
+            if isinstance(log, BaseMatchIsOverLog):
                 return True
             if isinstance(log, LogChangeStatus) and log.details == "finished":
                 return True
@@ -144,7 +144,7 @@ class MatchHTMLParser(BaseHTMLParser):
 
     def get_game_begin(self) -> tuple:
         """
-        Returns game begin timestamp if it is in logs
+        Returns match begin timestamp if it is in logs
         :return Tuple: First argument: confirmed timestamp, second argument: log
         """
         for log in self.logs:

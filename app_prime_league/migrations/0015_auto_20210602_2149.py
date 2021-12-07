@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterField(
-            model_name='game',
+            model_name='match',
             name='enemy_team',
             field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='games_as_enemy_team', to='app_prime_league.Team'),
         ),

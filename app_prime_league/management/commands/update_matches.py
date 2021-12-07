@@ -5,8 +5,8 @@ from datetime import datetime
 
 from django.core.management import BaseCommand
 
-from app_prime_league.models import Game
-from modules.comparing.games_check_executor import update_uncompleted_matches
+from app_prime_league.models import Match
+from modules.comparing.match_check_executor import update_uncompleted_matches
 
 thread_local = threading.local()
 logger = logging.getLogger("django")
@@ -15,7 +15,7 @@ logger = logging.getLogger("django")
 class Command(BaseCommand):
     def handle(self, *args, **options):
         start_time = time.time()
-        uncompleted_matches = Game.objects.get_uncompleted_games()
+        uncompleted_matches = Match.objects.get_uncompleted_matches()
         logger.info(f"Checking uncompleted matches ({len(uncompleted_matches)}) at {datetime.now()}...")
         update_uncompleted_matches(matches=uncompleted_matches, use_concurrency=True)
         logger.info(f"Checked uncompleted matches ({len(uncompleted_matches)}) in {time.time() - start_time} seconds")

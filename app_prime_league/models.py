@@ -1,74 +1,8 @@
 from django.conf import settings
 from django.db import models
-from django.db.models import Q, F
+from django.db.models import F
 
-from modules.processors.match_processor import MatchDataProcessor
-from modules.processors.team_processor import TeamDataProcessor
-
-
-class TeamManager(models.Manager):
-
-    def get_watched_teams(self):
-        """
-        Gibt alle Teams zurück, die entweder in einer Telegram-Gruppe oder in einem Discord-Channel registriert wurden.
-        :return: Queryset of Team Model
-        """
-        return self.model.objects.filter(Q(telegram_id__isnull=False) | Q(discord_channel_id__isnull=False))
-
-    def get_watched_team_of_current_split(self):
-        """
-        Gibt alle Teams zurück, die entweder in einer Telegram-Gruppe oder in einem Discord-Channel registriert wurden
-        und wo die Division gesetzt wurde!
-        :return: Queryset of Team Model
-        """
-        return self.model.objects.filter(Q(telegram_id__isnull=False) | Q(discord_channel_id__isnull=False),
-                                         division__isnull=False)
-
-    def get_team(self, team_id):
-        return self.model.objects.filter(id=team_id).first()
-
-    def get_calibration_teams(self):
-        # TODO neues Feld in model
-        return self.model.objects.filter(id__in=[116152, 146630, 135572, 153698])
-        # return self.model.objects.filter(Q(telegram_id__isnull=False) | Q(discord_channel_id__isnull=False))
-
-
-class GameManager(models.Manager):
-
-    def get_uncompleted_games(self):
-        return self.model.objects.filter(Q(game_closed=False) | Q(game_closed__isnull=True))
-
-    def get_game_by_team(self, game_id, team):
-        try:
-            return self.model.objects.get(game_id=game_id, team=team)
-        except self.model.DoesNotExist:
-            return None
-
-
-class PlayerManager(models.Manager):
-
-    def create_or_update_players(self, players_list: list, team):
-        players = []
-        for (id_, name, summoner_name, is_leader,) in players_list:
-            player, created = self.model.objects.get_or_create(id=id_, defaults={
-                "name": name,
-                "team": team,
-                "summoner_name": summoner_name,
-                "is_leader": False if is_leader is None else is_leader
-            })
-            if not created:
-                player.name = name
-                player.team = team
-                player.summoner_name = summoner_name
-                if is_leader is not None:
-                    player.is_leader = is_leader
-                player.save()
-            players.append(player)
-        return players
-
-
-class CommentManager(models.Manager):
-    pass
+from app_prime_league.model_manager import TeamManager, MatchManager, PlayerManager
 
 
 class Team(models.Model):
@@ -105,8 +39,8 @@ class Team(models.Model):
     def is_active(self):
         return self.telegram_id or self.discord_channel_id
 
-    def get_next_open_game(self):
-        return self.get_open_games_ordered().first()
+    def get_next_open_match(self):
+        return self.get_open_matches_ordered().first()
 
     def set_telegram_null(self):
         self.telegram_id = None
@@ -124,31 +58,30 @@ class Team(models.Model):
 
     def soft_delete(self):
         if self.telegram_id is None and self.discord_channel_id is None:
-            for game in self.games_against.all():
-                game.suggestion_set.all().delete()
-                game.enemy_lineup.all().delete()
-                game.delete()
+            for match in self.matches_against.all():
+                match.suggestion_set.all().delete()
+                match.enemy_lineup.all().delete()
+                match.delete()
             self.setting_set.all().delete()
 
-    def get_scouting_link(self, game, lineup=True):
+    def get_scouting_link(self, match, lineup=True):
         """
-
-        :param game:
+        :param match:
         :param lineup: If lineup=True and a lineup is available returns just the lineup link
         :return:
         """
-        if lineup and game.lineup_available:
-            names = list(game.enemy_lineup.all().values_list("summoner_name", flat=True))
+        if lineup and match.lineup_available:
+            names = list(match.enemy_lineup.all().values_list("summoner_name", flat=True))
         else:
-            names = list(game.enemy_team.player_set.all().values_list("summoner_name", flat=True))
+            names = list(match.enemy_team.player_set.all().values_list("summoner_name", flat=True))
 
         base_url = settings.DEFAULT_SCOUTING_URL if not self.scouting_website else self.scouting_website.base_url
         separator = settings.DEFAULT_SCOUTING_SEP if not self.scouting_website else self.scouting_website.separator
         parameters = f"{separator}".join([x.replace(" ", "") for x in names])
         return base_url.format(parameters)
 
-    def get_open_games_ordered(self):
-        return self.games_against.filter(game_closed=False).order_by(F('game_day').desc(nulls_last=True))
+    def get_open_matches_ordered(self):
+        return self.matches_against.filter(closed=False).order_by(F('match_day').desc(nulls_last=True))
 
 
 class Player(models.Model):
@@ -171,112 +104,62 @@ class Player(models.Model):
         return f"Player {self.name}"
 
 
-class GameMetaData:
+class Match(models.Model):
+    MATCH_TYPE_CALIBRATION = "calibration"
+    MATCH_TYPE_GROUP = "group"  # Pro Div, Kein Divisionssystem
+    MATCH_TYPE_LEAGUE = "league"  # Gruppenphase Divisionssystem
+    MATCH_TYPE_PLAYOFF = "playoff"
 
-    def __init__(self):
-        self.game_id = None
-        self.game_day = None
-        self.team = None
-        self.enemy_team = None
-        self.enemy_lineup = None
-        self.game_closed = None
-        self.game_result = None
-        self.latest_suggestion = None
-        self.game_begin = None
-        self.latest_confirmation_log = None
+    MATCH_TYPES = (
+        (MATCH_TYPE_CALIBRATION, "Kalibrierung"),
+        (MATCH_TYPE_GROUP, "Pro Division"),
+        (MATCH_TYPE_LEAGUE, "Gruppenphase"),
+        (MATCH_TYPE_PLAYOFF, "Playoffs"),
+    )
 
-    def __repr__(self):
-        return f"GameID: {self.game_id}" \
-               f"\nGameDay: {self.game_day}, " \
-               f"\nTeam: {self.team}, " \
-               f"\nEnemyTeam: {self.enemy_team}, " \
-               f"\nEnemyLineup: {self.enemy_lineup}, " \
-               f"\nGameClosed: {self.game_closed}, " \
-               f"\nGame Result: {self.game_result}" \
-               f"\nLatestSuggestion: {self.latest_suggestion}, " \
-               f"\nSuggestionConfirmed: {self.game_begin}, "
+    match_id = models.IntegerField()
+    match_day = models.IntegerField(null=True)
+    match_type = models.CharField(max_length=15, null=True, choices=MATCH_TYPES)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="matches_against")
+    enemy_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="matches_as_enemy_team", null=True)
 
-    def __str__(self):
-        return self.__repr__()
-
-    @staticmethod
-    def create_game_meta_data_from_website(team: Team, game_id):
-
-        gmd = GameMetaData()
-        processor = MatchDataProcessor(game_id, team.id)
-
-        gmd.game_id = game_id
-        gmd.game_day = processor.get_game_day()
-        gmd.team = team
-        gmd.enemy_team = {
-            "id": processor.get_enemy_team_id(),
-        }
-        gmd.enemy_lineup = processor.get_enemy_lineup()
-        if gmd.enemy_lineup is not None:
-            enemy_tuples = []
-            for i in gmd.enemy_lineup:
-                enemy_tuples.append((*i,))
-            gmd.enemy_lineup = enemy_tuples
-        gmd.game_closed = processor.get_game_closed()
-        gmd.latest_suggestion = processor.get_latest_suggestion()
-        gmd.game_begin, gmd.latest_confirmation_log = processor.get_game_begin()
-        gmd.game_result = processor.get_game_result()
-        return gmd
-
-    def get_enemy_team_data(self):
-        if self.enemy_team is None:
-            print("GMD is not initialized yet. Aborting...")
-            return
-        processor = TeamDataProcessor(team_id=self.enemy_team["id"])
-        self.enemy_team["members"] = processor.get_members()
-        self.enemy_team["name"] = processor.get_team_name()
-        self.enemy_team["tag"] = processor.get_team_tag()
-        self.enemy_team["division"] = processor.get_current_division()
-
-
-class Game(models.Model):
-    game_id = models.IntegerField()
-    game_day = models.IntegerField(null=True)
-    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="games_against")
-    enemy_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="games_as_enemy_team", null=True)
-
-    game_begin = models.DateTimeField(null=True)
+    begin = models.DateTimeField(null=True)
     enemy_lineup = models.ManyToManyField(Player, )
-    game_closed = models.BooleanField(null=True)
-    game_result = models.CharField(max_length=5, null=True)
+    closed = models.BooleanField(null=True)
+    result = models.CharField(max_length=5, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    objects = GameManager()
+    objects = MatchManager()
 
     class Meta:
-        db_table = "games"
-        unique_together = [("game_id", "team")]
+        db_table = "matches"
+        unique_together = [("match_id", "team")]
 
     def __repr__(self):
-        return f"{self.game_id}"
+        return f"{self.match_id}"
 
     def __str__(self):
-        return f"Game {self.game_id} from {self.team}"
+        return f"Match {self.match_id} from {self.team}"
 
     @property
-    def get_first_suggested_game_begin(self):
+    def get_first_suggested_match_begin(self):
         suggestion = self.suggestion_set.all().order_by("created_at").first()
-        return None if suggestion is None else suggestion.game_begin
+        return None if suggestion is None else suggestion.begin
 
-    def update_from_gmd(self, gmd: GameMetaData):
-        self.game_id = gmd.game_id
-        self.game_day = gmd.game_day
-        self.team = gmd.team
-        self.game_begin = gmd.game_begin
-        enemy_team, _ = Team.objects.get_or_create(id=gmd.enemy_team["id"])
+    def update_from_gmd(self, md):
+        self.match_id = md.match_id
+        self.match_day = md.match_day
+        self.team = md.team
+        self.begin = md.begin
+        enemy_team, _ = Team.objects.get_or_create(id=md.enemy_team["id"])
         self.enemy_team = enemy_team
-        self.game_closed = gmd.game_closed
-        self.game_result = gmd.game_result
+        self.closed = md.closed
+        self.result = md.result
         self.save()
 
-    def update_game_begin(self, gmd):
-        self.game_begin = gmd.game_begin
+    def update_match_begin(self, gmd):
+        self.begin = gmd.begin
         self.save()
 
     def update_enemy_team(self, gmd):
@@ -297,13 +180,13 @@ class Game(models.Model):
         if gmd.latest_suggestion is not None:
             self.suggestion_set.all().delete()
             for timestamp in gmd.latest_suggestion.details:
-                self.suggestion_set.add(Suggestion(game=self, game_begin=timestamp), bulk=False)
+                self.suggestion_set.add(Suggestion(match=self, begin=timestamp), bulk=False)
         self.save()
 
-    def update_enemy_lineup(self, gmd: GameMetaData):
-        if gmd.enemy_lineup is not None:
+    def update_enemy_lineup(self, md):
+        if md.enemy_lineup is not None:
             self.enemy_lineup.clear()
-            players = Player.objects.create_or_update_players(gmd.enemy_lineup, self.enemy_team)
+            players = Player.objects.create_or_update_players(md.enemy_lineup, self.enemy_team)
             self.enemy_lineup.add(*players)
         self.save()
 
@@ -327,8 +210,8 @@ class ScoutingWebsite(models.Model):
 
 
 class Suggestion(models.Model):
-    game_begin = models.DateTimeField()
-    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    begin = models.DateTimeField()
+    match = models.ForeignKey(Match, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -348,11 +231,10 @@ class Setting(models.Model):
 
 
 class Comment(models.Model):
-    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    match = models.ForeignKey(Match, on_delete=models.CASCADE)
     comment_id = models.CharField(max_length=50)
     parent = models.ForeignKey('Comment', on_delete=models.CASCADE)
-    content = models.CharField(max_length=3000)
-    has_more_content = models.BooleanField(default=False)
+    content = models.TextField()
     author_name = models.CharField(max_length=50)
     author_id = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -362,4 +244,4 @@ class Comment(models.Model):
 
     class Meta:
         db_table = "comments"
-        unique_together = [("game", "comment_id"), ]
+        unique_together = [("match", "comment_id"), ]

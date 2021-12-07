@@ -126,75 +126,75 @@ MESSAGE_NOT_PINNED_TEXT = f"Die wöchentliche Nachricht konnte nicht angeheftet 
 CANT_PIN_MSG_IN_PRIVATE_CHAT = "Man kann keine Nachricht in einem privaten Chat anpinnen."
 
 # Update Messages
-OWN_NEW_TIME_SUGGESTION_TEXT = "Neuer Zeitvorschlag von euch für [Spieltag {game_day}](" + \
+OWN_NEW_TIME_SUGGESTION_TEXT = "Neuer Zeitvorschlag von euch für [Spieltag {match_day}](" + \
                                GENERAL_MATCH_LINK + \
-                               "{game_id})." + \
+                               "{match_id})." + \
                                EMOJI_SUCCESS
 
 NEW_TIME_SUGGESTION_PREFIX = "Neuer Zeitvorschlag von [{enemy_team_tag}](" + \
                              GENERAL_TEAM_LINK + \
-                             "{enemy_team_id}) für [Spieltag {game_day}](" + \
+                             "{enemy_team_id}) für [Spieltag {match_day}](" + \
                              GENERAL_MATCH_LINK + \
-                             "{game_id}):\n"
+                             "{match_id}):\n"
 
 NEW_TIME_SUGGESTIONS_PREFIX = "Neue Zeitvorschläge von [{enemy_team_tag}](" + \
                               GENERAL_TEAM_LINK + \
-                              "{enemy_team_id}) für [Spieltag {game_day}](" + \
+                              "{enemy_team_id}) für [Spieltag {match_day}](" + \
                               GENERAL_MATCH_LINK + \
-                              "{game_id}):\n"
+                              "{match_id}):\n"
 
 SCHEDULING_AUTO_CONFIRMATION_TEXT = "[{enemy_team_tag}](" + \
                                     GENERAL_TEAM_LINK + \
-                                    "{enemy_team_id}) hat für [Spieltag {game_day}](" + \
+                                    "{enemy_team_id}) hat für [Spieltag {match_day}](" + \
                                     GENERAL_MATCH_LINK + \
-                                    "{game_id}) weder die vorgeschlagene Zeit angenommen, " \
+                                    "{match_id}) weder die vorgeschlagene Zeit angenommen, " \
                                     "noch eine andere vorgeschlagen. Damit ist folgender Spieltermin bestätigt\n" + \
                                     EMOJI_FIGHT + "{time}"
 
 SCHEDULING_CONFIRMATION_TEXT = "Spielbestätigung gegen [{enemy_team_tag}](" + \
                                GENERAL_TEAM_LINK + \
-                               "{enemy_team_id}) für [Spieltag {game_day}](" + \
+                               "{enemy_team_id}) für [Spieltag {match_day}](" + \
                                GENERAL_MATCH_LINK + \
-                               "{game_id}):\n" + \
+                               "{match_id}):\n" + \
                                EMOJI_FIGHT + "{time}"
 
-GAME_BEGIN_CHANGE_TEXT = "Ein Administrator hat eine neue Zeit für das Match gegen [{enemy_team_tag}](" + \
-                         GENERAL_TEAM_LINK + \
+MATCH_BEGIN_CHANGE_TEXT = "Ein Administrator hat eine neue Zeit für das Match gegen [{enemy_team_tag}](" + \
+                          GENERAL_TEAM_LINK + \
                          "{enemy_team_id}) " + \
-                         "([Spieltag {game_day}](" + \
-                         GENERAL_MATCH_LINK + \
-                         "{game_id})) festgelegt:\n" + \
-                         EMOJI_FIGHT + "{time}"
+                         "([Spieltag {match_day}](" + \
+                          GENERAL_MATCH_LINK + \
+                         "{match_id})) festgelegt:\n" + \
+                          EMOJI_FIGHT + "{time}"
 
 NEW_LINEUP_TEXT = "[{enemy_team_tag}](" + \
                   GENERAL_TEAM_LINK + \
-                  "{enemy_team_id}) ([Spieltag {game_day}](" + \
+                  "{enemy_team_id}) ([Spieltag {match_day}](" + \
                   GENERAL_MATCH_LINK + \
-                  "{game_id})) hat ein neues [Lineup]({op_link}) aufgestellt. " + \
+                  "{match_id})) hat ein neues [Lineup]({op_link}) aufgestellt. " + \
                   EMOJI_LINEUP
 
 NEW_LINEUP_IN_CALIBRATION = "[{enemy_team_name}](" + \
                             GENERAL_TEAM_LINK + \
-                            "{enemy_team_id}) hat für [Spiel {game_day}](" + \
+                            "{enemy_team_id}) hat für [Spiel {match_day}](" + \
                             GENERAL_MATCH_LINK + \
-                            "{game_id}) ein neues [Lineup]({op_link}) aufgestellt. " + \
+                            "{match_id}) ein neues [Lineup]({op_link}) aufgestellt. " + \
                             EMOJI_LINEUP
 
 WEEKLY_UPDATE_TEXT = "Der nächste Spieltag:\n" + \
                      EMOJI_SOON + \
-                     "[Spieltag {game_day}](" + \
+                     "[Spieltag {match_day}](" + \
                      GENERAL_MATCH_LINK + \
-                     "{game_id}) gegen [{enemy_team_tag}](" + \
+                     "{match_id}) gegen [{enemy_team_tag}](" + \
                      GENERAL_TEAM_LINK + \
                      "{enemy_team_id}):\n" + \
                      "Hier ist der [{website_name} Link]({op_link}) des Teams."
 
-NEXT_GAME_IN_CALIBRATION = "Euer nächstes Spiel in der Kalibrierungsphase:\n" + \
-                           EMOJI_SOON + \
-                           "[Spiel {game_day}](" + \
-                           GENERAL_MATCH_LINK + \
-                           "{game_id}) gegen [{enemy_team_tag}](" + \
-                           GENERAL_TEAM_LINK + \
+NEXT_MATCH_IN_CALIBRATION = "Euer nächstes Spiel in der Kalibrierungsphase:\n" + \
+                            EMOJI_SOON + \
+                           "[Spiel {match_day}](" + \
+                            GENERAL_MATCH_LINK + \
+                           "{match_id}) gegen [{enemy_team_tag}](" + \
+                            GENERAL_TEAM_LINK + \
                            "{enemy_team_id}):\n" + \
                            "Hier ist der [{website_name} Link]({op_link}) des Teams."
 
@@ -276,16 +276,16 @@ DC_DELETE = "Alles klar ich lösche alle Verknüpfungen zu diesem Channel und de
 DC_BYE = f"Alles gelöscht. Gebt uns gerne Feedback, falls euch Funktionalitäten fehlen oder nicht gefallen. Bye! {EMOJI_PEACE}\n" \
          f"_Das Team kann jetzt in einem anderen Channel registriert werden, oder ein anderes Team kann in diesem Channel registriert werden._"
 DC_SCOUTING_NOT_FOUND = f"Die Scouting Website habe ich nicht gefunden.\n{DC_HELP_TEXT_SCOUTING}"
-TITLE_NEW_GAME_DAY = "Neuer Spieltag"
-TITLE_NEW_GAME = "Neues Spiel"
+TITLE_NEW_MATCH_DAY = "Neuer Spieltag"
+TITLE_NEW_MATCH = "Neues Spiel"
 TITLE_NEW_LINEUP = "Neues Lineup"
 TITLE_NEW_OWN_SUGGESTION = "Eigener neuer Zeitvorschlag"
 TITLE_NEW_SUGGESTION = "Neuer Zeitvorschlag eines Gegners"
-TITLE_GAME_CONFIRMATION = "Spielzeitbestätigung"
+TITLE_MATCH_CONFIRMATION = "Spielzeitbestätigung"
 
-NO_CURRENT_GAMES = "Ihr habt aktuell keine offenen Spiele."
+NO_CURRENT_MATCHES = "Ihr habt aktuell keine offenen Spiele."
 OVERVIEW = "Eine Übersicht eurer offenen Spiele:"
-GAME_DAY = "Spieltag"
+MATCH_DAY = "Spieltag"
 TIEBREAKER = "Tiebreaker"
 CURRENT_LINEUP = "Aktuelles Lineup"
 VS = "vs."

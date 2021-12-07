@@ -6,7 +6,7 @@ import requests
 
 from bots.message_dispatcher import MessageDispatcher
 from bots.messages import NewLineupInCalibrationMessage
-from modules.comparing.game_comparer import GameMetaData, GameComparer
+from modules.comparing.match_comparer import MatchComparer, PrimeLeagueMatchData
 
 thread_local = threading.local()
 calibration_logger = logging.getLogger("calibration")
@@ -19,24 +19,24 @@ def get_session():
 
 
 def check_calibration_match(match):
-    game_id = match.game_id
+    match_id = match.match_id
     team = match.team
-    gmd = GameMetaData.create_game_meta_data_from_website(team=team, game_id=game_id, )
-    cmp = GameComparer(match, gmd)
+    gmd = PrimeLeagueMatchData.create_from_website(team=team, match_id=match_id, )
+    cmp = MatchComparer(match, gmd)
 
-    log_message = f"New notification for {game_id} ({team}): "
-    calibration_logger.debug(f"Checking {game_id} ({team})...")
+    log_message = f"New notification for {match_id} ({team}): "
+    calibration_logger.debug(f"Checking {match_id} ({team})...")
     dispatcher = MessageDispatcher(team)
     if cmp.compare_lineup_confirmation():
         calibration_logger.debug(f"{log_message}Neues Lineup des gegnerischen Teams")
         gmd.get_enemy_team_data()
         match.update_enemy_team(gmd)
         match.update_enemy_lineup(gmd)
-        dispatcher.dispatch(NewLineupInCalibrationMessage, game=match, )
+        dispatcher.dispatch(NewLineupInCalibrationMessage, match=match, )
 
     match.update_from_gmd(gmd)
 
 
-def check(uncompleted_games):
+def check(uncompleted_matches):
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-        executor.map(check_calibration_match, uncompleted_games)
+        executor.map(check_calibration_match, uncompleted_matches)
