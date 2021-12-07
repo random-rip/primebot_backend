@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.RenameField(
             model_name='comment',
-            old_name='match',
+            old_name='game',
             new_name='match',
         ),
         migrations.RenameField(
@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
         ),
         migrations.RenameField(
             model_name='match',
-            old_name='match_id',
+            old_name='game_id',
             new_name='match_id',
         ),
         migrations.RenameField(
@@ -47,7 +47,7 @@ class Migration(migrations.Migration):
         ),
         migrations.RenameField(
             model_name='suggestion',
-            old_name='match',
+            old_name='game',
             new_name='match',
         ),
         migrations.AddField(

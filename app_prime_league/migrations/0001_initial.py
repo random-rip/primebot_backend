@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             name='Game',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('match_id', models.IntegerField()),
+                ('game_id', models.IntegerField()),
                 ('game_day', models.IntegerField()),
                 ('game_begin', models.DateTimeField(null=True)),
                 ('game_closed', models.BooleanField()),
@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('game_begin', models.DateTimeField()),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('match', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app_prime_league.Game')),
+                ('game', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app_prime_league.Game')),
             ],
             options={
                 'db_table': 'suggestion',
@@ -64,22 +64,22 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.AddField(
-            model_name='match',
+            model_name='game',
             name='enemy_lineup',
             field=models.ManyToManyField(to='app_prime_league.Player'),
         ),
         migrations.AddField(
-            model_name='match',
+            model_name='game',
             name='enemy_team',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='games_as_enemy_team', to='app_prime_league.Team'),
         ),
         migrations.AddField(
-            model_name='match',
+            model_name='game',
             name='team',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='games_against', to='app_prime_league.Team'),
         ),
         migrations.AlterUniqueTogether(
-            name='match',
-            unique_together={('match_id', 'team')},
+            name='game',
+            unique_together={('game_id', 'team')},
         ),
     ]
