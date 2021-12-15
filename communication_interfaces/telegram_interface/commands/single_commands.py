@@ -69,20 +69,20 @@ def set_logo(update: Update, context: CallbackContext):
         )
     return ConversationHandler.END
 
-#nur Bilder, payload für dog gif zu groß
+
 # /bop
 @log_command
 def bop(update: Update, context: CallbackContext):
     x = random.randrange(2)
     if x == 0: #if settings.PREFERRED_ANIMAL == 'dog'
-        contents = requests.get('https://dog.ceo/api/breeds/image/random').json()
-        url = contents['message']
+        contents = requests.get('https://api.thedogapi.com/v1/images/search?mime_types=gif').json()
+        url = contents[0]['url']
     if x == 1: #if settings.PREFERRED_ANIMAL == 'cat'
-        url = 'https://cataas.com/cat'
+        url = 'https://cataas.com/cat/gif'
     chat_id = update.message.chat.id
     bot = context.bot
     try:
-        bot.send_photo(chat_id=chat_id, photo=url)
+        bot.send_animation(chat_id=chat_id, animation=url)
     except Exception as e:
         logger.exception(e)
 
