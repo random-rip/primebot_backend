@@ -1,5 +1,6 @@
 import logging
 import os
+import random
 import re
 from io import BytesIO
 
@@ -160,36 +161,21 @@ class DiscordBot(Bot):
             await sync_to_async(team.save)()
             await ctx.send(LanguagePack.SET_SCOUTING.format(scouting_website=scouting_website.name))
 
+        #nur Bilder, bei dog gifs ist payload zu groß
         @self.bot.command(name="bop", help=LanguagePack.DC_HELP_TEXT_BOP, pass_context=True)
         @commands.check(log_from_discord)
-        async def bop(ctx):
-            contents = requests.get('https://dog.ceo/api/breeds/image/random').json()
-            url = contents['message']
+        async def bop2(ctx):
+            x = random.randrange(2) #wenn settings funktionieren kann das weg
+            if x == 0: #if settings.PREFERRED_ANIMAL == 'dog':
+                contents = requests.get('https://dog.ceo/api/breeds/image/random').json()
+                url = contents['message']
+            if x == 1: #if settings.PREFERRED_ANIMAL == 'cat':
+                url = 'https://cataas.com/cat'
             async with ctx.typing():
                 async with aiohttp.ClientSession() as session:
                     async with session.get(url) as resp:
                         buffer = BytesIO(await resp.read())
-            await ctx.send(file=discord.File(fp=buffer, filename="dog.jpg"))
-
-        @self.bot.command(name="tac", help=LanguagePack.DC_HELP_TEXT_TAC, pass_context=True)
-        @commands.check(log_from_discord)
-        async def tac(ctx):
-            url = 'https://cataas.com/cat'
-            async with ctx.typing():
-                async with aiohttp.ClientSession() as session:
-                    async with session.get(url) as resp:
-                        buffer = BytesIO(await resp.read())
-            await ctx.send(file=discord.File(fp=buffer, filename="cat.jpg"))
-
-        @self.bot.command(name="tac_gif", help=LanguagePack.DC_HELP_TEXT_TAC_GIF, pass_context=True)
-        @commands.check(log_from_discord)
-        async def tac_gif(ctx):
-            url = 'https://cataas.com/cat/gif'
-            async with ctx.typing():
-                async with aiohttp.ClientSession() as session:
-                    async with session.get(url) as resp:
-                        buffer = BytesIO(await resp.read())
-            await ctx.send(file=discord.File(fp=buffer, filename="cat.gif"))
+            await ctx.send(file=discord.File(fp=buffer, filename="bop.jpg"))
 
         @self.bot.command(name="overview", help=LanguagePack.DC_HELP_TEXT_OVERVIEW, pass_context=True)
         @commands.check(mysql_has_gone_away)
