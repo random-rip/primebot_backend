@@ -164,7 +164,7 @@ class DiscordBot(Bot):
         #nur Bilder, bei dog gifs ist payload zu groß
         @self.bot.command(name="bop", help=LanguagePack.DC_HELP_TEXT_BOP, pass_context=True)
         @commands.check(log_from_discord)
-        async def bop2(ctx):
+        async def bop(ctx):
             x = random.randrange(2) #wenn settings funktionieren kann das weg
             if x == 0: #if settings.PREFERRED_ANIMAL == 'dog':
                 contents = requests.get('https://dog.ceo/api/breeds/image/random').json()
