@@ -26,13 +26,16 @@ class DogAPI(AnimalAPI):
         return url
 
 
-class RandomAnimal:
-    animals = [CatAPI, DogAPI]
+class GIFinator:
+    apis = [CatAPI, DogAPI]
 
     @staticmethod
-    def get_url():
-        Klass = random.choice(RandomAnimal.animals)
+    def get_gif(team=None):
+        # Todo implement personalisiertes GIF über team
+        Klass = random.choice(GIFinator.apis)
         try:
             return Klass.get_url()
         except Exception:
+            # Wir können auf die statische DogAPI zurückgreifen anstatt einen Error zu schmeissen. Und nur wenn die auch
+            # fehlschlägt einen Error schmeissen, der abgefangen wird. Dann wird ein Text zum Team zurückgegeben.
             raise ConnectionError("Not accessible")
