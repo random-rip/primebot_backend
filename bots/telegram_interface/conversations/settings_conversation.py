@@ -6,7 +6,7 @@ from app_prime_league.teams import update_settings
 from bots.languages.de_DE import ENABLED, SETTINGS_MAIN_MENU, DISABLED, BOOLEAN_KEYBOARD_OPTIONS, CLOSE, \
     SETTINGS_FINISHED, CURRENTLY
 from bots.utils import mysql_has_gone_away_decorator
-from bots.validation_messages import wrong_chat_type, team_not_exists
+from bots.telegram_interface.validation_messages import wrong_chat_type, team_not_exists
 from utils.messages_logger import log_command, log_callbacks
 
 SETTINGS = {

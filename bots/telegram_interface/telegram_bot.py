@@ -10,7 +10,7 @@ from telegram.utils.helpers import mention_html
 from telepot.exception import BotWasKickedError, BotWasBlockedError
 
 from bots import send_message
-from bots.base_bot import Bot
+from bots.base.bot import Bot
 from bots.languages.de_DE import MESSAGE_NOT_PINNED_TEXT, CANT_PIN_MSG_IN_PRIVATE_CHAT
 from bots.messages import BaseMessage
 from bots.telegram_interface.commands import single_commands

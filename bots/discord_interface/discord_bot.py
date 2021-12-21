@@ -13,7 +13,7 @@ from discord.ext import commands
 
 from app_prime_league.models import Team, ScoutingWebsite
 from app_prime_league.teams import register_team
-from bots.base_bot import Bot
+from bots.base.bot import Bot
 from bots.languages import de_DE as LanguagePack
 from bots.messages import MatchesOverview, BaseMessage
 from bots.utils import mysql_has_gone_away
