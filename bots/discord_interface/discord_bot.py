@@ -1,5 +1,6 @@
 import logging
 import os
+import random
 import re
 from io import BytesIO
 
@@ -163,13 +164,17 @@ class DiscordBot(Bot):
         @self.bot.command(name="bop", help=LanguagePack.DC_HELP_TEXT_BOP, pass_context=True)
         @commands.check(log_from_discord)
         async def bop(ctx):
-            contents = requests.get('https://dog.ceo/api/breeds/image/random').json()
-            url = contents['message']
+            x = random.randrange(2)  # wenn settings funktionieren kann das weg
+            if x == 0:  # if settings.PREFERRED_ANIMAL == 'dog':
+                contents = requests.get('https://api.thedogapi.com/v1/images/search?mime_types=gif').json()
+                url = contents[0]['url']
+            if x == 1:  # if settings.PREFERRED_ANIMAL == 'cat':
+                url = 'https://cataas.com/cat/gif'
             async with ctx.typing():
                 async with aiohttp.ClientSession() as session:
                     async with session.get(url) as resp:
                         buffer = BytesIO(await resp.read())
-            await ctx.send(file=discord.File(fp=buffer, filename="dog.jpg"))
+            await ctx.send(file=discord.File(fp=buffer, filename="bop.gif"))
 
         @self.bot.command(name="overview", help=LanguagePack.DC_HELP_TEXT_OVERVIEW, pass_context=True)
         @commands.check(mysql_has_gone_away)

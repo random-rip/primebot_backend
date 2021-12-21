@@ -1,5 +1,6 @@
 import logging
 import os
+import random
 import urllib.request
 
 import requests
@@ -72,12 +73,16 @@ def set_logo(update: Update, context: CallbackContext):
 # /bop
 @log_command
 def bop(update: Update, context: CallbackContext):
-    contents = requests.get('https://dog.ceo/api/breeds/image/random').json()
-    url = contents['message']
+    x = random.randrange(2)
+    if x == 0: #if settings.PREFERRED_ANIMAL == 'dog'
+        contents = requests.get('https://api.thedogapi.com/v1/images/search?mime_types=gif').json()
+        url = contents[0]['url']
+    if x == 1: #if settings.PREFERRED_ANIMAL == 'cat'
+        url = 'https://cataas.com/cat/gif'
     chat_id = update.message.chat.id
     bot = context.bot
     try:
-        bot.send_photo(chat_id=chat_id, photo=url)
+        bot.send_animation(chat_id=chat_id, animation=url)
     except Exception as e:
         logger.exception(e)
 
