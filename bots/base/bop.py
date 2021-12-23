@@ -14,7 +14,8 @@ class AnimalAPI:
 class CatAPI(AnimalAPI):
     @classmethod
     def get_url(cls):
-        url = 'https://cataas.com/cat/gif'
+        contents = requests.get('https://cataas.com/c/gif?json=true').json()
+        url = 'https://cataas.com'+contents['url']
         return url
 
 
@@ -32,10 +33,8 @@ class GIFinator:
     @staticmethod
     def get_gif(team=None):
         # Todo implement personalisiertes GIF über team
-        Klass = random.choice(GIFinator.apis)
+        animal = random.choice(GIFinator.apis)
         try:
-            return Klass.get_url()
+            return animal.get_url()
         except Exception:
-            # Wir können auf die statische DogAPI zurückgreifen anstatt einen Error zu schmeissen. Und nur wenn die auch
-            # fehlschlägt einen Error schmeissen, der abgefangen wird. Dann wird ein Text zum Team zurückgegeben.
             raise ConnectionError("Not accessible")

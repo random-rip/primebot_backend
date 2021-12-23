@@ -1,18 +1,17 @@
 import logging
 import os
-import random
 import re
 from io import BytesIO
 
 import aiohttp
 import discord
-import requests
 from asgiref.sync import sync_to_async
 from discord import Webhook, RequestsWebhookAdapter, Embed, Colour, NotFound
 from discord.ext import commands
 
 from app_prime_league.models import Team, ScoutingWebsite
 from app_prime_league.teams import register_team
+from bots.base.bop import GIFinator
 from bots.base.bot import Bot
 from bots.languages import de_DE as LanguagePack
 from bots.messages import MatchesOverview, BaseMessage
@@ -164,12 +163,11 @@ class DiscordBot(Bot):
         @self.bot.command(name="bop", help=LanguagePack.DC_HELP_TEXT_BOP, pass_context=True)
         @commands.check(log_from_discord)
         async def bop(ctx):
-            x = random.randrange(2)  # wenn settings funktionieren kann das weg
-            if x == 0:  # if settings.PREFERRED_ANIMAL == 'dog':
-                contents = requests.get('https://api.thedogapi.com/v1/images/search?mime_types=gif').json()
-                url = contents[0]['url']
-            if x == 1:  # if settings.PREFERRED_ANIMAL == 'cat':
-                url = 'https://cataas.com/cat/gif'
+            try:
+                url = GIFinator.get_gif()
+            except ConnectionError:
+                await ctx.send("It's not my fault, but I can't get you your surprise. :(")
+                return
             async with ctx.typing():
                 async with aiohttp.ClientSession() as session:
                     async with session.get(url) as resp:
