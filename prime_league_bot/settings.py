@@ -23,8 +23,9 @@ environ.Env.read_env()  # reading .env file
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# SECURITY WARNING: keep the secret __key used in production secret!
 SECRET_KEY = env.str('DJANGO_SECRET_KEY', default="")
+FERNET_KEY = env.str("FERNET_SECRET_KEY", default="")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DJANGO_DEBUG', default=False)
@@ -135,7 +136,7 @@ GAME_SPORTS_BASE_URL = "https://api.gamesports.net/leagues/primebot"
 
 MATCH_URI = "https://www.primeleague.gg/de/leagues/matches/"
 TEAM_URI = "https://www.primeleague.gg/de/leagues/teams/"
-
+PRIMEBOT_BASE_URL = env.str("PRIMEBOT_URL")
 
 STORAGE_DIR = os.path.join(BASE_DIR, "storage", )
 

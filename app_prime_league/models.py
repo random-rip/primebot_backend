@@ -230,6 +230,16 @@ class Setting(models.Model):
         unique_together = [("team", "attr_name"), ]
 
 
+class SettingsExpiring(models.Model):
+    expires = models.DateTimeField()
+    team = models.OneToOneField(Team, on_delete=models.CASCADE, related_name="settings_expiring")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "settings_expiring"
+
+
 class Comment(models.Model):
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
     comment_id = models.CharField(max_length=50)
