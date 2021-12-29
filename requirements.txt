@@ -13,6 +13,7 @@ discord.py==1.6.0
 Django==3.0.8
 django-environ==0.4.5
 django-extensions==3.0.2
+djangorestframework==3.13.1
 dnspython==1.16.0
 idna==2.10
 multidict==4.7.6
@@ -20,6 +21,7 @@ mysqlclient==2.0.1
 numpy==1.21.2
 protobuf==3.12.2
 pycparser==2.20
+python-dateutil==2.8.2
 python-telegram-bot==12.8
 pytz==2020.1
 requests==2.24.0

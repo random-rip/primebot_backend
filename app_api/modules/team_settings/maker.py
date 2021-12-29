@@ -1,25 +1,29 @@
 import hashlib
+import urllib
 from datetime import datetime, timedelta
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import urlparse
 
+import cryptography
 from cryptography.fernet import Fernet
 from dateutil.parser import ParserError
 from django.conf import settings
 from django.utils import timezone
+from rest_framework.exceptions import ValidationError
 
 from app_prime_league.models import Team, SettingsExpiring
 
-MalformedRequest = (0, "Request kaputt",)
-MalformedTeam = (1, "Team kaputt",)
-MalformedExpiringAt = (2, "expiring kaputt",)
-MalformedPlatform = (3, "Platform kaputt",)
-MalformedContent = (4, "Content kaputt",)
-ExpiredExpiringAt = (5, "expired",)
+MalformedRequest = (0, "Invalid Request",)
+MalformedTeam = (1, "Invalid Team",)
+MalformedExpiringAt = (2, "Invalid Expiring At",)
+MalformedPlatform = (3, "Invalid Platform",)
+MalformedContent = (4, "Invalid Content",)
+ExpiredExpiringAt = (5, "Url Expired",)
 
 
 class SettingsMaker:
     """
-    WIP Classname. Class to create temporary links.
+    Class to handle the whole cryptography logic, encoding and decoding data, validating data and creating temporary
+    links.
     """
     __hash_func = hashlib.sha256
     __encoder = "utf-8"
@@ -34,6 +38,7 @@ class SettingsMaker:
         self.platform = None
         self.expiring_at = None
         self.errors = []
+        self.data = None
 
         if "team" in kwargs:
             self.__init_encoding(**kwargs)
@@ -41,7 +46,7 @@ class SettingsMaker:
         if "data" in kwargs:
             self.__init_decoding(**kwargs)
             return
-        raise KeyError("'team' xor 'link' is required at instance creation.")
+        raise KeyError("'team' or 'data' is required at instance creation.")
 
     def __init_encoding(self, **kwargs):
         self.team = kwargs.get("team")
@@ -49,56 +54,68 @@ class SettingsMaker:
         self.expiring_at = kwargs.get("expiring_at")
 
     def __init_decoding(self, **kwargs):
-        self.link = kwargs.get("link")
+        self.data = kwargs.get("data")
 
-    def link_is_valid(self):
-        parsed_url = urlparse(self.link)
-        values = parse_qs(parsed_url.query)
+    def enc_and_hash_are_valid(self, raise_exception=False):
         self.errors = []
         try:
-            self.__parse_team(values)
-            self.__parse_expiring_at(values)
-            self.__parse_platform(values)
-            self.__parse_content(values)
+            self.__parse_team()
         except Exception:
             self.errors.append(MalformedRequest)
+            raise
+        if raise_exception and len(self.errors) > 0:
+            raise ValidationError(self.errors)
+        print(self.errors)
         return len(self.errors) == 0
 
-    def __parse_team(self, values):
+    def data_is_valid(self, raise_exception=False):
+        self.errors = []
         try:
-            encrypted_team_id = values[self.qp_team][0]
+            self.__parse_team()
+            self.__parse_expiring_at()
+            # self.__parse_platform()
+            self.__parse_content()
+        except Exception:
+            self.errors.append(MalformedRequest)
+            raise
+        if raise_exception and len(self.errors) > 0:
+            raise ValidationError(self.errors)
+        return len(self.errors) == 0
+
+    def __parse_team(self):
+        try:
+            encrypted_team_id = self.data.get(self.qp_team)
+            print("enc", encrypted_team_id)
+            print(len(encrypted_team_id))
             self.team = Team.objects.get(id=self.decrypt(encrypted_team_id))
-            validation_hash = values[self.qp_validation_hash][0]
+            validation_hash = self.data.get(self.qp_validation_hash)
+            print("hash", validation_hash)
             if self.team is None or validation_hash != self.hash(self.team.id):
                 self.errors.append(MalformedTeam)
-        except (KeyError, Team.DoesNotExist):
+        except (KeyError, Team.DoesNotExist, cryptography.fernet.InvalidToken):
+            # TODO
             self.errors.append(MalformedTeam)
 
-    def __parse_expiring_at(self, values):
+    def __parse_expiring_at(self):
         try:
-            expiring_at = datetime.strptime(values[self.qp_expiring_at][0], '%Y-%m-%dT%H:%M:%S.%f')
-            expiring_at = expiring_at.replace(tzinfo=timezone.utc)
             if not hasattr(self.team, "settings_expiring"):
                 self.errors.append(ExpiredExpiringAt)
                 return
-            if expiring_at != self.team.settings_expiring.expires:
-                self.errors.append(MalformedExpiringAt)
-                return
-            if timezone.now() >= expiring_at:
+            if timezone.now() >= self.team.settings_expiring.expires:
                 self.errors.append(ExpiredExpiringAt)
                 return
         except (KeyError, ParserError, Team.DoesNotExist):
             self.errors.append(MalformedExpiringAt)
 
-    def __parse_platform(self, values):
+    def __parse_platform(self):
         try:
-            platform = values[self.qp_platform][0]
+            platform = self.data.get(self.qp_platform)
             if platform not in ["discord", "telegram"]:
                 self.errors.append(MalformedPlatform)
         except (KeyError,):
             self.errors.append(MalformedPlatform)
 
-    def __parse_content(self, values):
+    def __parse_content(self):
         try:
             pass
         except (KeyError,):
@@ -136,6 +153,5 @@ class SettingsMaker:
             self.qp_expiring_at: expiring_at.strftime('%Y-%m-%dT%H:%M:%S.%f'),
             self.qp_platform: platform
         }
-        for key, value in qps.items():
-            url += f"&{key}={value}"
+        url += urllib.parse.urlencode(qps, doseq=False, )
         return url

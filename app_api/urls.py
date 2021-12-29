@@ -1,7 +1,5 @@
-from django.urls import path
-
-from app_api import views
+from django.urls import path, include
 
 urlpatterns = [
-    path('settings/', views.SettingsView.as_view(), )
+    path('settings/', include("app_api.modules.team_settings.urls"), )
 ]
