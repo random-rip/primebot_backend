@@ -32,6 +32,12 @@ DEBUG = env.bool('DJANGO_DEBUG', default=False)
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", cast=str, default=[])
 
 # Application definition
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    # "http://127.0.0.1:8000",
+    # "http://192.168.189.78:8001",
+    # "http://192.168.189.78:8001",
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -42,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 3rd party
     'django_extensions',
+    "corsheaders",
     # own
     'app_prime_league',
     'modules',
@@ -49,6 +56,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -136,7 +144,7 @@ GAME_SPORTS_BASE_URL = "https://api.gamesports.net/leagues/primebot"
 
 MATCH_URI = "https://www.primeleague.gg/de/leagues/matches/"
 TEAM_URI = "https://www.primeleague.gg/de/leagues/teams/"
-PRIMEBOT_BASE_URL = env.str("PRIMEBOT_URL")
+SITE_ID = env.str("SITE_ID")
 
 STORAGE_DIR = os.path.join(BASE_DIR, "storage", )
 

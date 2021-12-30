@@ -1,6 +1,6 @@
 import hashlib
 import urllib
-from datetime import datetime, timedelta
+from datetime import timedelta
 from urllib.parse import urlparse
 
 import cryptography
@@ -10,13 +10,14 @@ from django.conf import settings
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
 
-from app_prime_league.models import Team, SettingsExpiring
+from app_prime_league.models import Team, SettingsExpiring, ScoutingWebsite
 
 MALFORMED_REQUEST = "invalid_request"
 MALFORMED_TEAM = "invalid_team"
 MALFORMED_DATE = "invalid_date"
 MALFORMED_PLATFORM = "invalid_platform"
 MALFORMED_CONTENT = "invalid_content"
+MISSING_CONTENT = "missing_content"
 EXPIRED_DATE = "url_expired"
 
 
@@ -28,10 +29,11 @@ class SettingsMaker:
     __hash_func = hashlib.sha256
     __encoder = "utf-8"
 
-    qp_team = "enc"
-    qp_validation_hash = "hash"
-    qp_expiring_at = "expiring_at"
-    qp_platform = "platform"
+    key_team = "enc"
+    key_validation_hash = "hash"
+    key_expiring_at = "expiring_at"
+    key_platform = "platform"
+    key_content = "settings"
 
     def __init__(self, **kwargs):
         self.team = None
@@ -39,6 +41,8 @@ class SettingsMaker:
         self.expiring_at = None
         self.errors = []
         self.data = None
+        self.settings = {}
+        self.__data_validated = False
 
         if "team" in kwargs:
             self.__init_encoding(**kwargs)
@@ -62,12 +66,11 @@ class SettingsMaker:
             self.__parse_team()
         except Exception:
             self.errors.append(MALFORMED_REQUEST)
-            raise
         if raise_exception and len(self.errors) > 0:
             raise ValidationError({"errors": self.errors})
         return len(self.errors) == 0
 
-    def data_is_valid(self, raise_exception=False):
+    def validate_data(self, raise_exception=False):
         self.errors = []
         try:
             self.__parse_team()
@@ -76,16 +79,16 @@ class SettingsMaker:
             self.__parse_content()
         except Exception:
             self.errors.append(MALFORMED_REQUEST)
-            raise
         if raise_exception and len(self.errors) > 0:
             raise ValidationError({"errors": self.errors})
+        self.__data_validated = True
         return len(self.errors) == 0
 
     def __parse_team(self):
         try:
-            encrypted_team_id = self.data.get(self.qp_team)
+            encrypted_team_id = self.data.get(self.key_team)
             self.team = Team.objects.get(id=self.decrypt(encrypted_team_id))
-            validation_hash = self.data.get(self.qp_validation_hash)
+            validation_hash = self.data.get(self.key_validation_hash)
             if self.team is None or validation_hash != self.hash(self.team.id):
                 self.errors.append(MALFORMED_TEAM)
         except (KeyError, Team.DoesNotExist, cryptography.fernet.InvalidToken):
@@ -104,7 +107,7 @@ class SettingsMaker:
 
     def __parse_platform(self):
         try:
-            platform = self.data.get(self.qp_platform)
+            platform = self.data.get(self.key_platform)
             if platform not in ["discord", "telegram"]:
                 self.errors.append(MALFORMED_PLATFORM)
         except (KeyError,):
@@ -112,8 +115,19 @@ class SettingsMaker:
 
     def __parse_content(self):
         try:
-            pass
-        except (KeyError,):
+            content = self.data.get(self.key_content)
+            self.settings = {x["key"]: x["value"] for x in content}
+            if not all(k in self.settings for k in [
+                "WEEKLY_OP_LINK",
+                "PIN_WEEKLY_OP_LINK",
+                "LINEUP_OP_LINK",
+                "SCHEDULING_SUGGESTION",
+                "SCHEDULING_CONFIRMATION",
+                "SCOUTING_WEBSITE",
+            ]):
+                self.errors.append(MISSING_CONTENT)
+            self.scouting_website = ScoutingWebsite.objects.get(name=self.settings.pop("SCOUTING_WEBSITE"))
+        except (KeyError, ScoutingWebsite.DoesNotExist):
             self.errors.append(MALFORMED_CONTENT)
 
     @classmethod
@@ -141,12 +155,23 @@ class SettingsMaker:
 
         SettingsExpiring.objects.filter(team=self.team).delete()
         SettingsExpiring.objects.create(expires=expiring_at, team=self.team)
-        url = settings.PRIMEBOT_BASE_URL + "/api/settings/?"
+        url = settings.SITE_ID + "/api/settings/?"
         qps = {
-            self.qp_team: self.encrypt(self.team.id),
-            self.qp_validation_hash: self.hash(self.team.id),
-            self.qp_expiring_at: expiring_at.strftime('%Y-%m-%dT%H:%M:%S.%f'),
-            self.qp_platform: platform
+            self.key_team: self.encrypt(self.team.id),
+            self.key_validation_hash: self.hash(self.team.id),
+            self.key_platform: platform
         }
         url += urllib.parse.urlencode(qps, doseq=False, )
         return url
+
+    def save(self):
+        if not self.__data_validated:
+            raise Exception("call .validate_data first.")
+        for key, value in self.settings.items():
+            setting, _ = self.team.setting_set.get_or_create(attr_name=key, defaults={
+                "attr_value": value,
+            })
+            setting.attr_value = value
+            setting.save()
+        self.team.scouting_website = self.scouting_website
+        self.team.save()

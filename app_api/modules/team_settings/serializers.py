@@ -25,6 +25,8 @@ class SettingsTeamSerializer(serializers.Serializer):
     team_name = serializers.CharField()
     platforms = serializers.ListField(child=serializers.CharField(), allow_null=True)
     settings = serializers.ListField(child=SingleSettingSerializer(), allow_null=True)
+    expiring_at = serializers.DateTimeField(allow_null=True)
+    logo_url = serializers.URLField(allow_null=True)
 
     create = None
     update = None
@@ -69,5 +71,7 @@ def team_to_serializer_data(team: Team):
         "team_name": team.name,
         "platforms": platforms,
         "settings": team_settings,
+        "expiring_at": team.settings_expiring.expires,
+        "logo_url": team.logo_url,
     })
     return serializer.data
