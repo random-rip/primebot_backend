@@ -12,12 +12,12 @@ from rest_framework.exceptions import ValidationError
 
 from app_prime_league.models import Team, SettingsExpiring
 
-MalformedRequest = (0, "Invalid Request",)
-MalformedTeam = (1, "Invalid Team",)
-MalformedExpiringAt = (2, "Invalid Expiring At",)
-MalformedPlatform = (3, "Invalid Platform",)
-MalformedContent = (4, "Invalid Content",)
-ExpiredExpiringAt = (5, "Url Expired",)
+MALFORMED_REQUEST = "invalid_request"
+MALFORMED_TEAM = "invalid_team"
+MALFORMED_DATE = "invalid_date"
+MALFORMED_PLATFORM = "invalid_platform"
+MALFORMED_CONTENT = "invalid_content"
+EXPIRED_DATE = "url_expired"
 
 
 class SettingsMaker:
@@ -61,11 +61,10 @@ class SettingsMaker:
         try:
             self.__parse_team()
         except Exception:
-            self.errors.append(MalformedRequest)
+            self.errors.append(MALFORMED_REQUEST)
             raise
         if raise_exception and len(self.errors) > 0:
-            raise ValidationError(self.errors)
-        print(self.errors)
+            raise ValidationError({"errors": self.errors})
         return len(self.errors) == 0
 
     def data_is_valid(self, raise_exception=False):
@@ -76,50 +75,46 @@ class SettingsMaker:
             # self.__parse_platform()
             self.__parse_content()
         except Exception:
-            self.errors.append(MalformedRequest)
+            self.errors.append(MALFORMED_REQUEST)
             raise
         if raise_exception and len(self.errors) > 0:
-            raise ValidationError(self.errors)
+            raise ValidationError({"errors": self.errors})
         return len(self.errors) == 0
 
     def __parse_team(self):
         try:
             encrypted_team_id = self.data.get(self.qp_team)
-            print("enc", encrypted_team_id)
-            print(len(encrypted_team_id))
             self.team = Team.objects.get(id=self.decrypt(encrypted_team_id))
             validation_hash = self.data.get(self.qp_validation_hash)
-            print("hash", validation_hash)
             if self.team is None or validation_hash != self.hash(self.team.id):
-                self.errors.append(MalformedTeam)
+                self.errors.append(MALFORMED_TEAM)
         except (KeyError, Team.DoesNotExist, cryptography.fernet.InvalidToken):
-            # TODO
-            self.errors.append(MalformedTeam)
+            self.errors.append(MALFORMED_TEAM)
 
     def __parse_expiring_at(self):
         try:
             if not hasattr(self.team, "settings_expiring"):
-                self.errors.append(ExpiredExpiringAt)
+                self.errors.append(EXPIRED_DATE)
                 return
             if timezone.now() >= self.team.settings_expiring.expires:
-                self.errors.append(ExpiredExpiringAt)
+                self.errors.append(EXPIRED_DATE)
                 return
         except (KeyError, ParserError, Team.DoesNotExist):
-            self.errors.append(MalformedExpiringAt)
+            self.errors.append(MALFORMED_DATE)
 
     def __parse_platform(self):
         try:
             platform = self.data.get(self.qp_platform)
             if platform not in ["discord", "telegram"]:
-                self.errors.append(MalformedPlatform)
+                self.errors.append(MALFORMED_PLATFORM)
         except (KeyError,):
-            self.errors.append(MalformedPlatform)
+            self.errors.append(MALFORMED_PLATFORM)
 
     def __parse_content(self):
         try:
             pass
         except (KeyError,):
-            self.errors.append(MalformedContent)
+            self.errors.append(MALFORMED_CONTENT)
 
     @classmethod
     def encrypt(cls, value) -> str:
