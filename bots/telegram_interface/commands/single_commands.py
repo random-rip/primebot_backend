@@ -1,15 +1,15 @@
 import logging
 import os
-import random
 import urllib.request
 
-import requests
 import telegram
 from django.core.files import File
 from telegram import Update, ReplyKeyboardRemove
+from telegram.error import BadRequest
 from telegram.ext import CallbackContext, ConversationHandler
 
 from app_prime_league.models import Team
+from bots.base.bop import GIFinator
 from bots.languages.de_DE import (
     HELP_COMMAND_LIST, ISSUE, TEAM_NOT_IN_DB_TEXT, PHOTO_SUCESS_TEXT, PHOTO_ERROR_TEXT, HELP_TEXT, FEEDBACK,
     EXPLAIN_TEXT, CANCEL, TG_DELETE
@@ -73,14 +73,13 @@ def set_logo(update: Update, context: CallbackContext):
 # /bop
 @log_command
 def bop(update: Update, context: CallbackContext):
-    x = random.randrange(2)
-    if x == 0: #if settings.PREFERRED_ANIMAL == 'dog'
-        contents = requests.get('https://api.thedogapi.com/v1/images/search?mime_types=gif').json()
-        url = contents[0]['url']
-    if x == 1: #if settings.PREFERRED_ANIMAL == 'cat'
-        url = 'https://cataas.com/cat/gif'
     chat_id = update.message.chat.id
     bot = context.bot
+    try:
+        url = GIFinator.get_gif()
+    except ConnectionError:
+        bot.send_message(chat_id=chat_id, text="It's not my fault but I can't give you your surprise. :(")
+        return
     try:
         bot.send_animation(chat_id=chat_id, animation=url)
     except Exception as e:

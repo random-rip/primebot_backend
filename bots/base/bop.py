@@ -14,7 +14,8 @@ class AnimalAPI:
 class CatAPI(AnimalAPI):
     @classmethod
     def get_url(cls):
-        url = 'https://cataas.com/cat/gif'
+        contents = requests.get('https://cataas.com/c/gif?json=true').json()
+        url = 'https://cataas.com'+contents['url']
         return url
 
 
@@ -26,13 +27,14 @@ class DogAPI(AnimalAPI):
         return url
 
 
-class RandomAnimal:
-    animals = [CatAPI, DogAPI]
+class GIFinator:
+    apis = [CatAPI, DogAPI]
 
     @staticmethod
-    def get_url():
-        Klass = random.choice(RandomAnimal.animals)
+    def get_gif(team=None):
+        # Todo implement personalisiertes GIF über team
+        animal = random.choice(GIFinator.apis)
         try:
-            return Klass.get_url()
+            return animal.get_url()
         except Exception:
             raise ConnectionError("Not accessible")
