@@ -35,8 +35,9 @@ HELP_COMMAND_LIST = \
     "/issue - um zu erfahren, wie Du eine Störung melden kannst\n" \
     "/feedback - um meinen Entwicklern dein Feedback mitzuteilen\n" \
     "/explain - um eine Erklärung zu dem Bot zu erhalten\n" \
- \
-    # Antwort auf /issue
+    "/delete - um das registrierte Team zu entfernen\n" \
+
+# Antwort auf /issue
 ISSUE = f"Hast Du einen Fehler bemerkt? Bitte schreibe den Entwicklern eine Nachricht in ihrer " \
         f"[Support-Gruppe]({SUPPORT_GROUP_LINK}) (am besten inklusive Screenshots o.ä. /bop) "
 
