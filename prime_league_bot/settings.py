@@ -170,6 +170,8 @@ DEFAULT_SCOUTING_NAME = "OP.GG"
 DEFAULT_SCOUTING_URL = "https://euw.op.gg/multi/?query={}"
 DEFAULT_SCOUTING_SEP = ","
 
+TEMP_LINK_TIMEOUT_MINUTES = 60
+
 if not DEBUG:
     LOGGING = {
         'version': 1,

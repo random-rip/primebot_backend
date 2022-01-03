@@ -5,16 +5,16 @@ import urllib.request
 
 import requests
 import telegram
+from django.conf import settings
 from django.core.files import File
 from telegram import Update, ReplyKeyboardRemove
 from telegram.ext import CallbackContext, ConversationHandler
 
+from app_api.modules.team_settings.maker import SettingsMaker
 from app_prime_league.models import Team
-from bots.languages.de_DE import (
-    HELP_COMMAND_LIST, ISSUE, TEAM_NOT_IN_DB_TEXT, PHOTO_SUCESS_TEXT, PHOTO_ERROR_TEXT, HELP_TEXT, FEEDBACK,
-    EXPLAIN_TEXT, CANCEL, TG_DELETE
-)
+from bots.languages import de_DE as LaP
 from bots.messages import MatchesOverview
+from bots.telegram_interface.validation_messages import team_not_exists
 from bots.utils import mysql_has_gone_away_decorator
 from prime_league_bot.settings import STORAGE_DIR
 from utils.changelogs import CHANGELOGS
@@ -54,18 +54,18 @@ def set_logo(update: Update, context: CallbackContext):
     chat_id = update.message.chat.id
     if not Team.objects.filter(telegram_id=chat_id).exists():
         update.message.reply_markdown(
-            TEAM_NOT_IN_DB_TEXT,
+            LaP.TEAM_NOT_IN_DB_TEXT,
         )
         return ConversationHandler.END
     url = Team.objects.get(telegram_id=chat_id).logo_url
     successful = set_photo(chat_id, context, url)
     if successful:
         update.message.reply_markdown(
-            PHOTO_SUCESS_TEXT,
+            LaP.PHOTO_SUCESS_TEXT,
         )
     else:
         update.message.reply_markdown(
-            PHOTO_ERROR_TEXT,
+            LaP.PHOTO_ERROR_TEXT,
         )
     return ConversationHandler.END
 
@@ -74,10 +74,10 @@ def set_logo(update: Update, context: CallbackContext):
 @log_command
 def bop(update: Update, context: CallbackContext):
     x = random.randrange(2)
-    if x == 0: #if settings.PREFERRED_ANIMAL == 'dog'
+    if x == 0:  # if settings.PREFERRED_ANIMAL == 'dog'
         contents = requests.get('https://api.thedogapi.com/v1/images/search?mime_types=gif').json()
         url = contents[0]['url']
-    if x == 1: #if settings.PREFERRED_ANIMAL == 'cat'
+    if x == 1:  # if settings.PREFERRED_ANIMAL == 'cat'
         url = 'https://cataas.com/cat/gif'
     chat_id = update.message.chat.id
     bot = context.bot
@@ -91,7 +91,7 @@ def bop(update: Update, context: CallbackContext):
 @log_command
 def cancel(update: Update, context: CallbackContext):
     update.message.reply_markdown(
-        CANCEL,
+        LaP.CANCEL,
         reply_markup=ReplyKeyboardRemove(),
         disable_web_page_preview=True,
     )
@@ -102,7 +102,7 @@ def cancel(update: Update, context: CallbackContext):
 @log_command
 def helpcommand(update: Update, context: CallbackContext):
     update.message.reply_markdown(
-        f"{HELP_TEXT}{HELP_COMMAND_LIST}",
+        f"{LaP.HELP_TEXT}{LaP.HELP_COMMAND_LIST}",
         reply_markup=ReplyKeyboardRemove(),
         disable_web_page_preview=True,
     )
@@ -113,7 +113,7 @@ def helpcommand(update: Update, context: CallbackContext):
 @log_command
 def issue(update: Update, context: CallbackContext):
     update.message.reply_markdown(
-        ISSUE,
+        LaP.ISSUE,
         reply_markup=ReplyKeyboardRemove(),
         disable_web_page_preview=True,
     )
@@ -124,7 +124,7 @@ def issue(update: Update, context: CallbackContext):
 @log_command
 def feedback(update: Update, context: CallbackContext):
     update.message.reply_markdown(
-        FEEDBACK,
+        LaP.FEEDBACK,
         reply_markup=ReplyKeyboardRemove(),
         disable_web_page_preview=True,
     )
@@ -136,7 +136,7 @@ def feedback(update: Update, context: CallbackContext):
 def explain(update: Update, context: CallbackContext):
     log = CHANGELOGS[sorted(CHANGELOGS.keys())[-1]]
     update.message.reply_markdown(
-        EXPLAIN_TEXT.format(version=log["version"]),
+        LaP.EXPLAIN_TEXT.format(version=log["version"]),
         reply_markup=ReplyKeyboardRemove(),
         disable_web_page_preview=True,
     )
@@ -151,7 +151,7 @@ def overview(update: Update, context: CallbackContext):
         team = Team.objects.get(telegram_id=chat_id)
     except Team.DoesNotExist:
         update.message.reply_markdown(
-            TEAM_NOT_IN_DB_TEXT,
+            LaP.TEAM_NOT_IN_DB_TEXT,
         )
         return ConversationHandler.END
 
@@ -171,12 +171,32 @@ def delete(update: Update, context: CallbackContext):
     chat_id = update.message.chat.id
     if not Team.objects.filter(telegram_id=chat_id).exists():
         update.message.reply_markdown(
-            TEAM_NOT_IN_DB_TEXT,
+            LaP.TEAM_NOT_IN_DB_TEXT,
         )
         return ConversationHandler.END
     team = Team.objects.get(telegram_id=chat_id)
     team.set_telegram_null()
     update.message.reply_markdown(
-        TG_DELETE,
+        LaP.TG_DELETE,
+    )
+    return ConversationHandler.END
+
+
+@log_command
+@mysql_has_gone_away_decorator
+def team_settings(update: Update, context: CallbackContext):
+    chat_id = update.message.chat.id
+    try:
+        team = Team.objects.get(telegram_id=chat_id)
+    except Team.DoesNotExist:
+        team_not_exists(update, context)
+        return ConversationHandler.END
+
+    maker = SettingsMaker(team=team)
+    link = maker.generate_expiring_link(platform="telegram")
+    update.message.reply_markdown(
+        LaP.TG_SETTINGS_LINK.format(link=link, team=team.name, minutes=settings.TEMP_LINK_TIMEOUT_MINUTES),
+        disable_web_page_preview=True,
+        quote=False
     )
     return ConversationHandler.END

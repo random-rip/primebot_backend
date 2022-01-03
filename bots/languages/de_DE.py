@@ -160,10 +160,10 @@ SCHEDULING_CONFIRMATION_TEXT = "Spielbestätigung gegen [{enemy_team_tag}](" + \
 
 MATCH_BEGIN_CHANGE_TEXT = "Ein Administrator hat eine neue Zeit für das Match gegen [{enemy_team_tag}](" + \
                           GENERAL_TEAM_LINK + \
-                         "{enemy_team_id}) " + \
-                         "([Spieltag {match_day}](" + \
+                          "{enemy_team_id}) " + \
+                          "([Spieltag {match_day}](" + \
                           GENERAL_MATCH_LINK + \
-                         "{match_id})) festgelegt:\n" + \
+                          "{match_id})) festgelegt:\n" + \
                           EMOJI_FIGHT + "{time}"
 
 NEW_LINEUP_TEXT = "[{enemy_team_tag}](" + \
@@ -191,12 +191,12 @@ WEEKLY_UPDATE_TEXT = "Der nächste Spieltag:\n" + \
 
 NEXT_MATCH_IN_CALIBRATION = "Euer nächstes Spiel in der Kalibrierungsphase:\n" + \
                             EMOJI_SOON + \
-                           "[Spiel {match_day}](" + \
+                            "[Spiel {match_day}](" + \
                             GENERAL_MATCH_LINK + \
-                           "{match_id}) gegen [{enemy_team_tag}](" + \
+                            "{match_id}) gegen [{enemy_team_tag}](" + \
                             GENERAL_TEAM_LINK + \
-                           "{enemy_team_id}):\n" + \
-                           "Hier ist der [{website_name} Link]({op_link}) des Teams."
+                            "{enemy_team_id}):\n" + \
+                            "Hier ist der [{website_name} Link]({op_link}) des Teams."
 
 WAIT_A_MOMENT_TEXT = "Alles klar, ich schaue, was ich dazu finden kann.\nDas kann einen Moment dauern...⏳\n" \
                      "🔥 Aktuell kann es aufgrund der hohen Nachfrage des Services zu Verzögerungen bei den Abfragen " \
@@ -218,7 +218,7 @@ TG_HELP_TEXT_SCOUTING = "Standardmäßg ist OP.GG als Scouting Website gesetzt.\
 TG_SCOUTING_REMOVED = f"Alles klar, die Scouting Website wurde auf OP.GG zurückgesetzt.\n{TG_HELP_TEXT_SCOUTING}"
 TG_DELETE = "Alles klar, ich habe alle Verknüpfungen zu dieser Gruppe und dem Team gelöscht. " \
             f"Gebt uns gerne Feedback, falls euch Funktionalitäten fehlen oder nicht gefallen. Bye! {EMOJI_PEACE}\n" \
-         f"_Das Team kann jetzt in einem anderen Channel registriert werden, oder ein anderes Team kann in diesem Channel registriert werden._"
+            f"_Das Team kann jetzt in einem anderen Channel registriert werden, oder ein anderes Team kann in diesem Channel registriert werden._"
 TG_SCOUTING_NOT_FOUND = f"Die Scouting Website habe ich nicht gefunden.\n{TG_HELP_TEXT_SCOUTING}"
 
 WHICH_SCOUTING_WEBSITE = "Welche Scouting Website möchtest du benutzen?"
@@ -260,6 +260,7 @@ DC_HELP_TEXT_FIX = "Erstellt den Benachrichtigungswebhook neu"
 DC_HELP_TEXT_ROLE = "Setze eine Discordrolle, die in den Benachrichtigungen benutzt wird. Um die Rolle zu entfernen schreibe !role ohne Parameter"
 DC_HELP_TEXT_SCOUTING = "Standardmäßg ist OP.GG als Scouting Website gesetzt. Möchtest du lieber U.GG benutzen, so schreibe '!scouting 2'. Möchtest du XDX.GG benutzen, schreibe '!scouting 3'. Wenn du wieder OP.GG benutzen möchtest, so schreibe '!scouting' ohne Parameter."
 DC_HELP_TEXT_OVERVIEW = "Erstellt eine Übersicht für die offenen Spiele"
+DC_HELP_TEXT_SETTINGS = "Erstellt einen temporären Link um Benachrichtigungseinstellungen vorzunehmen"
 DC_HELP_TEXT_BOP = "Whats boppin'?"
 DC_HELP_TEXT_DELETE = "Löscht die Channelverknüpfungen zum Team. Achtung, danach werden keine weiteren Benachrichtigungen gesendet."
 DC_DESCRIPTION = "Dieser Bot ist nicht in Kooperation mit der Prime League bzw. der Freaks4u Gaming GmbH entstanden " \
@@ -289,3 +290,9 @@ MATCH_DAY = "Spieltag"
 TIEBREAKER = "Tiebreaker"
 CURRENT_LINEUP = "Aktuelles Lineup"
 VS = "vs."
+
+TG_SETTINGS_LINK = "[Einstellungen für {team} ändern]({link})\n" \
+                "_Der Link ist nur {minutes} Minuten gültig. Danach muss ein neuer Link generiert werden._"
+
+SETTINGS_CHANGE_TITLE = "Einstellungen für {team} ändern"
+SETTINGS_TEMP_LINK = "Der Link ist nur {minutes} Minuten gültig. Danach muss ein neuer Link generiert werden."

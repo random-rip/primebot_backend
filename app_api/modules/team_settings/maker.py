@@ -24,7 +24,7 @@ EXPIRED_DATE = "url_expired"
 class SettingsMaker:
     """
     Class to handle the whole cryptography logic, encoding and decoding data, validating data and creating temporary
-    links.
+    links. Set `team` or `data` in initialization.
     """
     __hash_func = hashlib.sha256
     __encoder = "utf-8"
@@ -151,7 +151,7 @@ class SettingsMaker:
 
     def generate_expiring_link(self, platform, expiring_at=None, ) -> str:
         if expiring_at is None:
-            expiring_at = timezone.now() + timedelta(hours=1)
+            expiring_at = timezone.now() + timedelta(minutes=settings.TEMP_LINK_TIMEOUT_MINUTES)
 
         SettingsExpiring.objects.filter(team=self.team).delete()
         SettingsExpiring.objects.create(expires=expiring_at, team=self.team)

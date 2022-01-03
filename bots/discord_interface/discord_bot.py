@@ -10,14 +10,15 @@ import requests
 from asgiref.sync import sync_to_async
 from discord import Webhook, RequestsWebhookAdapter, Embed, Colour, NotFound
 from discord.ext import commands
+from django.conf import settings
 
+from app_api.modules.team_settings.maker import SettingsMaker
 from app_prime_league.models import Team, ScoutingWebsite
 from app_prime_league.teams import register_team
 from bots.base.bot import Bot
 from bots.languages import de_DE as LanguagePack
 from bots.messages import MatchesOverview, BaseMessage
 from bots.utils import mysql_has_gone_away
-from prime_league_bot import settings
 from utils.changelogs import CHANGELOGS
 from utils.exceptions import CouldNotParseURLException, PrimeLeagueConnectionException, TeamWebsite404Exception
 from utils.messages_logger import log_from_discord
@@ -25,6 +26,9 @@ from utils.utils import get_valid_team_id
 
 MENTION_PREFIX = "<@&"
 MENTION_POSTFIX = ">"
+
+COLOR_NOTIFICATION = Colour.gold()
+COLOR_SETTINGS = Colour.greyple()
 
 
 class DiscordBot(Bot):
@@ -209,6 +213,24 @@ class DiscordBot(Bot):
                     await webhook.delete()
             return
 
+        @self.bot.command(name="settings", help=LanguagePack.DC_HELP_TEXT_SETTINGS, pass_context=True)
+        @commands.check(mysql_has_gone_away)
+        @commands.check(log_from_discord)
+        async def team_settings(ctx, ):
+            channel_id = ctx.message.channel.id
+            team = await get_registered_team_by_channel_id(channel_id=channel_id)
+            if team is None:
+                await ctx.send(LanguagePack.DC_CHANNEL_NOT_INITIALIZED)
+                return
+            async with ctx.typing():
+                maker = await sync_to_async(SettingsMaker)(team=team)
+                link = await sync_to_async(maker.generate_expiring_link)(platform="discord")
+                embed = discord.Embed(title=LanguagePack.SETTINGS_CHANGE_TITLE.format(team=team.name),
+                                      url=link,
+                                      description=LanguagePack.SETTINGS_TEMP_LINK.format(
+                                          minutes=settings.TEMP_LINK_TIMEOUT_MINUTES), color=COLOR_SETTINGS)
+                await ctx.send(embed=embed)
+
         async def _create_new_webhook(ctx):
             channel = ctx.message.channel
             try:
@@ -276,9 +298,9 @@ class DiscordBot(Bot):
         return f"{DiscordBot.mask_mention(discord_role_id)} {message}" if discord_role_id is not None else message
 
     @staticmethod
-    def _create_msg_arguments(*, msg, discord_role_id, **kwargs):
+    def _create_msg_arguments(*, msg, discord_role_id, color=COLOR_NOTIFICATION, **kwargs):
         arguments = kwargs
-        arguments["embed"] = Embed(description=msg.message, color=Colour.from_rgb(255, 255, 0))
+        arguments["embed"] = Embed(description=msg.message, color=color)
         arguments["content"] = DiscordBot.mask_message_with_mention(
             discord_role_id=discord_role_id,
             message=msg.generate_title()

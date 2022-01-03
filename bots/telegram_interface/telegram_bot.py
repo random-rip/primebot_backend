@@ -49,6 +49,7 @@ class TelegramBot(Bot):
             CommandHandler("setlogo", single_commands.set_logo),
             CommandHandler("overview", single_commands.overview),
             CommandHandler("delete", single_commands.delete),
+            CommandHandler("settings", single_commands.team_settings),
             MessageHandler(Filters.status_update.migrate, settings_conversation.migrate_chat)  # Migration
         ]
 
@@ -68,9 +69,9 @@ class TelegramBot(Bot):
             dp.add_handler(cmd)
 
         # Main Menu
-        dp.add_handler(CommandHandler('settings', settings_conversation.start_settings))
-        dp.add_handler(CallbackQueryHandler(settings_conversation.main_settings_menu, pattern='main'))
-        dp.add_handler(CallbackQueryHandler(settings_conversation.main_settings_menu_close, pattern='close'))
+        # dp.add_handler(CommandHandler('settings', settings_conversation.start_settings))
+        # dp.add_handler(CallbackQueryHandler(settings_conversation.main_settings_menu, pattern='main'))
+        # dp.add_handler(CallbackQueryHandler(settings_conversation.main_settings_menu_close, pattern='close'))
         dp.add_handler(CallbackQueryHandler(start_conversation.finish_registration, pattern='0no'))
         dp.add_handler(CallbackQueryHandler(start_conversation.set_optional_photo, pattern='0yes'))
         dp.add_handler(CommandHandler('scouting', scouting_conversation.scouting))
