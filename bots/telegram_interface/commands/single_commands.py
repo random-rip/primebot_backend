@@ -61,7 +61,7 @@ def set_logo(update: Update, context: CallbackContext):
     successful = set_photo(chat_id, context, url)
     if successful:
         update.message.reply_markdown(
-            LaP.PHOTO_SUCESS_TEXT,
+            LaP.PHOTO_SUCCESS_TEXT,
         )
     else:
         update.message.reply_markdown(
@@ -164,7 +164,6 @@ def overview(update: Update, context: CallbackContext):
     return ConversationHandler.END
 
 
-# /set_logo
 @log_command
 @mysql_has_gone_away_decorator
 def delete(update: Update, context: CallbackContext):
@@ -197,6 +196,20 @@ def team_settings(update: Update, context: CallbackContext):
     update.message.reply_markdown(
         LaP.TG_SETTINGS_LINK.format(link=link, team=team.name, minutes=settings.TEMP_LINK_TIMEOUT_MINUTES),
         disable_web_page_preview=True,
-        quote=False
+        quote=False,
     )
     return ConversationHandler.END
+
+
+@mysql_has_gone_away_decorator
+def migrate_chat(update: Update, context: CallbackContext):
+    if update.message.chat.type == "supergroup":
+        return
+    try:
+        old_chat_id = update.message.chat.id
+        team = Team.objects.get(telegram_id=old_chat_id)
+    except Team.DoesNotExist as e:
+        return
+    new_chat_id = update.message.migrate_to_chat_id
+    team.telegram_id = new_chat_id
+    team.save()

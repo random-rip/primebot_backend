@@ -237,7 +237,7 @@ class MatchesOverview(BaseMessage):
 
             embed.add_field(name=name, value=value, inline=False)
         embed.set_footer(
-            text=f"Andere Scoutingwebsite? mit `!settings` einfach anpassen.")
+            text=f"Andere Scouting Website? mit `!settings` einfach anpassen.")
         return embed
 
 
