@@ -14,10 +14,7 @@ from bots.base.bot import Bot
 from bots.languages.de_DE import MESSAGE_NOT_PINNED_TEXT, CANT_PIN_MSG_IN_PRIVATE_CHAT
 from bots.messages import BaseMessage
 from bots.telegram_interface.commands import single_commands
-from bots.telegram_interface.conversations import settings_conversation, scouting_conversation
 from bots.telegram_interface.conversations import start_conversation
-from bots.telegram_interface.conversations.settings_conversation import \
-    callback_query_settings_handlers
 from bots.telegram_interface.tg_singleton import pin_msg, CannotBePinnedError
 from prime_league_bot import settings
 
@@ -49,7 +46,8 @@ class TelegramBot(Bot):
             CommandHandler("setlogo", single_commands.set_logo),
             CommandHandler("overview", single_commands.overview),
             CommandHandler("delete", single_commands.delete),
-            MessageHandler(Filters.status_update.migrate, settings_conversation.migrate_chat)  # Migration
+            CommandHandler("settings", single_commands.team_settings),
+            MessageHandler(Filters.status_update.migrate, single_commands.migrate_chat)  # Migration
         ]
 
         start_conv_handler = ConversationHandler(
@@ -68,20 +66,11 @@ class TelegramBot(Bot):
             dp.add_handler(cmd)
 
         # Main Menu
-        dp.add_handler(CommandHandler('settings', settings_conversation.start_settings))
-        dp.add_handler(CallbackQueryHandler(settings_conversation.main_settings_menu, pattern='main'))
-        dp.add_handler(CallbackQueryHandler(settings_conversation.main_settings_menu_close, pattern='close'))
         dp.add_handler(CallbackQueryHandler(start_conversation.finish_registration, pattern='0no'))
         dp.add_handler(CallbackQueryHandler(start_conversation.set_optional_photo, pattern='0yes'))
-        dp.add_handler(CommandHandler('scouting', scouting_conversation.scouting))
-        dp.add_handler(
-            CallbackQueryHandler(scouting_conversation.finish_scouting, pattern='OP.GG|U.GG|XDX.GG|schließen'))
         # Chat Migration
 
         dp.add_error_handler(error)
-
-        for i in callback_query_settings_handlers:
-            dp.add_handler(i)
 
     def run(self):
         self.bot.start_polling()  # TODO: try catch connection errors

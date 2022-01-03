@@ -8,15 +8,16 @@ import discord
 from asgiref.sync import sync_to_async
 from discord import Webhook, RequestsWebhookAdapter, Embed, Colour, NotFound
 from discord.ext import commands
+from django.conf import settings
 
-from app_prime_league.models import Team, ScoutingWebsite
+from app_api.modules.team_settings.maker import SettingsMaker
+from app_prime_league.models import Team
 from app_prime_league.teams import register_team
 from bots.base.bop import GIFinator
 from bots.base.bot import Bot
 from bots.languages import de_DE as LanguagePack
 from bots.messages import MatchesOverview, BaseMessage
 from bots.utils import mysql_has_gone_away
-from prime_league_bot import settings
 from utils.changelogs import CHANGELOGS
 from utils.exceptions import CouldNotParseURLException, PrimeLeagueConnectionException, TeamWebsite404Exception
 from utils.messages_logger import log_from_discord
@@ -24,6 +25,9 @@ from utils.utils import get_valid_team_id
 
 MENTION_PREFIX = "<@&"
 MENTION_POSTFIX = ">"
+
+COLOR_NOTIFICATION = Colour.gold()
+COLOR_SETTINGS = Colour.greyple()
 
 
 class DiscordBot(Bot):
@@ -136,30 +140,6 @@ class DiscordBot(Bot):
             await sync_to_async(team.save)()
             await ctx.send(LanguagePack.DC_SET_ROLE.format(role_name=role.name))
 
-        @self.bot.command(name="scouting", help=LanguagePack.DC_HELP_TEXT_SCOUTING, pass_context=True)
-        @commands.check(mysql_has_gone_away)
-        @commands.check(log_from_discord)
-        async def set_scouting(ctx, scouting_id=None, ):
-            channel_id = ctx.message.channel.id
-            team = await get_registered_team_by_channel_id(channel_id=channel_id)
-            if team is None:
-                await ctx.send(LanguagePack.DC_CHANNEL_NOT_INITIALIZED)
-                return
-
-            if scouting_id is None:
-                team.scouting_website = None
-                await sync_to_async(team.save)()
-                await ctx.send(LanguagePack.DC_SCOUTING_REMOVED)
-                return
-            try:
-                scouting_website = await sync_to_async(ScoutingWebsite.objects.get)(id=scouting_id)
-            except ScoutingWebsite.DoesNotExist:
-                await ctx.send(LanguagePack.DC_SCOUTING_NOT_FOUND)
-                return
-            team.scouting_website = scouting_website
-            await sync_to_async(team.save)()
-            await ctx.send(LanguagePack.SET_SCOUTING.format(scouting_website=scouting_website.name))
-
         @self.bot.command(name="bop", help=LanguagePack.DC_HELP_TEXT_BOP, pass_context=True)
         @commands.check(log_from_discord)
         async def bop(ctx):
@@ -201,16 +181,34 @@ class DiscordBot(Bot):
                 await ctx.send(LanguagePack.DC_DELETE)
             await sync_to_async(team.set_discord_null)()
             async with ctx.typing():
-                webhooks = [x for x in await channel.webhooks() if settings.DISCORD_APP_CLIENT_ID == x.user_id.id]
+                webhooks = [x for x in await channel.webhooks() if settings.DISCORD_APP_CLIENT_ID == x.user.id]
                 await ctx.send(LanguagePack.DC_BYE)
                 for webhook in webhooks:
                     await webhook.delete()
             return
 
+        @self.bot.command(name="settings", help=LanguagePack.DC_HELP_TEXT_SETTINGS, pass_context=True)
+        @commands.check(mysql_has_gone_away)
+        @commands.check(log_from_discord)
+        async def team_settings(ctx, ):
+            channel_id = ctx.message.channel.id
+            team = await get_registered_team_by_channel_id(channel_id=channel_id)
+            if team is None:
+                await ctx.send(LanguagePack.DC_CHANNEL_NOT_INITIALIZED)
+                return
+            async with ctx.typing():
+                maker = await sync_to_async(SettingsMaker)(team=team)
+                link = await sync_to_async(maker.generate_expiring_link)(platform="discord")
+                embed = discord.Embed(title=LanguagePack.SETTINGS_CHANGE_TITLE.format(team=team.name),
+                                      url=link,
+                                      description=LanguagePack.SETTINGS_TEMP_LINK.format(
+                                          minutes=settings.TEMP_LINK_TIMEOUT_MINUTES), color=COLOR_SETTINGS)
+                await ctx.send(embed=embed)
+
         async def _create_new_webhook(ctx):
             channel = ctx.message.channel
             try:
-                webhooks = [x for x in await channel.webhooks() if settings.DISCORD_APP_CLIENT_ID == x.user_id.id]
+                webhooks = [x for x in await channel.webhooks() if settings.DISCORD_APP_CLIENT_ID == x.user.id]
                 with open(os.path.join(settings.BASE_DIR, "documents", "primebot_logo.jpg"), "rb") as image_file:
                     avatar = image_file.read()
                 new_webhook = await channel.create_webhook(name="PrimeBot", avatar=avatar)
@@ -274,9 +272,9 @@ class DiscordBot(Bot):
         return f"{DiscordBot.mask_mention(discord_role_id)} {message}" if discord_role_id is not None else message
 
     @staticmethod
-    def _create_msg_arguments(*, msg, discord_role_id, **kwargs):
+    def _create_msg_arguments(*, msg, discord_role_id, color=COLOR_NOTIFICATION, **kwargs):
         arguments = kwargs
-        arguments["embed"] = Embed(description=msg.message, color=Colour.from_rgb(255, 255, 0))
+        arguments["embed"] = Embed(description=msg.message, color=color)
         arguments["content"] = DiscordBot.mask_message_with_mention(
             discord_role_id=discord_role_id,
             message=msg.generate_title()

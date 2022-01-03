@@ -215,7 +215,7 @@ class MatchesOverview(BaseMessage):
     def discord_embed(self):
         matches_to_play = self.team.get_open_matches_ordered()
         website_name = settings.DEFAULT_SCOUTING_NAME if not self.team.scouting_website else self.team.scouting_website.name
-        embed = discord.Embed(color=Colour.from_rgb(255, 255, 0))
+        embed = discord.Embed(color=Colour.gold())
         if len(matches_to_play) == 0:
             embed.title = LaP.NO_CURRENT_MATCHES
         else:
@@ -236,7 +236,8 @@ class MatchesOverview(BaseMessage):
                 value += f"\n> {EMOJI_BOOKMARK} [{LaP.CURRENT_LINEUP}]({lineup_link})"
 
             embed.add_field(name=name, value=value, inline=False)
-        # embed.set_footer(text="Hier könnte eure Werbung stehen.")
+        embed.set_footer(
+            text=f"Andere Scouting Website? mit `!settings` einfach anpassen.")
         return embed
 
 

@@ -1,14 +1,13 @@
-from telegram import Update, ParseMode, ReplyKeyboardRemove
+from telegram import Update, ParseMode
 from telegram.error import BadRequest
 from telegram.ext import CallbackContext, ConversationHandler
 
 from app_prime_league.models import Team
 from app_prime_league.teams import register_team
-from bots import send_message
 from bots.languages.de_DE import (
     START_GROUP, START_CHAT, TEAM_ID_VALID, REGISTRATION_FINISH,
     WAIT_A_MOMENT_TEXT, TEAM_ID_NOT_VALID_TEXT, SET_PHOTO_TEXT,
-    PHOTO_SUCESS_TEXT, PHOTO_RETRY_TEXT, CHAT_EXISTING, TEAM_LOCKED, GROUP_REASSIGNED, TEAM_ID_NOT_CORRECT,
+    PHOTO_SUCCESS_TEXT, PHOTO_RETRY_TEXT, CHAT_EXISTING, TEAM_LOCKED, GROUP_REASSIGNED, TEAM_ID_NOT_CORRECT,
     PL_CONNECTION_ERROR
 )
 from bots.messages import MatchesOverview
@@ -18,50 +17,6 @@ from bots.utils import mysql_has_gone_away_decorator
 from utils.exceptions import CouldNotParseURLException, PrimeLeagueConnectionException, TeamWebsite404Exception
 from utils.messages_logger import log_command, log_callbacks
 from utils.utils import get_valid_team_id
-
-
-def chat_reassignment(update: Update, context: CallbackContext):
-    response = update.message.text
-    try:
-        team_id = int(response)
-    except Exception as e:
-        try:
-            team_id = int(response.split("/teams/")[-1].split("-")[0])
-        except Exception as e:
-            update.message.reply_markdown(
-                TEAM_ID_NOT_VALID_TEXT,
-            )
-            return 2
-    chat_id = update.message.chat.id
-    old_team = Team.objects.get(telegram_id=chat_id)
-    new_team = Team.objects.filter(id=team_id).first()
-    if new_team is None:
-        try:
-            new_team = register_team(team_id=team_id)
-        except PrimeLeagueConnectionException:
-            update.message.reply_markdown(
-                text=PL_CONNECTION_ERROR,
-            )
-            return 2
-        except TeamWebsite404Exception:
-            update.message.reply_markdown(
-                text=TEAM_ID_NOT_VALID_TEXT,
-            )
-            return 2
-    new_team_settings = dict(new_team.setting_set.all().values_list("attr_name", "attr_value"))
-    if new_team_settings.get("lock_team", True) and new_team.telegram_id is not None:
-        update.message.reply_markdown(
-            TEAM_LOCKED,
-        )
-        return ConversationHandler.END
-    old_team.telegram_id = None
-    old_team.save()
-    new_team.telegram_id = chat_id
-    new_team.save()
-    update.message.reply_markdown(
-        text=f"{TEAM_ID_VALID}*{new_team.name}*\n{REGISTRATION_FINISH}",
-    )
-    return ConversationHandler.END
 
 
 def just_wait_a_moment(chat_id, context: CallbackContext):
@@ -106,12 +61,14 @@ def start(update: Update, context: CallbackContext):
     if (get_existing_chat_id(update)) is None:
         update.message.reply_markdown(
             START_GROUP,
-            disable_web_page_preview=True
+            disable_web_page_preview=True,
+            quote=False,
         )
     else:
         update.message.reply_markdown(
             CHAT_EXISTING,
-            disable_web_page_preview=True
+            disable_web_page_preview=True,
+            quote=False,
         )
     return 1
 
@@ -132,6 +89,7 @@ def team_registration(update: Update, context: CallbackContext):
     except CouldNotParseURLException:
         update.message.reply_markdown(
             TEAM_ID_NOT_VALID_TEXT,
+            quote=False,
         )
         return 1
     chat_id = get_chat_id(update)
@@ -139,7 +97,8 @@ def team_registration(update: Update, context: CallbackContext):
 
     if team_is_locked(team_id):
         update.message.reply_markdown(
-            text=TEAM_LOCKED.format(team=Team.objects.get_team(team_id))
+            text=TEAM_LOCKED.format(team=Team.objects.get_team(team_id)),
+            quote=False,
         )
         return ConversationHandler.END
 
@@ -159,11 +118,13 @@ def team_registration(update: Update, context: CallbackContext):
     except PrimeLeagueConnectionException:
         update.message.reply_markdown(
             text=PL_CONNECTION_ERROR,
+            quote=False,
         )
         return 1
     except TeamWebsite404Exception:
         update.message.reply_markdown(
             text=TEAM_ID_NOT_VALID_TEXT,
+            quote=False,
         )
         return 1
 
@@ -172,7 +133,8 @@ def team_registration(update: Update, context: CallbackContext):
         old_team.save()
         update.message.reply_markdown(
             text=TEAM_ID_NOT_CORRECT.format(id=team_id),
-            disable_web_page_preview=True
+            disable_web_page_preview=True,
+            quote=False,
         )
         return 1
     elif new_team is None:
@@ -183,11 +145,10 @@ def team_registration(update: Update, context: CallbackContext):
         return 1
     else:
         if new_team_old_chat_id is not None:
-            # TODO use reply instead of send_message
-            send_message(
+            update.message.reply_markdown(
                 msg=GROUP_REASSIGNED.format(team=new_team),
                 chat_id=new_team_old_chat_id,
-                parse_mode=ParseMode.MARKDOWN
+                quote=False,
             )
         update.message.reply_markdown(
             SET_PHOTO_TEXT,
@@ -228,7 +189,7 @@ def finish_registration(update: Update, context: CallbackContext):
     context.bot.edit_message_text(
         chat_id=query.message.chat_id,
         message_id=query.message.message_id,
-        text=PHOTO_SUCESS_TEXT,
+        text=PHOTO_SUCCESS_TEXT,
         reply_markup=None,
         parse_mode=ParseMode.MARKDOWN,
 
