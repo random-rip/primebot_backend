@@ -144,12 +144,12 @@ GAME_SPORTS_BASE_URL = "https://api.gamesports.net/leagues/primebot"
 
 MATCH_URI = "https://www.primeleague.gg/de/leagues/matches/"
 TEAM_URI = "https://www.primeleague.gg/de/leagues/teams/"
-SITE_ID = env.str("SITE_ID")
+SITE_ID = env.str("SITE_ID", None)
 
 STORAGE_DIR = os.path.join(BASE_DIR, "storage", )
 
-TELEGRAM_BOT_KEY = env.str("TELEGRAM_BOT_API_KEY")
-TG_DEVELOPER_GROUP = env.int("TG_DEVELOPER_GROUP")
+TELEGRAM_BOT_KEY = env.str("TELEGRAM_BOT_API_KEY", None)
+TG_DEVELOPER_GROUP = env.int("TG_DEVELOPER_GROUP", None)
 
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
