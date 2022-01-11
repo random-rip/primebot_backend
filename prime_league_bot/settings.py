@@ -139,6 +139,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = env.str("STATIC_ROOT", None)
 
 GAME_SPORTS_BASE_URL = "https://api.gamesports.net/leagues/primebot"
 
