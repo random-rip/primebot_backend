@@ -3,8 +3,8 @@ deploy_staging:
   script:
     - git checkout staging
     - git pull
-    - find /var/opt/$CI_PROJECT_NAME -mindepth 1 ! \( -name ".env" -o -wholename "./venv*" \) -delete
-    - rsync -a  . /var/opt/$CI_PROJECT_NAME/ --exclude .git
+    - sudo find /var/opt/$CI_PROJECT_NAME -mindepth 1 ! \( -name ".env" -o -wholename "./venv*" \) -delete
+    - sudo rsync -a  . /var/opt/$CI_PROJECT_NAME/ --exclude .git
     - cd /var/opt/$CI_PROJECT_NAME
     - venv/bin/python -m pip install --user --upgrade pip
     - venv/bin/python -m pip install -r requirements.prod.txt --upgrade
