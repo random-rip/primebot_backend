@@ -1,9 +1,11 @@
 deploy_staging:
   stage: deploy
   script:
-    - cd /var/opt/$CI_PROJECT_NAME
     - git checkout staging
     - git pull
+    - find /var/opt/$CI_PROJECT_NAME -mindepth 1 ! \( -name ".env" -o -wholename "./venv*" \) --delete
+    - rsync -a  . /var/opt/$CI_PROJECT_NAME/ --exclude .git
+    - cd /var/opt/$CI_PROJECT_NAME
     - venv/bin/python -m pip install --user --upgrade pip
     - venv/bin/python -m pip install -r requirements.prod.txt --upgrade
     - venv/bin/python manage.py migrate
