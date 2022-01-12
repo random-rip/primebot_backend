@@ -1,15 +1,17 @@
-image: ubuntu:latest
-
-stages: 
-    - deploy
-
-#pages:
-#    stage: deploy
-#    script:
-#        - mkdir public
-#        - mv ressources/index.html ./public
-#    artifacts:
-#        paths:
-#            - public
-#    only:
-#        - master
+deploy_staging:
+  stage: deploy
+  script:
+    - cd /var/opt/$CI_PROJECT_NAME
+    - git checkout staging
+    - git pull
+    - venv/bin/python -m pip install --user --upgrade pip
+    - venv/bin/python -m pip install -r requirements.prod.txt --upgrade
+    - venv/bin/python manage.py migrate
+    - systemctl daemon-reload
+    - systemctl restart prime_bot
+    - venv/bin/python manage.py collectstatic
+    - cp dist/. /var/www/robinmoerlin.de/ -a
+  only:
+    - staging
+  tags:
+    - Staging PrimeBot
