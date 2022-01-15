@@ -159,7 +159,7 @@ DISCORD_APP_CLIENT_ID = env.int("DISCORD_APP_CLIENT_ID", None)
 
 LOGIN_URL = "/admin/login/"
 
-LOGGING_DIR = os.path.join(BASE_DIR, "logs", )
+LOGGING_DIR = env.str("LOGGING_DIR", "logs")
 try:
     os.mkdir(LOGGING_DIR)
 except OSError as exc:
