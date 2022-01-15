@@ -75,7 +75,7 @@ START_GROUP = "Sternige Grüße, \n" \
 TEAM_LOCKED = "Das Team *{team.name}* wurde bereits in einem anderen Chat registriert.\n" \
               f"Lösche zuerst die Verknüpfung im anderen Chat mit /delete. \n\n{NEED_HELP}"
 
-GROUP_REASSIGNED = "Dein Team wurde in einem anderen Chat initialisiert!\n" \
+GROUP_REASSIGNED = "Dein Team wurde in einem anderen Chat registriert!\n" \
                    "Es werden in dieser Gruppe keine weiteren Updates zu *{team.name}* folgen.\n\n" \
                    f"{NEED_HELP}"
 
@@ -214,7 +214,7 @@ CLOSE = "Schließen"
 CURRENTLY = "Derzeitig"
 PL_CONNECTION_ERROR = "Momentan kann keine Verbindung zu der PrimeLeague Website hergestellt werden. Probiere es in ein paar Stunden noch einmal.\n" \
                       f"Wenn es später immer noch nicht funktioniert, schaue auf {WEBSITE_LINK_TO_HELP} nach Hilfe."
-PL_TEAM_NOT_FOUND = "Das Team wurde nicht auf der PrimeLeague Website gefunden. Stelle sicher, dass du das richtige Team initialisierst."
+PL_TEAM_NOT_FOUND = "Das Team wurde nicht auf der PrimeLeague Website gefunden. Stelle sicher, dass du das richtige Team registrierst."
 DC_HELP_LINK_TEXT = f"Schaue auf unserer {WEBSITE_LINK_TO_DISCORD} nach Hilfe."
 DC_TEAM_ID_NOT_VALID = "Aus dem Übergabeparameter konnte keine ID gefunden werden " \
                        f"(Format `!start TEAM_ID_or_TEAM_URL`). {DC_HELP_LINK_TEXT}"
@@ -227,7 +227,7 @@ DC_NO_PERMISSIONS_FOR_WEBHOOK = "Mir fehlt die Berechtigung, Webhooks zu verwalt
                                 "Gegebenenfalls warte eine Stunde, bevor du den Befehl wieder ausführst. " \
                                 "Falls es danach noch nicht gehen sollte, schaue auf " \
                                 f"{WEBSITE_LINK_TO_DISCORD} nach Hilfe."
-DC_REGISTRATION_FINISH = "Perfekt, dieser Channel wurde für Team {team_name} initialisiert.\n" \
+DC_REGISTRATION_FINISH = "Perfekt, dieser Channel wurde für Team {team_name} registriert.\n" \
                          "Wenn Du möchtest, kannst du mit `!role ROLE_NAME` noch eine Rolle benennen, " \
                          "die bei Benachrichtigungen erwähnt werden soll und mit `!settings` kannst du die " \
                          "Benachrichtigungen personalisieren oder die Scouting Website (Standard: OP.GG) ändern."

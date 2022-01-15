@@ -10,5 +10,9 @@ class TeamWebsite404Exception(Exception):
     pass
 
 
+class PrimeLeagueParseException(Exception):
+    pass
+
+
 class GMDNotInitialisedException(Exception):
     pass

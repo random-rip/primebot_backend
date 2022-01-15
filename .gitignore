@@ -112,7 +112,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-prime_league_bot/.env
+*.env
 .venv
 env/
 venv/

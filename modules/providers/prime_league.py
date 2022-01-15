@@ -3,7 +3,7 @@ import os
 
 from modules.api import PrimeLeagueAPI
 from prime_league_bot import settings
-from utils.exceptions import TeamWebsite404Exception, PrimeLeagueConnectionException
+from utils.exceptions import TeamWebsite404Exception, PrimeLeagueConnectionException, PrimeLeagueParseException
 
 LOCAL = settings.FILES_FROM_STORAGE
 SAVE_REQUEST = settings.DEBUG and not LOCAL
@@ -22,6 +22,13 @@ class PrimeLeagueProvider:
 
     @classmethod
     def get_match(cls, match_id):
+        """
+        Args:
+            match_id:
+
+        Returns:
+        Exceptions: PrimeLeagueConnectionException, PrimeLeagueParseException
+        """
         file_name = f"match_{match_id}.json"
         if LOCAL:
             return cls.__get_local_json(file_name)
@@ -29,30 +36,40 @@ class PrimeLeagueProvider:
         if resp.status_code == 404:
             return None
         if resp.status_code == 429:
-            raise Exception("Error Statuscode 429: Too many Requests")
+            raise PrimeLeagueConnectionException("Error Statuscode 429: Too many Requests")
         if SAVE_REQUEST:
             cls.__save_object_to_file(resp.text, file_name)
-        return resp.json()
+        try:
+            return resp.json()
+        except ValueError:
+            raise PrimeLeagueParseException()
 
     @classmethod
     def get_team(cls, team_id):
         """
 
-        :param team_id:
-        :return:
-        :raises, TeamWebsite404Exception, PrimeLeagueConnectionException,
+        Args:
+            team_id:
+        Returns: Team JSON
+        Exceptions: TeamWebsite404Exception, PrimeLeagueConnectionException, PrimeLeagueParseException
         """
         if LOCAL:
             text_json = cls.__get_local_team_response(team_id)
         else:
             resp = cls.api.request_team(team_id)
+            try:
+                text_json = resp.json()
+                team_id = text_json.get("team").get("team_id")
+                if team_id is None:
+                    raise TeamWebsite404Exception
+            except (ValueError, KeyError):
+                raise PrimeLeagueParseException()
             if resp.status_code == 404:
                 raise TeamWebsite404Exception()
             if resp.status_code == 429:
                 raise PrimeLeagueConnectionException("Error Statuscode 429: Too many Requests")
             if SAVE_REQUEST:
                 cls.__save_team_to_file(resp.text, team_id)
-            text_json = resp.json()
         return text_json
 
     @classmethod
@@ -81,5 +98,5 @@ class PrimeLeagueProvider:
     @classmethod
     def __save_object_to_file(cls, obj, file_name):
         file_path = os.path.join(settings.STORAGE_DIR, file_name)
-        with open(file_path, 'w', encoding='utf8') as f:
+        with open(file_path, 'w+', encoding='utf8') as f:
             f.write(obj)
