@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.db.models import F
+from django.template.defaultfilters import truncatechars
 
 from app_prime_league.model_manager import TeamManager, MatchManager, PlayerManager
 
@@ -23,6 +24,8 @@ class Team(models.Model):
 
     class Meta:
         db_table = "teams"
+        verbose_name = "Team"
+        verbose_name_plural = "Teams"
 
     def __repr__(self):
         return f"{self.id} - {self.name}"
@@ -96,6 +99,8 @@ class Player(models.Model):
 
     class Meta:
         db_table = "players"
+        verbose_name = "Spieler"
+        verbose_name_plural = "Spieler"
 
     def __repr__(self):
         return f"{self.name}"
@@ -135,6 +140,8 @@ class Match(models.Model):
     class Meta:
         db_table = "matches"
         unique_together = [("match_id", "team")]
+        verbose_name = "Spiel"
+        verbose_name_plural = "Spiele"
 
     def __repr__(self):
         return f"{self.match_id}"
@@ -204,9 +211,14 @@ class ScoutingWebsite(models.Model):
 
     class Meta:
         db_table = "scouting_websites"
+        verbose_name = "Scouting-Website"
+        verbose_name_plural = "Scouting-Websites"
 
     def generate_link(self, lineup):
         return self.base_url.format(self.separator.join(lineup))
+
+    def __str__(self):
+        return self.name
 
 
 class Suggestion(models.Model):
@@ -216,6 +228,8 @@ class Suggestion(models.Model):
 
     class Meta:
         db_table = "suggestions"
+        verbose_name = "Zeitvorschlag"
+        verbose_name_plural = "Zeitvorschläge"
 
 
 class Setting(models.Model):
@@ -228,6 +242,8 @@ class Setting(models.Model):
     class Meta:
         db_table = "settings"
         unique_together = [("team", "attr_name"), ]
+        verbose_name = "Teameinstellung"
+        verbose_name_plural = "Teameinstellungen"
 
 
 class SettingsExpiring(models.Model):
@@ -238,6 +254,8 @@ class SettingsExpiring(models.Model):
 
     class Meta:
         db_table = "settings_expiring"
+        verbose_name = "Einstellungslink"
+        verbose_name_plural = "Einstellungslinks"
 
 
 class Comment(models.Model):
@@ -255,3 +273,23 @@ class Comment(models.Model):
     class Meta:
         db_table = "comments"
         unique_together = [("match", "comment_id"), ]
+        verbose_name = "Spielkommentar"
+        verbose_name_plural = "Spielkommentare"
+
+
+class Changelog(models.Model):
+    version_number = models.CharField(max_length=50, unique=True)
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Änderungsprotokoll"
+        verbose_name_plural = "Änderungsprotokolle"
+
+    def __str__(self):
+        return self.version_number
+
+    @property
+    def truncated_description(self):
+        return truncatechars(self.description, 100)
