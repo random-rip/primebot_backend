@@ -255,3 +255,12 @@ class Comment(models.Model):
     class Meta:
         db_table = "comments"
         unique_together = [("match", "comment_id"), ]
+
+class Changelog(models.Model):
+    version_number = models.CharField(max_length=50, unique=True)
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.version_number
