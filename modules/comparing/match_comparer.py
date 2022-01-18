@@ -12,7 +12,9 @@ class PrimeLeagueMatchData:
         self.match_id = None
         self.match_day = None
         self.team = None
+        self.enemy_team_id = None
         self.enemy_team = None
+        self.enemy_team_members = None
         self.enemy_lineup = None
         self.closed = None
         self.result = None
@@ -35,7 +37,7 @@ class PrimeLeagueMatchData:
         return self.__repr__()
 
     @staticmethod
-    def create_from_website(team: Team, match_id):
+    def create_from_website(team: Team, match_id, ) -> "PrimeLeagueMatchData":
 
         gmd = PrimeLeagueMatchData()
         processor = MatchDataProcessor(match_id, team.id)
@@ -43,9 +45,7 @@ class PrimeLeagueMatchData:
         gmd.match_id = match_id
         gmd.match_day = processor.get_match_day()
         gmd.team = team
-        gmd.enemy_team = {
-            "id": processor.get_enemy_team_id(),
-        }
+        gmd.enemy_team_id = processor.get_enemy_team_id()
         gmd.enemy_lineup = processor.get_enemy_lineup()
         if gmd.enemy_lineup is not None:
             enemy_tuples = []
@@ -56,16 +56,21 @@ class PrimeLeagueMatchData:
         gmd.latest_suggestion = processor.get_latest_suggestion()
         gmd.begin, gmd.latest_confirmation_log = processor.get_match_begin()
         gmd.result = processor.get_match_result()
+
+        if not Team.objects.filter(id=gmd.enemy_team_id).exists():
+            gmd.create_enemy_team_data_from_website()
         return gmd
 
-    def get_enemy_team_data(self):
-        if self.enemy_team is None:
+    def create_enemy_team_data_from_website(self):
+        if self.enemy_team_id is None:
             raise GMDNotInitialisedException("GMD is not initialized yet. Aborting...")
-        processor = TeamDataProcessor(team_id=self.enemy_team["id"])
-        self.enemy_team["members"] = processor.get_members()
-        self.enemy_team["name"] = processor.get_team_name()
-        self.enemy_team["tag"] = processor.get_team_tag()
-        self.enemy_team["division"] = processor.get_current_division()
+        processor = TeamDataProcessor(team_id=self.enemy_team_id)
+        self.enemy_team = {
+            "name": processor.get_team_name(),
+            "team_tag": processor.get_team_tag(),
+            "division": processor.get_current_division(),
+        }
+        self.enemy_team_members = processor.get_members()
 
 
 class MatchComparer:

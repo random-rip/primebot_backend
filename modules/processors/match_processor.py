@@ -2,6 +2,7 @@ from abc import abstractmethod
 
 from modules.parsing.logs import BaseLog, LogSchedulingConfirmation, LogSchedulingAutoConfirmation, LogChangeTime
 from modules.providers.maker import Maker
+from utils.utils import timestamp_to_datetime
 
 
 class _MatchDataFunctions:
@@ -52,7 +53,7 @@ class MatchDataProcessor(Maker, _MatchDataFunctions, ):
         """
         super().__init__(match_id=match_id)
         self.team_id = team_id
-        self.team_is_team_1 = self.data_match.get("team_id_id") == team_id
+        self.team_is_team_1 = self.data_match.get("team_id_1") == team_id
         self.logs = []
         self.__parse_logs()
 
@@ -61,7 +62,7 @@ class MatchDataProcessor(Maker, _MatchDataFunctions, ):
         for i in reversed(logs):
             log = BaseLog.return_specified_log(
                 timestamp=i.get("log_time"),
-                user_id=i.get("user"),
+                user_id=i.get("user_id"),
                 action=i.get("log_action"),
                 details=i.get("log_details"),
             )
@@ -121,10 +122,22 @@ class MatchDataProcessor(Maker, _MatchDataFunctions, ):
 
     def get_match_begin(self):
         """
-        :return: default match_begin or agreed match_begin
+        Returns game begin timestamp if it is in logs
+        :return Tuple: First argument: confirmed timestamp, second argument: log
         """
-        # TODO parse
-        return self.data_match.get("match_time")
+        timestamp = self.data_match.get("match_time")
+        if timestamp is None:
+            return None, None
+        match_begin = timestamp_to_datetime(timestamp)
+        for log in self.logs:
+            if isinstance(log, (
+                    LogSchedulingConfirmation,
+                    LogSchedulingAutoConfirmation,
+                    LogChangeTime,
+            )):
+                return match_begin, log
+
+        return match_begin, None
 
     def get_enemy_team_id(self):
         return self.data_match.get("team_id_2") if self.team_is_team_1 else self.data_match.get("team_id_1")

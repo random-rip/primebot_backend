@@ -4,6 +4,7 @@ from django.db.models import F
 from django.template.defaultfilters import truncatechars
 
 from app_prime_league.model_manager import TeamManager, MatchManager, PlayerManager
+from utils.exceptions import GMDNotInitialisedException
 
 
 class Team(models.Model):
@@ -154,15 +155,13 @@ class Match(models.Model):
         suggestion = self.suggestion_set.all().order_by("created_at").first()
         return None if suggestion is None else suggestion.begin
 
-    def update_from_gmd(self, md):
-        self.match_id = md.match_id
-        self.match_day = md.match_day
-        self.team = md.team
-        self.begin = md.begin
-        enemy_team, _ = Team.objects.get_or_create(id=md.enemy_team["id"])
-        self.enemy_team = enemy_team
-        self.closed = md.closed
-        self.result = md.result
+    def update_match_data(self, gmd):
+        self.match_id = gmd.match_id
+        self.match_day = gmd.match_day
+        self.team = gmd.team
+        self.begin = gmd.begin
+        self.closed = gmd.closed
+        self.result = gmd.result
         self.save()
 
     def update_match_begin(self, gmd):
@@ -170,18 +169,10 @@ class Match(models.Model):
         self.save()
 
     def update_enemy_team(self, gmd):
-        team_dict = gmd.enemy_team
-        enemy_team, created = Team.objects.get_or_create(id=team_dict["id"], defaults={
-            "name": team_dict["name"],
-            "team_tag": team_dict["tag"],
-            "division": team_dict["division"],
-        })
-        if not created:
-            enemy_team.name = team_dict["name"]
-            enemy_team.team_tag = team_dict["tag"]
-            enemy_team.division = team_dict["division"]
-            enemy_team.save()
-        _ = Player.objects.create_or_update_players(team_dict["members"], enemy_team)
+        if gmd.enemy_team is None:
+            raise GMDNotInitialisedException("GMD Enemy Team Data is not initialized yet. Aborting...")
+        enemy_team, created = Team.objects.update_or_create(id=gmd.enemy_team_id, defaults=self.enemy_team)
+        _ = Player.objects.create_or_update_players(gmd.enemy_team_members, enemy_team)
 
     def update_latest_suggestion(self, gmd):
         if gmd.latest_suggestion is not None:
