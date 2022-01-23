@@ -6,7 +6,7 @@ import requests
 
 from bots.message_dispatcher import MessageDispatcher
 from bots.messages import NewLineupInCalibrationMessage
-from modules.comparing.match_comparer import MatchComparer, PrimeLeagueMatchData
+from modules.comparing.match_comparer import MatchComparer, TemporaryMatchData
 
 thread_local = threading.local()
 calibration_logger = logging.getLogger("calibration")
@@ -21,7 +21,7 @@ def get_session():
 def check_calibration_match(match):
     match_id = match.match_id
     team = match.team
-    gmd = PrimeLeagueMatchData.create_from_website(team=team, match_id=match_id, )
+    gmd = TemporaryMatchData.create_from_website(team=team, match_id=match_id, )
     cmp = MatchComparer(match, gmd)
 
     log_message = f"New notification for {match_id} ({team}): "

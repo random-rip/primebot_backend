@@ -7,7 +7,7 @@ from telegram import ParseMode
 
 from app_prime_league.models import Team, Player, Match
 from bots import send_message
-from modules.comparing.match_comparer import PrimeLeagueMatchData
+from modules.comparing.match_comparer import TemporaryMatchData
 from modules.processors.team_processor import TeamDataProcessor
 from prime_league_bot import settings
 from utils.exceptions import GMDNotInitialisedException
@@ -110,7 +110,7 @@ def add_or_update_players(members, team: Team):
 
 @log_exception
 def add_match(team, match_id, ):
-    gmd = PrimeLeagueMatchData.create_from_website(team=team, match_id=match_id, )
+    gmd = TemporaryMatchData.create_from_website(team=team, match_id=match_id, )
     match = Match.objects.get_match_of_team(match_id=match_id, team=team)
     logging.debug(f"Adding Match {match_id} ...")
 
@@ -126,7 +126,7 @@ def add_match(team, match_id, ):
         logging.debug(f"Enemy Team of {match=} already in database, skipped.")
 
     match.update_enemy_lineup(gmd)
-    match.update_latest_suggestion(gmd)
+    match.update_latest_suggestions(gmd)
 
 
 def add_matches(match_ids, team: Team, use_concurrency=True):

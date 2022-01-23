@@ -128,7 +128,7 @@ class Match(models.Model):
     match_type = models.CharField(max_length=15, null=True, choices=MATCH_TYPES)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="matches_against")
     enemy_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="matches_as_enemy_team", null=True)
-
+    team_made_latest_suggestion = models.BooleanField(null=True, blank=True)
     begin = models.DateTimeField(null=True)
     enemy_lineup = models.ManyToManyField(Player, )
     closed = models.BooleanField(null=True)
@@ -174,11 +174,12 @@ class Match(models.Model):
         enemy_team, created = Team.objects.update_or_create(id=gmd.enemy_team_id, defaults=self.enemy_team)
         _ = Player.objects.create_or_update_players(gmd.enemy_team_members, enemy_team)
 
-    def update_latest_suggestion(self, gmd):
-        if gmd.latest_suggestion is not None:
+    def update_latest_suggestions(self, gmd):
+        if gmd.latest_suggestions is not None:
             self.suggestion_set.all().delete()
-            for timestamp in gmd.latest_suggestion.details:
-                self.suggestion_set.add(Suggestion(match=self, begin=timestamp), bulk=False)
+            for suggestion in gmd.latest_suggestions:
+                self.suggestion_set.add(Suggestion(match=self, begin=suggestion), bulk=False)
+        self.team_made_latest_suggestion = gmd.team_made_latest_suggestion
         self.save()
 
     def update_enemy_lineup(self, md):

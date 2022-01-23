@@ -7,7 +7,7 @@ import requests
 from bots.message_dispatcher import MessageDispatcher
 from bots.messages import EnemyNewTimeSuggestionsNotificationMessage, \
     OwnNewTimeSuggestionsNotificationMessage, ScheduleConfirmationNotification, NewLineupNotificationMessage
-from modules.comparing.match_comparer import MatchComparer, PrimeLeagueMatchData
+from modules.comparing.match_comparer import MatchComparer, TemporaryMatchData
 from utils.exceptions import GMDNotInitialisedException
 from utils.messages_logger import log_exception
 
@@ -27,7 +27,7 @@ def check_match(match):
     match_id = match.match_id
     team = match.team
     try:
-        gmd = PrimeLeagueMatchData.create_from_website(team=team, match_id=match_id, )
+        gmd = TemporaryMatchData.create_from_website(team=team, match_id=match_id, )
     except Exception as e:
         django_logger.exception(e)
         return
@@ -37,17 +37,17 @@ def check_match(match):
         pass  # fail silently
 
     cmp = MatchComparer(match, gmd)
-
+    # TODO: Nice to have: Eventuell nach einem comparing und updaten mit match.refresh_from_db() arbeiten
     log_message = f"New notification for {match_id=} ({team=}): "
     django_logger.debug(f"Checking {match_id=} ({team=})...")
     dispatcher = MessageDispatcher(team)
     if cmp.compare_new_suggestion(of_enemy_team=True):
         notifications_logger.debug(f"{log_message}Neuer Zeitvorschlag der Gegner")
-        match.update_latest_suggestion(gmd)
+        match.update_latest_suggestions(gmd)
         dispatcher.dispatch(EnemyNewTimeSuggestionsNotificationMessage, match=match)
     if cmp.compare_new_suggestion():
         notifications_logger.debug(f"{log_message}Eigener neuer Zeitvorschlag")
-        match.update_latest_suggestion(gmd)
+        match.update_latest_suggestions(gmd)
         dispatcher.dispatch(OwnNewTimeSuggestionsNotificationMessage, match=match)
     if cmp.compare_scheduling_confirmation():
         notifications_logger.debug(f"{log_message}Termin wurde festgelegt")

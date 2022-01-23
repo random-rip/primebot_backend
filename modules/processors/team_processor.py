@@ -3,7 +3,7 @@ from abc import abstractmethod
 from modules.providers.maker import Maker
 
 
-class _TeamDataFunctions:
+class __TeamDataMethods:
 
     @abstractmethod
     def get_members(self):
@@ -30,7 +30,7 @@ class _TeamDataFunctions:
         pass
 
 
-class TeamDataProcessor(Maker, _TeamDataFunctions, ):
+class TeamDataProcessor(Maker, __TeamDataMethods, ):
     """
     Converting json data to functions and providing these.
     """

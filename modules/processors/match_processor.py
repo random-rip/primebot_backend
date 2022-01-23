@@ -5,7 +5,7 @@ from modules.providers.maker import Maker
 from utils.utils import timestamp_to_datetime
 
 
-class _MatchDataFunctions:
+class __MatchDataMethods:
 
     @abstractmethod
     def get_enemy_lineup(self):
@@ -20,11 +20,19 @@ class _MatchDataFunctions:
         pass
 
     @abstractmethod
-    def get_latest_suggestion(self):
+    def get_latest_suggestions(self):
+        pass
+
+    @abstractmethod
+    def get_team_made_latest_suggestion(self):
         pass
 
     @abstractmethod
     def get_match_begin(self):
+        pass
+
+    @abstractmethod
+    def get_latest_match_begin_log(self):
         pass
 
     @abstractmethod
@@ -40,7 +48,7 @@ class _MatchDataFunctions:
         pass
 
 
-class MatchDataProcessor(Maker, _MatchDataFunctions, ):
+class MatchDataProcessor(Maker, __MatchDataMethods, ):
     """
     Converting json data to functions and providing these.
     """
@@ -98,46 +106,60 @@ class MatchDataProcessor(Maker, _MatchDataFunctions, ):
     def get_match_result(self):
         """
         If match_result is set, the first number indicates the score that the team reached.
+        Returns:
+            `None`, if match_score_1 and match_score_2 are None else String
         """
         match_score_1 = self.data_match.get('match_score_1', None)
         match_score_2 = self.data_match.get('match_score_2', None)
+        if not match_score_1 and not match_score_2:
+            return None
         return f"{match_score_1}:{match_score_2}" if self.team_is_team_1 else f"{match_score_2}:{match_score_1}"
 
-    def get_latest_suggestion(self):
+    def get_latest_suggestions(self):
         """
-
-        :return: Tuple: (Boolean: if requested team made the suggestion or not, suggestion_array)
+        :return: A list of suggestions, every suggestion is of type `datetime`. List can be empty.
         """
-        status = self.data_match.get("match_scheduling_status")
-        if status == 0:
-            return
         suggestions = [
             self.data_match.get("match_scheduling_suggest_0"),
             self.data_match.get("match_scheduling_suggest_1"),
             self.data_match.get("match_scheduling_suggest_2"),
         ]
+        return [timestamp_to_datetime(x) for x in suggestions if x]
+
+    def get_team_made_latest_suggestion(self):
+        """
+        Returns: True if team made latest suggestion, else False. Returns None if no suggestion was made at all.
+        """
+        status = self.data_match.get("match_scheduling_status")
+        if status == 0:
+            return None
         status = True if status == 1 else False
-        # TODO parse
-        return status == self.team_is_team_1, [x for x in suggestions if x]
+        return status == self.team_is_team_1
 
     def get_match_begin(self):
         """
-        Returns game begin timestamp if it is in logs
-        :return Tuple: First argument: confirmed timestamp, second argument: log
+        Returns: match_begin as datetime if set, else None
         """
-        timestamp = self.data_match.get("match_time")
+        timestamp = self.data_match.get("match_time", None)
         if timestamp is None:
-            return None, None
-        match_begin = timestamp_to_datetime(timestamp)
+            return None
+        return timestamp_to_datetime(timestamp)
+
+    def get_latest_match_begin_log(self):
+        """
+        Returns: Return latest log if match_begin is set and a log exists, else None
+        """
+        timestamp = self.data_match.get("match_time", None)
+        if timestamp is None:
+            return None
         for log in self.logs:
             if isinstance(log, (
                     LogSchedulingConfirmation,
                     LogSchedulingAutoConfirmation,
                     LogChangeTime,
             )):
-                return match_begin, log
-
-        return match_begin, None
+                return log
+        return None
 
     def get_enemy_team_id(self):
         return self.data_match.get("team_id_2") if self.team_is_team_1 else self.data_match.get("team_id_1")
@@ -147,16 +169,3 @@ class MatchDataProcessor(Maker, _MatchDataFunctions, ):
 
     def get_comments(self):
         self.data.get("comments")
-
-    def get_match_time_set(self):
-        """
-        :return: Tuple(match_begin, latest confirmation_log or change_time_log)
-        """
-        specified_log = None
-        for log in self.logs:
-            if isinstance(log, (LogSchedulingConfirmation, LogSchedulingAutoConfirmation, LogChangeTime)):
-                specified_log = log
-                break
-        if specified_log is None:
-            return None, None
-        return self.get_match_begin(), specified_log
