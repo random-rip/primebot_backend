@@ -94,8 +94,14 @@ class MatchDataProcessor(Maker, __MatchDataMethods, ):
         return self.data.get("group", {})
 
     def get_enemy_lineup(self):
+        """
+        (id_, name, summoner_name,)
+        Returns: A list of player tuples. Structure of tuple: (user_id, user_name, summoner_name, None)
+
+        """
         lineup = self.data.get("line_ups", [])
-        return [x["user_id"] for x in lineup if x["team_id"] != self.team_id]
+        return [(x["user_id"], x["user_name"], x["account_value"], None) for x in lineup if
+                x["team_id"] != self.team_id]
 
     def get_match_closed(self):
         """
@@ -138,7 +144,7 @@ class MatchDataProcessor(Maker, __MatchDataMethods, ):
 
     def get_match_begin(self):
         """
-        Returns: match_begin as datetime if set, else None
+        Returns: begin as datetime if set, else None
         """
         timestamp = self.data_match.get("match_time", None)
         if timestamp is None:
@@ -147,7 +153,7 @@ class MatchDataProcessor(Maker, __MatchDataMethods, ):
 
     def get_latest_match_begin_log(self):
         """
-        Returns: Return latest log if match_begin is set and a log exists, else None
+        Returns: Return latest log if begin is set and a log exists, else None
         """
         timestamp = self.data_match.get("match_time", None)
         if timestamp is None:

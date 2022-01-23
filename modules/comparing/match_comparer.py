@@ -8,20 +8,22 @@ from utils.exceptions import GMDNotInitialisedException
 
 class TemporaryMatchData:
 
-    def __init__(self):
-        self.match_id = None
-        self.match_day = None
-        self.team = None
-        self.enemy_team_id = None
-        self.enemy_team = None
-        self.enemy_team_members = None
-        self.enemy_lineup = None
-        self.closed = None
-        self.result = None
-        self.team_made_latest_suggestion = None
-        self.latest_suggestions = None
-        self.begin = None
-        self.latest_confirmation_log = None
+    def __init__(self, match_id=None, match_day=None, team=None, enemy_team_id=None, enemy_team=None,
+                 enemy_team_members=None, enemy_lineup=None, closed=None, result=None, team_made_latest_suggestion=None,
+                 latest_suggestions=None, begin=None, latest_confirmation_log=None):
+        self.match_id = match_id
+        self.match_day = match_day
+        self.team = team
+        self.enemy_team_id = enemy_team_id
+        self.enemy_team = enemy_team
+        self.enemy_team_members = enemy_team_members
+        self.enemy_lineup = enemy_lineup
+        self.closed = closed
+        self.result = result
+        self.team_made_latest_suggestion = team_made_latest_suggestion
+        self.latest_suggestions = latest_suggestions
+        self.begin = begin
+        self.latest_confirmation_log = latest_confirmation_log
 
     def __repr__(self):
         return f"MatchID: {self.match_id}" \
@@ -75,35 +77,6 @@ class TemporaryMatchData:
         }
         self.enemy_team_members = processor.get_members()
 
-    @staticmethod
-    def create_from_dict(**kwargs):
-        """
-        Should only be used in tests
-        Args:
-            kwargs:
-
-        Returns:
-
-        """
-        gmd = TemporaryMatchData()
-        gmd.match_id = kwargs.get("match_id")
-        gmd.match_day = kwargs.get("match_day")
-        gmd.team = kwargs.get("team")
-        gmd.enemy_team_id = kwargs.get("enemy_team_id")
-        gmd.enemy_lineup = kwargs.get("enemy_lineup")
-        if gmd.enemy_lineup is not None:
-            enemy_tuples = []
-            for i in gmd.enemy_lineup:
-                enemy_tuples.append((*i,))
-            gmd.enemy_lineup = enemy_tuples
-        gmd.closed = kwargs.get("closed")
-        gmd.team_made_latest_suggestion = kwargs.get("team_made_latest_suggestion")
-        gmd.latest_suggestions = kwargs.get("latest_suggestions")
-        gmd.begin = kwargs.get("match_begin")
-        gmd.latest_confirmation_log = kwargs.get("gmd.latest_confirmation_log")
-        gmd.result = kwargs.get("result")
-        return gmd
-
 
 class MatchComparer:
 
@@ -146,8 +119,8 @@ class MatchComparer:
         old_lineup = list(self.match_old.enemy_lineup.all().values_list("id", flat=True))
 
         new_lineup = self.match_new.enemy_lineup
-        for i in new_lineup:
-            if i in old_lineup:
+        for (user_id, *_) in new_lineup:
+            if user_id in old_lineup:
                 continue
             else:
                 return True
