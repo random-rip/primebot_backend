@@ -129,6 +129,7 @@ class Match(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="matches_against")
     enemy_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="matches_as_enemy_team", null=True)
     team_made_latest_suggestion = models.BooleanField(null=True, blank=True)
+    match_begin_confirmed = models.BooleanField(default=False, blank=True)
     begin = models.DateTimeField(null=True)
     enemy_lineup = models.ManyToManyField(Player, )
     closed = models.BooleanField(null=True)
@@ -160,12 +161,14 @@ class Match(models.Model):
         self.match_day = gmd.match_day
         self.team = gmd.team
         self.begin = gmd.begin
+        self.match_begin_confirmed = gmd.match_begin_confirmed
         self.closed = gmd.closed
         self.result = gmd.result
         self.save()
 
     def update_match_begin(self, gmd):
         self.begin = gmd.begin
+        self.match_begin_confirmed = gmd.match_begin_confirmed
         self.save()
 
     def update_enemy_team(self, gmd):

@@ -10,7 +10,7 @@ class TemporaryMatchData:
 
     def __init__(self, match_id=None, match_day=None, team=None, enemy_team_id=None, enemy_team=None,
                  enemy_team_members=None, enemy_lineup=None, closed=None, result=None, team_made_latest_suggestion=None,
-                 latest_suggestions=None, begin=None, latest_confirmation_log=None):
+                 latest_suggestions=None, begin=None, latest_confirmation_log=None, match_begin_confirmed=None):
         self.match_id = match_id
         self.match_day = match_day
         self.team = team
@@ -24,6 +24,7 @@ class TemporaryMatchData:
         self.latest_suggestions = latest_suggestions
         self.begin = begin
         self.latest_confirmation_log = latest_confirmation_log
+        self.match_begin_confirmed = match_begin_confirmed
 
     def __repr__(self):
         return f"MatchID: {self.match_id}" \
@@ -59,6 +60,7 @@ class TemporaryMatchData:
         gmd.team_made_latest_suggestion = processor.get_team_made_latest_suggestion()
         gmd.latest_suggestions = processor.get_latest_suggestions()
         gmd.begin = processor.get_match_begin()
+        gmd.match_begin_confirmed = processor.get_match_begin_confirmed()
         gmd.latest_confirmation_log = processor.get_latest_match_begin_log()
         gmd.result = processor.get_match_result()
 
@@ -111,7 +113,7 @@ class MatchComparer:
         # return False
 
     def compare_scheduling_confirmation(self):
-        return True if self.match_old.begin is None and self.match_new.begin is not None else False
+        return not self.match_old.match_begin_confirmed and self.match_new.match_begin_confirmed
 
     def compare_lineup_confirmation(self):
         if self.match_new.enemy_lineup is None:

@@ -1,11 +1,13 @@
 from abc import abstractmethod
-from functools import reduce
+
+from deprecated import deprecated
 
 from modules.providers.prime_league import PrimeLeagueProvider
 
 DEFAULT_PROVIDER = PrimeLeagueProvider
 
 
+@deprecated(version="2.0", reason="Führt zu Overhead, und kann nicht gut getestet werden")
 class Maker:
     """
     Every Processor needs to inherit of this MakerClass at first place!

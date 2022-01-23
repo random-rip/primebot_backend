@@ -1,7 +1,7 @@
 from abc import abstractmethod
 
 from modules.parsing.logs import BaseLog, LogSchedulingConfirmation, LogSchedulingAutoConfirmation, LogChangeTime
-from modules.providers.maker import Maker
+from modules.providers.prime_league import PrimeLeagueProvider
 from utils.utils import timestamp_to_datetime
 
 
@@ -48,18 +48,18 @@ class __MatchDataMethods:
         pass
 
 
-class MatchDataProcessor(Maker, __MatchDataMethods, ):
+class MatchDataProcessor(__MatchDataMethods, ):
     """
     Converting json data to functions and providing these.
     """
 
-    def __init__(self, match_id: int, team_id: int):
+    def __init__(self, match_id: int, team_id: int, **kwargs):
         """
         :raises PrimeLeagueConnectionException, TeamWebsite404Exception
         :param match_id:
         :param team_id: team's point of view to the match. For example to determine enemy_team of the match.
         """
-        super().__init__(match_id=match_id)
+        self.data = PrimeLeagueProvider.get_match(match_id=match_id)
         self.team_id = team_id
         self.team_is_team_1 = self.data_match.get("team_id_1") == team_id
         self.logs = []
@@ -76,10 +76,6 @@ class MatchDataProcessor(Maker, __MatchDataMethods, ):
             )
             if log is not None:
                 self.logs.append(log)
-
-    @property
-    def _provider_method(self):
-        return self.provider.get_match
 
     @property
     def data_match(self):
@@ -144,12 +140,20 @@ class MatchDataProcessor(Maker, __MatchDataMethods, ):
 
     def get_match_begin(self):
         """
-        Returns: begin as datetime if set, else None
+        Returns: datetime if set, else None
         """
         timestamp = self.data_match.get("match_time", None)
         if timestamp is None:
             return None
         return timestamp_to_datetime(timestamp)
+
+    def get_match_begin_confirmed(self):
+        """
+        o	If this is 0, it means that an agreement was already made, so replying is not required anymore
+        Returns: True, if match_scheduling_time is 0
+
+        """
+        return self.data_match.get("match_scheduling_time", None) == 0
 
     def get_latest_match_begin_log(self):
         """

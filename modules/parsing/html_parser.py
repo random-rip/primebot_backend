@@ -1,12 +1,13 @@
 import json
 
 from bs4 import BeautifulSoup
+from deprecated import deprecated
 
 from modules.parsing.logs import LogSchedulingConfirmation, LogSchedulingAutoConfirmation, LogSuggestion, LogChangeTime, \
     BaseMatchIsOverLog, LogChangeStatus, LogScoreReport, BaseLog
-from utils.utils import timestamp_to_datetime, string_to_datetime
 
 
+@deprecated(version="1.18", reason="Ersetzung mit der PrimeLeague API")
 class BaseHTMLParser:
     """
     BaseParserClass. Provides methods used in TeamHTMLParser and MatchHTMLParser.
@@ -195,6 +196,3 @@ class MatchHTMLParser(BaseHTMLParser):
             ))
         # TODO: Childen Parsen @Grayknife
         return None if len(comments) == 0 else comments
-
-
-
