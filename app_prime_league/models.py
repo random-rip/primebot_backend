@@ -223,8 +223,8 @@ class Suggestion(models.Model):
 
     class Meta:
         db_table = "suggestions"
-        verbose_name = "Zeitvorschlag"
-        verbose_name_plural = "Zeitvorschläge"
+        verbose_name = "Terminvorschlag"
+        verbose_name_plural = "Terminvorschläge"
 
 
 class Setting(models.Model):

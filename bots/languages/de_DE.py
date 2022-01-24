@@ -120,18 +120,18 @@ MESSAGE_NOT_PINNED_TEXT = f"Die wöchentliche Nachricht konnte nicht angeheftet 
 CANT_PIN_MSG_IN_PRIVATE_CHAT = "Man kann keine Nachricht in einem privaten Chat anpinnen."
 
 # Update Messages
-OWN_NEW_TIME_SUGGESTION_TEXT = "Neuer Zeitvorschlag von euch für [Spieltag {match_day}](" + \
+OWN_NEW_TIME_SUGGESTION_TEXT = "Neuer Terminvorschlag von euch für [Spieltag {match_day}](" + \
                                GENERAL_MATCH_LINK + \
                                "{match_id})." + \
                                EMOJI_SUCCESS
 
-NEW_TIME_SUGGESTION_PREFIX = "Neuer Zeitvorschlag von [{enemy_team_tag}](" + \
+NEW_TIME_SUGGESTION_PREFIX = "Neuer Terminvorschlag von [{enemy_team_tag}](" + \
                              GENERAL_TEAM_LINK + \
                              "{enemy_team_id}) für [Spieltag {match_day}](" + \
                              GENERAL_MATCH_LINK + \
                              "{match_id}):\n"
 
-NEW_TIME_SUGGESTIONS_PREFIX = "Neue Zeitvorschläge von [{enemy_team_tag}](" + \
+NEW_TIME_SUGGESTIONS_PREFIX = "Neue Terminvorschläge von [{enemy_team_tag}](" + \
                               GENERAL_TEAM_LINK + \
                               "{enemy_team_id}) für [Spieltag {match_day}](" + \
                               GENERAL_MATCH_LINK + \
@@ -264,9 +264,9 @@ DC_BYE = f"Alles gelöscht. Gebt uns gerne Feedback, falls euch Funktionalitäte
 TITLE_NEW_MATCH_DAY = "Neuer Spieltag"
 TITLE_NEW_MATCH = "Neues Spiel"
 TITLE_NEW_LINEUP = "Neues Lineup"
-TITLE_NEW_OWN_SUGGESTION = "Eigener neuer Zeitvorschlag"
-TITLE_NEW_SUGGESTION = "Neuer Zeitvorschlag eines Gegners"
-TITLE_MATCH_CONFIRMATION = "Spielzeitbestätigung"
+TITLE_NEW_OWN_SUGGESTION = "Eigener neuer Terminvorschlag"
+TITLE_NEW_SUGGESTION = "Neuer Terminvorschlag eines Gegners"
+TITLE_MATCH_CONFIRMATION = "Terminbestätigung"
 
 NO_CURRENT_MATCHES = "Ihr habt aktuell keine offenen Spiele."
 OVERVIEW = "Eine Übersicht eurer offenen Spiele:"

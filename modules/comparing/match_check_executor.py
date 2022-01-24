@@ -42,11 +42,11 @@ def check_match(match):
     django_logger.debug(f"Checking {match_id=} ({team=})...")
     dispatcher = MessageDispatcher(team)
     if cmp.compare_new_suggestion(of_enemy_team=True):
-        notifications_logger.debug(f"{log_message}Neuer Zeitvorschlag der Gegner")
+        notifications_logger.debug(f"{log_message}Neuer Terminvorschlag der Gegner")
         match.update_latest_suggestions(gmd)
         dispatcher.dispatch(EnemyNewTimeSuggestionsNotificationMessage, match=match)
     if cmp.compare_new_suggestion():
-        notifications_logger.debug(f"{log_message}Eigener neuer Zeitvorschlag")
+        notifications_logger.debug(f"{log_message}Eigener neuer Terminvorschlag")
         match.update_latest_suggestions(gmd)
         dispatcher.dispatch(OwnNewTimeSuggestionsNotificationMessage, match=match)
     if cmp.compare_scheduling_confirmation():
