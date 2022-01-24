@@ -93,7 +93,7 @@ class MatchComparer:
         :param of_enemy_team:
         :return boolean: True if new suggestion else False
         """
-        if self.match_new.latest_suggestions is None or \
+        if self.match_new.team_made_latest_suggestion is None or \
                 self.match_old.team_made_latest_suggestion == self.match_new.team_made_latest_suggestion:
             return False
         if of_enemy_team and not self.match_new.team_made_latest_suggestion:

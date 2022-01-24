@@ -82,6 +82,37 @@ class SuggestionsTest(TestCase):
         self.assertTrue(cp.compare_new_suggestion(of_enemy_team=False),
                         "Team had new suggestion, but was not recognized")
 
+    def test_no_open_suggestion(self):
+        match = Match.objects.create(match_id=1, match_day=1, match_type=Match.MATCH_TYPE_LEAGUE, team=self.team,
+                                     enemy_team=self.enemy_team, team_made_latest_suggestion=None, )
+
+        md = create_temporary_match_data(team=self.team, enemy_team=self.enemy_team, team_made_latest_suggestion=None, )
+        cp = MatchComparer(match_old=match, match_new=md)
+        self.assertFalse(cp.compare_new_suggestion(of_enemy_team=True),
+                         "No open suggestion, but was recognized as new")
+
+    def test_no_open_suggestion_and_last_suggestion_was_made_of_team(self):
+        match = Match.objects.create(match_id=1, match_day=1, match_type=Match.MATCH_TYPE_LEAGUE, team=self.team,
+                                     enemy_team=self.enemy_team, team_made_latest_suggestion=True, )
+
+        md = create_temporary_match_data(team=self.team, enemy_team=self.enemy_team, team_made_latest_suggestion=None, )
+        cp = MatchComparer(match_old=match, match_new=md)
+        self.assertFalse(cp.compare_new_suggestion(of_enemy_team=True),
+                         "No open suggestion, but was recognized as new")
+        self.assertFalse(cp.compare_new_suggestion(of_enemy_team=False),
+                         "No open suggestion, but was recognized as new")
+
+    def test_no_open_suggestion_and_last_suggestion_was_made_of_enemy(self):
+        match = Match.objects.create(match_id=1, match_day=1, match_type=Match.MATCH_TYPE_LEAGUE, team=self.team,
+                                     enemy_team=self.enemy_team, team_made_latest_suggestion=False, )
+
+        md = create_temporary_match_data(team=self.team, enemy_team=self.enemy_team, team_made_latest_suggestion=None, )
+        cp = MatchComparer(match_old=match, match_new=md)
+        self.assertFalse(cp.compare_new_suggestion(of_enemy_team=True),
+                         "No open suggestion, but was recognized as new")
+        self.assertFalse(cp.compare_new_suggestion(of_enemy_team=False),
+                         "No open suggestion, but was recognized as new")
+
 
 class CompareConfirmationTest(TestCase):
     def setUp(self) -> None:

@@ -91,7 +91,7 @@ class MatchDataProcessor(__MatchDataMethods, ):
 
     def get_enemy_lineup(self):
         """
-        (id_, name, summoner_name,)
+        (id_, name, summoner_name, None)
         Returns: A list of player tuples. Structure of tuple: (user_id, user_name, summoner_name, None)
 
         """
@@ -149,7 +149,7 @@ class MatchDataProcessor(__MatchDataMethods, ):
 
     def get_match_begin_confirmed(self):
         """
-        o	If this is 0, it means that an agreement was already made, so replying is not required anymore
+        If this is 0, it means that an agreement was already made, so replying is not required anymore
         Returns: True, if match_scheduling_time is 0
 
         """
@@ -159,9 +159,6 @@ class MatchDataProcessor(__MatchDataMethods, ):
         """
         Returns: Return latest log if begin is set and a log exists, else None
         """
-        timestamp = self.data_match.get("match_time", None)
-        if timestamp is None:
-            return None
         for log in self.logs:
             if isinstance(log, (
                     LogSchedulingConfirmation,
@@ -172,10 +169,16 @@ class MatchDataProcessor(__MatchDataMethods, ):
         return None
 
     def get_enemy_team_id(self):
+        """
+
+        Returns: Integer or None
+
+        """
         return self.data_match.get("team_id_2") if self.team_is_team_1 else self.data_match.get("team_id_1")
 
     def get_match_day(self):
         return self.data_match.get("match_playday")
 
     def get_comments(self):
-        self.data.get("comments")
+        # TODO nicht verarbeitet
+        return self.data.get("comments")
