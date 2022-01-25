@@ -261,7 +261,7 @@ DC_DESCRIPTION = "Dieser Bot ist nicht in Kooperation mit der Prime League bzw. 
 DC_DELETE = "Alles klar ich lösche alle Verknüpfungen zu diesem Channel und dem Team."
 DC_BYE = f"Alles gelöscht. Gebt uns gerne Feedback, falls euch Funktionalitäten fehlen oder nicht gefallen. Bye! {EMOJI_PEACE}\n" \
          f"_Das Team kann jetzt in einem anderen Channel registriert werden, oder ein anderes Team kann in diesem Channel registriert werden._"
-TITLE_NEW_MATCH_DAY = "Neuer Spieltag"
+TITLE_NEW_MATCH_DAY = "Wochenübersicht"
 TITLE_NEW_MATCH = "Neues Spiel"
 TITLE_NEW_LINEUP = "Neues Lineup"
 TITLE_NEW_OWN_SUGGESTION = "Eigener neuer Terminvorschlag"
