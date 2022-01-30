@@ -32,7 +32,9 @@ def check_match(match):
         django_logger.exception(e)
         return
     try:
+        match.set_enemy_team(gmd)
         match.update_enemy_team(gmd)  # Only for initial matches, where Team does noch exists in DB
+
     except GMDNotInitialisedException:
         pass  # fail silently
 

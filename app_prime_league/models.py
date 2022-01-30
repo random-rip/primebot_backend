@@ -156,6 +156,12 @@ class Match(models.Model):
         suggestion = self.suggestion_set.all().order_by("created_at").first()
         return None if suggestion is None else suggestion.begin
 
+    def set_enemy_team(self, gmd):
+        if self.enemy_team is not None:
+            return
+        self.enemy_team = Team.objects.get_team(team_id=gmd.enemy_team_id)
+        self.save(update_fields=["enemy_team"])
+
     def update_match_data(self, gmd):
         self.match_id = gmd.match_id
         self.match_day = gmd.match_day
@@ -176,6 +182,7 @@ class Match(models.Model):
             raise GMDNotInitialisedException("GMD Enemy Team Data is not initialized yet. Aborting...")
         enemy_team, created = Team.objects.update_or_create(id=gmd.enemy_team_id, defaults=self.enemy_team)
         _ = Player.objects.create_or_update_players(gmd.enemy_team_members, enemy_team)
+        self.set_enemy_team(gmd=gmd)
 
     def update_latest_suggestions(self, gmd):
         if gmd.latest_suggestions is not None:
