@@ -6,19 +6,25 @@ from modules.processors.team_processor import TeamDataProcessor
 from utils.exceptions import GMDNotInitialisedException
 
 
-class PrimeLeagueMatchData:
+class TemporaryMatchData:
 
-    def __init__(self):
-        self.match_id = None
-        self.match_day = None
-        self.team = None
-        self.enemy_team = None
-        self.enemy_lineup = None
-        self.closed = None
-        self.result = None
-        self.latest_suggestion = None
-        self.begin = None
-        self.latest_confirmation_log = None
+    def __init__(self, match_id=None, match_day=None, team=None, enemy_team_id=None, enemy_team=None,
+                 enemy_team_members=None, enemy_lineup=None, closed=None, result=None, team_made_latest_suggestion=None,
+                 latest_suggestions=None, begin=None, latest_confirmation_log=None, match_begin_confirmed=None):
+        self.match_id = match_id
+        self.match_day = match_day
+        self.team = team
+        self.enemy_team_id = enemy_team_id
+        self.enemy_team = enemy_team
+        self.enemy_team_members = enemy_team_members
+        self.enemy_lineup = enemy_lineup
+        self.closed = closed
+        self.result = result
+        self.team_made_latest_suggestion = team_made_latest_suggestion
+        self.latest_suggestions = latest_suggestions
+        self.begin = begin
+        self.latest_confirmation_log = latest_confirmation_log
+        self.match_begin_confirmed = match_begin_confirmed
 
     def __repr__(self):
         return f"MatchID: {self.match_id}" \
@@ -28,24 +34,22 @@ class PrimeLeagueMatchData:
                f"\nEnemy lineup: {self.enemy_lineup}, " \
                f"\nMatch closed: {self.closed}, " \
                f"\nMatch result: {self.result}" \
-               f"\nLatest Suggestion: {self.latest_suggestion}, " \
+               f"\nLatest Suggestion: {self.latest_suggestions}, " \
                f"\nSuggestion confirmed: {self.begin}, "
 
     def __str__(self):
         return self.__repr__()
 
     @staticmethod
-    def create_from_website(team: Team, match_id):
+    def create_from_website(team: Team, match_id, ) -> "TemporaryMatchData":
 
-        gmd = PrimeLeagueMatchData()
+        gmd = TemporaryMatchData()
         processor = MatchDataProcessor(match_id, team.id)
 
         gmd.match_id = match_id
         gmd.match_day = processor.get_match_day()
         gmd.team = team
-        gmd.enemy_team = {
-            "id": processor.get_enemy_team_id(),
-        }
+        gmd.enemy_team_id = processor.get_enemy_team_id()
         gmd.enemy_lineup = processor.get_enemy_lineup()
         if gmd.enemy_lineup is not None:
             enemy_tuples = []
@@ -53,24 +57,32 @@ class PrimeLeagueMatchData:
                 enemy_tuples.append((*i,))
             gmd.enemy_lineup = enemy_tuples
         gmd.closed = processor.get_match_closed()
-        gmd.latest_suggestion = processor.get_latest_suggestion()
-        gmd.begin, gmd.latest_confirmation_log = processor.get_match_begin()
+        gmd.team_made_latest_suggestion = processor.get_team_made_latest_suggestion()
+        gmd.latest_suggestions = processor.get_latest_suggestions()
+        gmd.begin = processor.get_match_begin()
+        gmd.match_begin_confirmed = processor.get_match_begin_confirmed()
+        gmd.latest_confirmation_log = processor.get_latest_match_begin_log()
         gmd.result = processor.get_match_result()
+
+        if not Team.objects.filter(id=gmd.enemy_team_id).exists():
+            gmd.create_enemy_team_data_from_website()
         return gmd
 
-    def get_enemy_team_data(self):
-        if self.enemy_team is None:
+    def create_enemy_team_data_from_website(self):
+        if self.enemy_team_id is None:
             raise GMDNotInitialisedException("GMD is not initialized yet. Aborting...")
-        processor = TeamDataProcessor(team_id=self.enemy_team["id"])
-        self.enemy_team["members"] = processor.get_members()
-        self.enemy_team["name"] = processor.get_team_name()
-        self.enemy_team["tag"] = processor.get_team_tag()
-        self.enemy_team["division"] = processor.get_current_division()
+        processor = TeamDataProcessor(team_id=self.enemy_team_id)
+        self.enemy_team = {
+            "name": processor.get_team_name(),
+            "team_tag": processor.get_team_tag(),
+            "division": processor.get_current_division(),
+        }
+        self.enemy_team_members = processor.get_members()
 
 
 class MatchComparer:
 
-    def __init__(self, match_old: Union[Match,], match_new: PrimeLeagueMatchData, ):
+    def __init__(self, match_old: Union[Match,], match_new: TemporaryMatchData, ):
         self.match_old = match_old
         self.match_new = match_new
 
@@ -81,21 +93,27 @@ class MatchComparer:
         :param of_enemy_team:
         :return boolean: True if new suggestion else False
         """
-        if self.match_new.latest_suggestion is None:
+        if self.match_new.team_made_latest_suggestion is None or \
+                self.match_old.team_made_latest_suggestion == self.match_new.team_made_latest_suggestion:
             return False
-
-        new_suggestion_user = self.match_new.latest_suggestion.user_id
-        old_suggestion = self.match_old.get_first_suggested_match_begin
-        team_leaders = list(self.match_old.team.player_set.all().filter(is_leader=True).values_list("name", flat=True))
-        if old_suggestion is not None and old_suggestion == self.match_new.latest_suggestion.details[0]:
-            return False
-        if (of_enemy_team and new_suggestion_user not in team_leaders) or \
-                (not of_enemy_team and new_suggestion_user in team_leaders):
+        if of_enemy_team and not self.match_new.team_made_latest_suggestion:
+            return True
+        if not of_enemy_team and self.match_new.team_made_latest_suggestion:
             return True
         return False
 
+        # new_suggestion_user = self.match_new.latest_suggestion.user_id
+        # old_suggestion = self.match_old.get_first_suggested_match_begin
+        # team_leaders = list(self.match_old.team.player_set.all().filter(is_leader=True).values_list("name", flat=True))
+        # if old_suggestion is not None and old_suggestion == self.match_new.latest_suggestion.details[0]:
+        #     return False
+        # if (of_enemy_team and new_suggestion_user not in team_leaders) or \
+        #         (not of_enemy_team and new_suggestion_user in team_leaders):
+        #     return True
+        # return False
+
     def compare_scheduling_confirmation(self):
-        return True if self.match_old.begin is None and self.match_new.begin is not None else False
+        return not self.match_old.match_begin_confirmed and self.match_new.match_begin_confirmed
 
     def compare_lineup_confirmation(self):
         if self.match_new.enemy_lineup is None:
@@ -103,8 +121,8 @@ class MatchComparer:
         old_lineup = list(self.match_old.enemy_lineup.all().values_list("id", flat=True))
 
         new_lineup = self.match_new.enemy_lineup
-        for i in new_lineup:
-            if i in old_lineup:
+        for (user_id, *_) in new_lineup:
+            if user_id in old_lineup:
                 continue
             else:
                 return True

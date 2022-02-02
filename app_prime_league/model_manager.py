@@ -50,7 +50,7 @@ class PlayerManager(models.Manager):
                 "name": name,
                 "team": team,
                 "summoner_name": summoner_name,
-                "is_leader": False if is_leader is None else is_leader
+                "is_leader": is_leader,
             })
             if not created:
                 player.name = name

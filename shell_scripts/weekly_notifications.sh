@@ -1,2 +1,2 @@
 #!/bin/sh
-cd /root/prime_league_bot && venv/bin/python manage.py weekly_notifications &
+cd /opt/prime_bot/prime_bot_backend/ && venv/bin/python manage.py weekly_notifications &

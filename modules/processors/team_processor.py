@@ -1,9 +1,9 @@
 from abc import abstractmethod
 
-from modules.providers.maker import Maker
+from modules.providers.prime_league import PrimeLeagueProvider
 
 
-class _TeamDataFunctions:
+class __TeamDataMethods:
 
     @abstractmethod
     def get_members(self):
@@ -30,7 +30,7 @@ class _TeamDataFunctions:
         pass
 
 
-class TeamDataProcessor(Maker, _TeamDataFunctions, ):
+class TeamDataProcessor(__TeamDataMethods, ):
     """
     Converting json data to functions and providing these.
     """
@@ -43,11 +43,7 @@ class TeamDataProcessor(Maker, _TeamDataFunctions, ):
         :raises PrimeLeagueConnectionException, TeamWebsite404Exception
         :param team_id:
         """
-        super().__init__(team_id=team_id)
-
-    @property
-    def _provider_method(self):
-        return self.provider.get_team
+        self.data = PrimeLeagueProvider.get_team(team_id=team_id)
 
     @property
     def data_team(self):

@@ -42,14 +42,14 @@ class LogSuggestion(BaseLog):
 
     def __init__(self, timestamp, user_id, details):
         super().__init__(timestamp, user_id, details)
-        self.details = [string_to_datetime(x[3:]) for x in self.details]
+        self.details = [string_to_datetime(x[3:]) for x in self.details.split("<br>")]
 
 
 class LogSchedulingConfirmation(BaseLog):
 
     def __init__(self, timestamp, user_id, details):
         super().__init__(timestamp, user_id, details)
-        self.details = string_to_datetime(self.details[0])
+        self.details = string_to_datetime(self.details)
 
 
 class LogSchedulingAutoConfirmation(BaseLog):
@@ -93,7 +93,7 @@ class LogChangeScoreStatus(BaseMatchIsOverLog):
     def __init__(self, timestamp, user_id, details):
         super().__init__(timestamp, user_id, details)
         prefix = "Manually adjusted score to "
-        self.details = self.details[0][len(prefix):len(prefix) + 3]
+        self.details = self.details[len(prefix):len(prefix) + 3]
 
 
 class LogChangeStatus(BaseLog):
@@ -104,7 +104,7 @@ class LogChangeStatus(BaseLog):
     def __init__(self, timestamp, user_id, details):
         super().__init__(timestamp, user_id, details)
         prefix = "Manually adjusted status to "
-        self.details = self.details[0][len(prefix):]
+        self.details = self.details[len(prefix):]
 
 
 class LogChangeScore(BaseLog):
@@ -115,7 +115,7 @@ class LogChangeScore(BaseLog):
     def __init__(self, timestamp, user_id, details):
         super().__init__(timestamp, user_id, details)
         prefix = "Manually adjusted score to "
-        self.details = self.details[0][len(prefix):]
+        self.details = self.details[len(prefix):]
 
 
 class LogScoreReport(BaseLog):
@@ -131,7 +131,7 @@ class LogLineupSubmit(BaseLog):
 
     def __init__(self, timestamp, user_id, details):
         super().__init__(timestamp, user_id, details)
-        self.details = [(*x.split(":"),) for x in self.details[0].split(", ")]
+        self.details = [(*x.split(":"),) for x in self.details.split(", ")]
         self.details = [(int(id_), name) for id_, name in self.details]
 
 
@@ -139,4 +139,4 @@ class LogChangeTime(BaseLog):
     def __init__(self, timestamp, user_id, details):
         super().__init__(timestamp, user_id, details)
         prefix = "Manually adjusted time to "
-        self.details = string_to_datetime(self.details[0][len(prefix):], timestamp_format="%Y-%m-%d %H:%M %z")
+        self.details = string_to_datetime(self.details[len(prefix):], timestamp_format="%Y-%m-%d %H:%M %z")

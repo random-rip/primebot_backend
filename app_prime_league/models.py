@@ -4,6 +4,7 @@ from django.db.models import F
 from django.template.defaultfilters import truncatechars
 
 from app_prime_league.model_manager import TeamManager, MatchManager, PlayerManager
+from utils.exceptions import GMDNotInitialisedException
 
 
 class Team(models.Model):
@@ -127,7 +128,8 @@ class Match(models.Model):
     match_type = models.CharField(max_length=15, null=True, choices=MATCH_TYPES)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="matches_against")
     enemy_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="matches_as_enemy_team", null=True)
-
+    team_made_latest_suggestion = models.BooleanField(null=True, blank=True)
+    match_begin_confirmed = models.BooleanField(default=False, blank=True)
     begin = models.DateTimeField(null=True)
     enemy_lineup = models.ManyToManyField(Player, )
     closed = models.BooleanField(null=True)
@@ -154,40 +156,40 @@ class Match(models.Model):
         suggestion = self.suggestion_set.all().order_by("created_at").first()
         return None if suggestion is None else suggestion.begin
 
-    def update_from_gmd(self, md):
-        self.match_id = md.match_id
-        self.match_day = md.match_day
-        self.team = md.team
-        self.begin = md.begin
-        enemy_team, _ = Team.objects.get_or_create(id=md.enemy_team["id"])
-        self.enemy_team = enemy_team
-        self.closed = md.closed
-        self.result = md.result
+    def set_enemy_team(self, gmd):
+        if self.enemy_team is not None:
+            return
+        self.enemy_team = Team.objects.get_team(team_id=gmd.enemy_team_id)
+        self.save(update_fields=["enemy_team"])
+
+    def update_match_data(self, gmd):
+        self.match_id = gmd.match_id
+        self.match_day = gmd.match_day
+        self.team = gmd.team
+        self.begin = gmd.begin
+        self.match_begin_confirmed = gmd.match_begin_confirmed
+        self.closed = gmd.closed
+        self.result = gmd.result
         self.save()
 
     def update_match_begin(self, gmd):
         self.begin = gmd.begin
+        self.match_begin_confirmed = gmd.match_begin_confirmed
         self.save()
 
     def update_enemy_team(self, gmd):
-        team_dict = gmd.enemy_team
-        enemy_team, created = Team.objects.get_or_create(id=team_dict["id"], defaults={
-            "name": team_dict["name"],
-            "team_tag": team_dict["tag"],
-            "division": team_dict["division"],
-        })
-        if not created:
-            enemy_team.name = team_dict["name"]
-            enemy_team.team_tag = team_dict["tag"]
-            enemy_team.division = team_dict["division"]
-            enemy_team.save()
-        _ = Player.objects.create_or_update_players(team_dict["members"], enemy_team)
+        if gmd.enemy_team is None:
+            raise GMDNotInitialisedException("GMD Enemy Team Data is not initialized yet. Aborting...")
+        enemy_team, created = Team.objects.update_or_create(id=gmd.enemy_team_id, defaults=self.enemy_team)
+        _ = Player.objects.create_or_update_players(gmd.enemy_team_members, enemy_team)
+        self.set_enemy_team(gmd=gmd)
 
-    def update_latest_suggestion(self, gmd):
-        if gmd.latest_suggestion is not None:
+    def update_latest_suggestions(self, gmd):
+        if gmd.latest_suggestions is not None:
             self.suggestion_set.all().delete()
-            for timestamp in gmd.latest_suggestion.details:
-                self.suggestion_set.add(Suggestion(match=self, begin=timestamp), bulk=False)
+            for suggestion in gmd.latest_suggestions:
+                self.suggestion_set.add(Suggestion(match=self, begin=suggestion), bulk=False)
+        self.team_made_latest_suggestion = gmd.team_made_latest_suggestion
         self.save()
 
     def update_enemy_lineup(self, md):
@@ -228,8 +230,8 @@ class Suggestion(models.Model):
 
     class Meta:
         db_table = "suggestions"
-        verbose_name = "Zeitvorschlag"
-        verbose_name_plural = "Zeitvorschläge"
+        verbose_name = "Terminvorschlag"
+        verbose_name_plural = "Terminvorschläge"
 
 
 class Setting(models.Model):

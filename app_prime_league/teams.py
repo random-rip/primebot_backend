@@ -6,10 +6,11 @@ import traceback
 from telegram import ParseMode
 
 from app_prime_league.models import Team, Player, Match
-from modules.comparing.match_comparer import PrimeLeagueMatchData
 from bots import send_message
+from modules.comparing.match_comparer import TemporaryMatchData
 from modules.processors.team_processor import TeamDataProcessor
 from prime_league_bot import settings
+from utils.exceptions import GMDNotInitialisedException
 from utils.messages_logger import log_exception
 
 logger = logging.getLogger("django")
@@ -17,7 +18,9 @@ logger = logging.getLogger("django")
 
 def register_team(*, team_id, **kwargs):
     """
-    Add or Update a Team, Add or Update Players, Add or Update Matches. Optionally set telegram_id of the team.
+    This Function should be used in Bot commands!
+    Add or Update a Team, Add or Update Players, Add or Update Matches.
+    **kwargs will be directly parsed to the Team model.
     :raises PrimeLeagueConnectionException, TeamWebsite404Exception
     """
     team, provider = add_or_update_team(team_id=team_id, **kwargs)
@@ -41,10 +44,12 @@ def register_team(*, team_id, **kwargs):
 def add_or_update_team(*, team_id, **kwargs):
     """
 
-    :param team_id:
-    :param kwargs:
-    :return: team and provider of team
-    :raises PrimeLeagueConnectionException, TeamWebsite404Exception
+    Args:
+        team_id:
+        **kwargs:
+
+    Returns:
+    Exceptions: PrimeLeagueConnectionException, TeamWebsite404Exception
     """
     processor = TeamDataProcessor(team_id=team_id)
 
@@ -86,21 +91,6 @@ def update_team(processor: TeamDataProcessor, team_id: int):
     return team
 
 
-def update_settings(tg_chat_id, settings: dict):
-    try:
-        team = Team.objects.get(telegram_id=tg_chat_id)
-    except Team.DoesNotExist:
-        print("Team existiert nicht")
-        return None
-    for key, value in settings.items():
-        setting, _ = team.setting_set.get_or_create(attr_name=key, defaults={
-            "attr_value": value,
-        })
-        setting.attr_value = value
-        setting.save()
-    return team
-
-
 def add_or_update_players(members, team: Team):
     for (id_, name, summoner_name, is_leader,) in members:
         player = Player.objects.filter(id=id_, name=name, summoner_name=summoner_name, is_leader=is_leader).first()
@@ -119,25 +109,40 @@ def add_or_update_players(members, team: Team):
 
 
 @log_exception
-def add_match(team, match_id, ignore_lineup=False):
-    gmd = PrimeLeagueMatchData.create_from_website(team=team, match_id=match_id, )
+def add_match(team, match_id, ):
+    gmd = TemporaryMatchData.create_from_website(team=team, match_id=match_id, )
     match = Match.objects.get_match_of_team(match_id=match_id, team=team)
+    logging.debug(f"Adding Match {match_id} ...")
 
     if match is None:
         match = Match()
-    gmd.get_enemy_team_data()
-    match.update_from_gmd(gmd)
-    match.update_enemy_team(gmd)
-    if not ignore_lineup:
-        match.update_enemy_lineup(gmd)
-    match.update_latest_suggestion(gmd)
-    logger.debug(f"Updating {match}...")
+
+    match.update_match_data(gmd)
+
+    try:
+        match.update_enemy_team(gmd)
+        logging.debug(f"Added enemy Team of {match=}.")
+    except GMDNotInitialisedException:
+        logging.debug(f"Enemy Team of {match=} already in database, skipped.")
+
+    match.update_enemy_lineup(gmd)
+    match.update_latest_suggestions(gmd)
 
 
-def add_matches(match_ids, team: Team, ignore_lineup=False, use_concurrency=True):
+def add_matches(match_ids, team: Team, use_concurrency=True):
+    """
+    Used for registering new teams.
+    Args:
+        match_ids:
+        team:
+        use_concurrency:
+
+    Returns: None
+
+    """
     if use_concurrency:
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-            executor.map(lambda p: add_match(*p), ((team, match_id, ignore_lineup) for match_id in match_ids))
+            executor.map(lambda p: add_match(*p), ((team, match_id) for match_id in match_ids))
     else:
         for i in match_ids:
             add_match(team, match_id=i)
@@ -152,6 +157,16 @@ def add_raw_match(team, match_id):
 
 
 def add_raw_matches(match_ids, team: Team, use_concurrency=True):
+    """
+    Used for new Matches of registered teams (usually at beginning of the split and swiss starter matches).
+    Args:
+        match_ids:
+        team:
+        use_concurrency:
+
+    Returns: None
+
+    """
     if use_concurrency:
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
             executor.map(lambda p: add_raw_match(*p), ((team, match_id) for match_id in match_ids))
