@@ -126,7 +126,11 @@ class SettingsMaker:
                 "SCOUTING_WEBSITE",
             ]):
                 self.errors.append(MISSING_CONTENT)
-            self.scouting_website = ScoutingWebsite.objects.get(name=self.settings.pop("SCOUTING_WEBSITE"))
+            scouting_website_name = self.settings.pop("SCOUTING_WEBSITE")
+            if scouting_website_name != settings.DEFAULT_SCOUTING_NAME:
+                self.scouting_website = ScoutingWebsite.objects.get(name=self.settings.pop("SCOUTING_WEBSITE"))
+            else:
+                self.scouting_website = scouting_website_name
         except (KeyError, ScoutingWebsite.DoesNotExist):
             self.errors.append(MALFORMED_CONTENT)
 
@@ -173,5 +177,7 @@ class SettingsMaker:
             })
             setting.attr_value = value
             setting.save()
-        self.team.scouting_website = self.scouting_website
-        self.team.save()
+
+        if self.scouting_website != settings.DEFAULT_SCOUTING_NAME:
+            self.team.scouting_website = self.scouting_website
+            self.team.save()
