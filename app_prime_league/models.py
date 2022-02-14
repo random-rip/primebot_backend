@@ -85,7 +85,12 @@ class Team(models.Model):
         return base_url.format(parameters)
 
     def get_open_matches_ordered(self):
-        return self.matches_against.filter(closed=False).order_by(F('match_day').desc(nulls_last=True))
+        return self.matches_against.filter(closed=False).order_by(F('match_day').asc(nulls_last=True))
+
+    def update(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+        self.save()
 
 
 class Player(models.Model):
@@ -112,13 +117,12 @@ class Player(models.Model):
 
 class Match(models.Model):
     MATCH_TYPE_CALIBRATION = "calibration"
-    MATCH_TYPE_GROUP = "group"  # Pro Div, Kein Divisionssystem
+    MATCH_TYPE_GROUP = "group"  # Pro Div und Kalibrierungsphase, Kein Divisionssystem
     MATCH_TYPE_LEAGUE = "league"  # Gruppenphase Divisionssystem
-    MATCH_TYPE_PLAYOFF = "playoff"
+    MATCH_TYPE_PLAYOFF = "playoff"  # Playoffs
 
     MATCH_TYPES = (
-        (MATCH_TYPE_CALIBRATION, "Kalibrierung"),
-        (MATCH_TYPE_GROUP, "Pro Division"),
+        (MATCH_TYPE_GROUP, "Kalibrierung/Pro Div"),
         (MATCH_TYPE_LEAGUE, "Gruppenphase"),
         (MATCH_TYPE_PLAYOFF, "Playoffs"),
     )
@@ -165,6 +169,7 @@ class Match(models.Model):
     def update_match_data(self, gmd):
         self.match_id = gmd.match_id
         self.match_day = gmd.match_day
+        self.match_type = gmd.match_type
         self.team = gmd.team
         self.begin = gmd.begin
         self.match_begin_confirmed = gmd.match_begin_confirmed

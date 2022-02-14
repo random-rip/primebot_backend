@@ -159,7 +159,7 @@ class SettingsMaker:
 
         SettingsExpiring.objects.filter(team=self.team).delete()
         SettingsExpiring.objects.create(expires=expiring_at, team=self.team)
-        url = settings.SITE_ID + "/api/settings/?"
+        url = settings.SITE_ID + "/settings/?"
         qps = {
             self.key_team: self.encrypt(self.team.id),
             self.key_validation_hash: self.hash(self.team.id),

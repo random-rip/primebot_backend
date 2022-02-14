@@ -1,11 +1,9 @@
 import html
 import logging
 
-from django.conf import settings
-from telegram import ParseMode
 from telegram.utils.helpers import mention_html
 
-from bots.telegram_interface.tg_singleton import send_message
+from bots.telegram_interface.tg_singleton import send_message_to_devs
 
 logger = logging.getLogger("commands")
 
@@ -28,10 +26,7 @@ def log_command(fn):
         )
 
         logger.info(log_text)
-        try:
-            send_command_to_dev_group(log_text)
-        except Exception as e:
-            logger.exception(e)
+        send_message_to_devs(log_text)
         return result
 
     return wrapper
@@ -53,16 +48,12 @@ def log_callbacks(fn):
         )
         logger.info(log_text)
         try:
-            send_command_to_dev_group(log_text)
+            send_message_to_devs(log_text)
         except Exception as e:
             logger.exception(e)
         return result
 
     return wrapper
-
-
-def send_command_to_dev_group(log, parse_mode=ParseMode.HTML):
-    send_message(msg=log, chat_id=settings.TG_DEVELOPER_GROUP, parse_mode=parse_mode)
 
 
 async def log_from_discord(ctx, optional=None):
@@ -79,7 +70,7 @@ async def log_from_discord(ctx, optional=None):
         log_text = f"{log_text}\n===\nOPTIONAL_RESULT: <code>{html.escape(str(optional))}</code>"
     try:
         logger.info(log_text)
-        send_command_to_dev_group(log_text)
+        send_message_to_devs(log_text)
     except Exception as e:
         logger.exception(e)
     finally:
@@ -93,4 +84,5 @@ def log_exception(fn):
             return result
         except Exception as e:
             logging.getLogger("django").exception(e)
+
     return wrapper

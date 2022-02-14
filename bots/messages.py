@@ -7,7 +7,7 @@ from discord import Colour
 from app_prime_league.models import Match, Team
 from bots.languages import de_DE as LaP
 from bots.telegram_interface.tg_singleton import emoji_numbers
-from modules.parsing.html_parser import LogSchedulingAutoConfirmation, LogSchedulingConfirmation, LogChangeTime
+from modules.parsing.logs import LogSchedulingAutoConfirmation, LogSchedulingConfirmation, LogChangeTime
 from prime_league_bot import settings
 from utils.emojis import EMOJI_FIGHT, EMOJI_ARROW_RIGHT, EMOJI_CALENDAR, EMOJI_BOOKMARK, EMJOI_MAGN_GLASS
 
@@ -228,7 +228,15 @@ class MatchesOverview(BaseMessage):
             value = f"[{LaP.VS} {match.enemy_team.name}]({LaP.GENERAL_MATCH_LINK}{match.match_id})" \
                     f"\n> {EMJOI_MAGN_GLASS} [{website_name}]({scouting_link})"
 
-            if match.begin is not None:
+            if not match.match_begin_confirmed:
+                if match.team_made_latest_suggestion is None:
+                    value += f"\n> {EMOJI_CALENDAR} Keine Terminvorschläge. " \
+                             f"Standardtermin: {format_datetime(match.begin)}"
+                if match.team_made_latest_suggestion is False:
+                    value += f"\n> {EMOJI_CALENDAR}⚠ Offene Terminvorschläge vom Gegner!"
+                if match.team_made_latest_suggestion is True:
+                    value += f"\n> {EMOJI_CALENDAR}✅ Offene Terminvorschläge von euch."
+            else:
                 value += f"\n> {EMOJI_CALENDAR} {format_datetime(match.begin)}"
 
             if match.lineup_available:
