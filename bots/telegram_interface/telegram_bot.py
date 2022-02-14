@@ -84,8 +84,7 @@ class TelegramBot(Bot):
             team.set_telegram_null()
             logging.getLogger("notifications").info(f"Soft deleted Telegram {team}'")
             return
-        except Exception as e:
-            print(e)
+        except Exception:
             return
         if msg.can_be_pinned():
             try:

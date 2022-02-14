@@ -24,7 +24,6 @@ class PrimeLeagueAPI:
         if query_params:
             path += "?"
             path += "&".join(str(x) for x in [query_params])
-        print(path)
         try:
             response = request(url=path, )
         except requests.exceptions.ConnectionError:
