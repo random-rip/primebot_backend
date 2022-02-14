@@ -1,5 +1,8 @@
+from datetime import timedelta
+
 from django.db import models
 from django.db.models import Q
+from django.utils import timezone
 
 
 class TeamManager(models.Manager):
@@ -32,7 +35,16 @@ class TeamManager(models.Manager):
 class MatchManager(models.Manager):
 
     def get_uncompleted_matches(self):
-        return self.model.objects.filter(Q(closed=False) | Q(closed__isnull=True))
+        """
+        Gibt alle Matches zurück die nicht `closed` oder `NULL` oder deren Spielbeginn länger als 2 Tage her sind.
+        Returns: queryset
+
+        """
+        qs = self.model.objects.filter(
+            Q(closed=False) |
+            Q(closed__isnull=True) |
+            Q(closed=True, begin__gte=timezone.now() - timedelta(days=2)))
+        return qs
 
     def get_match_of_team(self, match_id, team):
         try:
@@ -45,20 +57,13 @@ class PlayerManager(models.Manager):
 
     def create_or_update_players(self, players_list: list, team):
         players = []
-        for (id_, name, summoner_name, is_leader,) in players_list:
-            player, created = self.model.objects.get_or_create(id=id_, defaults={
+        for (_id, name, summoner_name, is_leader,) in players_list:
+            player, _ = self.model.objects.update_or_create(id=_id, defaults={
                 "name": name,
                 "team": team,
                 "summoner_name": summoner_name,
                 "is_leader": is_leader,
             })
-            if not created:
-                player.name = name
-                player.team = team
-                player.summoner_name = summoner_name
-                if is_leader is not None:
-                    player.is_leader = is_leader
-                player.save()
             players.append(player)
         return players
 

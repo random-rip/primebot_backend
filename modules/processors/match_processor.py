@@ -16,6 +16,10 @@ class __MatchDataMethods:
         pass
 
     @abstractmethod
+    def get_match_type(self):
+        pass
+
+    @abstractmethod
     def get_match_result(self):
         pass
 
@@ -178,6 +182,10 @@ class MatchDataProcessor(__MatchDataMethods, ):
 
     def get_match_day(self):
         return self.data_match.get("match_playday")
+
+    def get_match_type(self):
+        return self.data_stage.get("stage_type")
+
 
     def get_comments(self):
         # TODO nicht verarbeitet

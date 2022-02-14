@@ -1,7 +1,8 @@
 from django.test import TestCase
 
 from app_prime_league.models import Match, Team, Player
-from modules.comparing.match_comparer import MatchComparer, TemporaryMatchData
+from modules.match_comparer import MatchComparer
+from modules.temporary_match_data import TemporaryMatchData
 from modules.tests.test_utils import string_to_datetime
 
 

@@ -3,12 +3,13 @@ import logging
 import threading
 
 import requests
+from django.conf import settings
 
 from bots.message_dispatcher import MessageDispatcher
 from bots.messages import EnemyNewTimeSuggestionsNotificationMessage, \
     OwnNewTimeSuggestionsNotificationMessage, ScheduleConfirmationNotification, NewLineupNotificationMessage
-from modules.comparing.match_comparer import MatchComparer, TemporaryMatchData
-from utils.exceptions import GMDNotInitialisedException
+from modules.match_comparer import MatchComparer
+from modules.temporary_match_data import TemporaryMatchData
 from utils.messages_logger import log_exception
 
 thread_local = threading.local()
@@ -31,12 +32,6 @@ def check_match(match):
     except Exception as e:
         django_logger.exception(e)
         return
-    try:
-        match.set_enemy_team(gmd)
-        match.update_enemy_team(gmd)  # Only for initial matches, where Team does noch exists in DB
-
-    except GMDNotInitialisedException:
-        pass  # fail silently
 
     cmp = MatchComparer(match, gmd)
     # TODO: Nice to have: Eventuell nach einem comparing und updaten mit match.refresh_from_db() arbeiten
@@ -65,9 +60,9 @@ def check_match(match):
     match.update_match_data(gmd)
 
 
-def update_uncompleted_matches(matches, use_concurrency=True):
+def update_uncompleted_matches(matches, use_concurrency=not settings.DEBUG):
     if use_concurrency:
-        with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
             executor.map(check_match, matches)
     else:
         for i in matches:

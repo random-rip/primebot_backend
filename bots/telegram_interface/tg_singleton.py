@@ -14,6 +14,10 @@ emoji_numbers = [
 bot = telepot.Bot(token=settings.TELEGRAM_BOT_KEY)
 
 
+def send_message_to_devs(msg, parse_mode=ParseMode.HTML):
+    send_message(msg=msg, chat_id=settings.TG_DEVELOPER_GROUP, parse_mode=parse_mode)
+
+
 def send_message(msg: str, chat_id: int, parse_mode=ParseMode.MARKDOWN, raise_again=False):
     """
     Sends a Message using Markdown as default.

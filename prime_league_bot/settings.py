@@ -217,7 +217,14 @@ if not DEBUG:
                 'filename': os.path.join(LOGGING_DIR, 'calibration.log'),
                 'when': 'midnight',
                 'formatter': 'to_file',
-            }
+            },
+            'discord': {
+                'level': "DEBUG",
+                'class': 'logging.handlers.TimedRotatingFileHandler',
+                'filename': os.path.join(LOGGING_DIR, 'discord.log'),
+                'when': 'midnight',
+                'formatter': 'to_file',
+            },
         },
         'loggers': {
             'django': {
@@ -239,7 +246,12 @@ if not DEBUG:
                 'handlers': ['calibration', ],
                 'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
                 'propagate': False,
-            }
+            },
+            'discord': {
+                'handlers': ['discord'],
+                'level': "DEBUG",
+                'propagate': False,
+            },
         }
     }
 

@@ -49,6 +49,17 @@ class TeamDataProcessor(__TeamDataMethods, ):
     def data_team(self):
         return self.data.get("team", {})
 
+    @property
+    def data_stages(self):
+        return self.data.get("stages", [])
+
+    @property
+    def data_current_stage(self):
+        try:
+            return self.data_stages[-1]
+        except IndexError:
+            return {}
+
     def get_team_tag(self):
         return self.data_team.get("team_short")
 
@@ -61,14 +72,18 @@ class TeamDataProcessor(__TeamDataMethods, ):
         return members
 
     def get_matches(self):
+        """
+
+        Returns: List: [1,2,3]
+
+        """
         return self.data.get("matches", [])
 
     def get_team_name(self):
         return self.data_team.get("team_name")
 
     def get_current_division(self):
-        # TODO Last Item of "stages", but is currently an empty list
-        return "4.4"
+        return self.data_current_stage.get("group_title", None)
 
     def get_logo(self):
         return self.data_team.get("team_logo_img_url")
