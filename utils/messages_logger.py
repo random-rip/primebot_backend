@@ -1,9 +1,8 @@
 import html
 import logging
 
-from telegram.utils.helpers import mention_html
-
 from bots.telegram_interface.tg_singleton import send_message_to_devs
+from utils.utils import Encoder
 
 logger = logging.getLogger("commands")
 
@@ -14,12 +13,13 @@ def log_command(fn):
         command = fn.__name__
         result = fn(*args, **kwargs)
 
-        user = f'{mention_html(update.effective_user.id, update.effective_user.first_name)}' if update.effective_user else ""
+        user = update.effective_user.first_name if update.effective_user else ""
+        user = Encoder.blake2b(user)
 
-        title = update.effective_chat.title if update.effective_chat else ""
-
+        chat_id = Encoder.blake2b(update.message.chat.id)
         log_text = (
-            f"Chat: {update.message.chat.id} (Title <i>{title}</i>) (User {user}), "
+            f"Chat: {chat_id}, "
+            f"User: {user}, "
             f"Command: {command}, "
             f"Message: {update.message.text}, "
             f"Result-Code: {result}"
@@ -40,41 +40,33 @@ def log_callbacks(fn):
         question = args[0].callback_query.message.text.replace("\n", " ")
         result = fn(*args, **kwargs)
         log_text = (
-            f"Chat: {chat_id}, "
+            f"Chat: {Encoder.blake2b(chat_id)}, "
             f"Conversation: {command}, "
             f"Question: '{question}', "
             f"Message: '{message}', "
             f"Result-Code: {result}"
         )
         logger.info(log_text)
-        try:
-            send_message_to_devs(log_text)
-        except Exception as e:
-            logger.exception(e)
+        send_message_to_devs(log_text)
         return result
 
     return wrapper
 
 
 async def log_from_discord(ctx, optional=None):
-    channel = ctx.message.channel
     author = ctx.message.author
     content = ctx.message.content
     log_text = (
-        f"DISCORD Channel: <i>{html.escape(str(channel.name))}</i> "
-        f"(User={html.escape(str(author.name))}#{author.discriminator}), "
-        f"CommandMessage=<code>{html.escape(str(content))}</code>, "
-        f"Servername=<i>{html.escape(str(author.guild.name))}</i>: {author.guild.member_count} Members."
+        f"DISCORD\n"
+        f"User: {Encoder.blake2b(author.name)}"
+        f"CommandMessage: <code>{html.escape(str(content))}</code>, "
+        f"Server: <i>{html.escape(str(author.guild.name))}</i>: {author.guild.member_count} Members."
     )
     if optional is not None:
-        log_text = f"{log_text}\n===\nOPTIONAL_RESULT: <code>{html.escape(str(optional))}</code>"
-    try:
-        logger.info(log_text)
-        send_message_to_devs(log_text)
-    except Exception as e:
-        logger.exception(e)
-    finally:
-        return True
+        log_text = f"{log_text} OPTIONAL_RESULT: <code>{html.escape(str(optional))}</code>"
+    logger.info(log_text)
+    send_message_to_devs(log_text)
+    return True
 
 
 def log_exception(fn):

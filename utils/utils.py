@@ -1,3 +1,4 @@
+import hashlib
 from datetime import datetime, time
 from typing import Union
 
@@ -45,3 +46,22 @@ def get_valid_team_id(response):
         except Exception:
             raise CouldNotParseURLException()
     return team_id
+
+
+class Encoder:
+    __hash_func = hashlib.sha256
+    __encoder = "utf-8"
+
+    @classmethod
+    def hash(cls, value) -> str:
+        if not isinstance(value, str):
+            value = str(value)
+        value = value.encode(cls.__encoder)
+        return cls.__hash_func(value).hexdigest()
+
+    @classmethod
+    def blake2b(cls, value, digest_size=5) -> str:
+        if not isinstance(value, str):
+            value = str(value)
+        value = value.encode(cls.__encoder)
+        return hashlib.blake2b(value, digest_size=digest_size).hexdigest()

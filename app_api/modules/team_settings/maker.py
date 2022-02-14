@@ -1,4 +1,3 @@
-import hashlib
 import urllib
 from datetime import timedelta
 from urllib.parse import urlparse
@@ -11,6 +10,7 @@ from django.utils import timezone
 from rest_framework.exceptions import ValidationError
 
 from app_prime_league.models import Team, SettingsExpiring, ScoutingWebsite
+from utils.utils import Encoder
 
 MALFORMED_REQUEST = "invalid_request"
 MALFORMED_TEAM = "invalid_team"
@@ -21,13 +21,11 @@ MISSING_CONTENT = "missing_content"
 EXPIRED_DATE = "url_expired"
 
 
-class SettingsMaker:
+class SettingsMaker(Encoder):
     """
     Class to handle the whole cryptography logic, encoding and decoding data, validating data and creating temporary
     links. Set `team` or `data` in initialization.
     """
-    __hash_func = hashlib.sha256
-    __encoder = "utf-8"
 
     key_team = "enc"
     key_validation_hash = "hash"
@@ -145,13 +143,6 @@ class SettingsMaker:
     def decrypt(cls, value) -> str:
         value = value.encode(cls.__encoder)
         return Fernet(settings.FERNET_KEY).decrypt(value).decode(encoding=cls.__encoder)
-
-    @classmethod
-    def hash(cls, value) -> str:
-        if not isinstance(value, str):
-            value = str(value)
-        value = value.encode(cls.__encoder)
-        return cls.__hash_func(value).hexdigest()
 
     def generate_expiring_link(self, platform, expiring_at=None, ) -> str:
         if expiring_at is None:
