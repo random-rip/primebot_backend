@@ -116,13 +116,12 @@ class Player(models.Model):
 
 
 class Match(models.Model):
-    MATCH_TYPE_CALIBRATION = "calibration"
     MATCH_TYPE_GROUP = "group"  # Pro Div und Kalibrierungsphase, Kein Divisionssystem
     MATCH_TYPE_LEAGUE = "league"  # Gruppenphase Divisionssystem
     MATCH_TYPE_PLAYOFF = "playoff"  # Playoffs
 
     MATCH_TYPES = (
-        (MATCH_TYPE_GROUP, "Kalibrierung/Pro Div"),
+        (MATCH_TYPE_GROUP, "Kalibrierung"),
         (MATCH_TYPE_LEAGUE, "Gruppenphase"),
         (MATCH_TYPE_PLAYOFF, "Playoffs"),
     )
