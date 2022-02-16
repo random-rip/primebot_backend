@@ -173,6 +173,8 @@ DEFAULT_SCOUTING_SEP = ","
 
 TEMP_LINK_TIMEOUT_MINUTES = 60
 
+FILES_FROM_STORAGE = env.bool("FILES_FROM_STORAGE", False)
+
 if not DEBUG:
     LOGGING = {
         'version': 1,
@@ -188,40 +190,54 @@ if not DEBUG:
         },
         'handlers': {
             'console': {
-                'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+                'level': "DEBUG",
                 'formatter': 'to_console',
                 'class': 'logging.StreamHandler',
             },
             'django': {
-                'level': "DEBUG",
+                'level': "INFO",
                 'class': 'logging.handlers.TimedRotatingFileHandler',
                 'filename': os.path.join(LOGGING_DIR, 'django.log'),
                 'when': 'midnight',
                 'formatter': 'to_file',
             },
             'notifications': {
-                'level': 'DEBUG',
+                'level': 'INFO',
                 'class': 'logging.handlers.WatchedFileHandler',
                 'filename': os.path.join(LOGGING_DIR, 'notifications.log'),
                 'formatter': 'to_file',
             },
             'commands': {
-                'level': 'DEBUG',
+                'level': 'INFO',
                 'class': 'logging.handlers.WatchedFileHandler',
                 'filename': os.path.join(LOGGING_DIR, 'commands.log'),
                 'formatter': 'to_file',
             },
-            'calibration': {
-                'level': 'DEBUG',
+            'discord': {
+                'level': "INFO",
                 'class': 'logging.handlers.TimedRotatingFileHandler',
-                'filename': os.path.join(LOGGING_DIR, 'calibration.log'),
+                'filename': os.path.join(LOGGING_DIR, 'discord.log'),
                 'when': 'midnight',
                 'formatter': 'to_file',
             },
-            'discord': {
-                'level': "DEBUG",
+            'telegram': {
+                'level': "INFO",
                 'class': 'logging.handlers.TimedRotatingFileHandler',
-                'filename': os.path.join(LOGGING_DIR, 'discord.log'),
+                'filename': os.path.join(LOGGING_DIR, 'telegram.log'),
+                'when': 'midnight',
+                'formatter': 'to_file',
+            },
+            'update_teams': {
+                'level': "INFO",
+                'class': 'logging.handlers.TimedRotatingFileHandler',
+                'filename': os.path.join(LOGGING_DIR, 'update_teams.log'),
+                'when': 'midnight',
+                'formatter': 'to_file',
+            },
+            'update_matches': {
+                'level': "INFO",
+                'class': 'logging.handlers.TimedRotatingFileHandler',
+                'filename': os.path.join(LOGGING_DIR, 'update_matches.log'),
                 'when': 'midnight',
                 'formatter': 'to_file',
             },
@@ -239,12 +255,7 @@ if not DEBUG:
             },
             'commands': {
                 'handlers': ['commands', ],
-                'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
-                'propagate': False,
-            },
-            'calibration': {
-                'handlers': ['calibration', ],
-                'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+                'level': "INFO",
                 'propagate': False,
             },
             'discord': {
@@ -252,7 +263,20 @@ if not DEBUG:
                 'level': "DEBUG",
                 'propagate': False,
             },
+            'telegram': {
+                'handlers': ['telegram'],
+                'level': "DEBUG",
+                'propagate': False,
+            },
+            'update_matches': {
+                'handlers': ['update_matches'],
+                'level': "DEBUG",
+                'propagate': False,
+            },
+            'update_teams': {
+                'handlers': ['update_teams'],
+                'level': "DEBUG",
+                'propagate': False,
+            }
         }
     }
-
-FILES_FROM_STORAGE = env.bool("FILES_FROM_STORAGE", False)
