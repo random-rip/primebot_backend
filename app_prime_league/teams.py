@@ -10,8 +10,6 @@ from modules.temporary_match_data import TemporaryMatchData
 from prime_league_bot import settings
 from utils.messages_logger import log_exception
 
-logger = logging.getLogger("django")
-
 
 def register_team(*, team_id, **kwargs):
     """
@@ -30,7 +28,7 @@ def register_team(*, team_id, **kwargs):
         trace = "".join(traceback.format_tb(sys.exc_info()[2]))
         send_message_to_devs(
             f"Ein Fehler ist beim Registrieren von Team {team.id} {team.name} aufgetreten:\n<code>{trace}\n{e}</code>")
-        logger.exception(e)
+        logging.getLogger("commands").exception(e)
     return team
 
 

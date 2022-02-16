@@ -36,6 +36,7 @@ HELP_COMMAND_LIST = \
     "/feedback - um meinen Entwicklern dein Feedback mitzuteilen\n" \
     "/explain - um eine Erklärung zu dem Bot zu erhalten\n" \
     "/delete - um das registrierte Team zu entfernen\n" \
+    "/set_logo - um ein neues Logo aus der PrimeLeague zu holen\n" \
 
 # Antwort auf /issue
 ISSUE = f"Hast Du einen Fehler bemerkt? Bitte schreibe den Entwicklern eine Nachricht in ihrer " \
@@ -274,9 +275,6 @@ MATCH_DAY = "Spieltag"
 TIEBREAKER = "Tiebreaker"
 CURRENT_LINEUP = "Aktuelles Lineup"
 VS = "vs."
-
-TG_SETTINGS_LINK = "[Einstellungen für {team} ändern]({link})\n" \
-                   "_Der Link ist nur {minutes} Minuten gültig. Danach muss ein neuer Link generiert werden._"
 
 SETTINGS_CHANGE_TITLE = "Einstellungen für {team} ändern"
 SETTINGS_TEMP_LINK = "Der Link ist nur {minutes} Minuten gültig. Danach muss ein neuer Link generiert werden."

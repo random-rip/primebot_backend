@@ -6,7 +6,6 @@ import telepot
 from telegram import ParseMode
 from telegram.ext import Updater, CommandHandler, MessageHandler, ConversationHandler, CallbackQueryHandler
 from telegram.ext.filters import Filters
-from telegram.utils.helpers import mention_html
 from telepot.exception import BotWasKickedError, BotWasBlockedError
 
 from bots import send_message
@@ -17,6 +16,8 @@ from bots.telegram_interface.commands import single_commands
 from bots.telegram_interface.conversations import start_conversation
 from bots.telegram_interface.tg_singleton import pin_msg, CannotBePinnedError
 from prime_league_bot import settings
+
+notifications_logger = logging.getLogger("notifications")
 
 
 class TelegramBot(Bot):
@@ -82,7 +83,7 @@ class TelegramBot(Bot):
             sent_message = send_message(msg=msg.message, chat_id=team.telegram_id, raise_again=True)
         except (BotWasKickedError, BotWasBlockedError) as e:
             team.set_telegram_null()
-            logging.getLogger("notifications").info(f"Soft deleted Telegram {team}'")
+            notifications_logger.info(f"Soft deleted Telegram {team}'")
             return
         except Exception:
             return
@@ -92,32 +93,23 @@ class TelegramBot(Bot):
             except CannotBePinnedError:
                 send_message(msg=MESSAGE_NOT_PINNED_TEXT, chat_id=team.telegram_id)
             except telepot.exception.TelegramError:
-                logging.getLogger("notifications").exception(f"{team}: {CANT_PIN_MSG_IN_PRIVATE_CHAT}")
+                notifications_logger.exception(f"{team}: {CANT_PIN_MSG_IN_PRIVATE_CHAT}")
         return
 
 
 def error(update, context):
     try:
-        if update is not None:
-            if update.effective_message:
-                text = "Hey. I'm sorry to inform you that an error happened while I tried to handle your request. " \
-                       "My developer(s) will be notified."
-                update.effective_message.reply_text(text)
-            trace = "".join(traceback.format_tb(sys.exc_info()[2]))
-            payload = ""
-            if update.effective_user:
-                payload += f' with the user {mention_html(update.effective_user.id, update.effective_user.first_name)}'
-            if update.effective_chat:
-                payload += f' within the chat <i>{update.effective_chat.title}</i>'
-                if update.effective_chat.username:
-                    payload += f' (@{update.effective_chat.username})'
-            if update.poll:
-                payload += f' with the poll id {update.poll.id}.'
-            text = f"Hey.\n The error <code>{context.error}</code> happened{payload}. The full traceback:\n\n<code>{trace}" \
-                   f"</code>"
-        else:
-            text = "Ein Fehler ist aufgetreten (update is none)."
+        trace = "".join(traceback.format_tb(sys.exc_info()[2]))
+
+        text = f"The error <code>{context.error}</code> happened in one of the telegram chats.\n" \
+               f"Full trace: <code>{trace}</code>"
+        notifications_logger.exception(trace)
         context.bot.send_message(settings.TG_DEVELOPER_GROUP, text, parse_mode=ParseMode.HTML)
+
+        if update and update.effective_message:
+            text = "Hey, es ist ein unerwarteter Fehler aufgetreten, während ich euren Befehl verarbeiten wollte. " \
+                   "Bitte kontaktiert die Programmierer über Discord oder Telegram."
+            update.effective_message.reply_text(text)
     except Exception as e:
         text = f"Ein gravierender Fehler ist aufgetreten.\n{e}"
         # TODO: catch connection errors
@@ -125,4 +117,4 @@ def error(update, context):
     try:
         raise
     except RuntimeError as e:
-        logging.getLogger("django").exception(e)
+        notifications_logger.exception(e)

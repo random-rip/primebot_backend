@@ -6,7 +6,6 @@ import telegram
 from django.conf import settings
 from django.core.files import File
 from telegram import Update, ReplyKeyboardRemove
-from telegram.error import BadRequest
 from telegram.ext import CallbackContext, ConversationHandler
 
 from app_api.modules.team_settings.maker import SettingsMaker
@@ -20,7 +19,7 @@ from prime_league_bot.settings import STORAGE_DIR
 from utils.changelogs import CHANGELOGS
 from utils.messages_logger import log_command
 
-logger = logging.getLogger("notifications")
+logger = logging.getLogger("commands")
 
 
 def set_photo(chat_id, context: CallbackContext, url):
@@ -192,8 +191,11 @@ def team_settings(update: Update, context: CallbackContext):
 
     maker = SettingsMaker(team=team)
     link = maker.generate_expiring_link(platform="telegram")
+    title = LaP.SETTINGS_CHANGE_TITLE.format(team=team.name)
+    content = LaP.SETTINGS_TEMP_LINK.format(minutes=settings.TEMP_LINK_TIMEOUT_MINUTES)
+
     update.message.reply_markdown(
-        LaP.TG_SETTINGS_LINK.format(link=link, team=team.name, minutes=settings.TEMP_LINK_TIMEOUT_MINUTES),
+        f"[{title}]({link})\n_{content}_",
         disable_web_page_preview=True,
         quote=False,
     )

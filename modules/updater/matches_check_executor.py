@@ -13,7 +13,7 @@ from modules.temporary_match_data import TemporaryMatchData
 from utils.messages_logger import log_exception
 
 thread_local = threading.local()
-django_logger = logging.getLogger("django")
+update_logger = logging.getLogger("updates")
 notifications_logger = logging.getLogger("notifications")
 
 
@@ -30,13 +30,13 @@ def check_match(match):
     try:
         gmd = TemporaryMatchData.create_from_website(team=team, match_id=match_id, )
     except Exception as e:
-        django_logger.exception(e)
+        update_logger.exception(e)
         return
 
     cmp = MatchComparer(match, gmd)
     # TODO: Nice to have: Eventuell nach einem comparing und updaten mit match.refresh_from_db() arbeiten
     log_message = f"New notification for {match_id=} ({team=}): "
-    django_logger.debug(f"Checking {match_id=} ({team=})...")
+    update_logger.debug(f"Checking {match_id=} ({team=})...")
     dispatcher = MessageDispatcher(team)
     if cmp.compare_new_suggestion(of_enemy_team=True):
         notifications_logger.debug(f"{log_message}Neuer Terminvorschlag der Gegner")

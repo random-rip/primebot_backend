@@ -9,7 +9,7 @@ from app_prime_league.models import Match
 from modules.updater.matches_check_executor import update_uncompleted_matches
 
 thread_local = threading.local()
-logger = logging.getLogger("django")
+logger = logging.getLogger("updates")
 
 
 class Command(BaseCommand):

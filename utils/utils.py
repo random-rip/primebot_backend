@@ -50,18 +50,19 @@ def get_valid_team_id(response):
 
 class Encoder:
     __hash_func = hashlib.sha256
-    __encoder = "utf-8"
+    _encoding = "utf-8"
+    digest_size = 10
 
     @classmethod
     def hash(cls, value) -> str:
         if not isinstance(value, str):
             value = str(value)
-        value = value.encode(cls.__encoder)
+        value = value.encode(cls._encoding)
         return cls.__hash_func(value).hexdigest()
 
     @classmethod
-    def blake2b(cls, value, digest_size=5) -> str:
+    def blake2b(cls, value,) -> str:
         if not isinstance(value, str):
             value = str(value)
-        value = value.encode(cls.__encoder)
-        return hashlib.blake2b(value, digest_size=digest_size).hexdigest()
+        value = value.encode(cls._encoding)
+        return hashlib.blake2b(value, digest_size=cls.digest_size).hexdigest()

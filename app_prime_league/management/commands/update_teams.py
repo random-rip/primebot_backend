@@ -3,14 +3,13 @@ import threading
 import time
 from datetime import datetime
 
-from django.conf import settings
 from django.core.management import BaseCommand
 
 from app_prime_league.models import Team
 from modules.updater.teams_check_executor import update_teams
 
 thread_local = threading.local()
-logger = logging.getLogger("django")
+logger = logging.getLogger("updates")
 
 
 class Command(BaseCommand):
@@ -18,5 +17,5 @@ class Command(BaseCommand):
         start_time = time.time()
         teams = Team.objects.all()
         logger.info(f"Updating ({len(teams)}) teams at {datetime.now()}...")
-        update_teams(teams=teams,)
+        update_teams(teams=teams, )
         logger.info(f"Updated ({len(teams)}) teams in {time.time() - start_time} seconds")

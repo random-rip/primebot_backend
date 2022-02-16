@@ -168,7 +168,7 @@ except OSError as exc:
     pass
 
 DEFAULT_SCOUTING_NAME = "OP.GG"
-DEFAULT_SCOUTING_URL = "https://euw.op.gg/multi/?query={}"
+DEFAULT_SCOUTING_URL = "https://euw.op.gg/multisearch/euw?summoners={}"
 DEFAULT_SCOUTING_SEP = ","
 
 TEMP_LINK_TIMEOUT_MINUTES = 60
@@ -213,31 +213,10 @@ if not DEBUG:
                 'filename': os.path.join(LOGGING_DIR, 'commands.log'),
                 'formatter': 'to_file',
             },
-            'discord': {
+            'updates': {
                 'level': "INFO",
                 'class': 'logging.handlers.TimedRotatingFileHandler',
-                'filename': os.path.join(LOGGING_DIR, 'discord.log'),
-                'when': 'midnight',
-                'formatter': 'to_file',
-            },
-            'telegram': {
-                'level': "INFO",
-                'class': 'logging.handlers.TimedRotatingFileHandler',
-                'filename': os.path.join(LOGGING_DIR, 'telegram.log'),
-                'when': 'midnight',
-                'formatter': 'to_file',
-            },
-            'update_teams': {
-                'level': "INFO",
-                'class': 'logging.handlers.TimedRotatingFileHandler',
-                'filename': os.path.join(LOGGING_DIR, 'update_teams.log'),
-                'when': 'midnight',
-                'formatter': 'to_file',
-            },
-            'update_matches': {
-                'level': "INFO",
-                'class': 'logging.handlers.TimedRotatingFileHandler',
-                'filename': os.path.join(LOGGING_DIR, 'update_matches.log'),
+                'filename': os.path.join(LOGGING_DIR, 'updates.log'),
                 'when': 'midnight',
                 'formatter': 'to_file',
             },
@@ -258,23 +237,8 @@ if not DEBUG:
                 'level': "INFO",
                 'propagate': False,
             },
-            'discord': {
-                'handlers': ['discord'],
-                'level': "DEBUG",
-                'propagate': False,
-            },
-            'telegram': {
-                'handlers': ['telegram'],
-                'level': "DEBUG",
-                'propagate': False,
-            },
-            'update_matches': {
-                'handlers': ['update_matches'],
-                'level': "DEBUG",
-                'propagate': False,
-            },
-            'update_teams': {
-                'handlers': ['update_teams'],
+            'updates': {
+                'handlers': ['updates'],
                 'level': "DEBUG",
                 'propagate': False,
             }

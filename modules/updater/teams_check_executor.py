@@ -11,7 +11,7 @@ from bots.telegram_interface.tg_singleton import send_message_to_devs
 from modules.processors.team_processor import TeamDataProcessor
 from utils.messages_logger import log_exception
 
-django_logger = logging.getLogger("django")
+update_logger = logging.getLogger("updates")
 
 
 @log_exception
@@ -19,7 +19,7 @@ def update_team(team: Team):
     try:
         processor = TeamDataProcessor(team.id)
     except Exception as e:
-        django_logger.exception(e)
+        update_logger.exception(e)
         return
 
     to_update = {
@@ -32,7 +32,7 @@ def update_team(team: Team):
     if Team.objects.filter(id=team.id, **to_update).exists():
         return
 
-    django_logger.debug(f"Updating {team}...")
+    update_logger.debug(f"Updating {team}...")
     team.update(**to_update)
 
     Player.objects.create_or_update_players(processor.get_members(), team)
@@ -51,7 +51,7 @@ def update_team(team: Team):
         send_message_to_devs(
             msg=f"Ein Fehler ist beim Updaten der Matches von  Team {team.id} {team.name} aufgetreten:"
                 f"\n<code>{trace}\n{e}</code>", )
-        django_logger.exception(e)
+        update_logger.exception(e)
     return team
 
 

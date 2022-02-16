@@ -136,13 +136,13 @@ class SettingsMaker(Encoder):
     def encrypt(cls, value) -> str:
         if not isinstance(value, str):
             value = str(value)
-        value = value.encode(cls.__encoder)
-        return Fernet(settings.FERNET_KEY).encrypt(value).decode(encoding=cls.__encoder)
+        value = value.encode(cls._encoding)
+        return Fernet(settings.FERNET_KEY).encrypt(value).decode(encoding=cls._encoding)
 
     @classmethod
     def decrypt(cls, value) -> str:
-        value = value.encode(cls.__encoder)
-        return Fernet(settings.FERNET_KEY).decrypt(value).decode(encoding=cls.__encoder)
+        value = value.encode(cls._encoding)
+        return Fernet(settings.FERNET_KEY).decrypt(value).decode(encoding=cls._encoding)
 
     def generate_expiring_link(self, platform, expiring_at=None, ) -> str:
         if expiring_at is None:

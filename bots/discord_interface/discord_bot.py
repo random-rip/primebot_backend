@@ -29,6 +29,8 @@ MENTION_POSTFIX = ">"
 COLOR_NOTIFICATION = Colour.gold()
 COLOR_SETTINGS = Colour.greyple()
 
+notifications_logger = logging.getLogger("notifications")
+
 
 class DiscordBot(Bot):
     """
@@ -257,9 +259,9 @@ class DiscordBot(Bot):
             webhook.send(**DiscordBot._create_msg_arguments(discord_role_id=team.discord_role_id, msg=msg))
         except NotFound as e:
             team.set_discord_null()
-            logging.getLogger("notifications").info(f"Could not send message to {team}: {e}. Soft deleted'")
+            notifications_logger.info(f"Could not send message to {team}: {e}. Soft deleted'")
         except Exception as e:
-            logging.getLogger("notifications").exception(f"Could not send message to {team}: '{msg}. -> {e}'")
+            notifications_logger.exception(f"Could not send message to {team}: '{msg}. -> {e}'")
 
     @staticmethod
     def mask_mention(discord_role_id):
