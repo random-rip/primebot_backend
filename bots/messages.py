@@ -1,15 +1,15 @@
-from abc import abstractmethod
+from abc import abstractmethod, ABC
 
 import discord
 from babel import dates as babel
 from discord import Colour
+from django.conf import settings
 
 from app_prime_league.models import Match, Team
 from bots.languages import de_DE as LaP
-from bots.telegram_interface.tg_singleton import emoji_numbers
 from modules.parsing.logs import LogSchedulingAutoConfirmation, LogSchedulingConfirmation, LogChangeTime
-from prime_league_bot import settings
-from utils.emojis import EMOJI_FIGHT, EMOJI_ARROW_RIGHT, EMOJI_CALENDAR, EMOJI_BOOKMARK, EMJOI_MAGN_GLASS
+from utils.emojis import EMOJI_FIGHT, EMOJI_ARROW_RIGHT, EMOJI_CALENDAR, EMOJI_BOOKMARK, EMJOI_MAGN_GLASS, EMOJI_ONE, \
+    EMOJI_TWO, EMOJI_THREE
 
 
 def format_datetime(x):
@@ -41,7 +41,34 @@ class BaseMessage:
         return self._attachable
 
 
-class WeeklyNotificationMessage(BaseMessage):
+class MatchMessage(BaseMessage, ABC):
+
+    def __init__(self, team: Team, match: Match):
+        super().__init__(team)
+        self.match = match
+
+    @property
+    def match_url(self):
+        return f"{settings.MATCH_URI}{self.match.match_id}"
+
+    @property
+    def enemy_team_url(self):
+        return f"{settings.TEAM_URI}{self.match.enemy_team_id}"
+
+    @property
+    def team_scouting_url(self):
+        return self.match.team.get_scouting_link(match=self.match, lineup=False)
+
+    @property
+    def lineup_scouting_url(self):
+        return self.match.team.get_scouting_link(match=self.match, lineup=True)
+
+    @property
+    def scouting_website(self):
+        return settings.DEFAULT_SCOUTING_NAME if not self.team.scouting_website else self.team.scouting_website.name
+
+
+class WeeklyNotificationMessage(MatchMessage):
     msg_type = "weekly_notification"
     _key = "weekly_op_link"
     _attachable_key = "pin_weekly_op_link"
@@ -49,129 +76,125 @@ class WeeklyNotificationMessage(BaseMessage):
     mentionable = True
 
     def __init__(self, team: Team, match: Match):
-        super().__init__(team)
-        self.match = match
+        super().__init__(team, match)
         self._attachable = self.team.value_of_setting(self._attachable_key)
         self.message = None
         self._generate_message()
 
     def _generate_message(self):
-        op_link = self.match.team.get_scouting_link(match=self.match, lineup=False)
-        website_name = settings.DEFAULT_SCOUTING_NAME if not self.team.scouting_website else self.team.scouting_website.name
-        enemy_team_tag = self.match.enemy_team.team_tag
+        op_link = self.team_scouting_url
         if op_link is None:
             raise Exception()
-        self.message = LaP.WEEKLY_UPDATE_TEXT.format(website_name=website_name, op_link=op_link,
-                                                     enemy_team_tag=enemy_team_tag, **vars(self.match))
+        enemy_team_tag = self.match.enemy_team.team_tag
+        self.message = LaP.WEEKLY_UPDATE_TEXT.format(
+            match_day=self.match.match_day,
+            match_url=self.match_url,
+            enemy_team_tag=enemy_team_tag,
+            enemy_team_url=self.enemy_team_url,
+            website=self.scouting_website,
+            scouting_url=self.team_scouting_url,
+
+        )
 
 
-class NewMatchNotification(BaseMessage):
+class NewMatchNotification(MatchMessage):
     msg_type = "new_game_notification"
     _key = "new_game_notification"
     title = LaP.TITLE_NEW_MATCH
     mentionable = True
 
     def __init__(self, team: Team, match: Match):
-        super().__init__(team)
-        self.match = match
+        super().__init__(team, match)
         self._generate_message()
 
     def _generate_message(self):
-        op_link = self.team.get_scouting_link(match=self.match, lineup=False)
-        website_name = settings.DEFAULT_SCOUTING_NAME if not self.team.scouting_website else self.team.scouting_website.name
-        enemy_team_tag = self.match.enemy_team.team_tag
-        if op_link is None:
-            raise Exception()
-        self.message = LaP.NEXT_MATCH_IN_CALIBRATION.format(website_name=website_name, op_link=op_link,
-                                                            enemy_team_tag=enemy_team_tag, **vars(self.match))
+        self.message = LaP.NEXT_MATCH_IN_CALIBRATION.format(
+            match_day=self.match.match_day,
+            match_url=self.match_url,
+            enemy_team_tag=self.match.enemy_team.team_tag,
+            enemy_team_url=self.enemy_team_url,
+            website=self.scouting_website,
+            scouting_url=self.team_scouting_url,
+        )
 
 
-class NewLineupNotificationMessage(BaseMessage):
+class NewLineupNotificationMessage(MatchMessage):
     msg_type = "new_lineup_notification"
     _key = "lineup_op_link"
     title = LaP.TITLE_NEW_LINEUP
     mentionable = True
 
     def __init__(self, team: Team, match: Match):
-        super().__init__(team)
-        self.match = match
+        super().__init__(team, match)
         self._generate_message()
 
     def _generate_message(self):
-        op_link = self.match.team.get_scouting_link(match=self.match, lineup=True)
-        enemy_team_tag = self.match.enemy_team.team_tag
-        if op_link is None:
-            raise Exception()
-        self.message = LaP.NEW_LINEUP_TEXT.format(op_link=op_link, enemy_team_tag=enemy_team_tag, **vars(self.match))
+        self.message = LaP.NEW_LINEUP_TEXT.format(
+            enemy_team_tag=self.match.enemy_team.team_tag,
+            enemy_team_url=self.enemy_team_url,
+            match_day=self.match.match_day,
+            match_url=self.match_url,
+            scouting_url=self.lineup_scouting_url,
+        )
 
 
-class NewLineupInCalibrationMessage(BaseMessage):
-    msg_type = "new_lineup_in_calibration"
-    title = LaP.TITLE_NEW_LINEUP
-    mentionable = True
-
-    def __init__(self, team: Team, match: Match):
-        super().__init__(team)
-        self.match = match
-        self._generate_message()
-
-    def _generate_message(self):
-        op_link = self.team.get_scouting_link(match=self.match, lineup=True)
-        enemy_team_name = self.match.enemy_team.name
-        if op_link is None:
-            raise Exception()
-        self.message = LaP.NEW_LINEUP_IN_CALIBRATION.format(op_link=op_link, enemy_team_name=enemy_team_name,
-                                                            **vars(self.match))
-
-
-class OwnNewTimeSuggestionsNotificationMessage(BaseMessage):
+class OwnNewTimeSuggestionsNotificationMessage(MatchMessage):
     msg_type = "own_new_time_suggestion_notification"
     _key = "scheduling_suggestion"
     title = LaP.TITLE_NEW_OWN_SUGGESTION
     mentionable = True
 
     def __init__(self, team: Team, match: Match):
-        super().__init__(team)
-        self.match = match
+        super().__init__(team, match)
         self._generate_message()
 
     def _generate_message(self):
-        self.message = LaP.OWN_NEW_TIME_SUGGESTION_TEXT.format(**vars(self.match))
+        self.message = LaP.OWN_NEW_TIME_SUGGESTION_TEXT.format(
+            match_day=self.match.match_day,
+            match_url=self.match_url
+        )
 
 
-class EnemyNewTimeSuggestionsNotificationMessage(BaseMessage):
+class EnemyNewTimeSuggestionsNotificationMessage(MatchMessage):
     msg_type = "enemy_new_time_suggestion_notification"
     _key = "scheduling_suggestion"
     title = LaP.TITLE_NEW_SUGGESTION
     mentionable = True
+    emoji_numbers = [
+        EMOJI_ONE,
+        EMOJI_TWO,
+        EMOJI_THREE,
+    ]
 
     def __init__(self, team: Team, match: Match):
-        super().__init__(team)
-        self.match = match
+        super().__init__(team, match)
         self._generate_message()
 
     def _generate_message(self):
         details = list(self.match.suggestion_set.all().values_list("begin", flat=True))
         enemy_team_tag = self.match.enemy_team.team_tag
 
-        if len(details) == 1:
-            prefix = LaP.NEW_TIME_SUGGESTION_PREFIX
-        else:
-            prefix = LaP.NEW_TIME_SUGGESTIONS_PREFIX
-        prefix = prefix.format(enemy_team_tag=enemy_team_tag, **vars(self.match))
+        prefix = LaP.NEW_TIME_SUGGESTION_PREFIX if len(details) == 1 else LaP.NEW_TIME_SUGGESTIONS_PREFIX
 
-        self.message = prefix + '\n'.join([f"{emoji_numbers[i]}{format_datetime(x)}" for i, x in enumerate(details)])
+        prefix += LaP.SUGGESTIONS.format(
+            enemy_team_tag=enemy_team_tag,
+            enemy_team_url=self.enemy_team_url,
+            match_day=self.match.match_day,
+            match_url=self.match_url
+        )
+
+        self.message = prefix + '\n'.join(
+            [f"{self.emoji_numbers[i]}{format_datetime(x)}" for i, x in enumerate(details)])
 
 
-class ScheduleConfirmationNotification(BaseMessage):
+class ScheduleConfirmationNotification(MatchMessage):
     msg_type = "schedule_confirmation_notification"
     _key = "scheduling_confirmation"
     title = LaP.TITLE_MATCH_CONFIRMATION
     mentionable = True
 
     def __init__(self, team: Team, match: Match, latest_confirmation_log):
-        super().__init__(team)
-        self.match = match
+        super().__init__(team, match)
         self.latest_confirmation_log = latest_confirmation_log
         self._generate_message()
 
@@ -180,14 +203,19 @@ class ScheduleConfirmationNotification(BaseMessage):
         enemy_team_tag = self.match.enemy_team.team_tag
 
         if isinstance(self.latest_confirmation_log, LogSchedulingAutoConfirmation):
-            message = LaP.SCHEDULING_AUTO_CONFIRMATION_TEXT
+            message = LaP.AUTOMATIC + LaP.SCHEDULING_CONFIRMATION_TEXT
         elif isinstance(self.latest_confirmation_log, LogSchedulingConfirmation):
             message = LaP.SCHEDULING_CONFIRMATION_TEXT
         else:
             assert isinstance(self.latest_confirmation_log, LogChangeTime)
             message = LaP.MATCH_BEGIN_CHANGE_TEXT
 
-        self.message = message.format(time=time, enemy_team_tag=enemy_team_tag, **vars(self.match))
+        self.message = message.format(
+            time=time,
+            enemy_team_tag=enemy_team_tag,
+            match_url=f"{settings.MATCH_URI}{self.match.match_id}",
+            enemy_team_url=f"{settings.TEAM_URI}{self.match.enemy_team.id}",
+            **vars(self.match))
 
 
 class MatchesOverview(BaseMessage):
@@ -206,7 +234,7 @@ class MatchesOverview(BaseMessage):
             self.message = LaP.NO_CURRENT_MATCHES
             return
         a = [
-            f"[{LaP.MATCH_DAY} {match.match_day if match.match_day else LaP.TIEBREAKER}]({LaP.GENERAL_MATCH_LINK}{match.match_id}) {EMOJI_FIGHT} {match.enemy_team.name}" \
+            f"[{LaP.MATCH_DAY} {match.match_day if match.match_day else LaP.TIEBREAKER}]({settings.MATCH_URI}{match.match_id}) {EMOJI_FIGHT} {match.enemy_team.name}" \
             f" {EMOJI_ARROW_RIGHT} [{website_name}]({match.team.get_scouting_link(match=match, lineup=False)})\n"
             for match in matches_to_play]
         matches_text = "\n".join(a)
@@ -225,7 +253,7 @@ class MatchesOverview(BaseMessage):
             name = f"{EMOJI_FIGHT} "
             name += f"{LaP.MATCH_DAY} {match.match_day}" if match.match_day else f"{LaP.TIEBREAKER}"
             scouting_link = match.team.get_scouting_link(match=match, lineup=True)
-            value = f"[{LaP.VS} {match.enemy_team.name}]({LaP.GENERAL_MATCH_LINK}{match.match_id})" \
+            value = f"[{LaP.VS} {match.enemy_team.name}]({settings.MATCH_URI}{match.match_id})" \
                     f"\n> {EMJOI_MAGN_GLASS} [{website_name}]({scouting_link})"
 
             if not match.match_begin_confirmed:

@@ -4,13 +4,7 @@ import telepot
 from telegram import ParseMode
 
 from prime_league_bot import settings
-from utils.emojis import EMOJI_THREE, EMOJI_ONE, EMOJI_TWO
 
-emoji_numbers = [
-    EMOJI_ONE,
-    EMOJI_TWO,
-    EMOJI_THREE,
-]
 bot = telepot.Bot(token=settings.TELEGRAM_BOT_KEY)
 
 notifications_logger = logging.getLogger("notifications")
