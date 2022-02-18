@@ -99,7 +99,7 @@ class MatchDataProcessor(__MatchDataMethods, ):
         Returns: A list of player tuples. Structure of tuple: (user_id, user_name, summoner_name, None)
 
         """
-        lineup = self.data.get("line_ups", [])
+        lineup = self.data.get("lineups", [])
         return [(x["user_id"], x["user_name"], x["account_value"], None) for x in lineup if
                 x["team_id"] != self.team_id]
 
@@ -185,7 +185,6 @@ class MatchDataProcessor(__MatchDataMethods, ):
 
     def get_match_type(self):
         return self.data_stage.get("stage_type")
-
 
     def get_comments(self):
         # TODO nicht verarbeitet
