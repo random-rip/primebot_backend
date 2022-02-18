@@ -252,7 +252,7 @@ class MatchesOverview(BaseMessage):
         for match in matches_to_play:
             name = f"{EMOJI_FIGHT} "
             name += f"{LaP.MATCH_DAY} {match.match_day}" if match.match_day else f"{LaP.TIEBREAKER}"
-            scouting_link = match.team.get_scouting_link(match=match, lineup=True)
+            scouting_link = match.team.get_scouting_link(match=match, lineup=False)
             value = f"[{LaP.VS} {match.enemy_team.name}]({settings.MATCH_URI}{match.match_id})" \
                     f"\n> {EMJOI_MAGN_GLASS} [{website_name}]({scouting_link})"
 
