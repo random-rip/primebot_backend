@@ -152,6 +152,7 @@ STORAGE_DIR = os.path.join(BASE_DIR, "storage", )
 TELEGRAM_BOT_KEY = env.str("TELEGRAM_BOT_API_KEY", None)
 TG_DEVELOPER_GROUP = env.int("TG_DEVELOPER_GROUP", None)
 
+GIT_TOKEN = env.str("GIT_TOKEN", None)
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
 DISCORD_BOT_KEY = env.str("DISCORD_API_KEY", None)
@@ -174,6 +175,13 @@ DEFAULT_SCOUTING_SEP = ","
 TEMP_LINK_TIMEOUT_MINUTES = 60
 
 FILES_FROM_STORAGE = env.bool("FILES_FROM_STORAGE", False)
+
+# https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-memcached-on-ubuntu-20-04
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
 
 if not DEBUG:
     LOGGING = {
