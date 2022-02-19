@@ -76,5 +76,11 @@ class PlayerManager(models.Manager):
         return self.get_queryset().filter(summoner_name__isnull=False)
 
 
+class ScoutingWebsiteManager(models.Manager):
+
+    def get_multi_websites(self):
+        self.model.objects.filter(multi=True)
+
+
 class CommentManager(models.Manager):
     pass

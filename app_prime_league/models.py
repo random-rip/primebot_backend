@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models import F
 from django.template.defaultfilters import truncatechars, urlencode
 
-from app_prime_league.model_manager import TeamManager, MatchManager, PlayerManager
+from app_prime_league.model_manager import TeamManager, MatchManager, PlayerManager, ScoutingWebsiteManager
 from utils.exceptions import GMDNotInitialisedException
 
 
@@ -232,6 +232,8 @@ class ScoutingWebsite(models.Model):
     multi = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    objects = ScoutingWebsiteManager()
 
     class Meta:
         db_table = "scouting_websites"

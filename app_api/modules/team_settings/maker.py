@@ -126,7 +126,8 @@ class SettingsMaker(Encoder):
                 self.errors.append(MISSING_CONTENT)
             scouting_website_name = self.settings.pop("SCOUTING_WEBSITE")
             if scouting_website_name != settings.DEFAULT_SCOUTING_NAME:
-                self.scouting_website = ScoutingWebsite.objects.get(name=self.settings.pop("SCOUTING_WEBSITE"))
+                self.scouting_website = ScoutingWebsite.objects.get_multi_websites().get(
+                    name=self.settings.pop("SCOUTING_WEBSITE"))
             else:
                 self.scouting_website = scouting_website_name
         except (KeyError, ScoutingWebsite.DoesNotExist):
