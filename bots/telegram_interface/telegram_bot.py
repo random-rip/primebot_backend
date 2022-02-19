@@ -14,7 +14,7 @@ from bots.languages.de_DE import MESSAGE_NOT_PINNED_TEXT, CANT_PIN_MSG_IN_PRIVAT
 from bots.messages import BaseMessage
 from bots.telegram_interface.commands import single_commands
 from bots.telegram_interface.conversations import start_conversation
-from bots.telegram_interface.tg_singleton import pin_msg, CannotBePinnedError
+from bots.telegram_interface.tg_singleton import pin_msg, CannotBePinnedError, send_message_to_devs
 from prime_league_bot import settings
 
 notifications_logger = logging.getLogger("notifications")
@@ -112,8 +112,7 @@ def error(update, context):
             update.effective_message.reply_text(text)
     except Exception as e:
         text = f"Ein gravierender Fehler ist aufgetreten.\n{e}"
-        # TODO: catch connection errors
-        context.bot.send_message(settings.TG_DEVELOPER_GROUP, text, parse_mode=ParseMode.HTML)
+        send_message_to_devs(text)
     try:
         raise
     except RuntimeError as e:

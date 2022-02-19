@@ -57,11 +57,6 @@ class TemporaryMatchData:
         gmd.enemy_team_id = processor.get_enemy_team_id()
         gmd.enemy_lineup = processor.get_enemy_lineup()
         gmd.team_lineup = processor.get_team_lineup()
-        if gmd.enemy_lineup is not None:  # TODO: useless?
-            enemy_tuples = []
-            for i in gmd.enemy_lineup:
-                enemy_tuples.append((*i,))
-            gmd.enemy_lineup = enemy_tuples
         gmd.closed = processor.get_match_closed()
         gmd.team_made_latest_suggestion = processor.get_team_made_latest_suggestion()
         gmd.latest_suggestions = processor.get_latest_suggestions()
