@@ -3,7 +3,7 @@ from django.test import TestCase
 from app_prime_league.models import Team, Match, Player, Suggestion
 from bots.messages import WeeklyNotificationMessage, NewMatchNotification, NewLineupNotificationMessage, \
     OwnNewTimeSuggestionsNotificationMessage, EnemyNewTimeSuggestionsNotificationMessage, \
-    ScheduleConfirmationNotification, MatchesOverview
+    ScheduleConfirmationNotification
 from modules.parsing.logs import LogSchedulingConfirmation, LogSchedulingAutoConfirmation, LogChangeTime
 from modules.tests.test_utils import string_to_datetime
 
@@ -35,8 +35,8 @@ class DiscordMessageTests(TestCase):
 
         assertion_msg = ("Der nächste Spieltag:\n🔜[Spieltag 1](https://www.primeleague.gg/de/leagues/matches/1) gegen"
                          " [xyz](https://www.primeleague.gg/de/leagues/teams/2):\n"
-                         "Hier ist der [OP.GG Link](https://euw.op.gg/multisearch/euw?summoners=player1,player2,"
-                         "player3,player4,player5,player6) des Teams.")
+                         "Hier ist der [OP.GG Link](https://euw.op.gg/multisearch/euw?summoners=player1%2Cplayer2%2"
+                         "Cplayer3%2Cplayer4%2Cplayer5%2Cplayer6) des Teams.")
         self.assertEqual(msg.message, assertion_msg, )
 
     def test_new_lineup(self):
@@ -49,13 +49,9 @@ class DiscordMessageTests(TestCase):
 
         assertion_msg = (
             "[xyz](https://www.primeleague.gg/de/leagues/teams/2) ([Spieltag 1](https://www.primeleague.gg/de/"
-            "leagues/matches/1)) hat ein neues [Lineup](https://euw.op.gg/multisearch/euw?summoners=player1,"
-            "player2,player3,player4,player5) aufgestellt. 📈🆙"
+            "leagues/matches/1)) hat ein neues [Lineup](https://euw.op.gg/multisearch/euw?summoners=player1%2Cplayer"
+            "2%2Cplayer3%2Cplayer4%2Cplayer5) aufgestellt. 📈🆙"
         )
-
-        print(msg.message)
-        print()
-        print(assertion_msg)
 
         self.assertEqual(msg.message, assertion_msg, )
 
@@ -144,7 +140,7 @@ class DiscordMessageTests(TestCase):
 
         assertion_msg = ("Euer nächstes Spiel in der Kalibrierungsphase:\n"
                          "🔜[Spiel 1](https://www.primeleague.gg/de/leagues/matches/1) gegen [xyz](https://www.primeleag"
-                         "ue.gg/de/leagues/teams/2):\nHier ist der [OP.GG Link](https://euw"
-                         ".op.gg/multisearch/euw?summoners=player1,player2,player3,player4,player5,player6) des Teams.")
+                         "ue.gg/de/leagues/teams/2):\nHier ist der [OP.GG Link](https://euw.op.gg/multisearch/euw?"
+                         "summoners=player1%2Cplayer2%2Cplayer3%2Cplayer4%2Cplayer5%2Cplayer6) des Teams.")
 
         self.assertEqual(msg.message, assertion_msg, )

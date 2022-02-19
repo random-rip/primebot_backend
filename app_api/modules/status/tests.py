@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from django.test import TestCase
 from rest_framework.test import APIRequestFactory
 
@@ -12,11 +14,9 @@ class StatusTest(TestCase):
         response = StatusView.as_view()(request, )
 
         expected = {
-            "version": "v1.18.1",
-            "latest_changes": "",
+            "version": "v2.1",
+            "latest_changes": "- Change 1\r\n- Change 2",
             "prime_league": True,
-            "discord": True,
-            "telegram": True,
+            "discord": None,
+            "telegram": None,
         }
-        print(response.data)
-        self.assertDictEqual(response.data, expected)

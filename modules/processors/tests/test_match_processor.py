@@ -42,7 +42,7 @@ class MatchEnemyLineupTest(TestCase):
     @patch.object(PrimeLeagueProvider, 'get_match')
     def test_get_enemy_lineup(self, get_match):
         get_match.return_value = {
-            "line_ups": [
+            "lineups": [
                 {
                     "team_id": 1,
                     "user_id": 1,

@@ -238,7 +238,7 @@ class ScoutingWebsite(models.Model):
         verbose_name_plural = "Scouting Websites"
 
     def generate_link(self, names):
-        urlencoded = urlencode(self.base_url.format(self.separator.join(names)))
+        urlencoded = self.base_url.format(urlencode(self.separator.join(names)))
         return urlencoded
 
     @staticmethod
