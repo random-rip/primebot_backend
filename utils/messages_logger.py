@@ -85,7 +85,7 @@ async def log_from_discord(ctx, optional=None):
         "user": author.name,
         "command": html.escape(str(content)),
         "server": html.escape(str(author.guild.name)),
-        "server_members": author.guild.member_count,
+        "members": author.guild.member_count,
     }
 
     if optional is not None:

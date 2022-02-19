@@ -9,7 +9,15 @@ from app_prime_league.models import Match, Team
 from bots.languages import de_DE as LaP
 from modules.parsing.logs import LogSchedulingAutoConfirmation, LogSchedulingConfirmation, LogChangeTime
 from utils.emojis import EMOJI_FIGHT, EMOJI_ARROW_RIGHT, EMOJI_CALENDAR, EMOJI_BOOKMARK, EMJOI_MAGN_GLASS, EMOJI_ONE, \
-    EMOJI_TWO, EMOJI_THREE
+    EMOJI_TWO, EMOJI_THREE, EMOJI_FOUR, EMOJI_FIVE
+
+emoji_numbers = [
+    EMOJI_ONE,
+    EMOJI_TWO,
+    EMOJI_THREE,
+    EMOJI_FOUR,
+    EMOJI_FIVE,
+]
 
 
 def format_datetime(x):
@@ -56,12 +64,12 @@ class MatchMessage(BaseMessage, ABC):
         return f"{settings.TEAM_URI}{self.match.enemy_team_id}"
 
     @property
-    def team_scouting_url(self):
-        return self.match.team.get_scouting_link(match=self.match, lineup=False)
+    def enemy_team_scouting_url(self):
+        return self.team.get_scouting_link(match=self.match, lineup=False)
 
     @property
-    def lineup_scouting_url(self):
-        return self.match.team.get_scouting_link(match=self.match, lineup=True)
+    def enemy_lineup_scouting_url(self):
+        return self.team.get_scouting_link(match=self.match, lineup=True)
 
     @property
     def scouting_website(self):
@@ -82,7 +90,7 @@ class WeeklyNotificationMessage(MatchMessage):
         self._generate_message()
 
     def _generate_message(self):
-        op_link = self.team_scouting_url
+        op_link = self.enemy_team_scouting_url
         if op_link is None:
             raise Exception()
         enemy_team_tag = self.match.enemy_team.team_tag
@@ -92,7 +100,7 @@ class WeeklyNotificationMessage(MatchMessage):
             enemy_team_tag=enemy_team_tag,
             enemy_team_url=self.enemy_team_url,
             website=self.scouting_website,
-            scouting_url=self.team_scouting_url,
+            scouting_url=self.enemy_team_scouting_url,
 
         )
 
@@ -114,7 +122,7 @@ class NewMatchNotification(MatchMessage):
             enemy_team_tag=self.match.enemy_team.team_tag,
             enemy_team_url=self.enemy_team_url,
             website=self.scouting_website,
-            scouting_url=self.team_scouting_url,
+            scouting_url=self.enemy_team_scouting_url,
         )
 
 
@@ -134,7 +142,7 @@ class NewLineupNotificationMessage(MatchMessage):
             enemy_team_url=self.enemy_team_url,
             match_day=self.match.match_day,
             match_url=self.match_url,
-            scouting_url=self.lineup_scouting_url,
+            scouting_url=self.enemy_lineup_scouting_url,
         )
 
 
@@ -160,11 +168,6 @@ class EnemyNewTimeSuggestionsNotificationMessage(MatchMessage):
     _key = "scheduling_suggestion"
     title = LaP.TITLE_NEW_SUGGESTION
     mentionable = True
-    emoji_numbers = [
-        EMOJI_ONE,
-        EMOJI_TWO,
-        EMOJI_THREE,
-    ]
 
     def __init__(self, team: Team, match: Match):
         super().__init__(team, match)
@@ -184,7 +187,7 @@ class EnemyNewTimeSuggestionsNotificationMessage(MatchMessage):
         )
 
         self.message = prefix + '\n'.join(
-            [f"{self.emoji_numbers[i]}{format_datetime(x)}" for i, x in enumerate(details)])
+            [f"{emoji_numbers[i]}{format_datetime(x)}" for i, x in enumerate(details)])
 
 
 class ScheduleConfirmationNotification(MatchMessage):
@@ -252,14 +255,14 @@ class MatchesOverview(BaseMessage):
         for match in matches_to_play:
             name = f"{EMOJI_FIGHT} "
             name += f"{LaP.MATCH_DAY} {match.match_day}" if match.match_day else f"{LaP.TIEBREAKER}"
-            scouting_link = match.team.get_scouting_link(match=match, lineup=False)
+            scouting_link = self.team.get_scouting_link(match=match, lineup=False)
             value = f"[{LaP.VS} {match.enemy_team.name}]({settings.MATCH_URI}{match.match_id})" \
                     f"\n> {EMJOI_MAGN_GLASS} [{website_name}]({scouting_link})"
 
             if not match.match_begin_confirmed:
                 if match.team_made_latest_suggestion is None:
                     value += f"\n> {EMOJI_CALENDAR} Keine Terminvorschläge. " \
-                             f"Standardtermin: {format_datetime(match.begin)}"
+                             f"Ausweichtermin: {format_datetime(match.begin)}"
                 if match.team_made_latest_suggestion is False:
                     value += f"\n> {EMOJI_CALENDAR}⚠ Offene Terminvorschläge vom Gegner!"
                 if match.team_made_latest_suggestion is True:
@@ -267,7 +270,7 @@ class MatchesOverview(BaseMessage):
             else:
                 value += f"\n> {EMOJI_CALENDAR} {format_datetime(match.begin)}"
 
-            if match.lineup_available:
+            if match.enemy_lineup_available:
                 lineup_link = match.team.get_scouting_link(match=match, lineup=True)
                 value += f"\n> {EMOJI_BOOKMARK} [{LaP.CURRENT_LINEUP}]({lineup_link})"
 
@@ -275,6 +278,94 @@ class MatchesOverview(BaseMessage):
         embed.set_footer(
             text=f"Andere Scouting Website? mit `!settings` einfach anpassen.")
         return embed
+
+
+class MatchOverview(MatchMessage):
+
+    def __init__(self, team: Team, match: Match):
+        super().__init__(team, match)
+        self.embed = discord.Embed(color=Colour.gold())
+
+    def _generate_message(self):
+        self.message = ""
+
+    def _add_schedule(self, ):
+        name = "Termin"
+        value = ""
+        if self.match.match_begin_confirmed:
+            value += f"> {EMOJI_CALENDAR} {format_datetime(self.match.begin)}\n"
+        else:
+            if self.match.team_made_latest_suggestion is None:
+                value += (
+                    f"> {EMOJI_CALENDAR} Keine Terminvorschläge. Ausweichtermin: "
+                    f"{format_datetime(self.match.begin)}\n"
+                )
+            elif self.match.team_made_latest_suggestion is False:
+                value += f"> {EMOJI_CALENDAR} ⚠ Offene Terminvorschläge vom Gegner!\n"
+            else:
+                value += f"> {EMOJI_CALENDAR} ✅ Offene Terminvorschläge von euch:\n"
+            suggestions = self.match.suggestion_set.all()
+            for i, x in enumerate(suggestions):
+                value += f"> ➕ {emoji_numbers[i]} {format_datetime(x.begin)}\n"
+        self.embed.add_field(name=name, value=value, inline=False)
+
+    def _add_enemy_team(self):
+        name = "Gegnerteam"
+        value = ""
+
+        value += (
+            f"> {EMJOI_MAGN_GLASS} [{self.scouting_website}]({self.enemy_team_scouting_url})\n"
+        )
+
+        self.embed.add_field(name=name, value=value, inline=False)
+
+    def _add_results(self):
+        name = "Spielergebnis"
+        value = ""
+        value += f"ℹ️ Ergebnis: {self.match.result}\n"
+        value += f"📆️ Gespielt {format_datetime(self.match.begin)}\n"
+        self.embed.add_field(name=name, value=value, inline=False)
+
+    def _add_team_lineup(self):
+        name = "Eure Aufstellung"
+        value = ""
+        if self.match.team_lineup_available:
+            value += f"✅ Eigenes Lineup aufgestellt:\n"
+            for i, x in enumerate(self.match.team_lineup.all()):
+                value += f"➕ {emoji_numbers[i]} {x.summoner_name}\n"
+        else:
+            value += f"⚠ Noch kein Lineup aufgestellt.\n"
+        self.embed.add_field(name=name, value=value)
+
+    def _add_enemy_lineup(self):
+        name = "Gegnerische Aufstellung"
+        value = ""
+        if self.match.enemy_lineup_available:
+            lineup_link = self.team.get_scouting_link(match=self.match, lineup=True)
+            value += f"{EMOJI_BOOKMARK} [{LaP.CURRENT_LINEUP}]({lineup_link})\n"
+            for i, x in enumerate(self.match.enemy_lineup.all()):
+                value += f"➕ {emoji_numbers[i]} {x.summoner_name}\n"
+        else:
+            value += f"Noch kein Lineup aufgestellt.\n"
+        self.embed.add_field(name=name, value=value)
+
+    def discord_embed(self):
+        name = f"{EMOJI_FIGHT} "
+        name += f"{LaP.MATCH_DAY} {self.match.match_day}" if self.match.match_type == Match.MATCH_TYPE_LEAGUE else f"{LaP.TIEBREAKER}"
+        value = f"[{LaP.VS} {self.match.enemy_team.name}]({self.match_url})\n"
+        self.embed.add_field(name=name, value=value, inline=False)
+
+        if self.match.closed:
+            self._add_results()
+        else:
+            self._add_schedule()
+            self._add_enemy_team()
+            self._add_team_lineup()
+            self._add_enemy_lineup()
+        self.embed.set_footer(
+            text=f"Andere Scouting Website? mit `!settings` einfach anpassen.")
+
+        return self.embed
 
 
 class NotificationToTeamMessage(BaseMessage):

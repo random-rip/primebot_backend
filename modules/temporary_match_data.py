@@ -6,9 +6,10 @@ from utils.exceptions import GMDNotInitialisedException
 
 class TemporaryMatchData:
 
-    def __init__(self, match_id=None, match_day=None, match_type = None, team=None, enemy_team_id=None, enemy_team=None,
+    def __init__(self, match_id=None, match_day=None, match_type=None, team=None, enemy_team_id=None, enemy_team=None,
                  enemy_team_members=None, enemy_lineup=None, closed=None, result=None, team_made_latest_suggestion=None,
-                 latest_suggestions=None, begin=None, latest_confirmation_log=None, match_begin_confirmed=None):
+                 latest_suggestions=None, begin=None, latest_confirmation_log=None, match_begin_confirmed=None,
+                 team_lineup=None):
         self.match_id = match_id
         self.match_day = match_day
         self.match_type = match_type
@@ -17,6 +18,7 @@ class TemporaryMatchData:
         self.enemy_team = enemy_team
         self.enemy_team_members = enemy_team_members
         self.enemy_lineup = enemy_lineup
+        self.team_lineup = team_lineup
         self.closed = closed
         self.result = result
         self.team_made_latest_suggestion = team_made_latest_suggestion
@@ -54,7 +56,8 @@ class TemporaryMatchData:
         gmd.team = team
         gmd.enemy_team_id = processor.get_enemy_team_id()
         gmd.enemy_lineup = processor.get_enemy_lineup()
-        if gmd.enemy_lineup is not None:
+        gmd.team_lineup = processor.get_team_lineup()
+        if gmd.enemy_lineup is not None:  # TODO: useless?
             enemy_tuples = []
             for i in gmd.enemy_lineup:
                 enemy_tuples.append((*i,))

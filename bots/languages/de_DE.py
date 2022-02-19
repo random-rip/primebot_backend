@@ -248,7 +248,7 @@ DC_CHANNEL_IN_USE = (
 )
 DC_TEAM_IN_USE = (
     "Dieses Team ist bereits in einem anderen Channel registriert. "
-    f"Lösche zuerst die Verknüpfung im anderen Channel mit /delete.{DC_HELP_LINK_TEXT}"
+    f"Lösche zuerst die Verknüpfung im anderen Channel mit `!delete`. {DC_HELP_LINK_TEXT}"
 )
 DC_NO_PERMISSIONS_FOR_WEBHOOK = (
     "Mir fehlt die Berechtigung, Webhooks zu verwalten. Bitte stelle sicher, dass ich diese Berechtigung habe. "
@@ -281,7 +281,7 @@ DC_ROLE_NOT_FOUND = "Die Rolle {role_name} habe ich nicht gefunden. Stelle siche
 
 DC_SET_ROLE = "Okay, ich informiere die Rolle **@{role_name}** ab jetzt bei neuen Benachrichtigungen. 📯"
 
-DC_HELP_TEXT_START = "Registriere dein Team im Channel (Format: !start TEAM_ID_or_TEAM_URL)"
+DC_HELP_TEXT_START = "Registriert das Team im Channel (Beispiel: !start 105959)"
 DC_HELP_TEXT_FIX = "Erstellt den Benachrichtigungswebhook neu"
 DC_HELP_TEXT_ROLE = (
     "Setze eine Discordrolle, die in den Benachrichtigungen benutzt wird. Um die Rolle zu entfernen schreibe !role "
@@ -290,6 +290,9 @@ DC_HELP_TEXT_ROLE = (
 DC_HELP_TEXT_OVERVIEW = "Erstellt eine Übersicht für die offenen Spiele"
 DC_HELP_TEXT_SETTINGS = "Erstellt einen temporären Link um Benachrichtigungseinstellungen vorzunehmen"
 DC_HELP_TEXT_BOP = "Whats boppin'?"
+DC_HELP_TEXT_MATCH = (
+    "Erstellt eine Übersicht für den übergebenen Spieltag (Beispiel: !match 1)"
+)
 DC_HELP_TEXT_DELETE = (
     "Löscht die Channelverknüpfungen zum Team. Achtung, danach werden keine weiteren Benachrichtigungen gesendet."
 )
@@ -323,3 +326,9 @@ VS = "vs."
 
 SETTINGS_CHANGE_TITLE = "Einstellungen für {team} ändern"
 SETTINGS_TEMP_LINK = "Der Link ist nur {minutes} Minuten gültig. Danach muss ein neuer Link generiert werden."
+
+OVERVIEW_DEPRECATED = "Der Befehl ist veraltet, bitte benutze `!matches` (Telegram: `/matches`)."
+
+MATCH_DAY_NOT_VALID = (
+    "Dieser Spieltag wurde nicht gefunden gefunden. Probiere es mit `!match 1`."
+)

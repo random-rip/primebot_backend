@@ -4,19 +4,18 @@ import re
 from io import BytesIO
 
 import aiohttp
-import discord
 from asgiref.sync import sync_to_async
-from discord import Webhook, RequestsWebhookAdapter, Embed, Colour, NotFound
+from discord import Webhook, RequestsWebhookAdapter, Embed, Colour, NotFound, File
 from discord.ext import commands
 from django.conf import settings
 
 from app_api.modules.team_settings.maker import SettingsMaker
-from app_prime_league.models import Team
+from app_prime_league.models import Team, Match
 from app_prime_league.teams import register_team
 from bots.base.bop import GIFinator
 from bots.base.bot import Bot
 from bots.languages import de_DE as LanguagePack
-from bots.messages import MatchesOverview, BaseMessage
+from bots.messages import MatchesOverview, BaseMessage, MatchOverview
 from bots.utils import mysql_has_gone_away
 from utils.changelogs import CHANGELOGS
 from utils.exceptions import CouldNotParseURLException, PrimeLeagueConnectionException, TeamWebsite404Exception
@@ -154,7 +153,7 @@ class DiscordBot(Bot):
                 async with aiohttp.ClientSession() as session:
                     async with session.get(url) as resp:
                         buffer = BytesIO(await resp.read())
-            await ctx.send(file=discord.File(fp=buffer, filename="bop.gif"))
+            await ctx.send(file=File(fp=buffer, filename="bop.gif"))
 
         @self.bot.command(name="overview", help=LanguagePack.DC_HELP_TEXT_OVERVIEW, pass_context=True)
         @commands.check(mysql_has_gone_away)
@@ -165,7 +164,45 @@ class DiscordBot(Bot):
             if team is None:
                 await ctx.send(LanguagePack.DC_CHANNEL_NOT_INITIALIZED)
                 return
+            await ctx.send(LanguagePack.OVERVIEW_DEPRECATED)
+
+        @self.bot.command(name="matches", help=LanguagePack.DC_HELP_TEXT_OVERVIEW, pass_context=True)
+        @commands.check(mysql_has_gone_away)
+        @commands.check(log_from_discord)
+        async def matches(ctx, ):
+            channel_id = ctx.message.channel.id
+            team = await get_registered_team_by_channel_id(channel_id=channel_id)
+            if team is None:
+                await ctx.send(LanguagePack.DC_CHANNEL_NOT_INITIALIZED)
+                return
             msg = await sync_to_async(MatchesOverview)(team=team)
+            embed = await sync_to_async(msg.discord_embed)()
+            await ctx.send(embed=embed)
+
+        @self.bot.command(name="match", help=LanguagePack.DC_HELP_TEXT_MATCH, pass_context=True)
+        @commands.check(mysql_has_gone_away)
+        @commands.check(log_from_discord)
+        async def match_information(ctx, match_day=None, ):
+            channel_id = ctx.message.channel.id
+            team = await get_registered_team_by_channel_id(channel_id=channel_id)
+            if team is None:
+                await ctx.send(LanguagePack.DC_CHANNEL_NOT_INITIALIZED)
+                return
+            try:
+                match_day = int(match_day)
+            except (TypeError, ValueError):
+                await ctx.send(
+                    LanguagePack.MATCH_DAY_NOT_VALID)
+                return
+
+            match = await sync_to_async(
+                team.matches_against.filter(match_type=Match.MATCH_TYPE_LEAGUE, match_day=match_day).first)()
+            if match is None:
+                await ctx.send(
+                    LanguagePack.MATCH_DAY_NOT_VALID)
+                return
+
+            msg = await sync_to_async(MatchOverview)(team=team, match=match)
             embed = await sync_to_async(msg.discord_embed)()
             await ctx.send(embed=embed)
 
@@ -201,10 +238,10 @@ class DiscordBot(Bot):
             async with ctx.typing():
                 maker = await sync_to_async(SettingsMaker)(team=team)
                 link = await sync_to_async(maker.generate_expiring_link)(platform="discord")
-                embed = discord.Embed(title=LanguagePack.SETTINGS_CHANGE_TITLE.format(team=team.name),
-                                      url=link,
-                                      description=LanguagePack.SETTINGS_TEMP_LINK.format(
-                                          minutes=settings.TEMP_LINK_TIMEOUT_MINUTES), color=COLOR_SETTINGS)
+                embed = Embed(title=LanguagePack.SETTINGS_CHANGE_TITLE.format(team=team.name),
+                              url=link,
+                              description=LanguagePack.SETTINGS_TEMP_LINK.format(
+                                  minutes=settings.TEMP_LINK_TIMEOUT_MINUTES), color=COLOR_SETTINGS)
                 await ctx.send(embed=embed)
 
         async def _create_new_webhook(ctx):

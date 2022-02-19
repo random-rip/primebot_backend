@@ -1,6 +1,8 @@
 EMOJI_ONE = "1️⃣"
 EMOJI_TWO = "2️⃣"
 EMOJI_THREE = "3️⃣"
+EMOJI_FOUR = "4️⃣"
+EMOJI_FIVE = "5️⃣"
 EMOJI_FIGHT = "⚔"
 EMJOI_MAGN_GLASS = "🔍"
 EMOJI_ARROW_RIGHT = "➡"

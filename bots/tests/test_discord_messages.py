@@ -53,6 +53,10 @@ class DiscordMessageTests(TestCase):
             "player2,player3,player4,player5) aufgestellt. 📈🆙"
         )
 
+        print(msg.message)
+        print()
+        print(assertion_msg)
+
         self.assertEqual(msg.message, assertion_msg, )
 
     def test_own_time_suggestions(self):

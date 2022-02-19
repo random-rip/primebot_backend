@@ -29,12 +29,12 @@ class MatchComparer:
     def compare_scheduling_confirmation(self):
         return not self.match_old.match_begin_confirmed and self.match_new.match_begin_confirmed
 
-    def compare_lineup_confirmation(self):
-        if self.match_new.enemy_lineup is None:
+    def compare_lineup_confirmation(self, of_enemy_team=False):
+        new_lineup = self.match_new.enemy_lineup if of_enemy_team else self.match_new.team_lineup
+        if new_lineup is None:
             return False
-        old_lineup = list(self.match_old.enemy_lineup.all().values_list("id", flat=True))
-
-        new_lineup = self.match_new.enemy_lineup
+        old_lineup = self.match_old.enemy_lineup if of_enemy_team else self.match_old.team_lineup
+        old_lineup = list(old_lineup.all().values_list("id", flat=True))
         for (user_id, *_) in new_lineup:
             if user_id in old_lineup:
                 continue

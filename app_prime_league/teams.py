@@ -81,6 +81,11 @@ def create_match_and_enemy_team(team, match_id, ):
         "result": tmd.result,
     })
 
+    # Create Team Lineup
+    if tmd.team_lineup is not None:
+        players = Player.objects.create_or_update_players(tmd.team_lineup, team=team)
+        match.team_lineup.add(*players)
+
     # Create Enemy Team
     processor = TeamDataProcessor(team_id=tmd.enemy_team_id)
     enemy_team, created = Team.objects.update_or_create(id=tmd.enemy_team_id, defaults={

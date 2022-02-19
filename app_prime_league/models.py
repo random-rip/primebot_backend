@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.db.models import F
-from django.template.defaultfilters import truncatechars
+from django.template.defaultfilters import truncatechars, urlencode
 
 from app_prime_league.model_manager import TeamManager, MatchManager, PlayerManager
 from utils.exceptions import GMDNotInitialisedException
@@ -68,21 +68,25 @@ class Team(models.Model):
                 match.delete()
             self.setting_set.all().delete()
 
-    def get_scouting_link(self, match, lineup=True):
+    def get_scouting_link(self, match: "Match", lineup=True):
         """
-        :param match:
-        :param lineup: If lineup=True and a lineup is available returns just the lineup link
-        :return:
+        Creates an urlencoded link of the enemy team of the given match. if `lineup=True` and lineup is available of the
+        match, creates the link of the enemy lineup instead.
+        :param match: `Match`
+        :param lineup: If lineup=True and a lineup is available a link of the lineup is created
+        :return: Urlencoded string of team
         """
-        if lineup and match.lineup_available:
+        if lineup and match.enemy_lineup_available:
             names = list(match.enemy_lineup.all().values_list("summoner_name", flat=True))
         else:
             names = list(match.enemy_team.player_set.all().values_list("summoner_name", flat=True))
 
-        base_url = settings.DEFAULT_SCOUTING_URL if not self.scouting_website else self.scouting_website.base_url
-        separator = settings.DEFAULT_SCOUTING_SEP if not self.scouting_website else self.scouting_website.separator
-        parameters = f"{separator}".join([x.replace(" ", "") for x in names])
-        return base_url.format(parameters)
+        if self.scouting_website:
+            website = self.scouting_website
+        else:
+            website = ScoutingWebsite.default()
+
+        return website.generate_link(names=names)
 
     def get_open_matches_ordered(self):
         return self.matches_against.filter(closed=False).order_by(F('match_day').asc(nulls_last=True))
@@ -134,7 +138,8 @@ class Match(models.Model):
     team_made_latest_suggestion = models.BooleanField(null=True, blank=True)
     match_begin_confirmed = models.BooleanField(default=False, blank=True)
     begin = models.DateTimeField(null=True)
-    enemy_lineup = models.ManyToManyField(Player, )
+    enemy_lineup = models.ManyToManyField(Player, related_name="matches_as_enemy")
+    team_lineup = models.ManyToManyField(Player, related_name="matches")
     closed = models.BooleanField(null=True)
     result = models.CharField(max_length=5, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -165,15 +170,15 @@ class Match(models.Model):
         self.enemy_team = Team.objects.get_team(team_id=gmd.enemy_team_id)
         self.save(update_fields=["enemy_team"])
 
-    def update_match_data(self, gmd):
-        self.match_id = gmd.match_id
-        self.match_day = gmd.match_day
-        self.match_type = gmd.match_type
-        self.team = gmd.team
-        self.begin = gmd.begin
-        self.match_begin_confirmed = gmd.match_begin_confirmed
-        self.closed = gmd.closed
-        self.result = gmd.result
+    def update_match_data(self, tmd):
+        self.match_id = tmd.match_id
+        self.match_day = tmd.match_day
+        self.match_type = tmd.match_type
+        self.team = tmd.team
+        self.begin = tmd.begin
+        self.match_begin_confirmed = tmd.match_begin_confirmed
+        self.closed = tmd.closed
+        self.result = tmd.result
         self.save()
 
     def update_match_begin(self, gmd):
@@ -201,27 +206,48 @@ class Match(models.Model):
             self.enemy_lineup.clear()
             players = Player.objects.create_or_update_players(md.enemy_lineup, self.enemy_team)
             self.enemy_lineup.add(*players)
-        self.save()
+            self.save()
+
+    def update_team_lineup(self, tmd):
+        if tmd.team_lineup is not None:
+            self.team_lineup.clear()
+            players = Player.objects.create_or_update_players(tmd.team_lineup, self.team)
+            self.team_lineup.add(*players)
+            self.save()
 
     @property
-    def lineup_available(self):
+    def enemy_lineup_available(self):
         return self.enemy_lineup.all().count() > 0
+
+    @property
+    def team_lineup_available(self):
+        return self.team_lineup.all().count() > 0
 
 
 class ScoutingWebsite(models.Model):
     name = models.CharField(max_length=20, unique=True)
     base_url = models.CharField(max_length=200)
-    separator = models.CharField(max_length=5, default=settings.DEFAULT_SCOUTING_SEP)
+    separator = models.CharField(max_length=5, default=settings.DEFAULT_SCOUTING_SEP, null=True)
+    multi = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = "scouting_websites"
-        verbose_name = "Scouting-Website"
-        verbose_name_plural = "Scouting-Websites"
+        verbose_name = "Scouting Website"
+        verbose_name_plural = "Scouting Websites"
 
-    def generate_link(self, lineup):
-        return self.base_url.format(self.separator.join(lineup))
+    def generate_link(self, names):
+        urlencoded = urlencode(self.base_url.format(self.separator.join(names)))
+        return urlencoded
+
+    @staticmethod
+    def default() -> "ScoutingWebsite":
+        return ScoutingWebsite(
+            base_url=settings.DEFAULT_SCOUTING_URL,
+            separator=settings.DEFAULT_SCOUTING_SEP,
+            multi=False,
+        )
 
     def __str__(self):
         return self.name

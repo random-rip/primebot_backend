@@ -156,7 +156,8 @@ class CompareNewLineupTest(TestCase):
 
         md = create_temporary_match_data(team=self.team, enemy_team=self.enemy_team)
         cp = MatchComparer(match_old=match, match_new=md)
-        self.assertFalse(cp.compare_lineup_confirmation(), "Enemy has no lineup, but was not recognized")
+        self.assertFalse(cp.compare_lineup_confirmation(of_enemy_team=True),
+                         "Enemy has no lineup, but was not recognized")
 
     def test_fresh_new_lineup(self):
         match = Match.objects.create(match_id=1, match_day=1, match_type=Match.MATCH_TYPE_LEAGUE, team=self.team,
@@ -170,7 +171,8 @@ class CompareNewLineupTest(TestCase):
             (5, "Player 5", "Summonername 5", None),
         ])
         cp = MatchComparer(match_old=match, match_new=md)
-        self.assertTrue(cp.compare_lineup_confirmation(), "Enemy has fresh new lineup, but was not recognized")
+        self.assertTrue(cp.compare_lineup_confirmation(of_enemy_team=True),
+                        "Enemy has fresh new lineup, but was not recognized")
 
     def test_existing_lineup(self):
         match = Match.objects.create(match_id=1, match_day=1, match_type=Match.MATCH_TYPE_LEAGUE, team=self.team,
@@ -187,7 +189,8 @@ class CompareNewLineupTest(TestCase):
             (5, "Player 5", "Summonername 5", None),
         ])
         cp = MatchComparer(match_old=match, match_new=md)
-        self.assertFalse(cp.compare_lineup_confirmation(), "Enemy has no new lineup, but was not recognized as new")
+        self.assertFalse(cp.compare_lineup_confirmation(of_enemy_team=True),
+                         "Enemy has no new lineup, but was not recognized as new")
 
     def test_new_lineup(self):
         match = Match.objects.create(match_id=1, match_day=1, match_type=Match.MATCH_TYPE_LEAGUE, team=self.team,
@@ -204,7 +207,8 @@ class CompareNewLineupTest(TestCase):
             (2, "Player 2", "Summonername 2", None),
         ])
         cp = MatchComparer(match_old=match, match_new=md)
-        self.assertTrue(cp.compare_lineup_confirmation(), "Enemy has new lineup, but was not recognized")
+        self.assertTrue(cp.compare_lineup_confirmation(of_enemy_team=True),
+                        "Enemy has new lineup, but was not recognized")
 
 
 def create_temporary_match_data(match_id=1, match_day=1, team=None, enemy_team=None, closed=False,

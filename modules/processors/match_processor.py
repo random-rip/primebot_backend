@@ -8,6 +8,10 @@ from utils.utils import timestamp_to_datetime
 class __MatchDataMethods:
 
     @abstractmethod
+    def get_team_lineup(self):
+        pass
+
+    @abstractmethod
     def get_enemy_lineup(self):
         pass
 
@@ -96,12 +100,22 @@ class MatchDataProcessor(__MatchDataMethods, ):
     def get_enemy_lineup(self):
         """
         (id_, name, summoner_name, None)
-        Returns: A list of player tuples. Structure of tuple: (user_id, user_name, summoner_name, None)
+        Returns: A list of enemy player tuples. Structure of tuple: (user_id, user_name, summoner_name, None)
 
         """
         lineup = self.data.get("lineups", [])
         return [(x["user_id"], x["user_name"], x["account_value"], None) for x in lineup if
                 x["team_id"] != self.team_id]
+
+    def get_team_lineup(self):
+        """
+        (id_, name, summoner_name, None)
+        Returns: A list of team player tuples. Structure of tuple: (user_id, user_name, summoner_name, None)
+
+        """
+        lineup = self.data.get("lineups", [])
+        return [(x["user_id"], x["user_name"], x["account_value"], None) for x in lineup if
+                x["team_id"] == self.team_id]
 
     def get_match_closed(self):
         """

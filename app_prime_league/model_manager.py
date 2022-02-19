@@ -62,7 +62,7 @@ class PlayerManager(models.Manager):
                 "name": name,
                 "team": team,
                 "summoner_name": summoner_name,
-                "is_leader": is_leader,
+                "is_leader": is_leader or False,
             })
             players.append(player)
         return players
