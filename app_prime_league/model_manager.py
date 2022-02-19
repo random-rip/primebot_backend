@@ -67,6 +67,14 @@ class PlayerManager(models.Manager):
             players.append(player)
         return players
 
+    def get_active_players(self):
+        """
+        Spieler mit fehlendem Gameaccount haben keinen `summoner_name`.
+        Returns: aktive Spieler
+
+        """
+        return self.get_queryset().filter(summoner_name__isnull=False)
+
 
 class CommentManager(models.Manager):
     pass

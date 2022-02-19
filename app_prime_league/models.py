@@ -77,10 +77,11 @@ class Team(models.Model):
         :return: Urlencoded string of team
         """
         if lineup and match.enemy_lineup_available:
-            names = list(match.enemy_lineup.all().values_list("summoner_name", flat=True))
+            qs = match.enemy_lineup
         else:
-            names = list(match.enemy_team.player_set.all().values_list("summoner_name", flat=True))
+            qs = match.enemy_team.player_set
 
+        names = list(qs.get_active_players().values_list("summoner_name", flat=True))
         if self.scouting_website:
             website = self.scouting_website
         else:
