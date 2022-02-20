@@ -5,11 +5,11 @@ from babel import dates as babel
 from discord import Colour
 from django.conf import settings
 
-from app_prime_league.models import Match, Team
+from app_prime_league.models import Match, Team, ScoutingWebsite
 from bots.languages import de_DE as LaP
 from modules.parsing.logs import LogSchedulingAutoConfirmation, LogSchedulingConfirmation, LogChangeTime
 from utils.emojis import EMOJI_FIGHT, EMOJI_ARROW_RIGHT, EMOJI_CALENDAR, EMOJI_BOOKMARK, EMJOI_MAGN_GLASS, EMOJI_ONE, \
-    EMOJI_TWO, EMOJI_THREE, EMOJI_FOUR, EMOJI_FIVE
+    EMOJI_TWO, EMOJI_THREE, EMOJI_FOUR, EMOJI_FIVE, EMOJI_SIX, EMOJI_SEVEN, EMOJI_EIGHT, EMOJI_NINE, EMOJI_TEN
 
 emoji_numbers = [
     EMOJI_ONE,
@@ -17,6 +17,11 @@ emoji_numbers = [
     EMOJI_THREE,
     EMOJI_FOUR,
     EMOJI_FIVE,
+    EMOJI_SIX,
+    EMOJI_SEVEN,
+    EMOJI_EIGHT,
+    EMOJI_NINE,
+    EMOJI_TEN,
 ]
 
 
@@ -65,11 +70,11 @@ class MatchMessage(BaseMessage, ABC):
 
     @property
     def enemy_team_scouting_url(self):
-        return self.team.get_scouting_link(match=self.match, lineup=False)
+        return self.team.get_scouting_url(match=self.match, lineup=False)
 
     @property
     def enemy_lineup_scouting_url(self):
-        return self.team.get_scouting_link(match=self.match, lineup=True)
+        return self.team.get_scouting_url(match=self.match, lineup=True)
 
     @property
     def scouting_website(self):
@@ -238,7 +243,7 @@ class MatchesOverview(BaseMessage):
             return
         a = [
             f"[{LaP.MATCH_DAY} {match.match_day if match.match_day else LaP.TIEBREAKER}]({settings.MATCH_URI}{match.match_id}) {EMOJI_FIGHT} {match.enemy_team.name}" \
-            f" {EMOJI_ARROW_RIGHT} [{website_name}]({match.team.get_scouting_link(match=match, lineup=False)})\n"
+            f" {EMOJI_ARROW_RIGHT} [{website_name}]({match.team.get_scouting_url(match=match, lineup=False)})\n"
             for match in matches_to_play]
         matches_text = "\n".join(a)
         self.message = f"**{LaP.OVERVIEW}**\n\n" + matches_text
@@ -255,7 +260,7 @@ class MatchesOverview(BaseMessage):
         for match in matches_to_play:
             name = f"{EMOJI_FIGHT} "
             name += f"{LaP.MATCH_DAY} {match.match_day}" if match.match_day else f"{LaP.TIEBREAKER}"
-            scouting_link = self.team.get_scouting_link(match=match, lineup=False)
+            scouting_link = self.team.get_scouting_url(match=match, lineup=False)
             value = f"[{LaP.VS} {match.enemy_team.name}]({settings.MATCH_URI}{match.match_id})" \
                     f"\n> {EMJOI_MAGN_GLASS} [{website_name}]({scouting_link})"
 
@@ -271,7 +276,7 @@ class MatchesOverview(BaseMessage):
                 value += f"\n> {EMOJI_CALENDAR} {format_datetime(match.begin)}"
 
             if match.enemy_lineup_available:
-                lineup_link = match.team.get_scouting_link(match=match, lineup=True)
+                lineup_link = match.team.get_scouting_url(match=match, lineup=True)
                 value += f"\n> {EMOJI_BOOKMARK} [{LaP.CURRENT_LINEUP}]({lineup_link})"
 
             embed.add_field(name=name, value=value, inline=False)
@@ -309,14 +314,40 @@ class MatchOverview(MatchMessage):
                 value += f"> ➕ {emoji_numbers[i]} {format_datetime(x.begin)}\n"
         self.embed.add_field(name=name, value=value, inline=False)
 
+    def _add_meta_information(self):
+        text = (
+            "> Ihr habt im **ersten** Spiel Seitenwahl.\n"
+            "> Folgende Champions sind gesperrt:\n"
+            "> ➕ ⛔️Renata Glasc\n"
+            "> Das Regelwerk gibt es [hier.](https://www.primeleague.gg/statics/rules_general)\n"
+        )
+
+        self.embed.add_field(name="Sonstige Informationen", value=text, inline=False)
+
     def _add_enemy_team(self):
         name = "Gegnerteam"
         value = ""
+        multi = ScoutingWebsite.objects.get_multi_websites()
 
-        value += (
-            f"> {EMJOI_MAGN_GLASS} [{self.scouting_website}]({self.enemy_team_scouting_url})\n"
-        )
+        names = list(self.match.enemy_team.player_set.get_active_players().values_list("summoner_name", flat=True))
+        for i in multi:
+            value += (
+                f"> {EMJOI_MAGN_GLASS} [{i.name}]({i.generate_url(names)})\n"
+            )
+        self.embed.add_field(name=name, value=value, inline=False)
 
+    def _add_enemy_players(self):
+        name = "Gegnerische Spieler"
+        value = ""
+        single = ScoutingWebsite.objects.filter(multi=False).first()
+        if not single:
+            return
+
+        names = list(self.match.enemy_team.player_set.get_active_players().values_list("summoner_name", flat=True))
+        for i, player in enumerate(names):
+            value += (
+                f"> ➕ {emoji_numbers[i]} [{player}]({single.generate_url(player)})\n"
+            )
         self.embed.add_field(name=name, value=value, inline=False)
 
     def _add_results(self):
@@ -341,7 +372,7 @@ class MatchOverview(MatchMessage):
         name = "Gegnerische Aufstellung"
         value = ""
         if self.match.enemy_lineup_available:
-            lineup_link = self.team.get_scouting_link(match=self.match, lineup=True)
+            lineup_link = self.team.get_scouting_url(match=self.match, lineup=True)
             value += f"{EMOJI_BOOKMARK} [{LaP.CURRENT_LINEUP}]({lineup_link})\n"
             for i, x in enumerate(self.match.enemy_lineup.all()):
                 value += f"➕ {emoji_numbers[i]} {x.summoner_name}\n"
@@ -360,8 +391,10 @@ class MatchOverview(MatchMessage):
         else:
             self._add_schedule()
             self._add_enemy_team()
+            self._add_enemy_players()
             self._add_team_lineup()
             self._add_enemy_lineup()
+            self._add_meta_information()
         self.embed.set_footer(
             text=f"Andere Scouting Website? mit `!settings` einfach anpassen.")
 

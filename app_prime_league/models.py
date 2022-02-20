@@ -68,9 +68,9 @@ class Team(models.Model):
                 match.delete()
             self.setting_set.all().delete()
 
-    def get_scouting_link(self, match: "Match", lineup=True):
+    def get_scouting_url(self, match: "Match", lineup=True):
         """
-        Creates an urlencoded link of the enemy team of the given match. if `lineup=True` and lineup is available of the
+        Creates a link of the enemy team of the given match. if `lineup=True` and lineup is available of the
         match, creates the link of the enemy lineup instead.
         :param match: `Match`
         :param lineup: If lineup=True and a lineup is available a link of the lineup is created
@@ -87,7 +87,7 @@ class Team(models.Model):
         else:
             website = ScoutingWebsite.default()
 
-        return website.generate_link(names=names)
+        return website.generate_url(names=names)
 
     def get_open_matches_ordered(self):
         return self.matches_against.filter(closed=False).order_by(F('match_day').asc(nulls_last=True))
@@ -240,9 +240,20 @@ class ScoutingWebsite(models.Model):
         verbose_name = "Scouting Website"
         verbose_name_plural = "Scouting Websites"
 
-    def generate_link(self, names):
-        urlencoded = self.base_url.format(urlencode(self.separator.join(names)))
-        return urlencoded
+    def generate_url(self, names):
+        """
+        Url encode given names and generate link.
+        Args:
+            names:  list of strings or string
+
+        Returns: String
+        """
+        if not isinstance(names, list):
+            names = [names]
+        names = [urlencode(x) for x in names]
+        if self.multi:
+            return self.base_url.format(self.separator.join(names))
+        return self.base_url.format("".join(names))
 
     @staticmethod
     def default() -> "ScoutingWebsite":

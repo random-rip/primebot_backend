@@ -79,7 +79,7 @@ class PlayerManager(models.Manager):
 class ScoutingWebsiteManager(models.Manager):
 
     def get_multi_websites(self):
-        self.model.objects.filter(multi=True)
+        return self.model.objects.filter(multi=True)
 
 
 class CommentManager(models.Manager):
