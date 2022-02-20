@@ -228,7 +228,7 @@ class Match(models.Model):
 class ScoutingWebsite(models.Model):
     name = models.CharField(max_length=20, unique=True)
     base_url = models.CharField(max_length=200)
-    separator = models.CharField(max_length=5, default=settings.DEFAULT_SCOUTING_SEP, null=True)
+    separator = models.CharField(max_length=5, blank=True)
     multi = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
