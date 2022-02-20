@@ -260,7 +260,7 @@ class ScoutingWebsite(models.Model):
         return ScoutingWebsite(
             base_url=settings.DEFAULT_SCOUTING_URL,
             separator=settings.DEFAULT_SCOUTING_SEP,
-            multi=False,
+            multi=True,
         )
 
     def __str__(self):
