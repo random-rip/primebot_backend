@@ -55,6 +55,10 @@ class __MatchDataMethods:
     def get_comments(self):
         pass
 
+    @abstractmethod
+    def has_side_choice(self):
+        pass
+
 
 class MatchDataProcessor(__MatchDataMethods, ):
     """
@@ -72,6 +76,14 @@ class MatchDataProcessor(__MatchDataMethods, ):
         self.team_is_team_1 = self.data_match.get("team_id_1") == team_id
         self.logs = []
         self.__parse_logs()
+
+    def has_side_choice(self):
+        """
+        Returns whether the team has side choice in their first game or not.
+        Returns: Boolean
+
+        """
+        return self.team_is_team_1
 
     def __parse_logs(self):
         logs = self.data.get("logs", [])

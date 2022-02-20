@@ -84,3 +84,17 @@ class ScoutingWebsiteManager(models.Manager):
 
 class CommentManager(models.Manager):
     pass
+
+
+class ChampionManager(models.Manager):
+    def get_banned_champions(self, until=None):
+        """
+
+        Args:
+            until: optional Datetime
+
+        Returns:
+
+        """
+        qs = self.model.objects.filter(banned=True, ).order_by("name")
+        return qs if not until else qs.filter(banned_until__gt=until)

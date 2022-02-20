@@ -13,7 +13,8 @@ class SuggestionsTest(TestCase):
 
     def test_enemy_made_a_first_suggestion(self):
         match = Match.objects.create(match_id=1, match_day=1, match_type=Match.MATCH_TYPE_LEAGUE, team=self.team,
-                                     enemy_team=self.enemy_team)
+                                     enemy_team=self.enemy_team,
+                                     has_side_choice=True)
 
         md = create_temporary_match_data(team=self.team, enemy_team=self.enemy_team, team_made_latest_suggestion=False,
                                          latest_suggestions=[
@@ -25,7 +26,8 @@ class SuggestionsTest(TestCase):
 
     def test_enemy_has_existing_suggestion(self):
         match = Match.objects.create(match_id=1, match_day=1, match_type=Match.MATCH_TYPE_LEAGUE, team=self.team,
-                                     enemy_team=self.enemy_team, team_made_latest_suggestion=False)
+                                     enemy_team=self.enemy_team, team_made_latest_suggestion=False,
+                                     has_side_choice=True)
 
         md = create_temporary_match_data(team=self.team, enemy_team=self.enemy_team, team_made_latest_suggestion=False,
                                          latest_suggestions=[
@@ -37,7 +39,8 @@ class SuggestionsTest(TestCase):
 
     def test_enemy_made_new_suggestion_after_own_suggestion(self):
         match = Match.objects.create(match_id=1, match_day=1, match_type=Match.MATCH_TYPE_LEAGUE, team=self.team,
-                                     enemy_team=self.enemy_team, team_made_latest_suggestion=True)
+                                     enemy_team=self.enemy_team, team_made_latest_suggestion=True,
+                                     has_side_choice=True)
 
         md = create_temporary_match_data(team=self.team, enemy_team=self.enemy_team, team_made_latest_suggestion=False,
                                          latest_suggestions=[
@@ -49,7 +52,8 @@ class SuggestionsTest(TestCase):
 
     def test_team_made_a_first_suggestion(self):
         match = Match.objects.create(match_id=1, match_day=1, match_type=Match.MATCH_TYPE_LEAGUE, team=self.team,
-                                     enemy_team=self.enemy_team)
+                                     enemy_team=self.enemy_team,
+                                     has_side_choice=True)
 
         md = create_temporary_match_data(team=self.team, enemy_team=self.enemy_team, team_made_latest_suggestion=True,
                                          latest_suggestions=[
@@ -61,7 +65,8 @@ class SuggestionsTest(TestCase):
 
     def test_team_has_existing_suggestion(self):
         match = Match.objects.create(match_id=1, match_day=1, match_type=Match.MATCH_TYPE_LEAGUE, team=self.team,
-                                     enemy_team=self.enemy_team, team_made_latest_suggestion=True)
+                                     enemy_team=self.enemy_team, team_made_latest_suggestion=True,
+                                     has_side_choice=True)
 
         md = create_temporary_match_data(team=self.team, enemy_team=self.enemy_team, team_made_latest_suggestion=True,
                                          latest_suggestions=[
@@ -73,7 +78,8 @@ class SuggestionsTest(TestCase):
 
     def test_team_made_new_suggestion_after_enemy_suggestion(self):
         match = Match.objects.create(match_id=1, match_day=1, match_type=Match.MATCH_TYPE_LEAGUE, team=self.team,
-                                     enemy_team=self.enemy_team, team_made_latest_suggestion=False)
+                                     enemy_team=self.enemy_team, team_made_latest_suggestion=False,
+                                     has_side_choice=True)
 
         md = create_temporary_match_data(team=self.team, enemy_team=self.enemy_team, team_made_latest_suggestion=True,
                                          latest_suggestions=[
@@ -85,7 +91,8 @@ class SuggestionsTest(TestCase):
 
     def test_no_open_suggestion(self):
         match = Match.objects.create(match_id=1, match_day=1, match_type=Match.MATCH_TYPE_LEAGUE, team=self.team,
-                                     enemy_team=self.enemy_team, team_made_latest_suggestion=None, )
+                                     enemy_team=self.enemy_team, team_made_latest_suggestion=None,
+                                     has_side_choice=True)
 
         md = create_temporary_match_data(team=self.team, enemy_team=self.enemy_team, team_made_latest_suggestion=None, )
         cp = MatchComparer(match_old=match, match_new=md)
@@ -94,7 +101,8 @@ class SuggestionsTest(TestCase):
 
     def test_no_open_suggestion_and_last_suggestion_was_made_of_team(self):
         match = Match.objects.create(match_id=1, match_day=1, match_type=Match.MATCH_TYPE_LEAGUE, team=self.team,
-                                     enemy_team=self.enemy_team, team_made_latest_suggestion=True, )
+                                     enemy_team=self.enemy_team, team_made_latest_suggestion=True,
+                                     has_side_choice=True)
 
         md = create_temporary_match_data(team=self.team, enemy_team=self.enemy_team, team_made_latest_suggestion=None, )
         cp = MatchComparer(match_old=match, match_new=md)
@@ -105,7 +113,8 @@ class SuggestionsTest(TestCase):
 
     def test_no_open_suggestion_and_last_suggestion_was_made_of_enemy(self):
         match = Match.objects.create(match_id=1, match_day=1, match_type=Match.MATCH_TYPE_LEAGUE, team=self.team,
-                                     enemy_team=self.enemy_team, team_made_latest_suggestion=False, )
+                                     enemy_team=self.enemy_team, team_made_latest_suggestion=False,
+                                     has_side_choice=True)
 
         md = create_temporary_match_data(team=self.team, enemy_team=self.enemy_team, team_made_latest_suggestion=None, )
         cp = MatchComparer(match_old=match, match_new=md)
@@ -122,7 +131,8 @@ class CompareConfirmationTest(TestCase):
 
     def test_new_accepted_suggestion(self):
         match = Match.objects.create(match_id=1, match_day=1, match_type=Match.MATCH_TYPE_LEAGUE, team=self.team,
-                                     enemy_team=self.enemy_team, team_made_latest_suggestion=True)
+                                     enemy_team=self.enemy_team, team_made_latest_suggestion=True,
+                                     has_side_choice=True)
 
         md = create_temporary_match_data(team=self.team, enemy_team=self.enemy_team, match_begin_confirmed=True)
         cp = MatchComparer(match_old=match, match_new=md)
@@ -130,7 +140,8 @@ class CompareConfirmationTest(TestCase):
 
     def test_still_accepted_suggestion(self):
         match = Match.objects.create(match_id=1, match_day=1, match_type=Match.MATCH_TYPE_LEAGUE, team=self.team,
-                                     enemy_team=self.enemy_team, match_begin_confirmed=True)
+                                     enemy_team=self.enemy_team, match_begin_confirmed=True,
+                                     has_side_choice=True)
 
         md = create_temporary_match_data(team=self.team, enemy_team=self.enemy_team, match_begin_confirmed=True)
         cp = MatchComparer(match_old=match, match_new=md)
@@ -138,7 +149,8 @@ class CompareConfirmationTest(TestCase):
 
     def test_no_accepted_suggestion(self):
         match = Match.objects.create(match_id=1, match_day=1, match_type=Match.MATCH_TYPE_LEAGUE, team=self.team,
-                                     enemy_team=self.enemy_team, team_made_latest_suggestion=False)
+                                     enemy_team=self.enemy_team, team_made_latest_suggestion=False,
+                                     has_side_choice=True)
 
         md = create_temporary_match_data(team=self.team, enemy_team=self.enemy_team, match_begin_confirmed=False)
         cp = MatchComparer(match_old=match, match_new=md)
@@ -152,7 +164,8 @@ class CompareNewLineupTest(TestCase):
 
     def test_no_lineup(self):
         match = Match.objects.create(match_id=1, match_day=1, match_type=Match.MATCH_TYPE_LEAGUE, team=self.team,
-                                     enemy_team=self.enemy_team, )
+                                     enemy_team=self.enemy_team,
+                                     has_side_choice=True)
 
         md = create_temporary_match_data(team=self.team, enemy_team=self.enemy_team)
         cp = MatchComparer(match_old=match, match_new=md)
@@ -161,7 +174,8 @@ class CompareNewLineupTest(TestCase):
 
     def test_fresh_new_lineup(self):
         match = Match.objects.create(match_id=1, match_day=1, match_type=Match.MATCH_TYPE_LEAGUE, team=self.team,
-                                     enemy_team=self.enemy_team, )
+                                     enemy_team=self.enemy_team,
+                                     has_side_choice=True)
 
         md = create_temporary_match_data(team=self.team, enemy_team=self.enemy_team, enemy_lineup=[
             (1, "Player 1", "Summonername 1", None),
@@ -176,7 +190,8 @@ class CompareNewLineupTest(TestCase):
 
     def test_existing_lineup(self):
         match = Match.objects.create(match_id=1, match_day=1, match_type=Match.MATCH_TYPE_LEAGUE, team=self.team,
-                                     enemy_team=self.enemy_team, )
+                                     enemy_team=self.enemy_team,
+                                     has_side_choice=True)
         players = Player.objects.create_or_update_players([
             (1, "Player 1", "Summonername 1", False),
             (5, "Player 5", "Summonername 5", False),
@@ -194,7 +209,8 @@ class CompareNewLineupTest(TestCase):
 
     def test_new_lineup(self):
         match = Match.objects.create(match_id=1, match_day=1, match_type=Match.MATCH_TYPE_LEAGUE, team=self.team,
-                                     enemy_team=self.enemy_team, )
+                                     enemy_team=self.enemy_team,
+                                     has_side_choice=True)
         players = Player.objects.create_or_update_players([
             (1, "Player 1", "Summonername 1", False),
             (5, "Player 5", "Summonername 5", False),

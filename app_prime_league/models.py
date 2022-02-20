@@ -3,7 +3,8 @@ from django.db import models
 from django.db.models import F
 from django.template.defaultfilters import truncatechars, urlencode
 
-from app_prime_league.model_manager import TeamManager, MatchManager, PlayerManager, ScoutingWebsiteManager
+from app_prime_league.model_manager import TeamManager, MatchManager, PlayerManager, ScoutingWebsiteManager, \
+    ChampionManager
 from utils.exceptions import GMDNotInitialisedException
 
 
@@ -138,6 +139,7 @@ class Match(models.Model):
     enemy_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="matches_as_enemy_team", null=True)
     team_made_latest_suggestion = models.BooleanField(null=True, blank=True)
     match_begin_confirmed = models.BooleanField(default=False, blank=True)
+    has_side_choice = models.BooleanField()  # Team has side choice in first game
     begin = models.DateTimeField(null=True)
     enemy_lineup = models.ManyToManyField(Player, related_name="matches_as_enemy")
     team_lineup = models.ManyToManyField(Player, related_name="matches")
@@ -180,6 +182,7 @@ class Match(models.Model):
         self.match_begin_confirmed = tmd.match_begin_confirmed
         self.closed = tmd.closed
         self.result = tmd.result
+        self.has_side_choice = tmd.has_side_choice
         self.save()
 
     def update_match_begin(self, gmd):
@@ -339,3 +342,19 @@ class Changelog(models.Model):
     @property
     def truncated_description(self):
         return truncatechars(self.description, 100)
+
+
+class Champion(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    banned = models.BooleanField()
+    banned_until = models.DateField(null=True, blank=True)
+    banned_until_patch = models.CharField(max_length=10)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    objects = ChampionManager()
+
+    class Meta:
+        db_table = "champions"
+        verbose_name = "Champion"
+        verbose_name_plural = "Champions"

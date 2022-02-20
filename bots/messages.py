@@ -4,7 +4,7 @@ from babel import dates as babel
 from discord import Colour, Embed
 from django.conf import settings
 
-from app_prime_league.models import Match, Team, ScoutingWebsite
+from app_prime_league.models import Match, Team, ScoutingWebsite, Champion
 from bots.languages import de_DE as LaP
 from modules.parsing.logs import LogSchedulingAutoConfirmation, LogSchedulingConfirmation, LogChangeTime
 from utils.emojis import EMOJI_FIGHT, EMOJI_ARROW_RIGHT, EMOJI_CALENDAR, EMOJI_BOOKMARK, EMJOI_MAGN_GLASS, EMOJI_ONE, \
@@ -307,15 +307,26 @@ class MatchOverview(MatchMessage):
                 value += f"> ➕ {emoji_numbers[i]} {format_datetime(x.begin)}\n"
         self.embed.add_field(name=name, value=value, inline=False)
 
-    def _add_meta_information(self):
-        text = (
-            "> Ihr habt im **ersten** Spiel Seitenwahl.\n"
-            "> Folgende Champions sind gesperrt:\n"
-            "> ➕ ⛔️Renata Glasc\n"
-            "> Das Regelwerk gibt es [hier.](https://www.primeleague.gg/statics/rules_general)\n"
-        )
+    def _add_general_information(self):
+        name = "Sonstige Informationen"
+        text = ""
 
-        self.embed.add_field(name="Sonstige Informationen", value=text, inline=False)
+        if self.match.has_side_choice:
+            text += "> Ihr habt im **ersten** Match Seitenwahl.\n"
+        else:
+            text += "> Ihr habt im **zweiten** Match Seitenwahl.\n"
+
+        banned = Champion.objects.get_banned_champions(self.match.begin)
+
+        if banned.exists():
+            text += "> Folgende Champions sind voraussichtlich beim Spieltermin gesperrt:\n"
+            for i in banned:
+                text += (
+                    f"> ➕ ⛔️{i.name} (bis Patch {i.banned_until_patch})\n"
+                )
+
+        text += "> Das Regelwerk gibt es [hier.](https://www.primeleague.gg/statics/rules_general)\n"
+        self.embed.add_field(name=name, value=text, inline=False)
 
     def _add_enemy_team(self):
         name = "Gegnerteam"
@@ -387,7 +398,7 @@ class MatchOverview(MatchMessage):
             "_Dieser Befehl befindet sich noch in der Beta! Wir sammeln dazu noch Feedback.\n"
             "Wie findet ihr die Menge an Informationsgehalten dieser Nachricht? Werden falsche Informationen angezeigt "
             "oder funktionieren Links nicht?\n"
-            "Schreibt es uns hier: https://discord.gg/hBmHfF3K _"
+            "Schreibt es uns hier: https://discord.gg/7NYgT2uFPm _"
         )
         self.embed.add_field(
             name=name,
@@ -413,7 +424,7 @@ class MatchOverview(MatchMessage):
             self._add_enemy_players()
             self._add_team_lineup()
             self._add_enemy_lineup()
-            self._add_meta_information()
+            self._add_general_information()
         self.embed.set_footer(
             text=f"Andere Scouting Website? mit `!settings` einfach anpassen.")
 

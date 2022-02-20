@@ -79,6 +79,7 @@ def create_match_and_enemy_team(team, match_id, ):
         "match_begin_confirmed": tmd.match_begin_confirmed,
         "closed": tmd.closed,
         "result": tmd.result,
+        "has_side_choice": tmd.has_side_choice,
     })
 
     # Create Team Lineup

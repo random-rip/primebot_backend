@@ -9,7 +9,7 @@ class TemporaryMatchData:
     def __init__(self, match_id=None, match_day=None, match_type=None, team=None, enemy_team_id=None, enemy_team=None,
                  enemy_team_members=None, enemy_lineup=None, closed=None, result=None, team_made_latest_suggestion=None,
                  latest_suggestions=None, begin=None, latest_confirmation_log=None, match_begin_confirmed=None,
-                 team_lineup=None):
+                 team_lineup=None, has_side_choice=None):
         self.match_id = match_id
         self.match_day = match_day
         self.match_type = match_type
@@ -26,6 +26,7 @@ class TemporaryMatchData:
         self.begin = begin
         self.latest_confirmation_log = latest_confirmation_log
         self.match_begin_confirmed = match_begin_confirmed
+        self.has_side_choice = has_side_choice
 
     def __repr__(self):
         return f"MatchID: {self.match_id}" \
@@ -64,6 +65,7 @@ class TemporaryMatchData:
         gmd.match_begin_confirmed = processor.get_match_begin_confirmed()
         gmd.latest_confirmation_log = processor.get_latest_match_begin_log()
         gmd.result = processor.get_match_result()
+        gmd.has_side_choice = processor.has_side_choice()
 
         if not Team.objects.filter(id=gmd.enemy_team_id).exists():
             gmd.create_enemy_team_data_from_website()
