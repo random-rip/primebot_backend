@@ -41,20 +41,20 @@ def team_to_serializer_data(team: Team):
 
     team_settings = [
         {
-            "key": "WEEKLY_OP_LINK",
-            "value": team.value_of_setting("WEEKLY_OP_LINK")
+            "key": "WEEKLY_MATCH_DAY",
+            "value": team.value_of_setting("WEEKLY_MATCH_DAY"),
         },
         {
-            "key": "PIN_WEEKLY_OP_LINK",
-            "value": team.value_of_setting("PIN_WEEKLY_OP_LINK"),
+            "key": "LINEUP_NOTIFICATION",
+            "value": team.value_of_setting("LINEUP_NOTIFICATION"),
         },
         {
-            "key": "LINEUP_OP_LINK",
-            "value": team.value_of_setting("LINEUP_OP_LINK"),
+            "key": "ENEMY_SCHEDULING_SUGGESTION",
+            "value": team.value_of_setting("ENEMY_SCHEDULING_SUGGESTION"),
         },
         {
-            "key": "SCHEDULING_SUGGESTION",
-            "value": team.value_of_setting("SCHEDULING_SUGGESTION"),
+            "key": "TEAM_SCHEDULING_SUGGESTION",
+            "value": team.value_of_setting("TEAM_SCHEDULING_SUGGESTION"),
         },
         {
             "key": "SCHEDULING_CONFIRMATION",

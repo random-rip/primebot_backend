@@ -2,7 +2,6 @@ import logging
 import sys
 import traceback
 
-import telepot
 from telegram import ParseMode
 from telegram.ext import Updater, CommandHandler, MessageHandler, ConversationHandler, CallbackQueryHandler
 from telegram.ext.filters import Filters
@@ -10,11 +9,10 @@ from telepot.exception import BotWasKickedError, BotWasBlockedError
 
 from bots import send_message
 from bots.base.bot import Bot
-from bots.languages.de_DE import MESSAGE_NOT_PINNED_TEXT, CANT_PIN_MSG_IN_PRIVATE_CHAT
 from bots.messages import BaseMessage
 from bots.telegram_interface.commands import single_commands
 from bots.telegram_interface.conversations import start_conversation
-from bots.telegram_interface.tg_singleton import pin_msg, CannotBePinnedError, send_message_to_devs
+from bots.telegram_interface.tg_singleton import send_message_to_devs
 from prime_league_bot import settings
 
 notifications_logger = logging.getLogger("notifications")
@@ -87,14 +85,6 @@ class TelegramBot(Bot):
             return
         except Exception:
             return
-        if msg.can_be_pinned():
-            try:
-                pin_msg(sent_message)
-            except CannotBePinnedError:
-                send_message(msg=MESSAGE_NOT_PINNED_TEXT, chat_id=team.telegram_id)
-            except telepot.exception.TelegramError:
-                notifications_logger.exception(f"{team}: {CANT_PIN_MSG_IN_PRIVATE_CHAT}")
-        return
 
 
 def error(update, context):

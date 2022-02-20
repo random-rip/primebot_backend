@@ -1,8 +1,7 @@
 from abc import abstractmethod, ABC
 
-import discord
 from babel import dates as babel
-from discord import Colour
+from discord import Colour, Embed
 from django.conf import settings
 
 from app_prime_league.models import Match, Team, ScoutingWebsite
@@ -31,14 +30,13 @@ def format_datetime(x):
 
 
 class BaseMessage:
-    _key = None
-    mentionable = False
+    _key = None  # Message kann über die Settings gesteuert werden, ob sie gesendet wird, oder nicht
+    mentionable = False  # Rollenerwähnung bei discord falls Rolle gesetzt
     title = None
 
     def __init__(self, team: Team, **kwargs):
         self.team = team
         self.message = None
-        self._attachable = False
 
     @abstractmethod
     def _generate_message(self):
@@ -48,10 +46,10 @@ class BaseMessage:
         return self.title
 
     def team_wants_notification(self):
-        return self.team.value_of_setting(type(self)._key)
-
-    def can_be_pinned(self):
-        return self._attachable
+        key = type(self)._key
+        if key is None:
+            return True
+        return self.team.value_of_setting(key)
 
 
 class MatchMessage(BaseMessage, ABC):
@@ -82,15 +80,12 @@ class MatchMessage(BaseMessage, ABC):
 
 
 class WeeklyNotificationMessage(MatchMessage):
-    msg_type = "weekly_notification"
-    _key = "weekly_op_link"
-    _attachable_key = "pin_weekly_op_link"
+    _key = "WEEKLY_MATCH_DAY"
     title = LaP.TITLE_NEW_MATCH_DAY
     mentionable = True
 
     def __init__(self, team: Team, match: Match):
         super().__init__(team, match)
-        self._attachable = self.team.value_of_setting(self._attachable_key)
         self.message = None
         self._generate_message()
 
@@ -111,8 +106,11 @@ class WeeklyNotificationMessage(MatchMessage):
 
 
 class NewMatchNotification(MatchMessage):
-    msg_type = "new_game_notification"
-    _key = "new_game_notification"
+    """
+    Teamaktualisierungen generieren keine Benachrichtigungen, deswegen ist die Message silenced.
+    (Bisher gedacht für Kalibrierungsspiele, kann aber auf die Starterdivision ausgeweitet werden)
+    """
+    _key = "NEW_MATCH_NOTIFICATION"
     title = LaP.TITLE_NEW_MATCH
     mentionable = True
 
@@ -132,8 +130,7 @@ class NewMatchNotification(MatchMessage):
 
 
 class NewLineupNotificationMessage(MatchMessage):
-    msg_type = "new_lineup_notification"
-    _key = "lineup_op_link"
+    _key = "LINEUP_NOTIFICATION"
     title = LaP.TITLE_NEW_LINEUP
     mentionable = True
 
@@ -152,8 +149,7 @@ class NewLineupNotificationMessage(MatchMessage):
 
 
 class OwnNewTimeSuggestionsNotificationMessage(MatchMessage):
-    msg_type = "own_new_time_suggestion_notification"
-    _key = "scheduling_suggestion"
+    _key = "TEAM_SCHEDULING_SUGGESTION"
     title = LaP.TITLE_NEW_OWN_SUGGESTION
     mentionable = True
 
@@ -169,8 +165,7 @@ class OwnNewTimeSuggestionsNotificationMessage(MatchMessage):
 
 
 class EnemyNewTimeSuggestionsNotificationMessage(MatchMessage):
-    msg_type = "enemy_new_time_suggestion_notification"
-    _key = "scheduling_suggestion"
+    _key = "ENEMY_SCHEDULING_SUGGESTION"
     title = LaP.TITLE_NEW_SUGGESTION
     mentionable = True
 
@@ -196,8 +191,7 @@ class EnemyNewTimeSuggestionsNotificationMessage(MatchMessage):
 
 
 class ScheduleConfirmationNotification(MatchMessage):
-    msg_type = "schedule_confirmation_notification"
-    _key = "scheduling_confirmation"
+    _key = "SCHEDULING_CONFIRMATION"
     title = LaP.TITLE_MATCH_CONFIRMATION
     mentionable = True
 
@@ -227,7 +221,6 @@ class ScheduleConfirmationNotification(MatchMessage):
 
 
 class MatchesOverview(BaseMessage):
-    msg_type = "overview"
     _key = "overview"
     mentionable = False
 
@@ -251,7 +244,7 @@ class MatchesOverview(BaseMessage):
     def discord_embed(self):
         matches_to_play = self.team.get_open_matches_ordered()
         website_name = settings.DEFAULT_SCOUTING_NAME if not self.team.scouting_website else self.team.scouting_website.name
-        embed = discord.Embed(color=Colour.gold())
+        embed = Embed(color=Colour.gold())
         if len(matches_to_play) == 0:
             embed.title = LaP.NO_CURRENT_MATCHES
         else:
@@ -289,7 +282,7 @@ class MatchOverview(MatchMessage):
 
     def __init__(self, team: Team, match: Match):
         super().__init__(team, match)
-        self.embed = discord.Embed(color=Colour.gold())
+        self.embed = Embed(color=Colour.gold())
 
     def _generate_message(self):
         self.message = ""
@@ -402,7 +395,6 @@ class MatchOverview(MatchMessage):
 
 
 class NotificationToTeamMessage(BaseMessage):
-    msg_type = "custom_message"
     _key = "custom_message"
     mentionable = True
     title = "Entwicklerbenachrichtigung"

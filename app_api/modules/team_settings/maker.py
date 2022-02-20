@@ -116,18 +116,19 @@ class SettingsMaker(Encoder):
             content = self.data.get(self.key_content)
             self.settings = {x["key"]: x["value"] for x in content}
             if not all(k in self.settings for k in [
-                "WEEKLY_OP_LINK",
-                "PIN_WEEKLY_OP_LINK",
-                "LINEUP_OP_LINK",
-                "SCHEDULING_SUGGESTION",
+                "WEEKLY_MATCH_DAY",
+                "LINEUP_NOTIFICATION",
+                "TEAM_SCHEDULING_SUGGESTION",
+                "ENEMY_SCHEDULING_SUGGESTION",
                 "SCHEDULING_CONFIRMATION",
                 "SCOUTING_WEBSITE",
             ]):
                 self.errors.append(MISSING_CONTENT)
             scouting_website_name = self.settings.pop("SCOUTING_WEBSITE")
             if scouting_website_name != settings.DEFAULT_SCOUTING_NAME:
+                scouting_website_name = scouting_website_name.lower()
                 self.scouting_website = ScoutingWebsite.objects.get_multi_websites().get(
-                    name=self.settings.pop("SCOUTING_WEBSITE"))
+                    name=scouting_website_name)
             else:
                 self.scouting_website = scouting_website_name
         except (KeyError, ScoutingWebsite.DoesNotExist):

@@ -25,12 +25,12 @@ File is currently WIP / deprecated weil kack ansatz.
 #
 # Question(key="WEEKLY_OP_LINK", value_type=bool, choices=[True, False], default_value=True, )
 # Question(key="PIN_WEEKLY_OP_LINK", value_type=bool, choices=[True, False], default_value=True, )
-# Question(key="LINEUP_OP_LINK", value_type=bool, choices=[True, False], default_value=True, )
-# Question(key="SCHEDULING_SUGGESTION", value_type=bool, choices=[True, False], default_value=True, )
+# Question(key="LINEUP_NOTIFICATION", value_type=bool, choices=[True, False], default_value=True, )
+# Question(key="TEAM_SCHEDULING_SUGGESTION", value_type=bool, choices=[True, False], default_value=True, )
 # Question(key="SCHEDULING_CONFIRMATION", value_type=bool, choices=[True, False], default_value=True, )
 # Question(key="SCOUTING_WEBSITE", value_type=str, default_value="op.gg", choices=["op.gg", "u.gg", "xdx.gg"])
 # # Question(key="FAV_ANIMAL", value_type=list, default_value="dog", choices=["cat", "dog", ])
 #
-# # Question(key="OWN_SCHEDULING_SUGGESTION", value_type=bool, choices=[True, False], default_value=True, )
+# # Question(key="TEAM_SCHEDULING_SUGGESTION", value_type=bool, choices=[True, False], default_value=True, )
 #
 # print(Question.questions)
