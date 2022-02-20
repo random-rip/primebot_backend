@@ -330,7 +330,7 @@ class MatchOverview(MatchMessage):
         self.embed.add_field(name=name, value=value, inline=False)
 
     def _add_enemy_players(self):
-        name = "Gegnerische Spieler"
+        name = f"Gegnerische Spieler (leagueofgraphs.com)"
         value = ""
         single = ScoutingWebsite.objects.filter(multi=False).first()
         if not single:
@@ -339,7 +339,7 @@ class MatchOverview(MatchMessage):
         names = list(self.match.enemy_team.player_set.get_active_players().values_list("summoner_name", flat=True))
         for i, player in enumerate(names):
             value += (
-                f"> ➕ {emoji_numbers[i]} [{player}]({single.generate_url(player)})\n"
+                f"> {emoji_numbers[i]} {EMJOI_MAGN_GLASS} [{player}]({single.generate_url(player)})\n"
             )
         self.embed.add_field(name=name, value=value, inline=False)
 
@@ -347,33 +347,57 @@ class MatchOverview(MatchMessage):
         name = "Spielergebnis"
         value = ""
         value += f"ℹ️ Ergebnis: {self.match.result}\n"
-        value += f"📆️ Gespielt {format_datetime(self.match.begin)}\n"
+        value += f"📆️ Gespielt: {format_datetime(self.match.begin)}\n"
         self.embed.add_field(name=name, value=value, inline=False)
 
-    def _add_team_lineup(self):
+    def _add_team_lineup(self, result=False):
         name = "Eure Aufstellung"
         value = ""
         if self.match.team_lineup_available:
-            value += f"✅ Eigenes Lineup aufgestellt:\n"
+            if not result:
+                value += f"✅ Eigenes Lineup aufgestellt:\n"
             for i, x in enumerate(self.match.team_lineup.all()):
-                value += f"➕ {emoji_numbers[i]} {x.summoner_name}\n"
+                value += f" > {emoji_numbers[i]} {x.summoner_name}\n"
         else:
             value += f"⚠ Noch kein Lineup aufgestellt.\n"
         self.embed.add_field(name=name, value=value)
 
-    def _add_enemy_lineup(self):
+    def _add_enemy_lineup(self, result=False):
         name = "Gegnerische Aufstellung"
         value = ""
         if self.match.enemy_lineup_available:
-            lineup_link = self.team.get_scouting_url(match=self.match, lineup=True)
-            value += f"{EMOJI_BOOKMARK} [{LaP.CURRENT_LINEUP}]({lineup_link})\n"
-            for i, x in enumerate(self.match.enemy_lineup.all()):
-                value += f"➕ {emoji_numbers[i]} {x.summoner_name}\n"
+            names = self.match.enemy_lineup.all()
+            if not result:
+                multi = ScoutingWebsite.objects.get_multi_websites()
+                for i in multi:
+                    value += (
+                        f"> {EMJOI_MAGN_GLASS} [{i.name}]("
+                        f"{i.generate_url(list(names.values_list('summoner_name', flat=True)))})\n"
+                    )
+
+            for i, x in enumerate(names):
+                value += f"> {emoji_numbers[i]} {x.summoner_name}\n"
         else:
             value += f"Noch kein Lineup aufgestellt.\n"
         self.embed.add_field(name=name, value=value)
 
+    def _add_disclaimer(self):
+        name = "Disclaimer"
+        value = (
+            "_Dieser Befehl befindet sich noch in der Beta! Wir sammeln dazu noch Feedback.\n"
+            "Wie findet ihr die Menge an Informationsgehalten dieser Nachricht? Werden falsche Informationen angezeigt "
+            "oder funktionieren Links nicht?\n"
+            "Schreibt es uns hier: https://discord.gg/hBmHfF3K _"
+        )
+        self.embed.add_field(
+            name=name,
+            value=value,
+            inline=False
+        )
+
     def discord_embed(self):
+
+        self._add_disclaimer()
         name = f"{EMOJI_FIGHT} "
         name += f"{LaP.MATCH_DAY} {self.match.match_day}" if self.match.match_type == Match.MATCH_TYPE_LEAGUE else f"{LaP.TIEBREAKER}"
         value = f"[{LaP.VS} {self.match.enemy_team.name}]({self.match_url})\n"
@@ -381,6 +405,8 @@ class MatchOverview(MatchMessage):
 
         if self.match.closed:
             self._add_results()
+            self._add_team_lineup(result=True)
+            self._add_enemy_lineup(result=True)
         else:
             self._add_schedule()
             self._add_enemy_team()
