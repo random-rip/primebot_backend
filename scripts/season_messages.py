@@ -31,14 +31,22 @@ Grayknife und Orbis
 message = """
 Hallo {team.name}, 
 
-der PrimeBot ist jetzt wieder verfügbar. Das bedeutet, dass ihr Updates zu allen Spielen, die ab diesem Zeitpunkt gemacht werden, wieder benachrichtigt werdet.
-Aufgrund der hohen Nachfrage des Services stehen wir weiterhin in Kontakt zu der Prime League um eine dauerhafte Lösung zu finden.
+der PrimeBot wurde auf Version v2.0.0 aktualisiert. 
+Mit dieser Version kommen ein paar neue Features und Überarbeitungen des Cores auf das Produktivsystem.
 
-Wir wünschen euch viel Erfolg! 
+Hauptänderungen:
+- Anbindung der Prime League API
+- Deployment unserer Website und Personalisierung von Benachrichtigungen mit `!settings` (Telegram `/settings`).
+- Wichtig: Wir haben alle Benachrichtigungseinstellungen zurückgesetzt (ging nicht anders, sorry).
+- Implementierung von `!match [match_day]` um eine detaillierte Übersicht des Spieltages zu generieren.
+- ...noch vieles mehr! Alle Aktualisierungen findet ihr [hier](https://primebot.me/changelogs).
+
+Außerdem freuen wir uns euch mitteilen zu dürfen, dass wir nun deutlich häufiger die Daten der Prime League abgreifen dürfen.
+
+Wir wünschen euch viel Erfolg beim restlichen Split! 
 
 Sternige Grüße
-Grayknife und Orbis
-
+Grayknife, Orbis & Mörlin
 """
 
 
