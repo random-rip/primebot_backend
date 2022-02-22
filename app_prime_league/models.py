@@ -41,7 +41,7 @@ class Team(models.Model):
     def settings_dict(self):
         return dict(self.setting_set.all().values_list("attr_name", "attr_value"))
 
-    def is_active(self):
+    def is_registered(self):
         return self.telegram_id or self.discord_channel_id
 
     def get_next_open_match(self):

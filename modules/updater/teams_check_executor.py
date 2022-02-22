@@ -29,15 +29,20 @@ def update_team(team: Team):
         "logo_url": processor.get_logo(),
     }
 
-    if Team.objects.filter(id=team.id, **to_update).exists():
-        return
+    if not Team.objects.filter(id=team.id, **to_update).exists():
+        update_logger.info(f"Updating {team}...")
+        team.update(**to_update)
 
-    update_logger.debug(f"Updating {team}...")
-    team.update(**to_update)
+    try:
+        Player.objects.create_or_update_players(processor.get_members(), team)
+    except Exception:
+        update_logger.warning(
+            f"Exception occurred while updating players on team {team}. Players: {processor.get_members()}"
+        )
+        # TODO Spieler ohne namen werden von der Prime League zurückgegeben, sollen die gespeichert werden?
+        pass
 
-    Player.objects.create_or_update_players(processor.get_members(), team)
-
-    if not team.is_active():
+    if not team.is_registered():
         return team
 
     try:

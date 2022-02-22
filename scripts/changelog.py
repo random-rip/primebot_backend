@@ -7,7 +7,7 @@ from utils.changelogs import CHANGELOGS
 def main():
     log = CHANGELOGS[sorted(CHANGELOGS.keys())[-1]]
     pattern = log["text"]
-    teams = Team.objects.get_watched_teams()
+    teams = Team.objects.get_registered_teams()
     for team in teams:
         try:
             print(team)

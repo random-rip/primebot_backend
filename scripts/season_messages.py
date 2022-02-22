@@ -51,7 +51,7 @@ Grayknife, Orbis & Mörlin
 
 
 def main():
-    teams = Team.objects.get_watched_teams()
+    teams = Team.objects.get_registered_teams()
     for team in teams:
         try:
             print(team)

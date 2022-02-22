@@ -4,7 +4,7 @@ from bots.messages import NotificationToTeamMessage
 
 
 def main():
-    teams = Team.objects.get_watched_teams()
+    teams = Team.objects.get_registered_teams()
     pattern = """
 Hallo {team.name}, 
 

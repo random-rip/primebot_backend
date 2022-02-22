@@ -14,7 +14,7 @@ class Command(BaseCommand):
 
         logger = logging.getLogger("notifications")
         logger.info(f"Start Sending Weekly Notifications...")
-        teams = Team.objects.get_watched_team_of_current_split()
+        teams = Team.objects.get_registered_team_of_current_split()
         for team in teams:
             self.stdout.write(self.style.SUCCESS(f"{team}"))
             try:
