@@ -1,8 +1,11 @@
+import logging
 from datetime import timedelta
 
-from django.db import models
+from django.db import models, IntegrityError
 from django.db.models import Q
 from django.utils import timezone
+
+update_logger = logging.getLogger("updates")
 
 
 class TeamManager(models.Manager):
@@ -57,13 +60,24 @@ class PlayerManager(models.Manager):
 
     def create_or_update_players(self, players_list: list, team):
         players = []
-        for (_id, name, summoner_name, is_leader,) in players_list:
-            player, _ = self.model.objects.update_or_create(id=_id, defaults={
+        for (account_id, name, summoner_name, is_leader,) in players_list:
+            to_update = {
                 "name": name,
-                "team": team,
                 "summoner_name": summoner_name,
                 "is_leader": is_leader or False,
-            })
+                "team": team
+            }
+            try:
+                player = self.model.objects.get(id=account_id, **to_update)
+            except self.model.DoesNotExist:
+                try:
+                    player, _ = self.model.objects.update_or_create(id=account_id, defaults=to_update)
+                    update_logger.info(f"Updated {player.name} ({player.id})")
+                except IntegrityError:
+                    update_logger.warning(
+                        f"Exception occurred while updating player {to_update}"
+                    )
+                    continue
             players.append(player)
         return players
 
@@ -79,7 +93,8 @@ class PlayerManager(models.Manager):
 class ScoutingWebsiteManager(models.Manager):
 
     def get_multi_websites(self):
-        return self.model.objects.filter(multi=True).order_by("created_at")
+        qs = self.model.objects.filter(multi=True).order_by("created_at")
+        return qs if qs.exists() else [self.model.default()]
 
 
 class CommentManager(models.Manager):

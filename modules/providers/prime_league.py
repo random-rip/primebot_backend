@@ -9,6 +9,11 @@ LOCAL = settings.FILES_FROM_STORAGE
 SAVE_REQUEST = settings.DEBUG and not LOCAL
 if SAVE_REQUEST:
     print("Consider using the local file system in development to reduce the number of requests.")
+if LOCAL:
+    print(
+        "\tYou are currently serving files over the local storage. Cool!"
+        "\t(To change this behaviour set FILES_FROM_STORAGE='False' in your .env)"
+    )
 
 
 class PrimeLeagueProvider:

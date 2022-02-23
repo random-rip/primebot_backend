@@ -261,6 +261,7 @@ class ScoutingWebsite(models.Model):
     @staticmethod
     def default() -> "ScoutingWebsite":
         return ScoutingWebsite(
+            name=settings.DEFAULT_SCOUTING_NAME,
             base_url=settings.DEFAULT_SCOUTING_URL,
             separator=settings.DEFAULT_SCOUTING_SEP,
             multi=True,
