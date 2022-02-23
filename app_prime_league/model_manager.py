@@ -75,7 +75,7 @@ class PlayerManager(models.Manager):
                     update_logger.info(f"Updated {player.name} ({player.id})")
                 except IntegrityError:
                     update_logger.warning(
-                        f"Exception occurred while updating player {to_update}"
+                        f"Cannot update player {to_update}. Missing values."
                     )
                     continue
             players.append(player)
