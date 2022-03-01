@@ -72,7 +72,7 @@ class PlayerManager(models.Manager):
             except self.model.DoesNotExist:
                 try:
                     player, _ = self.model.objects.update_or_create(id=account_id, defaults=to_update)
-                    update_logger.info(f"Updated {player.name} ({player.id})")
+                    update_logger.info(f"Updated player {player.name} ({player.id})")
                 except IntegrityError:
                     update_logger.warning(
                         f"Cannot update player {to_update}. Missing values."
