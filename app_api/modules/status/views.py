@@ -106,7 +106,7 @@ class StatusView(APIView):
         if cached:
             return cached
         try:
-            stat = subprocess.call(["systemctl", "discord_bot", "--quiet", "ssh"])
+            stat = subprocess.call(["systemctl", "is-active", "--quiet", "discord_bot"])
             is_active = stat == 0
             cache.set(cache_key, is_active, cache_duration)
             if is_active:  # if 0 (active), print "Active"
@@ -124,7 +124,7 @@ class StatusView(APIView):
         if cached:
             return cached
         try:
-            stat = subprocess.call(["systemctl", "telegram_bot", "--quiet", "ssh"])
+            stat = subprocess.call(["systemctl", "is-active", "--quiet", "telegram_bot"])
             is_active = stat == 0
             cache.set(cache_key, is_active, cache_duration)
             if is_active:  # if 0 (active), print "Active"
