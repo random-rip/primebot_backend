@@ -1,3 +1,5 @@
+import subprocess
+
 import requests
 from django.conf import settings
 from django.core.cache import cache
@@ -98,13 +100,37 @@ class StatusView(APIView):
             return False
 
     def _get_discord_bot_status(self):
+        cache_key = "discord_bot_status"
+        cache_duration = 60
+        cached = cache.get(cache_key, )
+        if cached:
+            return cached
         try:
-            return
+            stat = subprocess.call(["systemctl", "discord_bot", "--quiet", "ssh"])
+            is_active = stat == 0
+            cache.set(cache_key, is_active, cache_duration)
+            if is_active:  # if 0 (active), print "Active"
+                print("Active")
+            return is_active
+        except FileNotFoundError:
+            return None
         except Exception:
             return False
 
     def _get_telegram_bot_status(self):
+        cache_key = "telegram_bot_status"
+        cache_duration = 60
+        cached = cache.get(cache_key, )
+        if cached:
+            return cached
         try:
-            return
+            stat = subprocess.call(["systemctl", "telegram_bot", "--quiet", "ssh"])
+            is_active = stat == 0
+            cache.set(cache_key, is_active, cache_duration)
+            if is_active:  # if 0 (active), print "Active"
+                print("Active")
+            return is_active
+        except FileNotFoundError:
+            return None
         except Exception:
             return False
