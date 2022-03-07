@@ -210,7 +210,7 @@ if not DEBUG:
             },
             'django': {
                 'level': "INFO",
-                'class': 'logging.handlers.TimedRotatingFileHandler',
+                'class': 'logging.handlers.WatchedFileHandler',
                 'filename': os.path.join(LOGGING_DIR, 'django.log'),
                 'when': 'midnight',
                 'formatter': 'to_file',
