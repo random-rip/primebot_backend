@@ -183,6 +183,9 @@ FILES_FROM_STORAGE = env.bool("FILES_FROM_STORAGE", False)
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    } if DEBUG else {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '/var/run/memcached/memcached.sock',
     }
 }
 

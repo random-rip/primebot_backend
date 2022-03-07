@@ -1,3 +1,4 @@
+import logging
 import subprocess
 
 import requests
@@ -5,6 +6,8 @@ from django.conf import settings
 from django.core.cache import cache
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+logger = logging.getLogger("django")
 
 
 class Gitlab:
@@ -23,10 +26,12 @@ class Gitlab:
 
         cached = cache.get(cls.RELEASES_CACHE_KEY, )
         if cached:
+            logger.info("=== Gitlab from Cache")
             return cached
         try:
             data = cls.get_json(cls.RELEASES)
             cache.set(cls.RELEASES_CACHE_KEY, data, cls.CACHE_DURATION)
+            logger.info("=== Gitlab to Cache")
             return data
         except Exception:
             return []
@@ -41,10 +46,12 @@ class Gitlab:
         if cached:
             ret["version"] = cached[0].get("tag_name", None)
             ret["released_at"] = cached[0].get("released_at", None)
+            logger.info("=== Gitlab from Cache")
             return ret
         try:
             data = cls.get_json(cls.RELEASES)
             cache.set(cls.RELEASES_CACHE_KEY, data, cls.CACHE_DURATION)
+            logger.info("=== Gitlab to Cache")
             ret["version"] = data[0].get("tag_name", None)
             ret["released_at"] = data[0].get("released_at", None)
             return ret
@@ -87,14 +94,16 @@ class StatusView(APIView):
 
     def _get_prime_league_status(self):
         cache_key = "prime_league_status"
-        cache_duration = 60 * 15
+        cache_duration = 60
         cached = cache.get(cache_key, )
         if cached:
+            logger.info("PL Status from Cache")
             return cached
         try:
             response = requests.get(f"{settings.TEAM_URI}1", )
             data = response.status_code == 200
             cache.set(cache_key, data, cache_duration)
+            logger.info("=== PL Status to Cache")
             return data
         except Exception:
             return False
@@ -104,13 +113,13 @@ class StatusView(APIView):
         cache_duration = 60
         cached = cache.get(cache_key, )
         if cached:
+            logger.info("Discord Status from Cache")
             return cached
         try:
             stat = subprocess.call(["systemctl", "is-active", "--quiet", "discord_bot"])
             is_active = stat == 0
             cache.set(cache_key, is_active, cache_duration)
-            if is_active:  # if 0 (active), print "Active"
-                print("Active")
+            logger.info("=== Discord Status to Cache")
             return is_active
         except FileNotFoundError:
             return None
@@ -122,13 +131,13 @@ class StatusView(APIView):
         cache_duration = 60
         cached = cache.get(cache_key, )
         if cached:
+            logger.info("Telegram Status from Cache")
             return cached
         try:
             stat = subprocess.call(["systemctl", "is-active", "--quiet", "telegram_bot"])
             is_active = stat == 0
             cache.set(cache_key, is_active, cache_duration)
-            if is_active:  # if 0 (active), print "Active"
-                print("Active")
+            logger.info("=== Telegram Status to Cache")
             return is_active
         except FileNotFoundError:
             return None
