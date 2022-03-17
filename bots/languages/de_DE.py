@@ -53,25 +53,13 @@ HELP_TEXT = "Überblick:\n"
 HELP_COMMAND_LIST = (
     "/start - um dein Team zu registrieren\n"
     "/settings - um die Einstellungen fürs Team zu bearbeiten\n"
-    "/cancel - um den aktuellen Vorgang abzubrechen\n"
-    "/issue - um zu erfahren, wie Du eine Störung melden kannst\n"
-    "/feedback - um meinen Entwicklern dein Feedback mitzuteilen\n"
-    "/explain - um eine Erklärung zu dem Bot zu erhalten\n"
+    "/matches - um eine Übersicht der offenen Matches zu erhalten\n"
     "/delete - um das registrierte Team zu entfernen\n"
+    "/bop - What's boppin'?\n"
+    "/cancel - um den aktuellen Vorgang abzubrechen\n"
     "/set_logo - um ein neues Logo aus der PrimeLeague zu holen\n"
 )
 
-# Antwort auf /issue
-ISSUE = (
-    "Hast Du einen Fehler bemerkt? Bitte schreibe den Entwicklern eine Nachricht in ihrer "
-    "[Support-Gruppe]({SUPPORT_GROUP_LINK}) (am besten inklusive Screenshots o.ä. /bop) "
-)
-
-# Antwort auf /feedback
-FEEDBACK = (
-    f"Hast Du Feedback? Hinterlasse den Entwicklern gerne eine Nachricht im "
-    f"[Prime League-Forenthread]({PRIME_LEAGUE_FORUM_LINK})."
-)
 
 NEED_HELP = "Solltest Du Hilfe benötigen, benutze /help."
 
@@ -201,14 +189,6 @@ NO_GROUP_CHAT = "Dieser Befehl kann nur in einer Telegram-Gruppe ausgeführt wer
 TEAM_NOT_IN_DB_TEXT = "In der Telegram-Gruppe wurde noch kein Team registriert (/start)."
 TEAM_NOT_FOUND = "Dieses Team wurde noch nicht registriert (/start)."
 
-EXPLAIN_TEXT = (
-    "Dieser Bot ist nicht in Kooperation mit der Prime League bzw. der Freaks4u Gaming GmbH entstanden "
-    "und hat damit keinen direkten Bezug zur Prime League. "
-    "Dieser Bot wurde aufgrund von versäumten Matches entworfen und programmiert. "
-    "Der Bot wurde nach bestem Gewissen realisiert, und nach einer Testphase für andere Teams zur "
-    "Verfügung gestellt. Dennoch sind alle Angaben ohne Gewähr!\n"
-    "\n_Version: {version}_"
-)
 
 TG_DELETE = (
     "Alles klar, ich habe alle Verknüpfungen zu dieser Gruppe und dem Team gelöscht. "
@@ -282,7 +262,7 @@ DC_HELP_TEXT_ROLE = (
 )
 DC_HELP_TEXT_OVERVIEW = "Erstellt eine Übersicht für die offenen Spiele"
 DC_HELP_TEXT_SETTINGS = "Erstellt einen temporären Link um Benachrichtigungseinstellungen vorzunehmen"
-DC_HELP_TEXT_BOP = "Whats boppin'?"
+DC_HELP_TEXT_BOP = "What's boppin'?"
 DC_HELP_TEXT_MATCH = (
     "Erstellt eine Übersicht für den übergebenen Spieltag (Beispiel: !match 1)"
 )

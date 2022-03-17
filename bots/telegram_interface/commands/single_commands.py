@@ -107,43 +107,9 @@ def helpcommand(update: Update, context: CallbackContext):
     return ConversationHandler.END
 
 
-# /issue
-@log_command
-def issue(update: Update, context: CallbackContext):
-    update.message.reply_markdown(
-        LaP.ISSUE,
-        reply_markup=ReplyKeyboardRemove(),
-        disable_web_page_preview=True,
-    )
-    return ConversationHandler.END
-
-
-# /feedback
-@log_command
-def feedback(update: Update, context: CallbackContext):
-    update.message.reply_markdown(
-        LaP.FEEDBACK,
-        reply_markup=ReplyKeyboardRemove(),
-        disable_web_page_preview=True,
-    )
-    return ConversationHandler.END
-
-
-# /explain
-@log_command
-def explain(update: Update, context: CallbackContext):
-    log = CHANGELOGS[sorted(CHANGELOGS.keys())[-1]]
-    update.message.reply_markdown(
-        LaP.EXPLAIN_TEXT.format(version=log["version"]),
-        reply_markup=ReplyKeyboardRemove(),
-        disable_web_page_preview=True,
-    )
-    return ConversationHandler.END
-
-
 @log_command
 @mysql_has_gone_away_decorator
-def overview(update: Update, context: CallbackContext):
+def matches(update: Update, context: CallbackContext):
     chat_id = update.message.chat.id
     try:
         team = Team.objects.get(telegram_id=chat_id)

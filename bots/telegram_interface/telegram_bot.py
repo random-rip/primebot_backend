@@ -38,12 +38,9 @@ class TelegramBot(Bot):
         commands = [
             CommandHandler("cancel", single_commands.cancel),
             CommandHandler("help", single_commands.helpcommand),
-            CommandHandler("issue", single_commands.issue),
-            CommandHandler("feedback", single_commands.feedback),
             CommandHandler("bop", single_commands.bop),
-            CommandHandler("explain", single_commands.explain),
             CommandHandler("setlogo", single_commands.set_logo),
-            CommandHandler("overview", single_commands.overview),
+            CommandHandler("matches", single_commands.matches),
             CommandHandler("delete", single_commands.delete),
             CommandHandler("settings", single_commands.team_settings),
             MessageHandler(Filters.status_update.migrate, single_commands.migrate_chat)  # Migration
