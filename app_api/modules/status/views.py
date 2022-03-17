@@ -7,6 +7,8 @@ from django.core.cache import cache
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from app_prime_league.models import Team
+
 logger = logging.getLogger("django")
 
 
@@ -86,6 +88,8 @@ class StatusView(APIView):
             "prime_league_status": self._get_prime_league_status(),
             "discord_status": self._get_discord_bot_status(),
             "telegram_status": self._get_telegram_bot_status(),
+            "registered_teams": Team.objects.get_registered_teams().count(),
+            "total_teams": Team.objects.all().count(),
         }
         return Response(data)
 
