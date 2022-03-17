@@ -24,7 +24,6 @@ File is currently WIP / deprecated weil kack ansatz.
 #
 #
 # Question(key="WEEKLY_OP_LINK", value_type=bool, choices=[True, False], default_value=True, )
-# Question(key="PIN_WEEKLY_OP_LINK", value_type=bool, choices=[True, False], default_value=True, )
 # Question(key="LINEUP_NOTIFICATION", value_type=bool, choices=[True, False], default_value=True, )
 # Question(key="TEAM_SCHEDULING_SUGGESTION", value_type=bool, choices=[True, False], default_value=True, )
 # Question(key="SCHEDULING_CONFIRMATION", value_type=bool, choices=[True, False], default_value=True, )

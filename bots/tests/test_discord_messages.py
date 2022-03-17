@@ -33,7 +33,7 @@ class DiscordMessageTests(TestCase):
 
         assertion_msg = ("Der nächste Spieltag:\n🔜[Spieltag 1](https://www.primeleague.gg/de/leagues/matches/1) gegen"
                          " [xyz](https://www.primeleague.gg/de/leagues/teams/2):\n"
-                         "Hier ist der [OP.GG Link](https://euw.op.gg/multisearch/euw?summoners=player1,player2,"
+                         "Hier ist der [op.gg Link](https://euw.op.gg/multisearch/euw?summoners=player1,player2,"
                          "player3,player4,player5,player6) des Teams.")
 
         self.assertEqual(msg.message, assertion_msg, )
@@ -130,7 +130,7 @@ class DiscordMessageTests(TestCase):
 
         assertion_msg = ("Euer nächstes Spiel in der Kalibrierungsphase:\n"
                          "🔜[Spiel 1](https://www.primeleague.gg/de/leagues/matches/1) gegen [xyz](https://www.primeleag"
-                         "ue.gg/de/leagues/teams/2):\nHier ist der [OP.GG Link](https://euw.op.gg/multisearch/euw?"
+                         "ue.gg/de/leagues/teams/2):\nHier ist der [op.gg Link](https://euw.op.gg/multisearch/euw?"
                          "summoners=player1,player2,player3,player4,player5,player6) des Teams.")
 
         self.assertEqual(msg.message, assertion_msg, )

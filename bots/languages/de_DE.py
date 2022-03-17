@@ -34,7 +34,7 @@ SETTINGS_FINISHED = "Alles klar, ich habe die Einstellungen gespeichert."
 REGISTRATION_FINISH = (
     "Perfekt! Ich sende dir jetzt Benachrichtigungen in diese Gruppe, "
     "wenn es neue Updates zu kommenden Matches gibt. 🏆\n"
-    "Du kannst noch mit /settings Benachrichtigungen personalisieren und die Scouting Website (Standard: OP.GG) ändern."
+    "Du kannst noch mit /settings Benachrichtigungen personalisieren und die Scouting Website (Standard: op.gg) ändern."
 )
 CANCEL = (
     "Vorgang abgebrochen. \n"
@@ -153,13 +153,6 @@ PHOTO_RETRY_TEXT = (
     f"_Dazu werden Adminrechte benötigt._"
 )
 
-MESSAGE_NOT_PINNED_TEXT = (
-    f"Die wöchentliche Nachricht konnte nicht angeheftet werden. Dazu werden Adminrechte benötigt. "
-    f"Falls Du nicht möchtest, dass die wöchentliche Benachrichtigung angeheftet wird, "
-    f"deaktiviere in den /settings die Einstellung 'Wochenübersicht anheften'."
-)
-
-CANT_PIN_MSG_IN_PRIVATE_CHAT = "Man kann keine Nachricht in einem privaten Chat anpinnen."
 
 # Update Messages
 OWN_NEW_TIME_SUGGESTION_TEXT = (
@@ -224,8 +217,8 @@ TG_DELETE = (
     f"oder ein anderes Team kann in diesem Channel registriert werden._"
 )
 
-WEBSITE_LINK_TO_HELP = "https://www.primebot.me/primebot-crew-kontakt/"
-WEBSITE_LINK_TO_DISCORD = "https://www.primebot.me/start/f%C3%BCr-discord/"
+WEBSITE_LINK_TO_HELP = "https://primebot.me/crew/"
+WEBSITE_LINK_TO_DISCORD = "https://primebot.me/discord"
 CLOSE = "Schließen"
 CURRENTLY = "Derzeitig"
 PL_CONNECTION_ERROR = (
@@ -259,7 +252,7 @@ DC_REGISTRATION_FINISH = (
     "Perfekt, dieser Channel wurde für Team {team_name} registriert.\n"
     "Wenn Du möchtest, kannst du mit `!role ROLE_NAME` noch eine Rolle benennen, "
     "die bei Benachrichtigungen erwähnt werden soll und mit `!settings` kannst du die "
-    "Benachrichtigungen personalisieren oder die Scouting Website (Standard: OP.GG) ändern."
+    "Benachrichtigungen personalisieren oder die Scouting Website (Standard: op.gg) ändern."
 )
 DC_USE_FIX = (
     "Wenn keine Benachrichtigungen mehr in dem Channel ankommen, aber du das Team bereits registriert hast, "

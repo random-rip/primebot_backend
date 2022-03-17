@@ -78,7 +78,7 @@ class TelegramBot(Bot):
     @staticmethod
     def send_message(*, msg: BaseMessage, team):
         try:
-            sent_message = send_message(msg=msg.message, chat_id=team.telegram_id, raise_again=True)
+            send_message(msg=msg.message, chat_id=team.telegram_id, raise_again=True)
         except (BotWasKickedError, BotWasBlockedError) as e:
             team.set_telegram_null()
             notifications_logger.info(f"Soft deleted Telegram {team}'")
@@ -105,5 +105,5 @@ def error(update, context):
         send_message_to_devs(text)
     try:
         raise
-    except RuntimeError as e:
-        notifications_logger.exception(e)
+    except RuntimeError:
+        pass

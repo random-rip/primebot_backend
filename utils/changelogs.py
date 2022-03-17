@@ -99,7 +99,7 @@ Softdeletion für Teams wurde hinzugefügt, wenn die Gruppe oder der Channel nic
         "version": "1.18",
         "text":
             """
-Mit dem Befehl `scouting` kann eine andere Scouting Website ausgewählt werden. Standardmäßig ist weiterhin OP.GG ausgewählt.
+Mit dem Befehl `scouting` kann eine andere Scouting Website ausgewählt werden. Standardmäßig ist weiterhin op.gg ausgewählt.
 Ein Fehler wurde behoben, bei dem nicht alle Teams eine wöchentliche Benachrichtigung bekommen haben. 
 Der Spiel-Log `lineup_fail` wird jetzt berücksichtigt. 
 Referenzen auf Channels und Gruppen die gelöscht wurden, werden entfernt sobald eine Benachrichtigung gesendet werden würde.

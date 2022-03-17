@@ -28,16 +28,3 @@ def send_message(msg: str, chat_id: int, parse_mode=ParseMode.MARKDOWN, raise_ag
             f"Error Sending Message in Chat chat_id={chat_id} msg={msg}\n{e}")
         if raise_again:
             raise e
-
-
-def pin_msg(message) -> bool:
-    message_id = message["message_id"]
-    chat_id = message["chat"]["id"]
-    try:
-        return bot.pinChatMessage(chat_id=chat_id, message_id=message_id)
-    except telepot.exception.NotEnoughRightsError:
-        raise CannotBePinnedError()
-
-
-class CannotBePinnedError(Exception):
-    pass

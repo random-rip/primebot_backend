@@ -7,7 +7,7 @@ from app_api.modules.status.views import StatusView
 
 
 class StatusTest(TestCase):
-    databases = []
+    databases = ["default"]
 
     def test_gitlab(self):
         request = APIRequestFactory().get("/api/status")

@@ -179,7 +179,6 @@ TEMP_LINK_TIMEOUT_MINUTES = 60
 
 FILES_FROM_STORAGE = env.bool("FILES_FROM_STORAGE", False)
 
-# https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-memcached-on-ubuntu-20-04
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',

@@ -12,7 +12,7 @@ die Gruppenphasen- und Tiebreakerspiele sind zuende, und damit geht der PrimeBot
 
 Außerdem freuen uns über euer Feedback!
 Da wir bemüht sind den Primebot weiterhin zu verbessern, möchten wir in einem kurzen Feedback fragen, welche Features euch wirklich interessieren und welche Features euch noch fehlen.
-🔥[Link zum Feedback](http://feedback.primebot.me/)🔥
+🔥[Link zum Feedback](https://feedback.primebot.me/)🔥
 
 Sternige Grüße
 Grayknife und Orbis
