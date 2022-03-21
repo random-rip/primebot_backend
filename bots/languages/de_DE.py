@@ -30,7 +30,7 @@ START_LINK = "https://t.me/prime_league_bot?startgroup=start"
 YES = "Ja"
 NO = "Nein"
 SKIP = "Überspringen"
-SETTINGS_FINISHED = "Alles klar, ich habe die Einstellungen gespeichert."
+
 REGISTRATION_FINISH = (
     "Perfekt! Ich sende dir jetzt Benachrichtigungen in diese Gruppe, "
     "wenn es neue Updates zu kommenden Matches gibt. 🏆\n"
@@ -230,10 +230,15 @@ DC_NO_PERMISSIONS_FOR_WEBHOOK = (
 )
 DC_REGISTRATION_FINISH = (
     "Perfekt, dieser Channel wurde für Team {team_name} registriert.\n"
-    "Wenn Du möchtest, kannst du mit `!role ROLE_NAME` noch eine Rolle benennen, "
-    "die bei Benachrichtigungen erwähnt werden soll und mit `!settings` kannst du die "
-    "Benachrichtigungen personalisieren oder die Scouting Website (Standard: op.gg) ändern."
+    "Die wichtigsten Befehle:\n"
+    "`!role ROLE_NAME` - um eine Rolle zu setzen, die bei Benachrichtigungen erwähnt werden soll\n"
+    "`!settings` - um die Benachrichtigungen zu personalisieren oder die Scouting Website (Standard: op.gg) zu ändern\n"
+    "`!matches` - um eine Übersicht der noch offenen Matches zu erhalten\n"
+    "`!match MATCH_DAY` - um detaillierte Informationen zu einem Spieltag zu erhalten\n"
+    "Einfach ausprobieren! Der Status der Prime League API kann jederzeit auf unserer [Website](https://primebot.me/) "
+    "angeschaut werden. Dort findet ihr auch weitere Informationen zu den Befehlen."
 )
+
 DC_USE_FIX = (
     "Wenn keine Benachrichtigungen mehr in dem Channel ankommen, aber du das Team bereits registriert hast, "
     "benutze bitte `!fix`."
