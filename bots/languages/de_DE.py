@@ -229,13 +229,13 @@ DC_NO_PERMISSIONS_FOR_WEBHOOK = (
     f"Falls es danach noch nicht gehen sollte, schaue auf {WEBSITE_LINK_TO_DISCORD} nach Hilfe."
 )
 DC_REGISTRATION_FINISH = (
-    "Perfekt, dieser Channel wurde für Team {team_name} registriert.\n"
+    "Perfekt, dieser Channel wurde für Team **{team_name}** registriert.\n"
     "Die wichtigsten Befehle:\n"
-    "`!role ROLE_NAME` - um eine Rolle zu setzen, die bei Benachrichtigungen erwähnt werden soll\n"
-    "`!settings` - um die Benachrichtigungen zu personalisieren oder die Scouting Website (Standard: op.gg) zu ändern\n"
-    "`!matches` - um eine Übersicht der noch offenen Matches zu erhalten\n"
-    "`!match MATCH_DAY` - um detaillierte Informationen zu einem Spieltag zu erhalten\n"
-    "Einfach ausprobieren! Der Status der Prime League API kann jederzeit auf unserer [Website](https://primebot.me/) "
+    "📌 `!role ROLE_NAME` - um eine Rolle zu setzen, die bei Benachrichtigungen erwähnt werden soll\n"
+    "📌 `!settings` - um die Benachrichtigungen zu personalisieren oder die Scouting Website (Standard: op.gg) zu ändern\n"
+    "📌 `!matches` - um eine Übersicht der noch offenen Matches zu erhalten\n"
+    "📌 `!match MATCH_DAY` - um detaillierte Informationen zu einem Spieltag zu erhalten\n\n"
+    "Einfach ausprobieren! 🎁 Der Status der Prime League API kann jederzeit auf https://primebot.me/ "
     "angeschaut werden. Dort findet ihr auch weitere Informationen zu den Befehlen."
 )
 
@@ -284,7 +284,8 @@ DC_DESCRIPTION = (
 DC_DELETE = "Alles klar ich lösche alle Verknüpfungen zu diesem Channel und dem Team."
 
 DC_BYE = (
-    "Alles gelöscht. Gebt uns gerne Feedback, falls euch Funktionalitäten fehlen oder nicht gefallen. Bye! ✌\n"
+    "Alles gelöscht. Gebt uns gerne Feedback auf https://discord.gg/K8bYxJMDzu, falls euch Funktionalitäten fehlen "
+    "oder nicht gefallen. Bye! ✌\n"
     "_Das Team kann jetzt in einem anderen Channel registriert werden, oder ein anderes Team kann in diesem Channel "
     "registriert werden._"
 )

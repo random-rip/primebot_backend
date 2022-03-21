@@ -160,6 +160,7 @@ PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
 DISCORD_BOT_KEY = env.str("DISCORD_API_KEY", None)
 DISCORD_APP_CLIENT_ID = env.int("DISCORD_APP_CLIENT_ID", None)
+DISCORD_SERVER_LINK = "https://discord.gg/K8bYxJMDzu"
 
 LOGIN_URL = "/admin/login/"
 
