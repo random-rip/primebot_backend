@@ -236,7 +236,7 @@ DC_REGISTRATION_FINISH = (
     "📌 `!matches` - um eine Übersicht der noch offenen Matches zu erhalten\n"
     "📌 `!match MATCH_DAY` - um detaillierte Informationen zu einem Spieltag zu erhalten\n\n"
     "Einfach ausprobieren! 🎁 Der Status der Prime League API kann jederzeit auf https://primebot.me/ "
-    "angeschaut werden. Dort findet ihr auch weitere Informationen zu den Befehlen."
+    "angeschaut werden. Dort findet ihr auch weitere Informationen."
 )
 
 DC_USE_FIX = (
