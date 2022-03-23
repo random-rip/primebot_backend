@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.db.models import F
-from django.template.defaultfilters import truncatechars, urlencode
+from django.template.defaultfilters import urlencode
 
 from app_prime_league.model_manager import TeamManager, MatchManager, PlayerManager, ScoutingWebsiteManager, \
     ChampionManager
@@ -9,16 +9,17 @@ from utils.exceptions import GMDNotInitialisedException
 
 
 class Team(models.Model):
-    name = models.CharField(max_length=100, null=True)
-    team_tag = models.CharField(max_length=100, null=True)
-    division = models.CharField(max_length=20, null=True)
-    telegram_id = models.CharField(max_length=50, null=True, unique=True)
-    discord_webhook_id = models.CharField(max_length=50, null=True, unique=True)
-    discord_webhook_token = models.CharField(max_length=100, null=True)
-    discord_channel_id = models.CharField(max_length=50, unique=True, null=True)
-    discord_role_id = models.CharField(max_length=50, null=True)
-    logo_url = models.CharField(max_length=1000, null=True)
-    scouting_website = models.ForeignKey("app_prime_league.ScoutingWebsite", on_delete=models.SET_NULL, null=True)
+    name = models.CharField(max_length=100, null=True, blank=True, )
+    team_tag = models.CharField(max_length=100, null=True, blank=True, )
+    division = models.CharField(max_length=20, null=True, blank=True, )
+    telegram_id = models.CharField(max_length=50, null=True, unique=True, blank=True, )
+    discord_webhook_id = models.CharField(max_length=50, null=True, unique=True, blank=True, )
+    discord_webhook_token = models.CharField(max_length=100, null=True, blank=True, )
+    discord_channel_id = models.CharField(max_length=50, unique=True, null=True, blank=True, )
+    discord_role_id = models.CharField(max_length=50, null=True, blank=True, )
+    logo_url = models.CharField(max_length=1000, null=True, blank=True, )
+    scouting_website = models.ForeignKey("app_prime_league.ScoutingWebsite", on_delete=models.SET_NULL, null=True,
+                                         blank=True, )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -325,24 +326,6 @@ class Comment(models.Model):
         unique_together = [("match", "comment_id"), ]
         verbose_name = "Spielkommentar"
         verbose_name_plural = "Spielkommentare"
-
-
-class Changelog(models.Model):
-    version_number = models.CharField(max_length=50, unique=True)
-    description = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        verbose_name = "Änderungsprotokoll"
-        verbose_name_plural = "Änderungsprotokolle"
-
-    def __str__(self):
-        return self.version_number
-
-    @property
-    def truncated_description(self):
-        return truncatechars(self.description, 100)
 
 
 class Champion(models.Model):

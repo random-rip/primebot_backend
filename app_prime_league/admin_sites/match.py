@@ -6,3 +6,7 @@ class MatchAdmin(admin.ModelAdmin):
                     'created_at', 'updated_at', ]
     list_filter = ['match_day', 'match_type', 'created_at', 'updated_at', 'begin']
     search_fields = ['team__id', 'team__name', 'enemy_team__id', 'enemy_team__name', 'match_id']
+
+
+class SuggestionAdmin(admin.ModelAdmin):
+    list_display = ['id', 'begin', 'match', 'created_at']
