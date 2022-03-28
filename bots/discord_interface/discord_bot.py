@@ -195,16 +195,18 @@ class DiscordBot(Bot):
                     LanguagePack.MATCH_DAY_NOT_VALID)
                 return
 
-            match = await sync_to_async(
-                team.matches_against.filter(match_type=Match.MATCH_TYPE_LEAGUE, match_day=match_day).first)()
-            if match is None:
+            # Multiple matches are possible in tiebreaker matches (they all have `match_day=99` )
+            found_matches = await sync_to_async(list)(
+                team.matches_against.filter(match_type=Match.MATCH_TYPE_LEAGUE, match_day=match_day).all())
+            if not found_matches:
                 await ctx.send(
                     LanguagePack.MATCH_DAY_NOT_VALID)
                 return
 
-            msg = await sync_to_async(MatchOverview)(team=team, match=match)
-            embed = await sync_to_async(msg.discord_embed)()
-            await ctx.send(embed=embed)
+            for i in found_matches:
+                msg = await sync_to_async(MatchOverview)(team=team, match=i)
+                embed = await sync_to_async(msg.discord_embed)()
+                await ctx.send(embed=embed)
 
         @self.bot.command(name="delete", help=LanguagePack.DC_HELP_TEXT_DELETE, pass_context=True)
         @commands.check(mysql_has_gone_away)
