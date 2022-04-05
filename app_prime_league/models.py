@@ -133,6 +133,9 @@ class Match(models.Model):
         (MATCH_TYPE_PLAYOFF, "Playoffs"),
     )
 
+    MATCH_DAY_TIEBREAKER = 99
+    MATCH_DAY_PLAYOFF = 0
+
     match_id = models.IntegerField()
     match_day = models.IntegerField(null=True)
     match_type = models.CharField(max_length=15, null=True, choices=MATCH_TYPES)
