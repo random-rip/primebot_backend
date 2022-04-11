@@ -51,6 +51,10 @@ class BaseMessage:
             return True
         return self.team.value_of_setting(key)
 
+    @property
+    def scouting_website(self):
+        return settings.DEFAULT_SCOUTING_NAME if not self.team.scouting_website else self.team.scouting_website.name
+
 
 class MatchMessage(BaseMessage, ABC):
 
@@ -73,10 +77,6 @@ class MatchMessage(BaseMessage, ABC):
     @property
     def enemy_lineup_scouting_url(self):
         return self.team.get_scouting_url(match=self.match, lineup=True)
-
-    @property
-    def scouting_website(self):
-        return settings.DEFAULT_SCOUTING_NAME if not self.team.scouting_website else self.team.scouting_website.name
 
 
 class WeeklyNotificationMessage(MatchMessage):
@@ -221,41 +221,46 @@ class ScheduleConfirmationNotification(MatchMessage):
 
 
 class MatchesOverview(BaseMessage):
-    _key = "overview"
-    mentionable = False
+    _key = "NEW_MATCHES_NOTIFICATION"
+    mentionable = True
+    title = "Neue Matches"
 
-    def __init__(self, team: Team, ):
+    def __init__(self, team: Team, match_ids=None):
         super().__init__(team)
+        self.embed = Embed(color=Colour.gold())
+        self.matches = self.__get_relevant_matches(match_ids)
         self._generate_message()
 
+    def __get_relevant_matches(self, match_ids=None):
+        if match_ids is None:
+            return self.team.get_open_matches_ordered()
+        else:
+            return self.team.matches_against.filter(match_id__in=match_ids)
+
     def _generate_message(self):
-        matches_to_play = self.team.get_open_matches_ordered()
-        website_name = settings.DEFAULT_SCOUTING_NAME if not self.team.scouting_website else self.team.scouting_website.name
-        if len(matches_to_play) == 0:
+        if len(self.matches) == 0:
             self.message = LaP.NO_CURRENT_MATCHES
             return
         a = [
             f"[{LaP.MATCH_DAY} {match.match_day if match.match_day else LaP.TIEBREAKER}]({settings.MATCH_URI}{match.match_id}) {EMOJI_FIGHT} {match.enemy_team.name}" \
-            f" {EMOJI_ARROW_RIGHT} [{website_name}]({match.team.get_scouting_url(match=match, lineup=False)})\n"
-            for match in matches_to_play]
+            f" {EMOJI_ARROW_RIGHT} [{self.scouting_website}]({match.team.get_scouting_url(match=match, lineup=False)})\n"
+            for match in self.matches]
         matches_text = "\n".join(a)
         self.message = f"**{LaP.OVERVIEW}**\n\n" + matches_text
 
     def discord_embed(self):
-        matches_to_play = self.team.get_open_matches_ordered()
-        website_name = settings.DEFAULT_SCOUTING_NAME if not self.team.scouting_website else self.team.scouting_website.name
         embed = Embed(color=Colour.gold())
-        if len(matches_to_play) == 0:
+        if len(self.matches) == 0:
             embed.title = LaP.NO_CURRENT_MATCHES
         else:
             embed.title = LaP.OVERVIEW
 
-        for match in matches_to_play:
+        for match in self.matches:
             name = f"{EMOJI_FIGHT} "
             name += f"{LaP.MATCH_DAY} {match.match_day}" if match.match_day else f"{LaP.TIEBREAKER}"
             scouting_link = self.team.get_scouting_url(match=match, lineup=False)
             value = f"[{LaP.VS} {match.enemy_team.name}]({settings.MATCH_URI}{match.match_id})" \
-                    f"\n> {EMJOI_MAGN_GLASS} [{website_name}]({scouting_link})"
+                    f"\n> {EMJOI_MAGN_GLASS} [{self.scouting_website}]({scouting_link})"
 
             if not match.match_begin_confirmed:
                 if match.team_made_latest_suggestion is None:
@@ -432,7 +437,6 @@ class MatchOverview(MatchMessage):
 
 
 class NotificationToTeamMessage(BaseMessage):
-    _key = "custom_message"
     mentionable = True
     title = "Entwicklerbenachrichtigung"
 

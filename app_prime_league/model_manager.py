@@ -29,17 +29,12 @@ class TeamManager(models.Manager):
     def get_team(self, team_id):
         return self.model.objects.filter(id=team_id).first()
 
-    def get_calibration_teams(self):
-        # TODO neues Feld in model
-        return self.model.objects.filter(id__in=[116152, 146630, 135572, 153698])
-        # return self.model.objects.filter(Q(telegram_id__isnull=False) | Q(discord_channel_id__isnull=False))
-
 
 class MatchManager(models.Manager):
 
     def get_uncompleted_matches(self):
         """
-        Gibt alle Matches zurück die nicht `closed` oder `NULL` oder deren Spielbeginn länger als 2 Tage her sind.
+        Gibt alle Matches zurück die nicht `closed` oder `NULL` sind oder deren Spielbeginn weniger als 2 Tage her ist.
         Returns: queryset
 
         """

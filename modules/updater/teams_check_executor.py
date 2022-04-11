@@ -1,17 +1,23 @@
 import concurrent.futures
 import logging
 import sys
+import threading
 import traceback
 
 from django.conf import settings
 
 from app_prime_league.models import Team, Player
 from app_prime_league.teams import create_matches
+from bots.message_dispatcher import MessageDispatcher
+from bots.messages import MatchesOverview
 from bots.telegram_interface.tg_singleton import send_message_to_devs
 from modules.processors.team_processor import TeamDataProcessor
+from modules.team_comparer import TeamComparer
 from utils.messages_logger import log_exception
 
+thread_local = threading.local()
 update_logger = logging.getLogger("updates")
+notifications_logger = logging.getLogger("notifications")
 
 
 @log_exception
@@ -46,10 +52,13 @@ def update_team(team: Team):
         return team
 
     try:
-        new_match_ids = processor.get_matches()
-        current_match_ids = team.matches_against.values_list("match_id", flat=True)
-        missing_ids = list(set(new_match_ids) - set(current_match_ids))
-        create_matches(missing_ids, team=team)
+        cmp = TeamComparer(team, processor=processor)
+        log_message = f"New notification for {team=}: "
+        dispatcher = MessageDispatcher(team)
+        if missing_ids := cmp.compare_new_matches():
+            notifications_logger.info(f"{log_message}Neue Matches")
+            create_matches(missing_ids, team=team)
+            dispatcher.dispatch(MatchesOverview, match_ids=missing_ids)
 
     except Exception as e:
         trace = "".join(traceback.format_tb(sys.exc_info()[2]))
