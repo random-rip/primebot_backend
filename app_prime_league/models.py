@@ -167,6 +167,16 @@ class Match(models.Model):
         return f"Match {self.match_id} from {self.team}"
 
     @property
+    def get_match_day_display(self):
+        if self.match_day is None:
+            return None
+        if self.match_day == self.MATCH_DAY_PLAYOFF:
+            return "Playoff Match"
+        elif self.match_day == self.MATCH_DAY_TIEBREAKER:
+            return "Tiebreaker Match"
+        return f"Spieltag {self.match_day}"
+
+    @property
     def get_first_suggested_match_begin(self):
         suggestion = self.suggestion_set.all().order_by("created_at").first()
         return None if suggestion is None else suggestion.begin
