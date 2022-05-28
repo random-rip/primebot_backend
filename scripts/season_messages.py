@@ -39,7 +39,7 @@ Grayknife, Orbis & Mörlin
 
 
 def main():
-    teams = Team.objects.get_registered_teams().filter(division="Kalibrierung")
+    teams = Team.objects.get_registered_teams().filter()
     for team in teams:
         try:
             print(team)
