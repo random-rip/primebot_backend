@@ -31,9 +31,7 @@ Grayknife und Orbis
 message = """
 Hallo {team.name}, 
 
-ihr spielt aktuell in der Swiss Starter Division. Leider wurden die Matches von euch nicht korrekt aktualisiert. Deswegen kann es sein, dass dafür keine Benachrichtigungen angekommen sind. 
-Die Matches wurden jetzt erfolgreich aktualisiert, jedoch solltet ihr noch nachschauen, ob es beispielsweise Terminvorschläge vom Gegner gibt.
-
+die Befehle für Matches in der Kalibrierungsphase wurden aktiviert (`!matches` & `!match 3`) und Updates werden nun minütlich abgefragt.
 
 Sternige Grüße
 Grayknife, Orbis & Mörlin
@@ -41,7 +39,7 @@ Grayknife, Orbis & Mörlin
 
 
 def main():
-    teams = Team.objects.get_registered_teams().filter(division="Swiss Starter")
+    teams = Team.objects.get_registered_teams().filter(division="Kalibrierung")
     for team in teams:
         try:
             print(team)
