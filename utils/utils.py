@@ -31,7 +31,7 @@ def timestamp_to_datetime(x):
 
 
 def current_match_day():
-    start_date = datetime(2022, 2, 7).astimezone(pytz.timezone("Europe/Berlin"))
+    start_date = datetime(2022, 6, 6).astimezone(pytz.timezone("Europe/Berlin"))
     current_date = datetime.now().astimezone(pytz.timezone("Europe/Berlin"))
     match_day = ((current_date - start_date) / 7).days + 1
     return match_day
