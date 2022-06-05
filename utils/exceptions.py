@@ -14,6 +14,10 @@ class TeamWebsite404Exception(PrimeLeagueConnectionException):
     pass
 
 
+class Match404Exception(PrimeLeagueConnectionException):
+    pass
+
+
 class PrimeLeagueParseException(PrimeLeagueConnectionException):
     pass
 

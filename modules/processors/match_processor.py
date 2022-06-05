@@ -67,7 +67,7 @@ class MatchDataProcessor(__MatchDataMethods, ):
 
     def __init__(self, match_id: int, team_id: int, **kwargs):
         """
-        :raises PrimeLeagueConnectionException, TeamWebsite404Exception
+        :raises PrimeLeagueConnectionException, PrimeLeagueParseException, Match404Exception
         :param match_id:
         :param team_id: team's point of view to the match. For example to determine enemy_team of the match.
         """

@@ -5,7 +5,8 @@ from rest_framework import status
 
 from modules.api import PrimeLeagueAPI
 from prime_league_bot import settings
-from utils.exceptions import TeamWebsite404Exception, PrimeLeagueConnectionException, PrimeLeagueParseException
+from utils.exceptions import TeamWebsite404Exception, PrimeLeagueConnectionException, PrimeLeagueParseException, \
+    Match404Exception
 
 LOCAL = settings.FILES_FROM_STORAGE
 SAVE_REQUEST = settings.DEBUG and not LOCAL
@@ -34,7 +35,7 @@ class PrimeLeagueProvider:
             match_id:
 
         Returns:
-        Exceptions: PrimeLeagueConnectionException, PrimeLeagueParseException
+        Exceptions: PrimeLeagueConnectionException, PrimeLeagueParseException, Match404Exception
         """
         file_name = f"match_{match_id}.json"
         if LOCAL:
@@ -44,7 +45,7 @@ class PrimeLeagueProvider:
 
         if not status.is_success(resp.status_code):
             if resp.status_code == 404:
-                return None
+                raise Match404Exception(status_code=resp.status_code, msg=f"Match {match_id}")
             raise PrimeLeagueConnectionException(status_code=resp.status_code, msg=f"Match {match_id}")
 
         if SAVE_REQUEST:
