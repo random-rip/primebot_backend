@@ -54,6 +54,7 @@ class TeamAdmin(admin.ModelAdmin):
         'updated_at',
     )
     list_filter = [PlatformFilter, RegisterFilter, 'created_at', 'updated_at', ]
+    readonly_fields = ("created_at", "updated_at",)
     search_fields = ['id', 'name', 'team_tag']
 
     def discord_registered(self, obj):
