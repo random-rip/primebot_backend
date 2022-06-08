@@ -16,6 +16,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         start_time = time.time()
         teams = Team.objects.all()
-        logger.info(f"Updating ({len(teams)}) teams at {datetime.now()}...")
+        logger.info(f"Updating {len(teams)} teams...")
         update_teams(teams=teams, )
-        logger.info(f"Updated ({len(teams)}) teams in {time.time() - start_time} seconds")
+        logger.info(f"Updated {len(teams)} teams in {time.time() - start_time:.2f} seconds")

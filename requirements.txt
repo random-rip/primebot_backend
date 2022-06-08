@@ -1,6 +1,6 @@
 Babel==2.8.0
 beautifulsoup4==4.9.1
-discord.py==1.6.0
+discord.py>=1.7
 Django==3.0.8
 django-cors-headers==3.10.1
 django-environ==0.4.5

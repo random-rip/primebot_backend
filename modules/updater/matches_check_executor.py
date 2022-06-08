@@ -5,11 +5,13 @@ import threading
 import requests
 from django.conf import settings
 
+from app_prime_league.models import Match
 from bots.message_dispatcher import MessageDispatcher
 from bots.messages import EnemyNewTimeSuggestionsNotificationMessage, \
     OwnNewTimeSuggestionsNotificationMessage, ScheduleConfirmationNotification, NewLineupNotificationMessage
 from modules.match_comparer import MatchComparer
 from modules.temporary_match_data import TemporaryMatchData
+from utils.exceptions import Match404Exception
 from utils.messages_logger import log_exception
 
 thread_local = threading.local()
@@ -24,11 +26,15 @@ def get_session():
 
 
 @log_exception
-def check_match(match):
+def check_match(match:Match):
     match_id = match.match_id
     team = match.team
     try:
         tmd = TemporaryMatchData.create_from_website(team=team, match_id=match_id, )
+    except Match404Exception as e:
+        match.delete()
+        update_logger.info(f"Match deleted {e}")
+        return
     except Exception as e:
         update_logger.exception(e)
         return

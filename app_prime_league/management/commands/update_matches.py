@@ -16,6 +16,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         start_time = time.time()
         uncompleted_matches = Match.objects.get_uncompleted_matches()
-        logger.info(f"Checking uncompleted matches ({len(uncompleted_matches)}) at {datetime.now()}...")
+        logger.info(f"Checking {len(uncompleted_matches)} uncompleted matches...")
         update_uncompleted_matches(matches=uncompleted_matches)
-        logger.info(f"Checked uncompleted matches ({len(uncompleted_matches)}) in {time.time() - start_time} seconds")
+        logger.info(f"Checked {len(uncompleted_matches)} uncompleted matches in {time.time() - start_time:.2f} seconds")

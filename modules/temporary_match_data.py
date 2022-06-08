@@ -47,6 +47,16 @@ class TemporaryMatchData:
 
     @staticmethod
     def create_from_website(team: Team, match_id, ) -> "TemporaryMatchData":
+        """
+
+        Args:
+            team:
+            match_id:
+
+        Returns:
+        Raises: PrimeLeagueConnectionException, PrimeLeagueParseException, Match404Exception
+
+        """
 
         gmd = TemporaryMatchData()
         processor = MatchDataProcessor(match_id, team.id)

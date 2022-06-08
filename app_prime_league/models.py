@@ -140,7 +140,7 @@ class Match(models.Model):
     match_day = models.IntegerField(null=True)
     match_type = models.CharField(max_length=15, null=True, choices=MATCH_TYPES)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="matches_against")
-    enemy_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="matches_as_enemy_team", null=True)
+    enemy_team = models.ForeignKey(Team, on_delete=models.SET_NULL, related_name="matches_as_enemy_team", null=True)
     team_made_latest_suggestion = models.BooleanField(null=True, blank=True)
     match_begin_confirmed = models.BooleanField(default=False, blank=True)
     has_side_choice = models.BooleanField()  # Team has side choice in first game
