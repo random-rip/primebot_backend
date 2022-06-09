@@ -31,9 +31,12 @@ Grayknife und Orbis
 message = """
 Hallo {team.name}, 
 
-die Befehle für Matches in der Kalibrierungsphase wurden aktiviert (`!matches` & `!match 3`) und Updates werden nun minütlich abgefragt.
+🔥 Version 2.1.0 ist draußen 🔥 
+📌 Ihr bekommt jetzt Benachrichtigungen bei neuen Kommentaren zu Matches. Kommentare, die von Teammitgliedern stammen, werden ignoriert.
+Die Benachrichtigung ist standardmäßig aktiviert, kann aber in den Settings deaktiviert werden.
+📌 Weiteres findet ihr auf https://primebot.me/changelogs
 
-Sternige Grüße
+Sternige Grüße 
 Grayknife, Orbis & Mörlin
 """
 
@@ -46,7 +49,6 @@ def main():
             dispatcher = MessageDispatcher(team)
             msg = NotificationToTeamMessage(team=team, custom_message=message)
             dispatcher.dispatch_raw_message(msg=msg)
-            dispatcher.dispatch(MatchesOverview, )
         except Exception as e:
             print(e)
 

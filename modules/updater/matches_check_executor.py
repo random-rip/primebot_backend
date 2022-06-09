@@ -66,9 +66,9 @@ def check_match(match: Match):
         notifications_logger.info(f"Silenced notification for {match_id=} ({team=}): Neues eigenes Lineup")
         match.update_team_lineup(tmd)
     if comment_ids := cmp.compare_new_comments():
-        # notifications_logger.info(f"{log_message}Neue Kommentare: {comment_ids}")
+        notifications_logger.info(f"{log_message}Neue Kommentare: {comment_ids}")
         match.update_comments(tmd)
-        # dispatcher.dispatch(NewCommentsNotificationMessage, match=match, new_comment_ids=comment_ids)
+        dispatcher.dispatch(NewCommentsNotificationMessage, match=match, new_comment_ids=comment_ids)
 
     match.update_match_data(tmd)
 
