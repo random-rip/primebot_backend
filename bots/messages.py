@@ -401,7 +401,7 @@ class MatchOverview(MatchMessage):
         name = "Disclaimer"
         value = (
             "_Dieser Befehl befindet sich noch in der Beta! Wir sammeln dazu noch Feedback.\n"
-            "Wie findet ihr die Menge an Informationsgehalten dieser Nachricht? Werden falsche Informationen angezeigt "
+            "Wie findet ihr die Menge an Informationsgehalt dieser Nachricht? Werden falsche Informationen angezeigt "
             "oder funktionieren Links nicht?\n"
             "Schreibt es uns hier: https://discord.gg/7NYgT2uFPm _"
         )
@@ -434,6 +434,29 @@ class MatchOverview(MatchMessage):
             text=f"Andere Scouting Website? mit `!settings` einfach anpassen.")
 
         return self.embed
+
+
+class NewCommentsNotificationMessage(MatchMessage):
+    _key = "NEW_COMMENTS_OF_UNKNOWN_USERS"
+    title = LaP.TITLE_NEW_COMMENTS
+    mentionable = True
+
+    def __init__(self, team: Team, match: Match, new_comment_ids):
+        super().__init__(team, match)
+        self.new_comment_ids = new_comment_ids
+        self._generate_message()
+
+    def _generate_message(self):
+        enemy_team_tag = self.match.enemy_team.team_tag
+
+        message = LaP.MULTIPLE_NEW_COMMENTS_TEXT if len(self.new_comment_ids) > 1 else LaP.SINGLE_NEW_COMMENT_TEXT
+        message += LaP.NEW_COMMENTS_TEXT
+
+        self.message = message.format(
+            enemy_team_tag=enemy_team_tag,
+            match_url=f"{settings.MATCH_URI}{self.match.match_id}#comment:{self.new_comment_ids[0]}",
+            enemy_team_url=f"{settings.TEAM_URI}{self.match.enemy_team.id}",
+            **vars(self.match))
 
 
 class NotificationToTeamMessage(BaseMessage):

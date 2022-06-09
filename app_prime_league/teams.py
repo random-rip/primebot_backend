@@ -3,7 +3,7 @@ import logging
 import sys
 import traceback
 
-from app_prime_league.models import Team, Player, Match, Suggestion
+from app_prime_league.models import Team, Player, Match, Suggestion, Comment
 from bots.telegram_interface.tg_singleton import send_message_to_devs
 from modules.processors.team_processor import TeamDataProcessor
 from modules.temporary_match_data import TemporaryMatchData
@@ -111,6 +111,10 @@ def create_match_and_enemy_team(team, match_id, ):
         for suggestion in tmd.latest_suggestions:
             match.suggestion_set.add(Suggestion(match=match, begin=suggestion), bulk=False)
     match.team_made_latest_suggestion = match.team_made_latest_suggestion
+
+    # Create Comments
+    for i in tmd.comments:
+        Comment.objects.update_or_create(id=i.comment_id, defaults={**i.comment_as_dict(), "match": match})
 
     match.save()
 

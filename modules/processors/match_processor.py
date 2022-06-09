@@ -213,5 +213,4 @@ class MatchDataProcessor(__MatchDataMethods, ):
         return self.data_stage.get("stage_type")
 
     def get_comments(self):
-        # TODO nicht verarbeitet
-        return self.data.get("comments")
+        return self.data.get("comments", [])

@@ -3,9 +3,9 @@ from django.test import TestCase
 from app_prime_league.models import Team, Match, Player, Suggestion
 from bots.messages import WeeklyNotificationMessage, NewMatchNotification, NewLineupNotificationMessage, \
     OwnNewTimeSuggestionsNotificationMessage, EnemyNewTimeSuggestionsNotificationMessage, \
-    ScheduleConfirmationNotification
+    ScheduleConfirmationNotification, NewCommentsNotificationMessage
 from modules.parsing.logs import LogSchedulingConfirmation, LogSchedulingAutoConfirmation, LogChangeTime
-from modules.tests.test_utils import string_to_datetime
+from modules.test_utils import string_to_datetime
 
 
 class DiscordMessageTests(TestCase):
@@ -14,7 +14,7 @@ class DiscordMessageTests(TestCase):
         self.team_a = Team.objects.create(id=1, name="ABC", team_tag="abc", )
         self.team_b = Team.objects.create(id=2, name="XYZ", team_tag="xyz", )
         self.match = Match.objects.create(match_id=1, team=self.team_a, enemy_team=self.team_b, match_day=1,
-                                     has_side_choice=True)
+                                          has_side_choice=True)
         line_up_players = [
             Player.objects.create(name="player 1", summoner_name="player1", team=self.team_b, ),
             Player.objects.create(name="player 2", summoner_name="player2", team=self.team_b),
@@ -128,9 +128,26 @@ class DiscordMessageTests(TestCase):
         self.assertEqual(msg._key, "NEW_MATCH_NOTIFICATION", )
         self.assertEqual(msg.mentionable, True, )
 
-        assertion_msg = ("Euer nächstes Spiel in der Kalibrierungsphase:\n"
-                         "🔜[Spiel 1](https://www.primeleague.gg/de/leagues/matches/1) gegen [xyz](https://www.primeleag"
+        assertion_msg = ("Euer nächstes Match in der Kalibrierungsphase:\n"
+                         "🔜[Match 1](https://www.primeleague.gg/de/leagues/matches/1) gegen [xyz](https://www.primeleag"
                          "ue.gg/de/leagues/teams/2):\nHier ist der [op.gg Link](https://euw.op.gg/multisearch/euw?"
                          "summoners=player1,player2,player3,player4,player5,player6) des Teams.")
+
+        self.assertEqual(msg.message, assertion_msg, )
+
+    def test_new_comments_notification(self):
+        msg = NewCommentsNotificationMessage(match=self.match, team=self.team_a, new_comment_ids=[123456789])
+
+        self.assertEqual(msg._key, "NEW_COMMENTS_OF_UNKNOWN_PERSONS", )
+        self.assertEqual(msg.mentionable, True, )
+
+        assertion_msg = ("Es gibt einen neuen Kommentar für [Spieltag 1](https://www.primeleague.gg/de/leagues/"
+                         "matches/1#comment:123456789) gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2). 💬")
+
+        self.assertEqual(msg.message, assertion_msg, )
+
+        msg = NewCommentsNotificationMessage(match=self.match, team=self.team_a, new_comment_ids=[123, 456, 789])
+        assertion_msg = ("Es gibt neue Kommentare für [Spieltag 1](https://www.primeleague.gg/de/leagues/matches"
+                         "/1#comment:123) gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2). 💬")
 
         self.assertEqual(msg.message, assertion_msg, )

@@ -233,6 +233,10 @@ class Match(models.Model):
             self.team_lineup.add(*players)
             self.save()
 
+    def update_comments(self, tmd):
+        for i in tmd.comments:
+            Comment.objects.update_or_create(id=i.comment_id, defaults={**i.comment_as_dict(), "match": self})
+
     @property
     def enemy_lineup_available(self):
         return self.enemy_lineup.all().count() > 0
@@ -324,11 +328,13 @@ class SettingsExpiring(models.Model):
 
 class Comment(models.Model):
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
-    comment_id = models.CharField(max_length=50)
-    parent = models.ForeignKey('Comment', on_delete=models.CASCADE)
-    content = models.TextField()
-    author_name = models.CharField(max_length=50)
-    author_id = models.IntegerField()
+    comment_parent_id = models.IntegerField()
+    comment_time = models.DateTimeField()
+    content = models.TextField(default="")
+    user_id = models.IntegerField()
+    comment_edit_user_id = models.IntegerField()
+    comment_flag_staff = models.BooleanField()
+    comment_flag_official = models.BooleanField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -336,9 +342,9 @@ class Comment(models.Model):
 
     class Meta:
         db_table = "comments"
-        unique_together = [("match", "comment_id"), ]
-        verbose_name = "Spielkommentar"
-        verbose_name_plural = "Spielkommentare"
+        unique_together = [("id", "match"), ]
+        verbose_name = "Matchkommentar"
+        verbose_name_plural = "Matchkommentare"
 
 
 class Champion(models.Model):

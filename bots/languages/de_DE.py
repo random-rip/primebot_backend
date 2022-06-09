@@ -172,6 +172,14 @@ NEW_LINEUP_TEXT = (
     "[Lineup]({scouting_url}) aufgestellt. 📈🆙"
 )
 
+SINGLE_NEW_COMMENT_TEXT = "Es gibt [einen neuen Kommentar]({match_url})"
+MULTIPLE_NEW_COMMENTS_TEXT = "Es gibt [neue Kommentare]({match_url})"
+
+NEW_COMMENTS_TEXT = (
+    " für [Spieltag {match_day}]({match_url}) gegen [{enemy_team_tag}]({enemy_team_url}). 💬"
+)
+
+
 WEEKLY_UPDATE_TEXT = (
     "Der nächste Spieltag:\n"
     "🔜[Spieltag {match_day}]({match_url}) gegen [{enemy_team_tag}]({enemy_team_url}):\n"
@@ -179,8 +187,8 @@ WEEKLY_UPDATE_TEXT = (
 )
 
 NEXT_MATCH_IN_CALIBRATION = (
-    "Euer nächstes Spiel in der Kalibrierungsphase:\n"
-    "🔜[Spiel {match_day}]({match_url}) gegen [{enemy_team_tag}]({enemy_team_url}):\n"
+    "Euer nächstes Match in der Kalibrierungsphase:\n"
+    "🔜[Match {match_day}]({match_url}) gegen [{enemy_team_tag}]({enemy_team_url}):\n"
     "Hier ist der [{website} Link]({scouting_url}) des Teams."
 )
 
@@ -235,8 +243,9 @@ DC_REGISTRATION_FINISH = (
     "📌 `!settings` - um die Benachrichtigungen zu personalisieren oder die Scouting Website (Standard: op.gg) zu ändern\n"
     "📌 `!matches` - um eine Übersicht der noch offenen Matches zu erhalten\n"
     "📌 `!match MATCH_DAY` - um detaillierte Informationen zu einem Spieltag zu erhalten\n\n"
-    "Einfach ausprobieren! 🎁 Der Status der Prime League API kann jederzeit auf https://primebot.me/ "
-    "angeschaut werden. Dort findet ihr auch weitere Informationen."
+    "Einfach ausprobieren! 🎁 \n"
+    "Der **Status der Prime League API** kann jederzeit auf https://primebot.me/ angeschaut werden. "
+    # "Bei Problemen findet ihr schnelle Hilfe auf unserem Discordserver: https://discord.gg/K8bYxJMDzu/."
 )
 
 DC_USE_FIX = (
@@ -289,12 +298,13 @@ DC_BYE = (
     "_Das Team kann jetzt in einem anderen Channel registriert werden, oder ein anderes Team kann in diesem Channel "
     "registriert werden._"
 )
-TITLE_NEW_MATCH_DAY = "Wochenübersicht"
-TITLE_NEW_MATCH = "Neues Spiel"
-TITLE_NEW_LINEUP = "Neues Lineup"
-TITLE_NEW_OWN_SUGGESTION = "Eigener neuer Terminvorschlag"
-TITLE_NEW_SUGGESTION = "Neuer Terminvorschlag eines Gegners"
-TITLE_MATCH_CONFIRMATION = "Terminbestätigung"
+TITLE_NEW_MATCH_DAY = "🌟 Wochenübersicht"
+TITLE_NEW_MATCH = "🔥 Neues Spiel"
+TITLE_NEW_LINEUP = "📑 Neues Lineup"
+TITLE_NEW_OWN_SUGGESTION = "📆 Eigener neuer Terminvorschlag"
+TITLE_NEW_SUGGESTION = "📆 Neuer Terminvorschlag eines Gegners"
+TITLE_MATCH_CONFIRMATION = "⚔ Terminbestätigung"
+TITLE_NEW_COMMENTS = "💬 Neue Kommentare"
 
 NO_CURRENT_MATCHES = "Ihr habt aktuell keine offenen Spiele."
 OVERVIEW = "Eine Übersicht eurer offenen Spiele:"

@@ -122,6 +122,7 @@ class SettingsMaker(Encoder):
                 "ENEMY_SCHEDULING_SUGGESTION",
                 "SCHEDULING_CONFIRMATION",
                 "SCOUTING_WEBSITE",
+                "NEW_COMMENTS_OF_UNKNOWN_PERSONS",
             ]):
                 self.errors.append(MISSING_CONTENT)
             scouting_website_name = self.settings.pop("SCOUTING_WEBSITE")

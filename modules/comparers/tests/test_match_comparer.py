@@ -1,9 +1,8 @@
 from django.test import TestCase
 
 from app_prime_league.models import Match, Team, Player
-from modules.match_comparer import MatchComparer
-from modules.temporary_match_data import TemporaryMatchData
-from modules.tests.test_utils import string_to_datetime
+from modules.comparers.match_comparer import MatchComparer
+from modules.test_utils import string_to_datetime, create_temporary_match_data
 
 
 class SuggestionsTest(TestCase):
@@ -227,23 +226,3 @@ class CompareNewLineupTest(TestCase):
                         "Enemy has new lineup, but was not recognized")
 
 
-def create_temporary_match_data(match_id=1, match_day=1, team=None, enemy_team=None, closed=False,
-                                team_made_latest_suggestion=None, latest_suggestions=None, begin=None,
-                                latest_confirmation_log=None, enemy_lineup=None, match_begin_confirmed=False):
-    if latest_suggestions is None:
-        latest_suggestions = []
-    data = {
-        "match_id": match_id,
-        "match_day": match_day,
-        "team": team if team else team,
-        "enemy_team_id": enemy_team.id if enemy_team else enemy_team.id,
-        "enemy_lineup": enemy_lineup,
-        "closed": closed,
-        "team_made_latest_suggestion": team_made_latest_suggestion,
-        "latest_suggestions": latest_suggestions,
-        "begin": begin,
-        "latest_confirmation_log": latest_confirmation_log,
-        "result": None,
-        "match_begin_confirmed": match_begin_confirmed,
-    }
-    return TemporaryMatchData(**data)

@@ -61,6 +61,10 @@ def team_to_serializer_data(team: Team):
             "value": team.value_of_setting("SCHEDULING_CONFIRMATION"),
         },
         {
+            "key": "NEW_COMMENTS_OF_UNKNOWN_USERS",
+            "value": team.value_of_setting("NEW_COMMENTS_OF_UNKNOWN_USERS"),
+        },
+        {
             "key": "SCOUTING_WEBSITE",
             "value": team.scouting_website.name if team.scouting_website else settings.DEFAULT_SCOUTING_NAME,
         },

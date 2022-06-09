@@ -8,8 +8,9 @@ from django.conf import settings
 from app_prime_league.models import Match
 from bots.message_dispatcher import MessageDispatcher
 from bots.messages import EnemyNewTimeSuggestionsNotificationMessage, \
-    OwnNewTimeSuggestionsNotificationMessage, ScheduleConfirmationNotification, NewLineupNotificationMessage
-from modules.match_comparer import MatchComparer
+    OwnNewTimeSuggestionsNotificationMessage, ScheduleConfirmationNotification, NewLineupNotificationMessage, \
+    NewCommentsNotificationMessage
+from modules.comparers.match_comparer import MatchComparer
 from modules.temporary_match_data import TemporaryMatchData
 from utils.exceptions import Match404Exception
 from utils.messages_logger import log_exception
@@ -26,7 +27,7 @@ def get_session():
 
 
 @log_exception
-def check_match(match:Match):
+def check_match(match: Match):
     match_id = match.match_id
     team = match.team
     try:
@@ -64,6 +65,10 @@ def check_match(match:Match):
     if cmp.compare_lineup_confirmation(of_enemy_team=False):
         notifications_logger.info(f"Silenced notification for {match_id=} ({team=}): Neues eigenes Lineup")
         match.update_team_lineup(tmd)
+    if comment_ids := cmp.compare_new_comments():
+        # notifications_logger.info(f"{log_message}Neue Kommentare: {comment_ids}")
+        match.update_comments(tmd)
+        # dispatcher.dispatch(NewCommentsNotificationMessage, match=match, new_comment_ids=comment_ids)
 
     match.update_match_data(tmd)
 

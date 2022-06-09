@@ -1,5 +1,6 @@
 import logging
 from datetime import timedelta
+from typing import List
 
 from django.db import models, IntegrityError
 from django.db.models import Q
@@ -53,7 +54,7 @@ class MatchManager(models.Manager):
 
 class PlayerManager(models.Manager):
 
-    def create_or_update_players(self, players_list: list, team):
+    def create_or_update_players(self, players_list: list, team) -> List["Player"]:
         players = []
         for (account_id, name, summoner_name, is_leader,) in players_list:
             to_update = {

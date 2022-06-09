@@ -82,12 +82,12 @@ class DiscordBot(Bot):
                     team = await sync_to_async(
                         register_team)(team_id=team_id, discord_webhook_id=webhook.id,
                                        discord_webhook_token=webhook.token, discord_channel_id=channel_id)
-                except PrimeLeagueConnectionException:
-                    response = LanguagePack.PL_CONNECTION_ERROR
-                    await ctx.send(response)
-                    return
                 except TeamWebsite404Exception:
                     response = LanguagePack.PL_TEAM_NOT_FOUND
+                    await ctx.send(response)
+                    return
+                except PrimeLeagueConnectionException:
+                    response = LanguagePack.PL_CONNECTION_ERROR
                     await ctx.send(response)
                     return
 

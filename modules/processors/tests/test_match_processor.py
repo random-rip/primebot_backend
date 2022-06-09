@@ -4,7 +4,7 @@ from django.test import TestCase
 
 from modules.processors.match_processor import MatchDataProcessor
 from modules.providers.prime_league import PrimeLeagueProvider
-from modules.tests.test_utils import string_to_datetime
+from modules.test_utils import string_to_datetime
 
 
 class MatchBeginTest(TestCase):

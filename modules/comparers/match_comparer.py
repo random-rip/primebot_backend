@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, List
 
 from app_prime_league.models import Match
 from modules.temporary_match_data import TemporaryMatchData
@@ -46,3 +46,16 @@ class MatchComparer:
         if not self.match_old.closed and self.match_new.closed:
             return True
         return False
+
+    def compare_new_comments(self) -> Union[List[int],bool]:
+        """
+        Check if new comments occurred which are not from team members.
+        The list is sorted by comment_ids ascending.
+        Returns: List of integers or False
+        """
+        user_ids_of_team = self.match_old.team.player_set.all().values_list("id", flat=True)
+        old_comment_ids_without_team_comments = set(
+            self.match_old.comment_set.exclude(user_id__in=user_ids_of_team).values_list("id", flat=True))
+        new_comment_ids_without_team_comments = set(
+            [x.comment_id for x in self.match_new.comments if x.user_id not in user_ids_of_team])
+        return sorted(list(new_comment_ids_without_team_comments - old_comment_ids_without_team_comments)) or False
