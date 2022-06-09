@@ -235,7 +235,7 @@ class Match(models.Model):
 
     def update_comments(self, tmd):
         for i in tmd.comments:
-            Comment.objects.update_or_create(id=i.comment_id, defaults={**i.comment_as_dict(), "match": self})
+            Comment.objects.update_or_create(match=self, comment_id=i.comment_id, defaults={**i.comment_as_dict()})
 
     @property
     def enemy_lineup_available(self):
@@ -328,6 +328,7 @@ class SettingsExpiring(models.Model):
 
 class Comment(models.Model):
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
+    comment_id = models.IntegerField()
     comment_parent_id = models.IntegerField()
     comment_time = models.DateTimeField()
     content = models.TextField(default="")
@@ -345,6 +346,9 @@ class Comment(models.Model):
         unique_together = [("id", "match"), ]
         verbose_name = "Matchkommentar"
         verbose_name_plural = "Matchkommentare"
+
+    def __str__(self):
+        return f"{self.id = }, {self.match = }, {self.comment_id = }"
 
 
 class Champion(models.Model):

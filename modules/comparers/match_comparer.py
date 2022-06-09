@@ -55,7 +55,7 @@ class MatchComparer:
         """
         user_ids_of_team = self.match_old.team.player_set.all().values_list("id", flat=True)
         old_comment_ids_without_team_comments = set(
-            self.match_old.comment_set.exclude(user_id__in=user_ids_of_team).values_list("id", flat=True))
+            self.match_old.comment_set.exclude(user_id__in=user_ids_of_team).values_list("comment_id", flat=True))
         new_comment_ids_without_team_comments = set(
             [x.comment_id for x in self.match_new.comments if x.user_id not in user_ids_of_team])
         return sorted(list(new_comment_ids_without_team_comments - old_comment_ids_without_team_comments)) or False
