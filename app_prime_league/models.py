@@ -329,13 +329,13 @@ class SettingsExpiring(models.Model):
 class Comment(models.Model):
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
     comment_id = models.IntegerField()
-    comment_parent_id = models.IntegerField()
+    comment_parent_id = models.IntegerField(verbose_name="Parent ID")
     comment_time = models.DateTimeField()
     content = models.TextField(default="")
     user_id = models.IntegerField()
-    comment_edit_user_id = models.IntegerField()
-    comment_flag_staff = models.BooleanField()
-    comment_flag_official = models.BooleanField()
+    comment_edit_user_id = models.IntegerField(verbose_name="Editiert von")
+    comment_flag_staff = models.BooleanField(verbose_name="Staff")
+    comment_flag_official = models.BooleanField(verbose_name="Official")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
