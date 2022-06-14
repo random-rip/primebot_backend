@@ -24,18 +24,8 @@ EMOJI_PIN = "📌"
 EMOJI_BOOKMARK = "📑"
 """
 
-SUPPORT_GROUP_LINK = "https://t.me/joinchat/IUH8NhsKTYUtFKaqQMWhKA"
-PRIME_LEAGUE_FORUM_LINK = "https://www.primeleague.gg/de/forums/1418-league-of-legends/1469-off-topic/637268"
-START_LINK = "https://t.me/prime_league_bot?startgroup=start"
-YES = "Ja"
-NO = "Nein"
-SKIP = "Überspringen"
+REGISTRATION_FINISH = ""
 
-REGISTRATION_FINISH = (
-    "Perfekt! Ich sende dir jetzt Benachrichtigungen in diese Gruppe, "
-    "wenn es neue Updates zu kommenden Matches gibt. 🏆\n"
-    "Du kannst noch mit /settings Benachrichtigungen personalisieren und die Scouting Website (Standard: op.gg) ändern."
-)
 CANCEL = (
     "Vorgang abgebrochen. \n"
     "Wenn Du Hilfe brauchst, benutze /help. 🔍"
@@ -75,8 +65,6 @@ TEAM_ID_NOT_VALID_TEXT = (
     f"{RETRY_TEXT}"
 )
 
-TEAM_ID_VALID = "Dein registriertes Team:\n"
-
 TEAM_ID_NOT_CORRECT = (
     "Die ID: *{id}* konnte *keinem* Team zugeordnet werden.\n\n"
     "Bitte kopiere deine *TEAM_URL* oder deine *TEAM_ID* in den Chat. Zum Abbrechen, benutze /cancel."
@@ -108,7 +96,7 @@ START_CHAT = (
     "Hallo,\n"
     "Du möchtest den PrimeBot für Pushbenachrichtigungen benutzen?\n\n"
     "Erste Scrhitte:\n"
-    f"1️⃣ Erstelle einen Gruppen-Chat in Telegram und füge [mich]({START_LINK}) hinzu.\n"
+    "1️⃣ Erstelle einen Gruppen-Chat in Telegram und füge [mich]({start_link}) hinzu.\n"
     f"2️⃣ Registriere dein Team im Gruppenchat mit /start.\n"
     f"3️⃣ Personalisiere mit /settings deine Benachrichtigungen.\n\n"
     f"Viel Erfolg auf den Richtfeldern! 🍀"

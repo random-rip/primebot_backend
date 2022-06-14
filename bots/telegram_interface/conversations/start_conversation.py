@@ -1,3 +1,7 @@
+import django.utils.translation
+from django.conf import settings
+from django.utils import translation
+from django.utils.translation import gettext as _
 from telegram import Update, ParseMode
 from telegram.error import BadRequest
 from telegram.ext import CallbackContext, ConversationHandler
@@ -5,7 +9,7 @@ from telegram.ext import CallbackContext, ConversationHandler
 from app_prime_league.models import Team
 from app_prime_league.teams import register_team
 from bots.languages.de_DE import (
-    START_GROUP, START_CHAT, TEAM_ID_VALID, REGISTRATION_FINISH,
+    START_CHAT,
     WAIT_A_MOMENT_TEXT, TEAM_ID_NOT_VALID_TEXT, SET_PHOTO_TEXT,
     PHOTO_SUCCESS_TEXT, PHOTO_RETRY_TEXT, CHAT_EXISTING, TEAM_LOCKED, GROUP_REASSIGNED, TEAM_ID_NOT_CORRECT,
     PL_CONNECTION_ERROR
@@ -56,14 +60,33 @@ def team_is_locked(team_id):
 def start(update: Update, context: CallbackContext):
     chat_type = update.message.chat.type
     if chat_type not in ["group", "supergroup"]:
-        update.message.reply_markdown(START_CHAT, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True)
+        update.message.reply_markdown(
+            START_CHAT.format(start_link=settings.TELEGRAM_START_LINK),
+            parse_mode=ParseMode.MARKDOWN,
+            disable_web_page_preview=True,
+        )
         return ConversationHandler.END
     if (get_existing_chat_id(update)) is None:
-        update.message.reply_markdown(
-            START_GROUP,
-            disable_web_page_preview=True,
-            quote=False,
-        )
+
+        print(django.utils.translation.check_for_language("de"))
+        print(django.utils.translation.check_for_language("en"))
+        print(django.utils.translation.check_for_language("es"))
+        print(translation.gettext("Hallo Welt"))
+        print(django.utils.translation.get_language())
+        with translation.override("en"):
+            print(django.utils.translation.get_language())
+            print(translation.gettext("Hallo Welt"))
+
+            update.message.reply_markdown(
+                text=translation.gettext(
+                    "Sternige Grüße,\n"
+                    "Du bist es Leid, jeden Tag auf den Prime League-Seiten mühsam nach neuen Updates zu suchen?\n"
+                    "Gut, dass ich hier bin: Ich werde dich zu allen Änderungen bei euren Spielen updaten. 📯\n\n"
+                    "Bitte kopiere dafür deine *TEAM_URL* oder deine *TEAM_ID* in den Chat."
+                ),
+                disable_web_page_preview=True,
+                quote=False,
+            )
     else:
         update.message.reply_markdown(
             CHAT_EXISTING,
@@ -196,7 +219,14 @@ def finish_registration(update: Update, context: CallbackContext):
     )
 
     context.bot.send_message(
-        text=f"{TEAM_ID_VALID}*{team.name}*\n{REGISTRATION_FINISH}",
+        text=_(
+            "Dein registriertes Team:\n"
+            "*{team.name}*\n"
+            "Perfekt! Ich sende dir jetzt Benachrichtigungen in diese Gruppe, "
+            "wenn es neue Updates zu euren Matches gibt. 🏆\n"
+            "Du kannst noch mit /settings Benachrichtigungen personalisieren und "
+            "die Scouting Website (Standard: {}) ändern."
+        ),
         chat_id=chat_id,
         disable_web_page_preview=True,
         parse_mode=ParseMode.MARKDOWN,

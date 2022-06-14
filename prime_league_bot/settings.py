@@ -11,11 +11,13 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 import errno
 import os
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import environ
+from pathlib import Path
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+import environ
+from django.utils.translation import gettext_lazy as _
+
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
@@ -128,7 +130,12 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'de-de'
+LANGUAGE_CODE = 'de'
+
+LANGUAGES = (
+    ("de", _("German")),
+    ("en", _("English")),
+)
 
 TIME_ZONE = 'Europe/Berlin'
 
@@ -154,6 +161,7 @@ STORAGE_DIR = os.path.join(BASE_DIR, "storage", )
 
 TELEGRAM_BOT_KEY = env.str("TELEGRAM_BOT_API_KEY", None)
 TG_DEVELOPER_GROUP = env.int("TG_DEVELOPER_GROUP", None)
+TELEGRAM_START_LINK = "https://t.me/prime_league_bot?startgroup=start"
 
 GIT_TOKEN = env.str("GIT_TOKEN", None)
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
@@ -188,6 +196,11 @@ CACHES = {
         'LOCATION': 'unix:/var/run/memcached/memcached.sock',
     }
 }
+
+print(BASE_DIR / "bots" / "locale")
+LOCALE_PATHS = [
+    BASE_DIR / "bots" / "locale"
+]
 
 if not DEBUG:
     LOGGING = {

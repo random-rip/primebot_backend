@@ -1,0 +1,55 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-06-14 18:28+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\bots\telegram_interface\conversations\start_conversation.py:74
+#: .\bots\telegram_interface\conversations\start_conversation.py:78
+msgid "Hallo Welt"
+msgstr "Hello World"
+
+#: .\bots\telegram_interface\conversations\start_conversation.py:82
+msgid ""
+"Sternige Grüße,\n"
+"Du bist es Leid, jeden Tag auf den Prime League-Seiten mühsam nach neuen "
+"Updates zu suchen?\n"
+"Gut, dass ich hier bin: Ich werde dich zu allen Änderungen bei euren Spielen "
+"updaten. 📯\n"
+"\n"
+"Bitte kopiere dafür deine *TEAM_URL* oder deine *TEAM_ID* in den Chat."
+msgstr ""
+"FUCK THIS"
+"updaten. 📯\n"
+
+#: .\bots\telegram_interface\conversations\start_conversation.py:223
+msgid ""
+"Dein registriertes Team:\n"
+"*{team.name}*\n"
+"Perfekt! Ich sende dir jetzt Benachrichtigungen in diese Gruppe, wenn es "
+"neue Updates zu euren Matches gibt. 🏆\n"
+"Du kannst noch mit /settings Benachrichtigungen personalisieren und die "
+"Scouting Website (Standard: {}) ändern."
+msgstr ""
+
+#: .\bots\telegram_interface\keyboards.py:8
+msgid "Ja"
+msgstr ""
+
+#: .\bots\telegram_interface\keyboards.py:12
+msgid "Nein"
+msgstr ""
