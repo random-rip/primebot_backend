@@ -1,4 +1,7 @@
+from unittest import skip
+
 from django.test import TestCase
+from django.utils import translation
 
 from app_prime_league.models import Team, Match, Player, Suggestion
 from bots.messages import NewLineupNotificationMessage, WeeklyNotificationMessage, \
@@ -77,9 +80,9 @@ class DiscordMessageTests(TestCase):
         expected = (
             "Neue Terminvorschläge von [xyz](https://www.primeleague.gg/de/leagues/teams/2) zu [Spieltag 1](https://"
             "www.primeleague.gg/de/leagues/matches/1):\n"
-            "1️⃣Samstag, 1. Jan. 2022 17:30Uhr\n"
-            "2️⃣Sonntag, 2. Jan. 2022 15:00Uhr\n"
-            "3️⃣Sonntag, 2. Jan. 2022 17:00Uhr"
+            "1️⃣Samstag, 1. Januar 2022 17:30 Uhr\n"
+            "2️⃣Sonntag, 2. Januar 2022 15:00 Uhr\n"
+            "3️⃣Sonntag, 2. Januar 2022 17:00 Uhr"
         )
         self.assertEqual(msg.generate_message(), expected, )
 
@@ -94,7 +97,7 @@ class DiscordMessageTests(TestCase):
         expected = (
             "Spielbestätigung gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2) zu [Spieltag 1](https://"
             "www.primeleague.gg/de/leagues/matches/1):\n"
-            "⚔Donnerstag, 17. Feb. 2022 15:00Uhr"
+            "⚔Donnerstag, 17. Februar 2022 15:00 Uhr"
         )
         self.assertEqual(msg.generate_message(), expected, )
 
@@ -106,7 +109,7 @@ class DiscordMessageTests(TestCase):
         expected = (
             "Automatische Spielbestätigung gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2) zu [Spieltag 1]"
             "(https://www.primeleague.gg/de/leagues/matches/1):\n"
-            "⚔Donnerstag, 17. Feb. 2022 15:00Uhr"
+            "⚔Donnerstag, 17. Februar 2022 15:00 Uhr"
         )
         self.assertEqual(msg.generate_message(), expected, )
 
@@ -118,7 +121,7 @@ class DiscordMessageTests(TestCase):
         assertion_msg = (
             "Ein Administrator hat eine neue Zeit zu [Spieltag 1](https://www.primeleague.gg/de/leagues/matches/1) "
             "gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2) festgelegt:\n"
-            "⚔Donnerstag, 17. Feb. 2022 15:00Uhr"
+            "⚔Donnerstag, 17. Februar 2022 15:00 Uhr"
         )
         self.assertEqual(msg.generate_message(), assertion_msg, )
 
@@ -155,12 +158,46 @@ class DiscordMessageTests(TestCase):
 
         self.assertEqual(msg.generate_message(), expected, )
 
+    @skip
     def test_i18n(self):
         # todo test i18n
-        msg = NewCommentsNotificationMessage(match=self.match, team=self.team_a, new_comment_ids=[123456789])
+        with translation.override(self.team_a.language):
+            msg = NewCommentsNotificationMessage(match=self.match, team=self.team_a, new_comment_ids=[123456789])
+            result = msg.generate_message()
 
         expected = ("Es gibt [einen neuen Kommentar](https://www.primeleague.gg/de/leagues/matches/1#comment:"
                     "123456789) zu [Spieltag 1](https://www.primeleague.gg/de/leagues/"
                     "matches/1#comment:123456789) gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2). 💬")
 
-        self.assertEqual(msg.generate_message(), expected, )
+        self.assertEqual(result, expected, )
+
+    def test_datetime_format(self):
+        self.team_a.language = "en"
+        self.match.begin = string_to_datetime("2022-02-17 15:00")
+        msg = ScheduleConfirmationNotification(
+            match=self.match, team=self.team_a,
+            latest_confirmation_log=LogChangeTime(
+                1645120288, "", "Manually adjusted time to 2022-02-17 15:00 +01:00"))
+
+        result = msg.generate_message()
+
+        expected = (
+            "Ein Administrator hat eine neue Zeit für [Spieltag 1](https://www.primeleague.gg/de/leagues/matches/1) "
+            "gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2) festgelegt:\n"
+            "⚔Thursday, 17. February 2022 15:00 PM"
+        )
+        self.assertEqual(result, expected, )
+
+        self.team_a.language = "de"
+        msg = ScheduleConfirmationNotification(
+            match=self.match, team=self.team_a,
+            latest_confirmation_log=LogChangeTime(
+                1645120288, "", "Manually adjusted time to 2022-02-17 15:00 +01:00"))
+        result = msg.generate_message()
+
+        expected = (
+            "Ein Administrator hat eine neue Zeit für [Spieltag 1](https://www.primeleague.gg/de/leagues/matches/1) "
+            "gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2) festgelegt:\n"
+            "⚔Donnerstag, 17. Februar 2022 15:00 Uhr"
+        )
+        self.assertEqual(result, expected, )

@@ -30,6 +30,5 @@ class EnemyNewTimeSuggestionsNotificationMessage(MatchMessage):
             match_url=self.match_url
         )
 
-        # todo i18n datetime format
         return prefix + "\n" + '\n'.join(
             [f"{emoji_numbers[i]}{format_datetime(x)}" for i, x in enumerate(details)])
