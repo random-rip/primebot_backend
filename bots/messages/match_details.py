@@ -11,7 +11,7 @@ from utils.utils import format_datetime
 class MatchOverview(MatchMessage):
 
     def _generate_title(self) -> str:
-        return f"🔥 {_('Matchübersicht')}"
+        return "🔥 " + _('Matchübersicht')
 
     def __init__(self, team: Team, match: Match):
         super().__init__(team, match)
@@ -41,23 +41,25 @@ class MatchOverview(MatchMessage):
         text = ""
 
         if self.match.has_side_choice:
-            text += f"> {_('Ihr habt im **ersten** Match Seitenwahl')}.\n"
+            text += "> " + _('Ihr habt im **ersten** Match Seitenwahl') + ".\n"
         else:
-            text += f"> {_('Ihr habt im **zweiten** Match Seitenwahl')}.\n"
+            text += "> " + _('Ihr habt im **zweiten** Match Seitenwahl') + ".\n"
 
         banned = Champion.objects.get_banned_champions(self.match.begin)
 
         if banned.exists():
-            text += f'> {_("Folgende Champions sind voraussichtlich beim Spieltermin gesperrt")}:\n'
+            text += "> " + _("Folgende Champions sind voraussichtlich beim Spieltermin gesperrt") + ":\n"
             for i in banned:
                 text += (
-                    f"> ➕ ⛔️{i.name} ({_('bis Patch')} {i.banned_until_patch})\n"
+                    "> ➕ ⛔️{name} ({until_patch_label} {until_patch})\n"
+                ).format(
+                    name=i.name,
+                    until_patch_label=_('bis Patch'),
+                    until_patch=i.banned_until_patch
                 )
 
-        text += (
-            f"> {_('Das Regelwerk gibt es [hier.]')}"
-            f"(https://www.primeleague.gg/statics/rules_general)\n"
-        )
+        text += f"> " + _('Das Regelwerk gibt es [hier.]') + "(https://www.primeleague.gg/statics/rules_general)\n"
+
         self.embed.add_field(name=name, value=text, inline=False)
 
     def _add_enemy_team(self):
@@ -89,8 +91,8 @@ class MatchOverview(MatchMessage):
     def _add_results(self):
         name = _("Matchergebnis")
         value = ""
-        value += f"ℹ️ {_('Ergebnis')}: {self.match.result}\n"
-        value += f"📆️ {_('Gespielt')}: {format_datetime(self.match.begin)}\n"
+        value += f"ℹ️ " + _('Ergebnis') + ": {self.match.result}\n"
+        value += f"📆️ " + _('Termin') + f": {format_datetime(self.match.begin)}\n"
         self.embed.add_field(name=name, value=value, inline=False)
 
     def _add_team_lineup(self, result=False):
@@ -98,11 +100,11 @@ class MatchOverview(MatchMessage):
         value = ""
         if self.match.team_lineup_available:
             if not result:
-                value += f"✅ {_('Eigenes Lineup aufgestellt:')}\n"
+                value += f"✅ " + _('Eigenes Lineup aufgestellt:') + "\n"
             for i, x in enumerate(self.match.team_lineup.all()):
                 value += f" > {emoji_numbers[i]} {x.summoner_name}\n"
         else:
-            value += f"⚠ {_('Es wurde noch kein Lineup aufgestellt.')}\n"
+            value += f"⚠ " + _('Es wurde noch kein Lineup aufgestellt.') + "\n"
         self.embed.add_field(name=name, value=value)
 
     def _add_enemy_lineup(self, result=False):
@@ -121,7 +123,7 @@ class MatchOverview(MatchMessage):
             for i, x in enumerate(names):
                 value += f"> {emoji_numbers[i]} {x.summoner_name}\n"
         else:
-            value += f"{_('Es wurde noch kein Lineup aufgestellt.')}\n"
+            value += _('Es wurde noch kein Lineup aufgestellt.') + "\n"
         self.embed.add_field(name=name, value=value)
 
     def _add_disclaimer(self):

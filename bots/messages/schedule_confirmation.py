@@ -16,7 +16,7 @@ class ScheduleConfirmationNotification(MatchMessage):
         self.latest_confirmation_log = latest_confirmation_log
 
     def _generate_title(self):
-        return f"⚔ {_('Terminbestätigung')}"
+        return "⚔ " + _('Terminbestätigung')
 
     def _generate_message(self):
         # todo i18n datetime format
@@ -25,18 +25,18 @@ class ScheduleConfirmationNotification(MatchMessage):
 
         if isinstance(self.latest_confirmation_log, LogSchedulingAutoConfirmation):
             message = _(
-                "Automatische Spielbestätigung gegen [{enemy_team_tag}]({enemy_team_url}) für "
+                "Automatische Spielbestätigung gegen [{enemy_team_tag}]({enemy_team_url}) zu "
                 "[{match_day}]({match_url}):"
             )
         elif isinstance(self.latest_confirmation_log, LogSchedulingConfirmation):
             message = _(
-                "Spielbestätigung gegen [{enemy_team_tag}]({enemy_team_url}) für "
+                "Spielbestätigung gegen [{enemy_team_tag}]({enemy_team_url}) zu "
                 "[{match_day}]({match_url}):"
             )
         else:
             assert isinstance(self.latest_confirmation_log, LogChangeTime)
             message = _(
-                "Ein Administrator hat eine neue Zeit für [{match_day}]({match_url}) gegen "
+                "Ein Administrator hat eine neue Zeit zu [{match_day}]({match_url}) gegen "
                 "[{enemy_team_tag}]({enemy_team_url}) festgelegt:"
             )
 

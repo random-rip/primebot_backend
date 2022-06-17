@@ -16,7 +16,7 @@ class MatchesOverview(BaseMessage):
         self.matches = self.__get_relevant_matches(match_ids)
 
     def _generate_title(self):
-        return f"🔥 {_('Neue Matches')}"
+        return "🔥 " + _('Neue Matches')
 
     def __get_relevant_matches(self, match_ids=None):
         if match_ids is None:
@@ -39,7 +39,7 @@ class MatchesOverview(BaseMessage):
             )
             for match in self.matches]
         matches_text = "\n".join(a)
-        return f"**{_('Eine Übersicht eurer offenen Matches:')}**\n\n{matches_text}"
+        return f"**" + _('Eine Übersicht eurer offenen Matches:') + f"**\n\n{matches_text}"
 
     def _generate_discord_embed(self) -> discord.Embed:
         embed = Embed(color=Colour.gold())
@@ -63,7 +63,7 @@ class MatchesOverview(BaseMessage):
 
             if match.enemy_lineup_available:
                 value += (
-                    f"\n> 📑{_('[Aktuelles Lineup]({lineup_link})')}"
+                        f"\n> 📑 " + _('[Aktuelles Lineup]({lineup_link})')
                 ).format(
                     lineup_link=match.team.get_scouting_url(match=match, lineup=True)
                 )

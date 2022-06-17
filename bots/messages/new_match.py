@@ -17,7 +17,7 @@ class NewMatchNotification(MatchMessage):
         super().__init__(team, match)
 
     def _generate_title(self):
-        return f"🔥 {_('Neues Match')}"
+        return "🔥 " + _('Neues Match')
 
     def _generate_message(self):
         return _(

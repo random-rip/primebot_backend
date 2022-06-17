@@ -59,7 +59,7 @@ class DiscordMessageTests(TestCase):
         self.assertEqual(msg.mentionable, True, )
 
         expected = (
-            "Neuer Terminvorschlag von euch für [Spieltag 1](https://www.primeleague.gg/de/leagues/matches/1). ✅"
+            "Neuer Terminvorschlag von euch zu [Spieltag 1](https://www.primeleague.gg/de/leagues/matches/1). ✅"
         )
 
         self.assertEqual(msg.generate_message(), expected, )
@@ -75,7 +75,7 @@ class DiscordMessageTests(TestCase):
         self.assertEqual(msg.mentionable, True, )
 
         expected = (
-            "Neue Terminvorschläge von [xyz](https://www.primeleague.gg/de/leagues/teams/2) für [Spieltag 1](https://"
+            "Neue Terminvorschläge von [xyz](https://www.primeleague.gg/de/leagues/teams/2) zu [Spieltag 1](https://"
             "www.primeleague.gg/de/leagues/matches/1):\n"
             "1️⃣Samstag, 1. Jan. 2022 17:30Uhr\n"
             "2️⃣Sonntag, 2. Jan. 2022 15:00Uhr\n"
@@ -92,7 +92,7 @@ class DiscordMessageTests(TestCase):
         self.assertEqual(msg.mentionable, True, )
 
         expected = (
-            "Spielbestätigung gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2) für [Spieltag 1](https://"
+            "Spielbestätigung gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2) zu [Spieltag 1](https://"
             "www.primeleague.gg/de/leagues/matches/1):\n"
             "⚔Donnerstag, 17. Feb. 2022 15:00Uhr"
         )
@@ -104,7 +104,7 @@ class DiscordMessageTests(TestCase):
         msg = ScheduleConfirmationNotification(match=self.match, team=self.team_a, latest_confirmation_log=log)
 
         expected = (
-            "Automatische Spielbestätigung gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2) für [Spieltag 1]"
+            "Automatische Spielbestätigung gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2) zu [Spieltag 1]"
             "(https://www.primeleague.gg/de/leagues/matches/1):\n"
             "⚔Donnerstag, 17. Feb. 2022 15:00Uhr"
         )
@@ -116,7 +116,7 @@ class DiscordMessageTests(TestCase):
         msg = ScheduleConfirmationNotification(match=self.match, team=self.team_a, latest_confirmation_log=log)
 
         assertion_msg = (
-            "Ein Administrator hat eine neue Zeit für [Spieltag 1](https://www.primeleague.gg/de/leagues/matches/1) "
+            "Ein Administrator hat eine neue Zeit zu [Spieltag 1](https://www.primeleague.gg/de/leagues/matches/1) "
             "gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2) festgelegt:\n"
             "⚔Donnerstag, 17. Feb. 2022 15:00Uhr"
         )
@@ -143,13 +143,13 @@ class DiscordMessageTests(TestCase):
         self.assertEqual(msg.mentionable, True, )
 
         expected = ("Es gibt [einen neuen Kommentar](https://www.primeleague.gg/de/leagues/matches/1#comment:"
-                    "123456789) für [Spieltag 1](https://www.primeleague.gg/de/leagues/"
+                    "123456789) zu [Spieltag 1](https://www.primeleague.gg/de/leagues/"
                     "matches/1#comment:123456789) gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2). 💬")
 
         self.assertEqual(msg.generate_message(), expected, )
 
         msg = NewCommentsNotificationMessage(match=self.match, team=self.team_a, new_comment_ids=[123, 456, 789])
-        expected = ("Es gibt [neue Kommentare](https://www.primeleague.gg/de/leagues/matches/1#comment:123) für "
+        expected = ("Es gibt [neue Kommentare](https://www.primeleague.gg/de/leagues/matches/1#comment:123) zu "
                     "[Spieltag 1](https://www.primeleague.gg/de/leagues/matches"
                     "/1#comment:123) gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2). 💬")
 
@@ -160,7 +160,7 @@ class DiscordMessageTests(TestCase):
         msg = NewCommentsNotificationMessage(match=self.match, team=self.team_a, new_comment_ids=[123456789])
 
         expected = ("Es gibt [einen neuen Kommentar](https://www.primeleague.gg/de/leagues/matches/1#comment:"
-                    "123456789) für [Spieltag 1](https://www.primeleague.gg/de/leagues/"
+                    "123456789) zu [Spieltag 1](https://www.primeleague.gg/de/leagues/"
                     "matches/1#comment:123456789) gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2). 💬")
 
         self.assertEqual(msg.generate_message(), expected, )

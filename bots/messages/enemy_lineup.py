@@ -12,7 +12,7 @@ class NewLineupNotificationMessage(MatchMessage):
         super().__init__(team, match)
 
     def _generate_title(self):
-        return f"📑 {_('Neues Lineup')}"
+        return "📑 " + _('Neues Lineup')
 
     def _generate_message(self):
         return _(

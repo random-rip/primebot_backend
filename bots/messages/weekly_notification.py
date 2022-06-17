@@ -12,7 +12,7 @@ class WeeklyNotificationMessage(MatchMessage):
         super().__init__(team, match)
 
     def _generate_title(self):
-        return f"🌟 {_('Wochenübersicht')}"
+        return "🌟 " + _('Wochenübersicht')
 
     def _generate_message(self) -> str:
         op_link = self.enemy_team_scouting_url

@@ -1,14 +1,14 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# English Translation for prime_league_bot.
+# Copyright (C) 2022 Janek Mangold
+# This file is distributed under the same license as the prime_bot_backend package.
+# Janek Mangold <mangold.janek@web.de>, 2022.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-17 12:34+0200\n"
+"POT-Creation-Date: 2022-06-17 21:49+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -691,37 +691,37 @@ msgid "noon"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:6
-#: .\venv\Lib\site-packages\tornado\locale.py:295
+#: .\venv\Lib\site-packages\tornado\locale.py:299
 msgid "Monday"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:6
-#: .\venv\Lib\site-packages\tornado\locale.py:296
+#: .\venv\Lib\site-packages\tornado\locale.py:300
 msgid "Tuesday"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:6
-#: .\venv\Lib\site-packages\tornado\locale.py:297
+#: .\venv\Lib\site-packages\tornado\locale.py:301
 msgid "Wednesday"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:6
-#: .\venv\Lib\site-packages\tornado\locale.py:298
+#: .\venv\Lib\site-packages\tornado\locale.py:302
 msgid "Thursday"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:6
-#: .\venv\Lib\site-packages\tornado\locale.py:299
+#: .\venv\Lib\site-packages\tornado\locale.py:303
 msgid "Friday"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:7
-#: .\venv\Lib\site-packages\tornado\locale.py:300
+#: .\venv\Lib\site-packages\tornado\locale.py:304
 msgid "Saturday"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:7
-#: .\venv\Lib\site-packages\tornado\locale.py:301
+#: .\venv\Lib\site-packages\tornado\locale.py:305
 msgid "Sunday"
 msgstr ""
 
@@ -754,62 +754,62 @@ msgid "Sun"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:14
-#: .\venv\Lib\site-packages\tornado\locale.py:281
+#: .\venv\Lib\site-packages\tornado\locale.py:285
 msgid "January"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:14
-#: .\venv\Lib\site-packages\tornado\locale.py:282
+#: .\venv\Lib\site-packages\tornado\locale.py:286
 msgid "February"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:14
-#: .\venv\Lib\site-packages\tornado\locale.py:283
+#: .\venv\Lib\site-packages\tornado\locale.py:287
 msgid "March"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:14
-#: .\venv\Lib\site-packages\tornado\locale.py:284
+#: .\venv\Lib\site-packages\tornado\locale.py:288
 msgid "April"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:14
-#: .\venv\Lib\site-packages\tornado\locale.py:285
+#: .\venv\Lib\site-packages\tornado\locale.py:289
 msgid "May"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:14
-#: .\venv\Lib\site-packages\tornado\locale.py:286
+#: .\venv\Lib\site-packages\tornado\locale.py:290
 msgid "June"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:15
-#: .\venv\Lib\site-packages\tornado\locale.py:287
+#: .\venv\Lib\site-packages\tornado\locale.py:291
 msgid "July"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:15
-#: .\venv\Lib\site-packages\tornado\locale.py:288
+#: .\venv\Lib\site-packages\tornado\locale.py:292
 msgid "August"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:15
-#: .\venv\Lib\site-packages\tornado\locale.py:289
+#: .\venv\Lib\site-packages\tornado\locale.py:293
 msgid "September"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:15
-#: .\venv\Lib\site-packages\tornado\locale.py:290
+#: .\venv\Lib\site-packages\tornado\locale.py:294
 msgid "October"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:15
-#: .\venv\Lib\site-packages\tornado\locale.py:291
+#: .\venv\Lib\site-packages\tornado\locale.py:295
 msgid "November"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:16
-#: .\venv\Lib\site-packages\tornado\locale.py:292
+#: .\venv\Lib\site-packages\tornado\locale.py:296
 msgid "December"
 msgstr ""
 
@@ -1217,69 +1217,69 @@ msgstr ""
 msgid "Connect, get help, or contribute"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:371
+#: .\venv\Lib\site-packages\tornado\locale.py:368
 msgid "1 second ago"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:377
+#: .\venv\Lib\site-packages\tornado\locale.py:374
 msgid "1 minute ago"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:382
+#: .\venv\Lib\site-packages\tornado\locale.py:379
 msgid "1 hour ago"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:385
+#: .\venv\Lib\site-packages\tornado\locale.py:382
 #, python-format
 msgid "%(time)s"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:387
+#: .\venv\Lib\site-packages\tornado\locale.py:384
 msgid "yesterday"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:387
+#: .\venv\Lib\site-packages\tornado\locale.py:384
 #, python-format
 msgid "yesterday at %(time)s"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:389
+#: .\venv\Lib\site-packages\tornado\locale.py:386
 #, python-format
 msgid "%(weekday)s"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:389
+#: .\venv\Lib\site-packages\tornado\locale.py:386
 #, python-format
 msgid "%(weekday)s at %(time)s"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:392
-#: .\venv\Lib\site-packages\tornado\locale.py:445
+#: .\venv\Lib\site-packages\tornado\locale.py:389
+#: .\venv\Lib\site-packages\tornado\locale.py:442
 #, python-format
 msgid "%(month_name)s %(day)s"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:394
+#: .\venv\Lib\site-packages\tornado\locale.py:391
 #, python-format
 msgid "%(month_name)s %(day)s at %(time)s"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:399
+#: .\venv\Lib\site-packages\tornado\locale.py:396
 #, python-format
 msgid "%(month_name)s %(day)s, %(year)s"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:401
+#: .\venv\Lib\site-packages\tornado\locale.py:398
 #, python-format
 msgid "%(month_name)s %(day)s, %(year)s at %(time)s"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:439
+#: .\venv\Lib\site-packages\tornado\locale.py:436
 #, python-format
 msgid "%(weekday)s, %(month_name)s %(day)s"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:462
+#: .\venv\Lib\site-packages\tornado\locale.py:459
 #, python-format
 msgid "%(commas)s and %(last)s"
 msgstr ""
