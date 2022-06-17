@@ -182,7 +182,7 @@ class DiscordMessageTests(TestCase):
         result = msg.generate_message()
 
         expected = (
-            "Ein Administrator hat eine neue Zeit für [Spieltag 1](https://www.primeleague.gg/de/leagues/matches/1) "
+            "Ein Administrator hat eine neue Zeit zu [Spieltag 1](https://www.primeleague.gg/de/leagues/matches/1) "
             "gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2) festgelegt:\n"
             "⚔Thursday, 17. February 2022 15:00 PM"
         )
