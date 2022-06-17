@@ -39,11 +39,11 @@ msgstr[1] ""
 
 #: .\bots\messages\custom_notification.py:16
 msgid "Entwicklerbenachrichtigung"
-msgstr ""
+msgstr "Developer notification"
 
 #: .\bots\messages\enemy_lineup.py:15
 msgid "Neues Lineup"
-msgstr ""
+msgstr "New Lineup"
 
 #: .\bots\messages\enemy_lineup.py:19
 #, python-brace-format
@@ -57,7 +57,7 @@ msgstr ""
 #: .\bots\messages\enemy_time_suggestions.py:16
 #, fuzzy
 msgid "Neuer Terminvorschlag eines Gegners"
-msgstr ""
+msgstr "New date suggested by an opponent"
 
 #: .\bots\messages\enemy_time_suggestions.py:23
 #, fuzzy, python-brace-format
@@ -109,11 +109,11 @@ msgstr "Open date suggestions from you."
 
 #: .\bots\messages\match_details.py:14
 msgid "Matchübersicht"
-msgstr ""
+msgstr "Match overview"
 
 #: .\bots\messages\match_details.py:24 .\bots\messages\match_details.py:95
 msgid "Termin"
-msgstr "Appointment"
+msgstr "Date"
 
 #: .\bots\messages\match_details.py:40
 msgid "Sonstige Informationen"
@@ -121,23 +121,23 @@ msgstr "Other information"
 
 #: .\bots\messages\match_details.py:44
 msgid "Ihr habt im **ersten** Match Seitenwahl"
-msgstr ""
+msgstr "You have a choice of sides in the **first** match"
 
 #: .\bots\messages\match_details.py:46
 msgid "Ihr habt im **zweiten** Match Seitenwahl"
-msgstr ""
+msgstr "You have a choice of sides in the **second** match"
 
 #: .\bots\messages\match_details.py:51
 msgid "Folgende Champions sind voraussichtlich beim Spieltermin gesperrt"
-msgstr ""
+msgstr "The following champions are expected to be locked at the match date"
 
 #: .\bots\messages\match_details.py:57
 msgid "bis Patch"
-msgstr ""
+msgstr "till Patch"
 
 #: .\bots\messages\match_details.py:61
 msgid "Das Regelwerk gibt es [hier.]"
-msgstr ""
+msgstr "The rulebook is available [here.]"
 
 #: .\bots\messages\match_details.py:66
 msgid "Gegnerteam"
@@ -162,11 +162,11 @@ msgstr "Your lineup"
 
 #: .\bots\messages\match_details.py:103
 msgid "Eigenes Lineup aufgestellt:"
-msgstr ""
+msgstr "Own lineup submitted:"
 
 #: .\bots\messages\match_details.py:107 .\bots\messages\match_details.py:126
 msgid "Es wurde noch kein Lineup aufgestellt."
-msgstr ""
+msgstr "No lineup has been submitted yet."
 
 #: .\bots\messages\match_details.py:111
 msgid "Gegnerische Aufstellung"
@@ -198,7 +198,7 @@ msgstr "Other scouting website? Use `!settings` to change it."
 
 #: .\bots\messages\matches_overview.py:19
 msgid "Neue Matches"
-msgstr ""
+msgstr "New Matches"
 
 #: .\bots\messages\matches_overview.py:29
 #: .\bots\messages\matches_overview.py:47
@@ -213,11 +213,11 @@ msgstr "An overview of your open matches:"
 #: .\bots\messages\matches_overview.py:66
 #, python-brace-format
 msgid "[Aktuelles Lineup]({lineup_link})"
-msgstr ""
+msgstr "[current Lineup]({lineup_link})"
 
 #: .\bots\messages\new_match.py:20
 msgid "Neues Match"
-msgstr ""
+msgstr "New Match"
 
 #: .\bots\messages\new_match.py:24
 #, python-brace-format
@@ -232,7 +232,7 @@ msgstr ""
 
 #: .\bots\messages\own_time_suggestions.py:15
 msgid "Eigener neuer Terminvorschlag"
-msgstr ""
+msgstr "Own new date proposal"
 
 #: .\bots\messages\own_time_suggestions.py:19
 #, fuzzy, python-brace-format
@@ -241,7 +241,7 @@ msgstr "New date proposal from you on [{match_day}]({match_url}). ✅"
 
 #: .\bots\messages\schedule_confirmation.py:19
 msgid "Terminbestätigung"
-msgstr ""
+msgstr "Date confirmation"
 
 #: .\bots\messages\schedule_confirmation.py:28
 #, fuzzy, python-brace-format
@@ -272,7 +272,7 @@ msgstr ""
 
 #: .\bots\messages\weekly_notification.py:15
 msgid "Wochenübersicht"
-msgstr ""
+msgstr "Weekly overview"
 
 #: .\bots\messages\weekly_notification.py:23
 #, python-brace-format
