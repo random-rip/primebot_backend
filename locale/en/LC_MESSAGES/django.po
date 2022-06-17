@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-14 18:28+0200\n"
+"POT-Creation-Date: 2022-06-17 12:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,12 +19,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: .\prime_league_bot\settings.py:136
-msgid "German"
-msgstr ""
+msgid "Deutsch"
+msgstr "German"
 
 #: .\prime_league_bot\settings.py:137
-msgid "English"
-msgstr ""
+msgid "Englisch"
+msgstr "English"
 
 #: .\venv\Lib\site-packages\django\contrib\messages\apps.py:7
 msgid "Messages"

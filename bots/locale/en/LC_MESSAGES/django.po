@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-14 18:28+0200\n"
+"POT-Creation-Date: 2022-06-17 12:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,32 +18,166 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\bots\telegram_interface\conversations\start_conversation.py:74
-#: .\bots\telegram_interface\conversations\start_conversation.py:78
-msgid "Hallo Welt"
-msgstr "Hello World"
-
-#: .\bots\telegram_interface\conversations\start_conversation.py:82
+#: .\bots\messages\comments.py:21
+#, python-brace-format
 msgid ""
-"Sternige Grüße,\n"
-"Du bist es Leid, jeden Tag auf den Prime League-Seiten mühsam nach neuen "
-"Updates zu suchen?\n"
-"Gut, dass ich hier bin: Ich werde dich zu allen Änderungen bei euren Spielen "
-"updaten. 📯\n"
-"\n"
-"Bitte kopiere dafür deine *TEAM_URL* oder deine *TEAM_ID* in den Chat."
+"Es gibt [einen neuen Kommentar]({match_url}) für [{match_day}]({match_url}) "
+"gegen [{enemy_team_tag}]({enemy_team_url}). 💬"
+msgid_plural ""
+"Es gibt [neue Kommentare]({match_url}) für [{match_day}]({match_url}) gegen "
+"[{enemy_team_tag}]({enemy_team_url}). 💬"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\bots\messages\enemy_lineup.py:19
+#, python-brace-format
+msgid ""
+"[{enemy_team_tag}]({enemy_team_url}) ([{match_day}]({match_url})) hat ein "
+"neues [Lineup]({scouting_url}) aufgestellt. 📑"
 msgstr ""
-"FUCK THIS"
-"updaten. 📯\n"
 
-#: .\bots\telegram_interface\conversations\start_conversation.py:223
+#: .\bots\messages\enemy_time_suggestions.py:23
+#, python-brace-format
 msgid ""
-"Dein registriertes Team:\n"
-"*{team.name}*\n"
-"Perfekt! Ich sende dir jetzt Benachrichtigungen in diese Gruppe, wenn es "
-"neue Updates zu euren Matches gibt. 🏆\n"
-"Du kannst noch mit /settings Benachrichtigungen personalisieren und die "
-"Scouting Website (Standard: {}) ändern."
+"Neuer Terminvorschlag von [{enemy_team_tag}]({enemy_team_url}) für "
+"[{match_day}]({match_url}):"
+msgid_plural ""
+"Neue Terminvorschläge von [{enemy_team_tag}]({enemy_team_url}) für "
+"[{match_day}]({match_url}):"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\bots\messages\helpers.py:12
+#, python-brace-format
+msgid "Playoff Match {match_day}"
+msgstr ""
+
+#: .\bots\messages\helpers.py:14
+#, python-brace-format
+msgid "Tiebreaker Match {match_day}"
+msgstr ""
+
+#: .\bots\messages\helpers.py:16
+#, python-brace-format
+msgid "Match {match_day}"
+msgstr ""
+
+#: .\bots\messages\helpers.py:18
+#, python-brace-format
+msgid "Spieltag {match_day}"
+msgstr ""
+
+#: .\bots\messages\helpers.py:29
+#, python-brace-format
+msgid "Keine Terminvorschläge. Ausweichtermin: {time}"
+msgstr ""
+
+#: .\bots\messages\helpers.py:34
+msgid "Offene Terminvorschläge vom Gegner!"
+msgstr ""
+
+#: .\bots\messages\helpers.py:36
+msgid "Offene Terminvorschläge von euch."
+msgstr ""
+
+#: .\bots\messages\match_details.py:24
+msgid "Termin"
+msgstr ""
+
+#: .\bots\messages\match_details.py:40
+msgid "Sonstige Informationen"
+msgstr ""
+
+#: .\bots\messages\match_details.py:64
+msgid "Gegnerteam"
+msgstr ""
+
+#: .\bots\messages\match_details.py:76
+msgid "Gegnerische Spieler (leagueofgraphs.com)"
+msgstr ""
+
+#: .\bots\messages\match_details.py:90
+msgid "Matchergebnis"
+msgstr ""
+
+#: .\bots\messages\match_details.py:97
+msgid "Eure Aufstellung"
+msgstr ""
+
+#: .\bots\messages\match_details.py:109
+msgid "Gegnerische Aufstellung"
+msgstr ""
+
+#: .\bots\messages\match_details.py:128
+msgid "Disclaimer"
+msgstr ""
+
+#: .\bots\messages\match_details.py:130
+msgid ""
+"Dieser Befehl befindet sich noch in der Beta! Wir sammeln dazu noch "
+"Feedback.\n"
+"Welche Informationen fehlen euch noch?\n"
+"[Schreibt es uns auf Discord!](https://discord.gg/7NYgT2uFPm)"
+msgstr ""
+
+#: .\bots\messages\match_details.py:148 .\bots\messages\matches_overview.py:55
+#, python-brace-format
+msgid "[gegen {enemy_team_name}]({match_url})"
+msgstr ""
+
+#: .\bots\messages\match_details.py:169 .\bots\messages\matches_overview.py:72
+msgid "Andere Scouting Website? mit `!settings` einfach anpassen."
+msgstr ""
+
+#: .\bots\messages\matches_overview.py:28
+#: .\bots\messages\matches_overview.py:46
+msgid "Ihr habt aktuell keine offenen Matches."
+msgstr ""
+
+#: .\bots\messages\matches_overview.py:48
+msgid "Eine Übersicht eurer offenen Matches:"
+msgstr ""
+
+#: .\bots\messages\new_match.py:24
+#, python-brace-format
+msgid ""
+"Euer nächstes Match in der Kalibrierungsphase:\n"
+"🔜[{match_day}]({match_url}) gegen [{enemy_team_tag}]({enemy_team_url}):\n"
+"Hier ist der [{website} Link]({scouting_url}) des Teams."
+msgstr ""
+
+#: .\bots\messages\own_time_suggestions.py:19
+#, python-brace-format
+msgid "Neuer Terminvorschlag von euch für [{match_day}]({match_url}). ✅"
+msgstr ""
+
+#: .\bots\messages\schedule_confirmation.py:28
+#, python-brace-format
+msgid ""
+"Automatische Spielbestätigung gegen [{enemy_team_tag}]({enemy_team_url}) für "
+"[{match_day}]({match_url}):"
+msgstr ""
+
+#: .\bots\messages\schedule_confirmation.py:33
+#, python-brace-format
+msgid ""
+"Spielbestätigung gegen [{enemy_team_tag}]({enemy_team_url}) für [{match_day}]"
+"({match_url}):"
+msgstr ""
+
+#: .\bots\messages\schedule_confirmation.py:39
+#, python-brace-format
+msgid ""
+"Ein Administrator hat eine neue Zeit für [{match_day}]({match_url}) gegen "
+"[{enemy_team_tag}]({enemy_team_url}) festgelegt:"
+msgstr ""
+
+#: .\bots\messages\weekly_notification.py:23
+#, python-brace-format
+msgid ""
+"Der nächste Spieltag:\n"
+"🔜[{match_day}]({match_url}) gegen [{enemy_team_tag}]({enemy_team_url}):\n"
+"Hier ist der [{website} Link]({scouting_url}) des Teams."
 msgstr ""
 
 #: .\bots\telegram_interface\keyboards.py:8

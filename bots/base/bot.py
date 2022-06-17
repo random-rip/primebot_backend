@@ -1,5 +1,7 @@
 from abc import abstractmethod
 
+from bots.messages.base import BaseMessage
+
 
 class Bot:
     def __init__(self, *, bot, bot_config):
@@ -17,5 +19,5 @@ class Bot:
 
     @staticmethod
     @abstractmethod
-    def send_message(*, msg, team,):
+    def send_message(*, msg: BaseMessage, team, ):
         pass

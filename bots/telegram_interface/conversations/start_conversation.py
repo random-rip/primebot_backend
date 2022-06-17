@@ -1,19 +1,9 @@
-import django.utils.translation
 from django.conf import settings
-from django.utils import translation
-from django.utils.translation import gettext as _
 from telegram import Update, ParseMode
 from telegram.error import BadRequest
 from telegram.ext import CallbackContext, ConversationHandler
-
 from app_prime_league.models import Team
 from app_prime_league.teams import register_team
-from bots.languages.de_DE import (
-    START_CHAT,
-    WAIT_A_MOMENT_TEXT, TEAM_ID_NOT_VALID_TEXT, SET_PHOTO_TEXT,
-    PHOTO_SUCCESS_TEXT, PHOTO_RETRY_TEXT, CHAT_EXISTING, TEAM_LOCKED, GROUP_REASSIGNED, TEAM_ID_NOT_CORRECT,
-    PL_CONNECTION_ERROR
-)
 from bots.messages import MatchesOverview
 from bots.telegram_interface.commands.single_commands import set_photo
 from bots.telegram_interface.keyboards import boolean_keyboard
@@ -25,7 +15,10 @@ from utils.utils import get_valid_team_id
 
 def just_wait_a_moment(chat_id, context: CallbackContext):
     context.bot.send_message(
-        text=WAIT_A_MOMENT_TEXT,
+        text=(
+            "Alles klar, ich schaue, was ich dazu finden kann.\n"
+            "Das kann einen Moment dauern...⏳\n"
+        ),
         chat_id=chat_id,
         parse_mode=ParseMode.MARKDOWN,
     )
@@ -61,38 +54,41 @@ def start(update: Update, context: CallbackContext):
     chat_type = update.message.chat.type
     if chat_type not in ["group", "supergroup"]:
         update.message.reply_markdown(
-            START_CHAT.format(start_link=settings.TELEGRAM_START_LINK),
+            text=(
+                "Hallo,\n"
+                "Du möchtest den PrimeBot für Pushbenachrichtigungen benutzen?\n\n"
+                "Erste Schritte:\n"
+                "1️⃣ Erstelle einen Gruppen-Chat in Telegram und füge [mich]({start_link}) hinzu.\n"
+                "2️⃣ Registriere dein Team im Gruppenchat mit /start.\n"
+                "3️⃣ Personalisiere mit /settings deine Benachrichtigungen.\n\n"
+                "Viel Erfolg auf den Richtfeldern! 🍀"
+            ).format(start_link=settings.TELEGRAM_START_LINK),
             parse_mode=ParseMode.MARKDOWN,
             disable_web_page_preview=True,
         )
         return ConversationHandler.END
-    if (get_existing_chat_id(update)) is None:
-
-        print(django.utils.translation.check_for_language("de"))
-        print(django.utils.translation.check_for_language("en"))
-        print(django.utils.translation.check_for_language("es"))
-        print(translation.gettext("Hallo Welt"))
-        print(django.utils.translation.get_language())
-        with translation.override("en"):
-            print(django.utils.translation.get_language())
-            print(translation.gettext("Hallo Welt"))
-
-            update.message.reply_markdown(
-                text=translation.gettext(
-                    "Sternige Grüße,\n"
-                    "Du bist es Leid, jeden Tag auf den Prime League-Seiten mühsam nach neuen Updates zu suchen?\n"
-                    "Gut, dass ich hier bin: Ich werde dich zu allen Änderungen bei euren Spielen updaten. 📯\n\n"
-                    "Bitte kopiere dafür deine *TEAM_URL* oder deine *TEAM_ID* in den Chat."
-                ),
-                disable_web_page_preview=True,
-                quote=False,
-            )
-    else:
+    if get_existing_chat_id(update) is not None:
         update.message.reply_markdown(
-            CHAT_EXISTING,
+            text=(
+                "In diesem Chat ist bereits ein Team registriert. "
+                "Möchtest Du ein anderes Team für diesen Channel registrieren?\n"
+                "Dann gib jetzt deine *Team-URL* oder deine *Team ID* an. Wenn nicht, benutze /cancel.\n\n"
+                "Solltest Du Hilfe benötigen, benutze /help."
+            ),
             disable_web_page_preview=True,
             quote=False,
         )
+        return 1
+    update.message.reply_markdown(
+        text=(
+            "Sternige Grüße,\n"
+            "Du bist es Leid, jeden Tag auf den Prime League-Seiten mühsam nach neuen Updates zu suchen?\n"
+            "Gut, dass ich hier bin: Ich werde dich zu allen Änderungen bei euren Spielen updaten. 📯\n\n"
+            "Bitte kopiere dafür deine *TEAM_URL* oder deine *TEAM_ID* in den Chat."
+        ),
+        disable_web_page_preview=True,
+        quote=False,
+    )
     return 1
 
 
@@ -111,7 +107,11 @@ def team_registration(update: Update, context: CallbackContext):
         team_id = get_valid_team_id(update.message.text)
     except CouldNotParseURLException:
         update.message.reply_markdown(
-            TEAM_ID_NOT_VALID_TEXT,
+            text=(
+                "Die angegebene URL entspricht nicht dem richtigen Format.\n"
+                "Achte auf das richtige Format oder gib die *Team ID* ein.\n"
+                "Bitte versuche es erneut oder /cancel."
+            ),
             quote=False,
         )
         return 1
@@ -120,7 +120,11 @@ def team_registration(update: Update, context: CallbackContext):
 
     if team_is_locked(team_id):
         update.message.reply_markdown(
-            text=TEAM_LOCKED.format(team=Team.objects.get_team(team_id)),
+            text=(
+                "Das Team *{team_name}* wurde bereits in einem anderen Chat registriert.\n"
+                "Lösche zuerst die Verknüpfung im anderen Chat mit /delete. \n\n"
+                "Solltest Du Hilfe benötigen, benutze /help."
+            ).format(team_name=Team.objects.get_team(team_id).name),
             quote=False,
         )
         return ConversationHandler.END
@@ -138,15 +142,25 @@ def team_registration(update: Update, context: CallbackContext):
 
     try:
         new_team = register_team(team_id=team_id, telegram_id=chat_id)
-    except PrimeLeagueConnectionException:
+
+    except TeamWebsite404Exception:
         update.message.reply_markdown(
-            text=PL_CONNECTION_ERROR,
+            text=(
+                "Die angegebene URL entspricht nicht dem richtigen Format.\n"
+                "Achte auf das richtige Format oder gib die *Team ID* ein.\n"
+                "Bitte versuche es erneut oder /cancel."
+            ),
             quote=False,
         )
         return 1
-    except TeamWebsite404Exception:
+    except PrimeLeagueConnectionException:
         update.message.reply_markdown(
-            text=TEAM_ID_NOT_VALID_TEXT,
+            text=(
+                "Momentan kann keine Verbindung zu der PrimeLeague Website hergestellt werden. "
+                "Probiere es in ein paar Stunden noch einmal.\n"
+                f"Wenn es später immer noch nicht funktioniert, schaue auf https://primebot.me/crew/ nach Hilfe."
+            )
+            ,
             quote=False,
         )
         return 1
@@ -155,26 +169,39 @@ def team_registration(update: Update, context: CallbackContext):
         old_team.telegram_id = old_team_chat_id
         old_team.save()
         update.message.reply_markdown(
-            text=TEAM_ID_NOT_CORRECT.format(id=team_id),
+            text=(
+                "Die ID: *{id}* konnte *keinem* Team zugeordnet werden.\n\n"
+                "Bitte kopiere deine *TEAM_URL* oder deine *TEAM_ID* in den Chat. Benutze /cancel um abzubrechen."
+            ).format(id=team_id),
             disable_web_page_preview=True,
             quote=False,
         )
         return 1
     elif new_team is None:
         update.message.reply_markdown(
-            text=TEAM_ID_NOT_CORRECT.format(id=team_id),
+            text=(
+                "Die ID: *{id}* konnte *keinem* Team zugeordnet werden.\n\n"
+                "Bitte kopiere deine *TEAM_URL* oder deine *TEAM_ID* in den Chat. Benutze /cancel um abzubrechen."
+            ).format(id=team_id),
             disable_web_page_preview=True
         )
         return 1
     else:
         if new_team_old_chat_id is not None:
             update.message.reply_markdown(
-                msg=GROUP_REASSIGNED.format(team=new_team),
+                msg=(
+                    "Dein Team wurde in einem anderen Chat registriert!\n"
+                    "Es werden in dieser Gruppe keine weiteren Updates zu *{team.name}* folgen.\n\n"
+                    "Solltest Du Hilfe benötigen, benutze /help."
+                ).format(team=new_team),
                 chat_id=new_team_old_chat_id,
                 quote=False,
             )
         update.message.reply_markdown(
-            SET_PHOTO_TEXT,
+            text=(
+                f"Soll ich das Teambild aus der Prime League importieren?\n"
+                f"_Dazu werden Adminrechte hier in der Gruppe benötigt._"
+            ),
             reply_markup=boolean_keyboard(0),
         )
 
@@ -195,7 +222,10 @@ def set_optional_photo(update: Update, context: CallbackContext):
             context.bot.edit_message_text(
                 chat_id=query.message.chat_id,
                 message_id=query.message.message_id,
-                text=PHOTO_RETRY_TEXT,
+                text=(
+                    "Profilbild konnte nicht geändert werden. Soll ich das Teambild aus der Prime League importieren?\n"
+                    "_Dazu werden Adminrechte benötigt._"
+                ),
                 reply_markup=boolean_keyboard(0),
                 parse_mode=ParseMode.MARKDOWN,
             )
@@ -212,14 +242,14 @@ def finish_registration(update: Update, context: CallbackContext):
     context.bot.edit_message_text(
         chat_id=query.message.chat_id,
         message_id=query.message.message_id,
-        text=PHOTO_SUCCESS_TEXT,
+        text="✅ Okay",
         reply_markup=None,
         parse_mode=ParseMode.MARKDOWN,
 
     )
 
     context.bot.send_message(
-        text=_(
+        text=(
             "Dein registriertes Team:\n"
             "*{team.name}*\n"
             "Perfekt! Ich sende dir jetzt Benachrichtigungen in diese Gruppe, "

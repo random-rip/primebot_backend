@@ -24,7 +24,7 @@ def create_comment(match, comment_id=1, comment_parent_id=0, comment_time=165398
                    comment_edit_user_id=1, comment_flag_staff=False, comment_flag_official=False,
                    content="", ):
     return Comment.objects.create(
-        id=comment_id,
+        comment_id=comment_id,
         comment_parent_id=comment_parent_id,
         comment_time=timestamp_to_datetime(comment_time),
         user_id=user_id,

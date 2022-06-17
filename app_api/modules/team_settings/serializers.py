@@ -68,6 +68,10 @@ def team_to_serializer_data(team: Team):
             "key": "SCOUTING_WEBSITE",
             "value": team.scouting_website.name if team.scouting_website else settings.DEFAULT_SCOUTING_NAME,
         },
+        {
+            "key": "LANGUAGE",
+            "value": team.language,
+        },
 
     ]
     serializer = SettingsTeamSerializer({

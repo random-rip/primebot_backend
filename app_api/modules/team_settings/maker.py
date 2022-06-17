@@ -122,6 +122,7 @@ class SettingsMaker(Encoder):
                 "ENEMY_SCHEDULING_SUGGESTION",
                 "SCHEDULING_CONFIRMATION",
                 "SCOUTING_WEBSITE",
+                "LANGUAGE",
                 "NEW_COMMENTS_OF_UNKNOWN_USERS",
             ]):
                 self.errors.append(MISSING_CONTENT)
@@ -132,6 +133,7 @@ class SettingsMaker(Encoder):
                     name=scouting_website_name)
             else:
                 self.scouting_website = scouting_website_name
+            self.language = self.settings.pop("LANGUAGE")
         except (KeyError, ScoutingWebsite.DoesNotExist):
             self.errors.append(MALFORMED_CONTENT)
 
@@ -174,4 +176,5 @@ class SettingsMaker(Encoder):
 
         if self.scouting_website != settings.DEFAULT_SCOUTING_NAME:
             self.team.scouting_website = self.scouting_website
-            self.team.save()
+        self.team.language = self.language
+        self.team.save()

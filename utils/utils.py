@@ -3,6 +3,8 @@ from datetime import datetime, time
 from typing import Union
 
 import pytz
+from babel import dates as babel
+from django.conf import settings
 
 from utils.exceptions import CouldNotParseURLException
 
@@ -66,3 +68,8 @@ class Encoder:
             value = str(value)
         value = value.encode(cls._encoding)
         return hashlib.blake2b(value, digest_size=cls.digest_size).hexdigest()
+
+
+def format_datetime(x):
+    return babel.format_datetime(x, "EEEE, d. MMM y H:mm'Uhr'", locale="de",
+                                 tzinfo=babel.get_timezone(settings.TIME_ZONE))

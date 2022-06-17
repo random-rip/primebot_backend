@@ -7,9 +7,12 @@ from django.conf import settings
 
 from app_prime_league.models import Match
 from bots.message_dispatcher import MessageDispatcher
-from bots.messages import EnemyNewTimeSuggestionsNotificationMessage, \
-    OwnNewTimeSuggestionsNotificationMessage, ScheduleConfirmationNotification, NewLineupNotificationMessage, \
+from bots.messages import (
+    EnemyNewTimeSuggestionsNotificationMessage,
+    OwnNewTimeSuggestionsNotificationMessage, ScheduleConfirmationNotification,
+    NewLineupNotificationMessage,
     NewCommentsNotificationMessage
+)
 from modules.comparers.match_comparer import MatchComparer
 from modules.temporary_match_data import TemporaryMatchData
 from utils.exceptions import Match404Exception

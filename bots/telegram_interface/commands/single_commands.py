@@ -11,12 +11,10 @@ from telegram.ext import CallbackContext, ConversationHandler
 from app_api.modules.team_settings.maker import SettingsMaker
 from app_prime_league.models import Team
 from bots.base.bop import GIFinator
-from bots.languages import de_DE as LaP
 from bots.messages import MatchesOverview
-from bots.telegram_interface.validation_messages import team_not_exists
+from bots.telegram_interface.validation_messages import channel_not_registered
 from bots.utils import mysql_has_gone_away_decorator
 from prime_league_bot.settings import STORAGE_DIR
-from utils.changelogs import CHANGELOGS
 from utils.messages_logger import log_command
 
 logger = logging.getLogger("commands")
@@ -52,19 +50,16 @@ def set_photo(chat_id, context: CallbackContext, url):
 def set_logo(update: Update, context: CallbackContext):
     chat_id = update.message.chat.id
     if not Team.objects.filter(telegram_id=chat_id).exists():
-        update.message.reply_markdown(
-            LaP.TEAM_NOT_IN_DB_TEXT,
-        )
-        return ConversationHandler.END
+        return channel_not_registered(update)
     url = Team.objects.get(telegram_id=chat_id).logo_url
     successful = set_photo(chat_id, context, url)
     if successful:
         update.message.reply_markdown(
-            LaP.PHOTO_SUCCESS_TEXT,
+            text="✅ Okay",
         )
     else:
         update.message.reply_markdown(
-            LaP.PHOTO_ERROR_TEXT,
+            text="Bild konnte nicht gesetzt werden.",
         )
     return ConversationHandler.END
 
@@ -89,7 +84,10 @@ def bop(update: Update, context: CallbackContext):
 @log_command
 def cancel(update: Update, context: CallbackContext):
     update.message.reply_markdown(
-        LaP.CANCEL,
+        text=(
+            "Vorgang abgebrochen.\n"
+            "Wenn Du Hilfe brauchst, benutze /help. 🔍"
+        ),
         reply_markup=ReplyKeyboardRemove(),
         disable_web_page_preview=True,
     )
@@ -100,7 +98,16 @@ def cancel(update: Update, context: CallbackContext):
 @log_command
 def helpcommand(update: Update, context: CallbackContext):
     update.message.reply_markdown(
-        f"{LaP.HELP_TEXT}{LaP.HELP_COMMAND_LIST}",
+        text=(
+            "Überblick:\n"
+            "/start - um dein Team zu registrieren\n"
+            "/settings - um die Einstellungen fürs Team zu bearbeiten\n"
+            "/matches - um eine Übersicht der offenen Matches zu erhalten\n"
+            "/delete - um das registrierte Team zu entfernen\n"
+            "/bop - What's boppin'?\n"
+            "/cancel - um den aktuellen Vorgang abzubrechen\n"
+            "/set_logo - um ein neues Logo aus der PrimeLeague zu holen\n"
+        ),
         reply_markup=ReplyKeyboardRemove(),
         disable_web_page_preview=True,
     )
@@ -114,10 +121,7 @@ def matches(update: Update, context: CallbackContext):
     try:
         team = Team.objects.get(telegram_id=chat_id)
     except Team.DoesNotExist:
-        update.message.reply_markdown(
-            LaP.TEAM_NOT_IN_DB_TEXT,
-        )
-        return ConversationHandler.END
+        return channel_not_registered(update)
 
     msg = MatchesOverview(team=team)
     update.message.reply_markdown(
@@ -133,14 +137,16 @@ def matches(update: Update, context: CallbackContext):
 def delete(update: Update, context: CallbackContext):
     chat_id = update.message.chat.id
     if not Team.objects.filter(telegram_id=chat_id).exists():
-        update.message.reply_markdown(
-            LaP.TEAM_NOT_IN_DB_TEXT,
-        )
-        return ConversationHandler.END
+        return channel_not_registered(update)
     team = Team.objects.get(telegram_id=chat_id)
     team.set_telegram_null()
     update.message.reply_markdown(
-        LaP.TG_DELETE,
+        text=(
+            "Alles klar, ich habe alle Verknüpfungen zu dieser Gruppe und dem Team gelöscht. "
+            "Gebt uns gerne Feedback, falls euch Funktionalitäten fehlen oder nicht gefallen. Bye! ✌\n"
+            "_Das Team kann jetzt in einem anderen Channel registriert werden, "
+            "oder ein anderes Team kann in diesem Channel registriert werden._"
+        ),
     )
     return ConversationHandler.END
 
@@ -152,13 +158,15 @@ def team_settings(update: Update, context: CallbackContext):
     try:
         team = Team.objects.get(telegram_id=chat_id)
     except Team.DoesNotExist:
-        team_not_exists(update, context)
+        channel_not_registered(update)
         return ConversationHandler.END
 
     maker = SettingsMaker(team=team)
     link = maker.generate_expiring_link(platform="telegram")
-    title = LaP.SETTINGS_CHANGE_TITLE.format(team=team.name)
-    content = LaP.SETTINGS_TEMP_LINK.format(minutes=settings.TEMP_LINK_TIMEOUT_MINUTES)
+    title = "Einstellungen für {team} ändern".format(team=team.name)
+    content = (
+        "Der Link ist nur {minutes} Minuten gültig. Danach muss ein neuer Link generiert werden."
+    ).format(minutes=settings.TEMP_LINK_TIMEOUT_MINUTES)
 
     update.message.reply_markdown(
         f"[{title}]({link})\n_{content}_",

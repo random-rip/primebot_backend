@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.db.models import F
 from django.template.defaultfilters import urlencode
+from django.utils.translation import gettext_lazy as _
 
 from app_prime_league.model_manager import TeamManager, MatchManager, PlayerManager, ScoutingWebsiteManager, \
     ChampionManager
@@ -9,6 +10,10 @@ from utils.exceptions import GMDNotInitialisedException
 
 
 class Team(models.Model):
+    class Languages(models.TextChoices):
+        GERMAN = "de", _("deutsch")
+        ENGLISH = "en", _("englisch")
+
     name = models.CharField(max_length=100, null=True, blank=True, )
     team_tag = models.CharField(max_length=100, null=True, blank=True, )
     division = models.CharField(max_length=20, null=True, blank=True, )
@@ -20,6 +25,7 @@ class Team(models.Model):
     logo_url = models.CharField(max_length=1000, null=True, blank=True, )
     scouting_website = models.ForeignKey("app_prime_league.ScoutingWebsite", on_delete=models.SET_NULL, null=True,
                                          blank=True, )
+    language = models.CharField(max_length=2, choices=Languages.choices, default=Languages.GERMAN)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -165,16 +171,6 @@ class Match(models.Model):
 
     def __str__(self):
         return f"Match {self.match_id} from {self.team}"
-
-    @property
-    def get_match_day_display(self):
-        if self.match_day is None:
-            return None
-        if self.match_day == self.MATCH_DAY_PLAYOFF:
-            return "Playoff Match"
-        elif self.match_day == self.MATCH_DAY_TIEBREAKER:
-            return "Tiebreaker Match"
-        return f"Spieltag {self.match_day}"
 
     @property
     def get_first_suggested_match_begin(self):

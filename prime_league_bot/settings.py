@@ -133,8 +133,8 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'de'
 
 LANGUAGES = (
-    ("de", _("German")),
-    ("en", _("English")),
+    ("de", _("Deutsch")),
+    ("en", _("Englisch")),
 )
 
 TIME_ZONE = 'Europe/Berlin'
@@ -197,9 +197,9 @@ CACHES = {
     }
 }
 
-print(BASE_DIR / "bots" / "locale")
 LOCALE_PATHS = [
-    BASE_DIR / "bots" / "locale"
+    BASE_DIR / "bots" / "locale",
+    BASE_DIR / "app_prime_league" / "locale",
 ]
 
 if not DEBUG:

@@ -1,6 +1,6 @@
 from app_prime_league.models import Team
 from bots.discord_interface.discord_bot import DiscordBot
-from bots.messages import BaseMessage
+from bots.messages.base import BaseMessage
 from bots.telegram_interface.telegram_bot import TelegramBot
 
 
