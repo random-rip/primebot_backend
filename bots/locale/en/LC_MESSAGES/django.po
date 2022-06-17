@@ -56,9 +56,8 @@ msgstr ""
 
 #: .\bots\messages\enemy_time_suggestions.py:16
 #, fuzzy
-#| msgid "Offene Terminvorschläge vom Gegner!"
 msgid "Neuer Terminvorschlag eines Gegners"
-msgstr "Open date proposals from the opponent!"
+msgstr ""
 
 #: .\bots\messages\enemy_time_suggestions.py:23
 #, fuzzy, python-brace-format
@@ -154,9 +153,8 @@ msgstr "Match result"
 
 #: .\bots\messages\match_details.py:94
 #, fuzzy
-#| msgid "Matchergebnis"
 msgid "Ergebnis"
-msgstr "Match result"
+msgstr "Result"
 
 #: .\bots\messages\match_details.py:99
 msgid "Eure Aufstellung"
