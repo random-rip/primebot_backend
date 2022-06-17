@@ -29,7 +29,6 @@ class MatchOverview(MatchMessage):
             match_begin=self.helper.display_match_schedule(self.match),
         )
 
-        # TODO i18n datetime
         if not self.match.match_begin_confirmed:
             for i, x in enumerate(self.match.suggestion_set.all()):
                 value += f"> ➕ {emoji_numbers[i]} {format_datetime(x.begin)}\n"

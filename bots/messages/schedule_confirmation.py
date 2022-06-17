@@ -19,7 +19,6 @@ class ScheduleConfirmationNotification(MatchMessage):
         return f"⚔ {_('Terminbestätigung')}"
 
     def _generate_message(self):
-        # todo i18n datetime format
         time = format_datetime(self.match.begin)
         enemy_team_tag = self.match.enemy_team.team_tag
 

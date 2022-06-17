@@ -20,7 +20,6 @@ class MatchDisplayHelper:
 
     @staticmethod
     def display_match_schedule(match):
-        # todo i18n datetime
         if match.match_begin_confirmed:
             return f"📆 {format_datetime(match.begin)}"
 

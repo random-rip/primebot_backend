@@ -5,6 +5,7 @@ from typing import Union
 import pytz
 from babel import dates as babel
 from django.conf import settings
+from django.utils import translation
 
 from utils.exceptions import CouldNotParseURLException
 
@@ -63,7 +64,7 @@ class Encoder:
         return cls.__hash_func(value).hexdigest()
 
     @classmethod
-    def blake2b(cls, value,) -> str:
+    def blake2b(cls, value, ) -> str:
         if not isinstance(value, str):
             value = str(value)
         value = value.encode(cls._encoding)
@@ -71,5 +72,6 @@ class Encoder:
 
 
 def format_datetime(x):
-    return babel.format_datetime(x, "EEEE, d. MMM y H:mm'Uhr'", locale="de",
+    clock_label = "'Uhr'" if translation.get_language() == "de" else "a"
+    return babel.format_datetime(x, format=f"EEEE, d. MMMM y H:mm {clock_label}", locale=translation.get_language(),
                                  tzinfo=babel.get_timezone(settings.TIME_ZONE))
