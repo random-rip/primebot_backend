@@ -56,9 +56,7 @@ class BaseMessage:
         raise MessageNotImplementedError()
 
     def generate_discord_embed(self) -> discord.Embed:
-        print(translation.get_language())
         with translation.override(self.team.language):
-            print(translation.get_language())
             return self._generate_discord_embed()
 
     def team_wants_notification(self):
