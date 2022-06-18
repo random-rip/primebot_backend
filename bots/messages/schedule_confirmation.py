@@ -24,18 +24,18 @@ class ScheduleConfirmationNotification(MatchMessage):
 
         if isinstance(self.latest_confirmation_log, LogSchedulingAutoConfirmation):
             message = _(
-                "Automatische Spielbestätigung gegen [{enemy_team_tag}]({enemy_team_url}) zu "
+                "Automatische Spielbestätigung gegen [{enemy_team_tag}]({enemy_team_url}) für "
                 "[{match_day}]({match_url}):"
             )
         elif isinstance(self.latest_confirmation_log, LogSchedulingConfirmation):
             message = _(
-                "Spielbestätigung gegen [{enemy_team_tag}]({enemy_team_url}) zu "
+                "Spielbestätigung gegen [{enemy_team_tag}]({enemy_team_url}) für "
                 "[{match_day}]({match_url}):"
             )
         else:
             assert isinstance(self.latest_confirmation_log, LogChangeTime)
             message = _(
-                "Ein Administrator hat eine neue Zeit zu [{match_day}]({match_url}) gegen "
+                "Ein Administrator hat eine neue Zeit für [{match_day}]({match_url}) gegen "
                 "[{enemy_team_tag}]({enemy_team_url}) festgelegt:"
             )
 

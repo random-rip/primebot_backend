@@ -18,9 +18,9 @@ class NewCommentsNotificationMessage(MatchMessage):
     def _generate_message(self):
         enemy_team_tag = self.match.enemy_team.team_tag
         message = ngettext(
-            "Es gibt [einen neuen Kommentar]({match_url}) zu [{match_day}]({match_url}) gegen "
+            "Es gibt [einen neuen Kommentar]({match_url}) für [{match_day}]({match_url}) gegen "
             "[{enemy_team_tag}]({enemy_team_url}). 💬",
-            "Es gibt [neue Kommentare]({match_url}) zu [{match_day}]({match_url}) gegen "
+            "Es gibt [neue Kommentare]({match_url}) für [{match_day}]({match_url}) gegen "
             "[{enemy_team_tag}]({enemy_team_url}). 💬",
             len(self.new_comment_ids)
         )

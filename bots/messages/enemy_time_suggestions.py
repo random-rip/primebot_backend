@@ -20,8 +20,8 @@ class EnemyNewTimeSuggestionsNotificationMessage(MatchMessage):
         enemy_team_tag = self.match.enemy_team.team_tag
 
         prefix = ngettext(
-            "Neuer Terminvorschlag von [{enemy_team_tag}]({enemy_team_url}) zu [{match_day}]({match_url}):",
-            "Neue Terminvorschläge von [{enemy_team_tag}]({enemy_team_url}) zu [{match_day}]({match_url}):",
+            "Neuer Terminvorschlag von [{enemy_team_tag}]({enemy_team_url}) für [{match_day}]({match_url}):",
+            "Neue Terminvorschläge von [{enemy_team_tag}]({enemy_team_url}) für [{match_day}]({match_url}):",
             len(details)
         ).format(
             enemy_team_tag=enemy_team_tag,

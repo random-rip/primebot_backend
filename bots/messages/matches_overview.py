@@ -31,7 +31,7 @@ class MatchesOverview(BaseMessage):
             (
                 "[{match_day}]({match_url}) ⚔ {enemy_team_name} ➡ [{website}]({scouting_url})\n"
             ).format(
-                match_day=self.helper.display_match_day(match),
+                match_day=self.helper.display_match_day(match).title(),
                 match_url=f"{settings.MATCH_URI}{match.match_id}",
                 enemy_team_name=match.enemy_team.name,
                 website=self.scouting_website,
@@ -50,7 +50,7 @@ class MatchesOverview(BaseMessage):
 
         for match in self.matches:
             name = "⚔ {match_day}".format(
-                match_day=self.helper.display_match_day(match),
+                match_day=self.helper.display_match_day(match).title(),
             )
             value = _(
                 "[gegen {enemy_team_name}]({match_url})"

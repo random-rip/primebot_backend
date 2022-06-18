@@ -16,7 +16,7 @@ class OwnNewTimeSuggestionsNotificationMessage(MatchMessage):
 
     def _generate_message(self):
         return _(
-            "Neuer Terminvorschlag von euch zu [{match_day}]({match_url}). ✅"
+            "Neuer Terminvorschlag von euch für [{match_day}]({match_url}). ✅"
         ).format(
             match_day=self.helper.display_match_day(self.match),
             match_url=self.match_url

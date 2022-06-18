@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-18 00:19+0200\n"
+"POT-Creation-Date: 2022-06-18 14:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,16 +25,16 @@ msgstr "New comments"
 #: .\bots\messages\comments.py:21
 #, fuzzy, python-brace-format
 msgid ""
-"Es gibt [einen neuen Kommentar]({match_url}) zu [{match_day}]({match_url}) "
+"Es gibt [einen neuen Kommentar]({match_url}) für [{match_day}]({match_url}) "
 "gegen [{enemy_team_tag}]({enemy_team_url}). 💬"
 msgid_plural ""
-"Es gibt [neue Kommentare]({match_url}) zu [{match_day}]({match_url}) gegen "
+"Es gibt [neue Kommentare]({match_url}) für [{match_day}]({match_url}) gegen "
 "[{enemy_team_tag}]({enemy_team_url}). 💬"
 msgstr[0] ""
-"There is [a new comment]({match_url}) on [{match_day}]({match_url}) against "
+"There is [a new comment]({match_url}) for [{match_day}]({match_url}) against "
 "[{enemy_team_tag}]({enemy_team_url}). 💬"
 msgstr[1] ""
-"There are [new comments]({match_url}) on [{match_day}]({match_url}) against "
+"There are [new comments]({match_url}) for [{match_day}]({match_url}) against "
 "[{enemy_team_tag}]({enemy_team_url}). 💬"
 
 #: .\bots\messages\custom_notification.py:16
@@ -62,37 +62,37 @@ msgstr "New date proposed by an opponent"
 #: .\bots\messages\enemy_time_suggestions.py:23
 #, fuzzy, python-brace-format
 msgid ""
-"Neuer Terminvorschlag von [{enemy_team_tag}]({enemy_team_url}) zu "
+"Neuer Terminvorschlag von [{enemy_team_tag}]({enemy_team_url}) für "
 "[{match_day}]({match_url}):"
 msgid_plural ""
-"Neue Terminvorschläge von [{enemy_team_tag}]({enemy_team_url}) zu "
+"Neue Terminvorschläge von [{enemy_team_tag}]({enemy_team_url}) für "
 "[{match_day}]({match_url}):"
 msgstr[0] ""
-"New date proposed by [{enemy_team_tag}]({enemy_team_url}) on [{match_day}]"
+"New date proposed by [{enemy_team_tag}]({enemy_team_url}) for [{match_day}]"
 "({match_url}):"
 msgstr[1] ""
-"New dates proposed by [{enemy_team_tag}]({enemy_team_url}) on [{match_day}]"
+"New dates proposed by [{enemy_team_tag}]({enemy_team_url}) for [{match_day}]"
 "({match_url}):"
 
 #: .\bots\messages\helpers.py:12
 #, python-brace-format
 msgid "Playoff Match {match_day}"
-msgstr ""
+msgstr "playoff match {match_day}"
 
 #: .\bots\messages\helpers.py:14
 #, python-brace-format
 msgid "Tiebreaker Match {match_day}"
-msgstr ""
+msgstr "tiebreaker match {match_day}"
 
 #: .\bots\messages\helpers.py:16
 #, python-brace-format
 msgid "Match {match_day}"
-msgstr ""
+msgstr "match {match_day}"
 
 #: .\bots\messages\helpers.py:18
 #, python-brace-format
 msgid "Spieltag {match_day}"
-msgstr "Gameday {match_day}"
+msgstr "gameday {match_day}"
 
 #: .\bots\messages\helpers.py:28
 #, python-brace-format
@@ -237,8 +237,8 @@ msgstr "New date proposed by you"
 
 #: .\bots\messages\own_time_suggestions.py:19
 #, fuzzy, python-brace-format
-msgid "Neuer Terminvorschlag von euch zu [{match_day}]({match_url}). ✅"
-msgstr "New date proposed by you on [{match_day}]({match_url}). ✅"
+msgid "Neuer Terminvorschlag von euch für [{match_day}]({match_url}). ✅"
+msgstr "New date proposed by you for [{match_day}]({match_url}). ✅"
 
 #: .\bots\messages\schedule_confirmation.py:19
 msgid "Terminbestätigung"
@@ -247,28 +247,28 @@ msgstr "Confirmation of the scheduled date"
 #: .\bots\messages\schedule_confirmation.py:27
 #, fuzzy, python-brace-format
 msgid ""
-"Automatische Spielbestätigung gegen [{enemy_team_tag}]({enemy_team_url}) zu "
+"Automatische Spielbestätigung gegen [{enemy_team_tag}]({enemy_team_url}) für "
 "[{match_day}]({match_url}):"
 msgstr ""
 "Automatic confirmation of the scheduled date against [{enemy_team_tag}]"
-"({enemy_team_url}) on [{match_day}]({match_url}):"
+"({enemy_team_url}) for [{match_day}]({match_url}):"
 
 #: .\bots\messages\schedule_confirmation.py:32
 #, fuzzy, python-brace-format
 msgid ""
-"Spielbestätigung gegen [{enemy_team_tag}]({enemy_team_url}) zu [{match_day}]"
+"Spielbestätigung gegen [{enemy_team_tag}]({enemy_team_url}) für [{match_day}]"
 "({match_url}):"
 msgstr ""
 "Confirmation of the scheduled date against [{enemy_team_tag}]"
-"({enemy_team_url}) on [{match_day}]({match_url}):"
+"({enemy_team_url}) for [{match_day}]({match_url}):"
 
 #: .\bots\messages\schedule_confirmation.py:38
 #, fuzzy, python-brace-format
 msgid ""
-"Ein Administrator hat eine neue Zeit zu [{match_day}]({match_url}) gegen "
+"Ein Administrator hat eine neue Zeit für [{match_day}]({match_url}) gegen "
 "[{enemy_team_tag}]({enemy_team_url}) festgelegt:"
 msgstr ""
-"An administrator has set a new date on [{match_day}]({match_url}) against "
+"An administrator has set a new date for [{match_day}]({match_url}) against "
 "[{enemy_team_tag}]({enemy_team_url}):"
 
 #: .\bots\messages\weekly_notification.py:15

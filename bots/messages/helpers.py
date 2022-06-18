@@ -7,7 +7,7 @@ from utils.utils import format_datetime
 class MatchDisplayHelper:
 
     @staticmethod
-    def display_match_day(match):
+    def display_match_day(match: Match) -> str:
         if match.match_day == Match.MATCH_DAY_PLAYOFF:
             msg = _("Playoff Match {match_day}")
         elif match.match_day == Match.MATCH_DAY_TIEBREAKER:
@@ -19,7 +19,7 @@ class MatchDisplayHelper:
         return msg.format(match_day=match.match_day)
 
     @staticmethod
-    def display_match_schedule(match):
+    def display_match_schedule(match: Match) -> str:
         if match.match_begin_confirmed:
             return f"📆 {format_datetime(match.begin)}"
 

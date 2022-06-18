@@ -143,7 +143,7 @@ class MatchOverview(MatchMessage):
 
         self._add_disclaimer()
         name = "⚔ {match_day}".format(
-            match_day=self.helper.display_match_day(self.match),
+            match_day=self.helper.display_match_day(self.match).title(),
         )
         value = _(
             "[gegen {enemy_team_name}]({match_url})"

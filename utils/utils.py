@@ -71,7 +71,7 @@ class Encoder:
         return hashlib.blake2b(value, digest_size=cls.digest_size).hexdigest()
 
 
-def format_datetime(x):
+def format_datetime(x: datetime):
     clock_label = "'Uhr'" if translation.get_language() == "de" else "a"
     return babel.format_datetime(x, format=f"EEEE, d. MMMM y H:mm {clock_label}", locale=translation.get_language(),
                                  tzinfo=babel.get_timezone(settings.TIME_ZONE))
