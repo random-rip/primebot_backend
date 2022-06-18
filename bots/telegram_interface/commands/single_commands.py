@@ -125,7 +125,7 @@ def matches(update: Update, context: CallbackContext):
 
     msg = MatchesOverview(team=team)
     update.message.reply_markdown(
-        msg.message,
+        msg.generate_message(),
         reply_markup=ReplyKeyboardRemove(),
         disable_web_page_preview=True,
     )
