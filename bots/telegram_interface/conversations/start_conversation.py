@@ -264,7 +264,7 @@ def finish_registration(update: Update, context: CallbackContext):
 
     msg = MatchesOverview(team=team)
     context.bot.send_message(
-        text=msg.message,
+        text=msg.generate_message(),
         chat_id=chat_id,
         disable_web_page_preview=True,
         parse_mode=ParseMode.MARKDOWN,
