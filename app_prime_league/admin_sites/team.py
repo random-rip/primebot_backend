@@ -50,10 +50,11 @@ class TeamAdmin(admin.ModelAdmin):
         'discord_registered',
         'telegram_registered',
         'scouting_website',
+        'language',
         'created_at',
         'updated_at',
     )
-    list_filter = [PlatformFilter, RegisterFilter, 'created_at', 'updated_at', ]
+    list_filter = [PlatformFilter, RegisterFilter, 'language', 'created_at', 'updated_at', ]
     readonly_fields = ("created_at", "updated_at",)
     search_fields = ['id', 'name', 'team_tag']
 
