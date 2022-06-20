@@ -207,12 +207,12 @@ class Match(models.Model):
         _ = Player.objects.create_or_update_players(gmd.enemy_team_members, enemy_team)
         self.set_enemy_team(gmd=gmd)
 
-    def update_latest_suggestions(self, gmd):
-        if gmd.latest_suggestions is not None:
+    def update_latest_suggestions(self, md):
+        if md.latest_suggestions is not None:
             self.suggestion_set.all().delete()
-            for suggestion in gmd.latest_suggestions:
+            for suggestion in md.latest_suggestions:
                 self.suggestion_set.add(Suggestion(match=self, begin=suggestion), bulk=False)
-        self.team_made_latest_suggestion = gmd.team_made_latest_suggestion
+        self.team_made_latest_suggestion = md.team_made_latest_suggestion
         self.save()
 
     def update_enemy_lineup(self, md):
