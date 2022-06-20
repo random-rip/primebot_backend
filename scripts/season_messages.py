@@ -27,14 +27,13 @@ Grayknife und Orbis
 """
 
 message = """
-Hallo {team.name}, 
+Hallo {team.name},
 
-🔥 Version 2.1.0 ist draußen 🔥 
-📌 Ihr bekommt jetzt Benachrichtigungen bei neuen Kommentaren zu Matches. Kommentare, die von Teammitgliedern stammen, werden ignoriert.
-Die Benachrichtigung ist standardmäßig aktiviert, kann aber in den Settings deaktiviert werden.
-📌 Weiteres findet ihr auf https://primebot.me/changelogs
+🔥 die Prime League API ist aktuell für den PrimeBot nicht erreichbar, dementsprechend können keine Benachrichtigungen bei Änderungen gesendet werden. :(
+Wir stehen bereits mit der Prime League in Kontakt, sodass wir den Fehler hoffentlich schnell beheben werden.
+📌 Den Status zur API findet ihr auf https://primebot.me/
 
-Sternige Grüße 
+Sternige Grüße
 Grayknife, Orbis & Mörlin
 """
 
