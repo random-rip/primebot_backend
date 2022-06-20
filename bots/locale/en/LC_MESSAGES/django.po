@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-18 14:51+0200\n"
+"POT-Creation-Date: 2022-06-20 09:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -236,7 +236,7 @@ msgid "Eigener neuer Terminvorschlag"
 msgstr "New date proposed by you"
 
 #: .\bots\messages\own_time_suggestions.py:19
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Neuer Terminvorschlag von euch für [{match_day}]({match_url}). ✅"
 msgstr "New date proposed by you for [{match_day}]({match_url}). ✅"
 
