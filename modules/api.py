@@ -10,11 +10,12 @@ class PrimeLeagueAPI:
     BASE_URL = settings.GAME_SPORTS_BASE_URL
 
     @classmethod
-    def request(cls, endpoint, request=requests.get, query_params=None, ):
+    def request(cls, endpoint, request=requests.get, query_params=None, **kwargs):
         """
         :param endpoint:
         :param request:
-        :param query_params:
+        :param query_params: optional list of strings
+        :param kwargs: optional params passed to requests method
         :return:
         :raises: PrimeLeagueConnectionException
         """
@@ -24,8 +25,12 @@ class PrimeLeagueAPI:
         if query_params:
             path += "?"
             path += "&".join(str(x) for x in [query_params])
+
+        default_requests_params = {
+            "timeout": 10,
+        }
         try:
-            response = request(url=path, )
+            response = request(url=path, **{**default_requests_params, **kwargs})
         except requests.exceptions.ConnectionError:
             raise PrimeLeagueConnectionException()
         return response
@@ -35,5 +40,14 @@ class PrimeLeagueAPI:
         return cls.request(cls._MATCH % match_id)
 
     @classmethod
-    def request_team(cls, team_id):
-        return cls.request(cls._TEAM % team_id)
+    def request_team(cls, team_id, **kwargs):
+        """
+
+        Args:
+            team_id:
+            **kwargs: optional params passed to requests method
+
+        Returns:
+
+        """
+        return cls.request(cls._TEAM % team_id, **kwargs)

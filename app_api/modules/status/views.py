@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from app_prime_league.models import Team
+from modules.api import PrimeLeagueAPI
 
 logger = logging.getLogger("django")
 
@@ -100,7 +101,7 @@ class StatusView(APIView):
         if cached:
             return cached
         try:
-            response = requests.get(f"{settings.TEAM_URI}1", )
+            response = PrimeLeagueAPI.request_team(1, timeout=5)
             data = response.status_code == 200
             cache.set(cache_key, data, cache_duration)
             return data
