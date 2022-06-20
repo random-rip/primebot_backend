@@ -146,7 +146,7 @@ class DiscordBot(Bot):
                     "Perfekt, dieser Channel wurde für Team **{team_name}** registriert.\n"
                     "Die wichtigsten Befehle:\n"
                     "📌 `!role ROLE_NAME` - um eine Rolle zu setzen, die bei Benachrichtigungen erwähnt werden soll\n"
-                    "📌 `!settings` - um die Benachrichtigungen zu personalisieren "
+                    "📌 `!settings` - um die Benachrichtigungen zu personalisieren, die Sprache auf englisch zu stellen "
                     "oder die Scouting Website (Standard: op.gg) zu ändern\n"
                     "📌 `!matches` - um eine Übersicht der noch offenen Matches zu erhalten\n"
                     "📌 `!match MATCH_DAY` - um detaillierte Informationen zu einem Spieltag zu erhalten\n\n"
