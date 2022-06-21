@@ -29,6 +29,7 @@ class RegisterFilter(admin.SimpleListFilter):
             ("registered", 'Nur registrierte Teams'),
             ("not_registered", 'Nur nicht registrierte Teams'),
             ("not_registered_and_no_division", 'Nur nicht registrierte Teams ohne Division'),
+            ("active_teams", 'Nur aktive Teams'),
         )
 
     def queryset(self, request, queryset):
@@ -38,6 +39,9 @@ class RegisterFilter(admin.SimpleListFilter):
             return queryset.filter(telegram_id__isnull=True, discord_channel_id__isnull=True)
         if self.value() == "not_registered_and_no_division":
             return queryset.filter(telegram_id__isnull=True, discord_channel_id__isnull=True, division__isnull=True)
+        if self.value() == "active_teams":
+            return queryset.filter(Q(telegram_id__isnull=False) | Q(discord_channel_id__isnull=False),
+                                   division__isnull=False)
         return queryset
 
 
