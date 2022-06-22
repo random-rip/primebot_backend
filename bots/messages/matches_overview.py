@@ -63,7 +63,7 @@ class MatchesOverview(BaseMessage):
 
             if match.enemy_lineup_available:
                 value += (
-                        f"\n> 📑 " + _('[Aktuelles Lineup]({lineup_link})')
+                        "\n> 📑 " + _('[Aktuelles Lineup]({lineup_link})')
                 ).format(
                     lineup_link=match.team.get_scouting_url(match=match, lineup=True)
                 )

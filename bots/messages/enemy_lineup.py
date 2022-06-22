@@ -17,7 +17,7 @@ class NewLineupNotificationMessage(MatchMessage):
     def _generate_message(self):
         return _(
             "[{enemy_team_tag}]({enemy_team_url}) ([{match_day}]({match_url})) hat ein neues "
-            "[Lineup]({scouting_url}) aufgestellt. 📑"
+            "[Lineup]({scouting_url}) aufgestellt."
         ).format(
             enemy_team_tag=self.match.enemy_team.team_tag,
             enemy_team_url=self.enemy_team_url,

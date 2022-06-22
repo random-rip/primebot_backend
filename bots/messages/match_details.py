@@ -99,7 +99,7 @@ class MatchOverview(MatchMessage):
         value = ""
         if self.match.team_lineup_available:
             if not result:
-                value += f"✅ " + _('Eigenes Lineup aufgestellt:') + "\n"
+                value += "✅ " + _('Eigenes Lineup aufgestellt:') + "\n"
             for i, x in enumerate(self.match.team_lineup.all()):
                 value += f" > {emoji_numbers[i]} {x.summoner_name}\n"
         else:

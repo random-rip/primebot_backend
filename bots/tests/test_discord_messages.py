@@ -1,7 +1,4 @@
-from unittest import skip
-
 from django.test import TestCase
-from django.utils import translation
 
 from app_prime_league.models import Team, Match, Player, Suggestion
 from bots.messages import NewLineupNotificationMessage, WeeklyNotificationMessage, \
@@ -9,7 +6,14 @@ from bots.messages import NewLineupNotificationMessage, WeeklyNotificationMessag
     ScheduleConfirmationNotification, NewMatchNotification, NewCommentsNotificationMessage
 from modules.parsing.logs import LogSchedulingConfirmation, LogSchedulingAutoConfirmation, LogChangeTime
 from modules.test_utils import string_to_datetime
-from utils.utils import format_datetime
+from django.test import TestCase
+
+from app_prime_league.models import Team, Match, Player, Suggestion
+from bots.messages import NewLineupNotificationMessage, WeeklyNotificationMessage, \
+    OwnNewTimeSuggestionsNotificationMessage, EnemyNewTimeSuggestionsNotificationMessage, \
+    ScheduleConfirmationNotification, NewMatchNotification, NewCommentsNotificationMessage
+from modules.parsing.logs import LogSchedulingConfirmation, LogSchedulingAutoConfirmation, LogChangeTime
+from modules.test_utils import string_to_datetime
 
 
 class DiscordMessageTests(TestCase):
@@ -35,7 +39,7 @@ class DiscordMessageTests(TestCase):
         self.assertEqual(msg.settings_key, "WEEKLY_MATCH_DAY", )
         self.assertEqual(msg.mentionable, True, )
 
-        expected = ("Der nächste Spieltag:\n🔜[Spieltag 1](https://www.primeleague.gg/de/leagues/matches/1) gegen"
+        expected = ("Der nächste Spieltag:\n[Spieltag 1](https://www.primeleague.gg/de/leagues/matches/1) gegen"
                     " [xyz](https://www.primeleague.gg/de/leagues/teams/2):\n"
                     "Hier ist der [op.gg Link](https://euw.op.gg/multisearch/euw?summoners=player1,player2,"
                     "player3,player4,player5,player6) des Teams.")
@@ -51,7 +55,7 @@ class DiscordMessageTests(TestCase):
         expected = (
             "[xyz](https://www.primeleague.gg/de/leagues/teams/2) ([Spieltag 1](https://www.primeleague.gg/de/"
             "leagues/matches/1)) hat ein neues [Lineup](https://euw.op.gg/multisearch/euw?summoners=player1,player"
-            "2,player3,player4,player5) aufgestellt. 📑"
+            "2,player3,player4,player5) aufgestellt."
         )
 
         self.assertEqual(msg.generate_message(), expected, )
@@ -63,7 +67,7 @@ class DiscordMessageTests(TestCase):
         self.assertEqual(msg.mentionable, True, )
 
         expected = (
-            "Neuer Terminvorschlag von euch für [Spieltag 1](https://www.primeleague.gg/de/leagues/matches/1). ✅"
+            "Neuer Terminvorschlag von euch für [Spieltag 1](https://www.primeleague.gg/de/leagues/matches/1)."
         )
 
         self.assertEqual(msg.generate_message(), expected, )
@@ -134,7 +138,7 @@ class DiscordMessageTests(TestCase):
         self.assertEqual(msg.mentionable, True, )
 
         expected = ("Euer nächstes Match in der Kalibrierungsphase:\n"
-                    "🔜[Match 1](https://www.primeleague.gg/de/leagues/matches/1) gegen [xyz](https://www.primeleag"
+                    "[Match 1](https://www.primeleague.gg/de/leagues/matches/1) gegen [xyz](https://www.primeleag"
                     "ue.gg/de/leagues/teams/2):\nHier ist der [op.gg Link](https://euw.op.gg/multisearch/euw?"
                     "summoners=player1,player2,player3,player4,player5,player6) des Teams.")
 
@@ -148,39 +152,13 @@ class DiscordMessageTests(TestCase):
 
         expected = ("Es gibt [einen neuen Kommentar](https://www.primeleague.gg/de/leagues/matches/1#comment:"
                     "123456789) für [Spieltag 1](https://www.primeleague.gg/de/leagues/"
-                    "matches/1#comment:123456789) gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2). 💬")
+                    "matches/1#comment:123456789) gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2).")
 
         self.assertEqual(msg.generate_message(), expected, )
 
         msg = NewCommentsNotificationMessage(match=self.match, team=self.team_a, new_comment_ids=[123, 456, 789])
         expected = ("Es gibt [neue Kommentare](https://www.primeleague.gg/de/leagues/matches/1#comment:123) für "
                     "[Spieltag 1](https://www.primeleague.gg/de/leagues/matches"
-                    "/1#comment:123) gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2). 💬")
+                    "/1#comment:123) gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2).")
 
         self.assertEqual(msg.generate_message(), expected, )
-
-    @skip
-    def test_i18n(self):
-        # todo test i18n
-        self.team_a.language = "en"
-        msg = NewCommentsNotificationMessage(match=self.match, team=self.team_a, new_comment_ids=[123456789])
-        result = msg.generate_message()
-
-        expected = ("Es gibt [einen neuen Kommentar](https://www.primeleague.gg/de/leagues/matches/1#comment:"
-                    "123456789) für [Spieltag 1](https://www.primeleague.gg/de/leagues/"
-                    "matches/1#comment:123456789) gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2). 💬")
-
-        self.assertEqual(result, expected, )
-
-    def test_datetime_format(self):
-        self.match.begin = string_to_datetime("2022-02-17 15:00")
-        with translation.override("en"):
-            result = format_datetime(self.match.begin)
-        self.assertEqual(
-            "Thursday, 17. February 2022 15:00 PM",
-            result,
-        )
-        self.assertEqual(
-            format_datetime(self.match.begin),
-            "Donnerstag, 17. Februar 2022 15:00 Uhr",
-        )

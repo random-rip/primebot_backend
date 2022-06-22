@@ -22,7 +22,7 @@ class NewMatchNotification(MatchMessage):
     def _generate_message(self):
         return _(
             "Euer nächstes Match in der Kalibrierungsphase:\n"
-            "🔜[{match_day}]({match_url}) gegen [{enemy_team_tag}]({enemy_team_url}):\n"
+            "[{match_day}]({match_url}) gegen [{enemy_team_tag}]({enemy_team_url}):\n"
             "Hier ist der [{website} Link]({scouting_url}) des Teams."
         ).format(
             match_day=self.helper.display_match_day(self.match),
