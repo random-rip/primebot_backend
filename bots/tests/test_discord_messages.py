@@ -136,11 +136,10 @@ class DiscordMessageTests(TestCase):
 
         self.assertEqual(msg.settings_key, "NEW_MATCH_NOTIFICATION", )
         self.assertEqual(msg.mentionable, True, )
-
-        expected = ("Euer nächstes Match in der Kalibrierungsphase:\n"
-                    "[Match 1](https://www.primeleague.gg/de/leagues/matches/1) gegen [xyz](https://www.primeleag"
-                    "ue.gg/de/leagues/teams/2):\nHier ist der [op.gg Link](https://euw.op.gg/multisearch/euw?"
-                    "summoners=player1,player2,player3,player4,player5,player6) des Teams.")
+        expected = ("Your next match in the calibration stage:\n"
+                    "[Match 1](https://www.primeleague.gg/de/leagues/matches/1) against [xyz](https://www.primeleag"
+                    "ue.gg/de/leagues/teams/2):\nHere is your [op.gg Link](https://euw.op.gg/multisearch/euw?"
+                    "summoners=player1,player2,player3,player4,player5,player6) of the team.")
 
         self.assertEqual(msg.generate_message(), expected, )
 

@@ -16,7 +16,7 @@ class ScheduleConfirmationNotification(MatchMessage):
         self.latest_confirmation_log = latest_confirmation_log
 
     def _generate_title(self):
-        return "⚔ " + _('Terminbestätigung')
+        return "⚔ " + _("Confirmation of the scheduled date")
 
     def _generate_message(self):
         time = format_datetime(self.match.begin)
@@ -24,19 +24,19 @@ class ScheduleConfirmationNotification(MatchMessage):
 
         if isinstance(self.latest_confirmation_log, LogSchedulingAutoConfirmation):
             message = _(
-                "Automatische Spielbestätigung gegen [{enemy_team_tag}]({enemy_team_url}) für "
-                "[{match_day}]({match_url}):"
+                "Automatic confirmation of the scheduled date against [{enemy_team_tag}]"
+                "({enemy_team_url}) for [{match_day}]({match_url}):"
             )
         elif isinstance(self.latest_confirmation_log, LogSchedulingConfirmation):
             message = _(
-                "Spielbestätigung gegen [{enemy_team_tag}]({enemy_team_url}) für "
-                "[{match_day}]({match_url}):"
+                "Confirmation of the scheduled date against [{enemy_team_tag}]"
+                "({enemy_team_url}) for [{match_day}]({match_url}):"
             )
         else:
             assert isinstance(self.latest_confirmation_log, LogChangeTime)
             message = _(
-                "Ein Administrator hat eine neue Zeit für [{match_day}]({match_url}) gegen "
-                "[{enemy_team_tag}]({enemy_team_url}) festgelegt:"
+                "An administrator has set a new date for [{match_day}]({match_url}) "
+                "against [{enemy_team_tag}]({enemy_team_url}):"
             )
 
         return (message + "\n⚔{time}").format(

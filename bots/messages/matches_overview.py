@@ -16,7 +16,7 @@ class MatchesOverview(BaseMessage):
         self.matches = self.__get_relevant_matches(match_ids)
 
     def _generate_title(self):
-        return "🔥 " + _('Neue Matches')
+        return "🔥 " + _("New matches")
 
     def __get_relevant_matches(self, match_ids=None):
         if match_ids is None:
@@ -26,7 +26,7 @@ class MatchesOverview(BaseMessage):
 
     def _generate_message(self):
         if len(self.matches) == 0:
-            return _("Ihr habt aktuell keine offenen Matches.")
+            return _("You currently have no open matches.")
         a = [
             (
                 "[{match_day}]({match_url}) ⚔ {enemy_team_name} ➡ [{website}]({scouting_url})\n"
@@ -39,21 +39,21 @@ class MatchesOverview(BaseMessage):
             )
             for match in self.matches]
         matches_text = "\n".join(a)
-        return f"**" + _('Eine Übersicht eurer offenen Matches:') + f"**\n\n{matches_text}"
+        return f"**" + _("An overview of your open matches:") + f"**\n\n{matches_text}"
 
     def _generate_discord_embed(self) -> discord.Embed:
         embed = Embed(color=Colour.gold())
         if len(self.matches) == 0:
-            embed.title = _("Ihr habt aktuell keine offenen Matches.")
+            embed.title = _("You currently have no open matches.")
         else:
-            embed.title = _("Eine Übersicht eurer offenen Matches:")
+            embed.title = _("An overview of your open matches:")
 
         for match in self.matches:
             name = "⚔ {match_day}".format(
                 match_day=self.helper.display_match_day(match).title(),
             )
             value = _(
-                "[gegen {enemy_team_name}]({match_url})"
+                "[against {enemy_team_name}]({match_url})"
             ).format(
                 enemy_team_name=match.enemy_team.name,
                 match_url=f"{settings.MATCH_URI}{match.match_id}",
@@ -63,12 +63,12 @@ class MatchesOverview(BaseMessage):
 
             if match.enemy_lineup_available:
                 value += (
-                        "\n> 📑 " + _('[Aktuelles Lineup]({lineup_link})')
+                        "\n> 📑 " + _("[Current lineup]({lineup_link})")
                 ).format(
                     lineup_link=match.team.get_scouting_url(match=match, lineup=True)
                 )
 
             embed.add_field(name=name, value=value, inline=False)
         embed.set_footer(
-            text=_("Andere Scouting Website? mit `!settings` einfach anpassen."))
+            text=_("Different scouting website? Use `!settings` to change it."))
         return embed

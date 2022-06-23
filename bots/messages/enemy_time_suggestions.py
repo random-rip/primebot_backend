@@ -13,15 +13,21 @@ class EnemyNewTimeSuggestionsNotificationMessage(MatchMessage):
         super().__init__(team, match)
 
     def _generate_title(self):
-        return "📆 " + gettext('Neuer Terminvorschlag eines Gegners')
+        return "📆 " + gettext("New date proposed by an opponent")
 
     def _generate_message(self):
         details = list(self.match.suggestion_set.all().values_list("begin", flat=True))
         enemy_team_tag = self.match.enemy_team.team_tag
 
         prefix = ngettext(
-            "Neuer Terminvorschlag von [{enemy_team_tag}]({enemy_team_url}) für [{match_day}]({match_url}):",
-            "Neue Terminvorschläge von [{enemy_team_tag}]({enemy_team_url}) für [{match_day}]({match_url}):",
+            (
+                "New date proposed by [{enemy_team_tag}]({enemy_team_url}) "
+                "for [{match_day}]({match_url}):"
+            ),
+            (
+                "New dates proposed by [{enemy_team_tag}]({enemy_team_url}) "
+                "for [{match_day}]({match_url}):"
+            ),
             len(details)
         ).format(
             enemy_team_tag=enemy_team_tag,

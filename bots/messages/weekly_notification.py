@@ -12,7 +12,7 @@ class WeeklyNotificationMessage(MatchMessage):
         super().__init__(team, match)
 
     def _generate_title(self):
-        return "🌟 " + _('Wochenübersicht')
+        return "🌟 " + _("Weekly overview")
 
     def _generate_message(self) -> str:
         op_link = self.enemy_team_scouting_url
@@ -20,9 +20,9 @@ class WeeklyNotificationMessage(MatchMessage):
             raise Exception(f"HOW THE FUCK IS the op_link None? This is illegal! {self.match.enemy_team}")
         enemy_team_tag = self.match.enemy_team.team_tag
         return _(
-            "Der nächste Spieltag:\n"
-            "[{match_day}]({match_url}) gegen [{enemy_team_tag}]({enemy_team_url}):\n"
-            "Hier ist der [{website} Link]({scouting_url}) des Teams."
+            "The next gameday:\n"
+            "[{match_day}]({match_url}) against [{enemy_team_tag}]({enemy_team_url}):\n"
+            "Here is your [{website} link]({scouting_url}) of the team."
         ).format(
             match_day=self.helper.display_match_day(self.match),
             match_url=self.match_url,

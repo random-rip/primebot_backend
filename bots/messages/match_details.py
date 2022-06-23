@@ -11,7 +11,7 @@ from utils.utils import format_datetime
 class MatchOverview(MatchMessage):
 
     def _generate_title(self) -> str:
-        return "🔥 " + _('Matchübersicht')
+        return "🔥 " + _("Match overview")
 
     def __init__(self, team: Team, match: Match):
         super().__init__(team, match)
@@ -21,7 +21,7 @@ class MatchOverview(MatchMessage):
         raise MessageNotImplementedError()
 
     def _add_schedule(self, ):
-        name = _("Termin")
+        name = _("Date")
 
         value = (
             "> {match_begin}\n"
@@ -36,33 +36,33 @@ class MatchOverview(MatchMessage):
         self.embed.add_field(name=name, value=value, inline=False)
 
     def _add_general_information(self):
-        name = _("Sonstige Informationen")
+        name = _("Other information")
         text = ""
 
         if self.match.has_side_choice:
-            text += "> " + _('Ihr habt im **ersten** Match Seitenwahl') + ".\n"
+            text += "> " + _("You have a choice of sides in the **first** game") + ".\n"
         else:
-            text += "> " + _('Ihr habt im **zweiten** Match Seitenwahl') + ".\n"
+            text += "> " + _("You have a choice of sides in the **second** game") + ".\n"
 
         banned = Champion.objects.get_banned_champions(self.match.begin)
 
         if banned.exists():
-            text += "> " + _("Folgende Champions sind voraussichtlich beim Spieltermin gesperrt") + ":\n"
+            text += "> " + _("The following champions are expected to be locked at the scheduled date") + ":\n"
             for i in banned:
                 text += (
                     "> ➕ ⛔️{name} ({until_patch_label} {until_patch})\n"
                 ).format(
                     name=i.name,
-                    until_patch_label=_('bis Patch'),
+                    until_patch_label=_("until patch"),
                     until_patch=i.banned_until_patch
                 )
 
-        text += f"> " + _('Das Regelwerk gibt es [hier.]') + "(https://www.primeleague.gg/statics/rules_general)\n"
+        text += f"> " + _("The rulebook is available [here.]") + "(https://www.primeleague.gg/statics/rules_general)\n"
 
         self.embed.add_field(name=name, value=text, inline=False)
 
     def _add_enemy_team(self):
-        name = _("Gegnerteam")
+        name = _("Opposing team")
         value = ""
         multi = ScoutingWebsite.objects.get_multi_websites()
 
@@ -74,7 +74,7 @@ class MatchOverview(MatchMessage):
         self.embed.add_field(name=name, value=value, inline=False)
 
     def _add_enemy_players(self):
-        name = _("Gegnerische Spieler (leagueofgraphs.com)")
+        name = _("Opposing players (leagueofgraphs.com)")
         value = ""
         single = ScoutingWebsite.objects.filter(multi=False).first()
         if not single:
@@ -88,26 +88,26 @@ class MatchOverview(MatchMessage):
         self.embed.add_field(name=name, value=value, inline=False)
 
     def _add_results(self):
-        name = _("Matchergebnis")
+        name = _("Match result")
         value = ""
-        value += f"ℹ️ " + _('Ergebnis') + ": {self.match.result}\n"
-        value += f"📆️ " + _('Termin') + f": {format_datetime(self.match.begin)}\n"
+        value += f"ℹ️ " + _("Result") + ": {self.match.result}\n"
+        value += f"📆️ " + _("Date") + f": {format_datetime(self.match.begin)}\n"
         self.embed.add_field(name=name, value=value, inline=False)
 
     def _add_team_lineup(self, result=False):
-        name = _("Eure Aufstellung")
+        name = _("Your lineup")
         value = ""
         if self.match.team_lineup_available:
             if not result:
-                value += "✅ " + _('Eigenes Lineup aufgestellt:') + "\n"
+                value += "✅ " + _("Own lineup submitted:") + "\n"
             for i, x in enumerate(self.match.team_lineup.all()):
                 value += f" > {emoji_numbers[i]} {x.summoner_name}\n"
         else:
-            value += f"⚠ " + _('Es wurde noch kein Lineup aufgestellt.') + "\n"
+            value += f"⚠ " + _("No lineup has been submitted yet.") + "\n"
         self.embed.add_field(name=name, value=value)
 
     def _add_enemy_lineup(self, result=False):
-        name = _("Gegnerische Aufstellung")
+        name = _("Lineup of opponent")
         value = ""
         if self.match.enemy_lineup_available:
             names = self.match.enemy_lineup.all()
@@ -122,15 +122,15 @@ class MatchOverview(MatchMessage):
             for i, x in enumerate(names):
                 value += f"> {emoji_numbers[i]} {x.summoner_name}\n"
         else:
-            value += _('Es wurde noch kein Lineup aufgestellt.') + "\n"
+            value += _("No lineup has been submitted yet.") + "\n"
         self.embed.add_field(name=name, value=value)
 
     def _add_disclaimer(self):
         name = _("Disclaimer")
         value = _(
-            "Dieser Befehl befindet sich noch in der Beta! Wir sammeln dazu noch Feedback.\n"
-            "Welche Informationen fehlen euch noch?\n"
-            "[Schreibt es uns auf Discord!](https://discord.gg/7NYgT2uFPm)"
+            "This command is in beta! We still collect feedback for this.\n"
+            "What other information would you like to see?\n"
+            "[Write us on Discord!](https://discord.gg/7NYgT2uFPm)"
         )
         value = f"_{value}_"
         self.embed.add_field(
@@ -146,7 +146,7 @@ class MatchOverview(MatchMessage):
             match_day=self.helper.display_match_day(self.match).title(),
         )
         value = _(
-            "[gegen {enemy_team_name}]({match_url})"
+            "[against {enemy_team_name}]({match_url})"
         ).format(
             enemy_team_name=self.match.enemy_team.name,
             match_url=f"{settings.MATCH_URI}{self.match.match_id}",
@@ -167,6 +167,6 @@ class MatchOverview(MatchMessage):
             self._add_enemy_lineup()
             self._add_general_information()
         self.embed.set_footer(
-            text=_("Andere Scouting Website? mit `!settings` einfach anpassen."))
+            text=_("Different scouting website? Use `!settings` to change it."))
 
         return self.embed

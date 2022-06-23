@@ -13,15 +13,15 @@ class NewCommentsNotificationMessage(MatchMessage):
         self.new_comment_ids = new_comment_ids
 
     def _generate_title(self):
-        return "💬 " + gettext('Neue Kommentare')
+        return "💬 " + gettext('New comments')
 
     def _generate_message(self):
         enemy_team_tag = self.match.enemy_team.team_tag
         message = ngettext(
-            "Es gibt [einen neuen Kommentar]({match_url}) für [{match_day}]({match_url}) "
-            "gegen [{enemy_team_tag}]({enemy_team_url}).",
-            "Es gibt [neue Kommentare]({match_url}) für [{match_day}]({match_url}) gegen "
-            "[{enemy_team_tag}]({enemy_team_url}).",
+            "There is [a new comment]({match_url}) for [{match_day}]({match_url}) "
+            "against [{enemy_team_tag}]({enemy_team_url}).",
+            "There are [new comments]({match_url}) for [{match_day}]({match_url}) "
+            "against [{enemy_team_tag}]({enemy_team_url}).",
             len(self.new_comment_ids)
         )
 

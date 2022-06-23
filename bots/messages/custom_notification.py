@@ -13,7 +13,7 @@ class NotificationToTeamMessage(BaseMessage):
         self._generate_message()
 
     def _generate_title(self):
-        return "🛠️ " + _('Entwicklerbenachrichtigung')
+        return "🛠️ " + _("Developer notification")
 
     def _generate_message(self):
         # TODO i18n ?! Oder eher dann ins adminpanel auslagern

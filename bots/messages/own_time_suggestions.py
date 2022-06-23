@@ -12,11 +12,11 @@ class OwnNewTimeSuggestionsNotificationMessage(MatchMessage):
         super().__init__(team, match)
 
     def _generate_title(self):
-        return "📆 " + _('Eigener neuer Terminvorschlag')
+        return "📆 " + _("New date proposed by you")
 
     def _generate_message(self):
         return _(
-            "Neuer Terminvorschlag von euch für [{match_day}]({match_url})."
+            "New date proposed by you for [{match_day}]({match_url})."
         ).format(
             match_day=self.helper.display_match_day(self.match),
             match_url=self.match_url

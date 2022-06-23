@@ -9,13 +9,13 @@ class MatchDisplayHelper:
     @staticmethod
     def display_match_day(match: Match) -> str:
         if match.match_day == Match.MATCH_DAY_PLAYOFF:
-            msg = _("Playoff Match {match_day}")
+            msg = _("playoff match {match_day}")
         elif match.match_day == Match.MATCH_DAY_TIEBREAKER:
-            msg = _("Tiebreaker Match {match_day}")
+            msg = _("tiebreaker match {match_day}")
         elif match.match_type == Match.MATCH_TYPE_GROUP:
-            msg = _("Match {match_day}")
+            msg = _("match {match_day}")
         else:
-            msg = _("Spieltag {match_day}")
+            msg = _("gameday {match_day}")
         return msg.format(match_day=match.match_day)
 
     @staticmethod
@@ -25,11 +25,11 @@ class MatchDisplayHelper:
 
         if match.team_made_latest_suggestion is None:
             return "📆 " + _(
-                "Keine Terminvorschläge. Ausweichtermin: {time}"
+                "No dates proposed. Alternative date: {time}"
             ).format(
                 time=format_datetime(match.begin)
             )
         if match.team_made_latest_suggestion is False:
-            return "📆 ⚠ " + _("Offene Terminvorschläge vom Gegner!")
+            return "📆 ⚠ " + _("Dates proposed by the opponent are open!")
         if match.team_made_latest_suggestion is True:
-            return "📆 ✅ " + _("Offene Terminvorschläge von euch.")
+            return "📆 ✅ " + _("Dates proposed by you are open.")
