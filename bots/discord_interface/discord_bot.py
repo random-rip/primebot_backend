@@ -18,7 +18,8 @@ from bots.messages import MatchesOverview, MatchOverview
 from bots.messages.base import BaseMessage
 from bots.utils import mysql_has_gone_away
 from utils.changelogs import CHANGELOGS
-from utils.exceptions import CouldNotParseURLException, PrimeLeagueConnectionException, TeamWebsite404Exception
+from utils.exceptions import CouldNotParseURLException, PrimeLeagueConnectionException, TeamWebsite404Exception, \
+    Div1orDiv2TeamException
 from utils.messages_logger import log_from_discord
 from utils.utils import get_valid_team_id
 
@@ -72,6 +73,12 @@ class DiscordBot(Bot):
                         "Aus dem Übergabeparameter konnte keine ID gefunden werden. "
                         "(Format `!start TEAM_ID_or_TEAM_URL`).\n"
                         "Schaue auf unserer Website https://primebot.me/discord/ nach Hilfe."
+                    ))
+                return
+            except Div1orDiv2TeamException:
+                await ctx.send(
+                    content=(
+                        "Es können keine Teams aus Division 1 oder 2 registriert werden."
                     ))
                 return
 

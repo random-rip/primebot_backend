@@ -2,13 +2,15 @@ from django.conf import settings
 from telegram import Update, ParseMode
 from telegram.error import BadRequest
 from telegram.ext import CallbackContext, ConversationHandler
+
 from app_prime_league.models import Team
 from app_prime_league.teams import register_team
 from bots.messages import MatchesOverview
 from bots.telegram_interface.commands.single_commands import set_photo
 from bots.telegram_interface.keyboards import boolean_keyboard
 from bots.utils import mysql_has_gone_away_decorator
-from utils.exceptions import CouldNotParseURLException, PrimeLeagueConnectionException, TeamWebsite404Exception
+from utils.exceptions import CouldNotParseURLException, PrimeLeagueConnectionException, TeamWebsite404Exception, \
+    Div1orDiv2TeamException
 from utils.messages_logger import log_command, log_callbacks
 from utils.utils import get_valid_team_id
 
@@ -111,6 +113,14 @@ def team_registration(update: Update, context: CallbackContext):
                 "Die angegebene URL entspricht nicht dem richtigen Format.\n"
                 "Achte auf das richtige Format oder gib die *Team ID* ein.\n"
                 "Bitte versuche es erneut oder /cancel."
+            ),
+            quote=False,
+        )
+        return 1
+    except Div1orDiv2TeamException:
+        update.message.reply_markdown(
+            text=(
+                "Es können keine Teams aus Division 1 oder 2 registriert werden."
             ),
             quote=False,
         )
