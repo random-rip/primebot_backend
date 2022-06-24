@@ -7,7 +7,7 @@ from babel import dates as babel
 from django.conf import settings
 from django.utils import translation
 
-from utils.exceptions import CouldNotParseURLException
+from utils.exceptions import CouldNotParseURLException, Div1orDiv2TeamException
 
 
 def serializer(obj: Union[datetime, time]):
@@ -40,12 +40,23 @@ def current_match_day():
     return match_day
 
 
-def get_valid_team_id(response):
+def get_valid_team_id(value: Union[str, int]) -> int:
+    """
+    Try to convert value to integer. If it fails, check if "/leagues/" is in value (div 1 and div 2 teams
+    cannot be registered, raises Div1orDiv2TeamException). After that try to parse the team ID from the given string.
+    Args:
+        value: URL string or TeamID
+
+    Returns: int: Team ID
+    Raises: CouldNotParseURLException, Div1orDiv2TeamException
+    """
     try:
-        team_id = int(response)
-    except Exception:
+        team_id = int(value)
+    except ValueError:
+        if "/leagues/" not in value:
+            raise Div1orDiv2TeamException()
         try:
-            team_id = int(response.split("/teams/")[-1].split("-")[0])
+            team_id = int(value.split("/teams/")[-1].split("-")[0])
         except Exception:
             raise CouldNotParseURLException()
     return team_id
