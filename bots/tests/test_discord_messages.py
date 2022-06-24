@@ -79,8 +79,9 @@ class DiscordMessageTests(TestCase):
 
         msg = EnemyNewTimeSuggestionsNotificationMessage(match=self.match, team=self.team_a)
 
-        self.assertEqual(msg.settings_key, "ENEMY_SCHEDULING_SUGGESTION", )
-        self.assertEqual(msg.mentionable, True, )
+        self.assertEqual("ENEMY_SCHEDULING_SUGGESTION", msg.settings_key, )
+        self.assertTrue(msg.mentionable, )
+        self.assertEqual("📆 Neuer Terminvorschlag eines Gegners", msg.generate_title(), )
 
         expected = (
             "Neue Terminvorschläge von [xyz](https://www.primeleague.gg/de/leagues/teams/2) für [Spieltag 1](https://"
@@ -89,7 +90,7 @@ class DiscordMessageTests(TestCase):
             "2️⃣Sonntag, 2. Januar 2022 15:00 Uhr\n"
             "3️⃣Sonntag, 2. Januar 2022 17:00 Uhr"
         )
-        self.assertEqual(msg.generate_message(), expected, )
+        self.assertEqual(expected, msg.generate_message())
 
     def test_schedule_confirmation(self):
         self.match.begin = string_to_datetime("2022-02-17 15:00")
@@ -136,10 +137,10 @@ class DiscordMessageTests(TestCase):
 
         self.assertEqual(msg.settings_key, "NEW_MATCH_NOTIFICATION", )
         self.assertEqual(msg.mentionable, True, )
-        expected = ("Your next match in the calibration stage:\n"
-                    "[Match 1](https://www.primeleague.gg/de/leagues/matches/1) against [xyz](https://www.primeleag"
-                    "ue.gg/de/leagues/teams/2):\nHere is your [op.gg Link](https://euw.op.gg/multisearch/euw?"
-                    "summoners=player1,player2,player3,player4,player5,player6) of the team.")
+        expected = ("Euer nächstes Match in der Kalibrierungsphase:\n"
+                    "[Match 1](https://www.primeleague.gg/de/leagues/matches/1) gegen [xyz](https://www.primeleag"
+                    "ue.gg/de/leagues/teams/2):\nHier ist der [op.gg Link](https://euw.op.gg/multisearch/euw?"
+                    "summoners=player1,player2,player3,player4,player5,player6) des Teams.")
 
         self.assertEqual(msg.generate_message(), expected, )
 

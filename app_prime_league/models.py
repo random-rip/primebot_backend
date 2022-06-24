@@ -11,8 +11,8 @@ from utils.exceptions import GMDNotInitialisedException
 
 class Team(models.Model):
     class Languages(models.TextChoices):
-        GERMAN = "de", _("deutsch")
-        ENGLISH = "en", _("englisch")
+        GERMAN = "de", _("german")
+        ENGLISH = "en", _("english")
 
     name = models.CharField(max_length=100, null=True, blank=True, )
     team_tag = models.CharField(max_length=100, null=True, blank=True, )

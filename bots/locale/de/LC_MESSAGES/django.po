@@ -1,14 +1,14 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# English Translation for bots.
+# Copyright (C) 2022 Janek Mangold
+# This file is distributed under the same license as the prime_bot_backend package.
+# Janek Mangold <mangold.janek@web.de>, 2022.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-23 19:40+0200\n"
+"POT-Creation-Date: 2022-06-24 12:47+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -58,6 +58,21 @@ msgstr ""
 msgid "New date proposed by an opponent"
 msgstr "Neuer Terminvorschlag eines Gegners"
 
+#: .\bots\messages\enemy_time_suggestions.py:23
+#, python-brace-format
+msgid ""
+"New date proposed by [{enemy_team_tag}]({enemy_team_url}) for [{match_day}]"
+"({match_url}):"
+msgid_plural ""
+"New dates proposed by [{enemy_team_tag}]({enemy_team_url}) for [{match_day}]"
+"({match_url}):"
+msgstr[0] ""
+"Neuer Terminvorschlag von [{enemy_team_tag}]({enemy_team_url}) für "
+"[{match_day}]({match_url}):"
+msgstr[1] ""
+"Neue Terminvorschläge von [{enemy_team_tag}]({enemy_team_url}) für "
+"[{match_day}]({match_url}):"
+
 #: .\bots\messages\helpers.py:12
 #, python-brace-format
 msgid "playoff match {match_day}"
@@ -95,7 +110,7 @@ msgstr "Offene Terminvorschläge von euch."
 msgid "Match overview"
 msgstr "Matchübersicht"
 
-#: .\bots\messages\match_details.py:24
+#: .\bots\messages\match_details.py:24 .\bots\messages\match_details.py:94
 msgid "Date"
 msgstr "Termin"
 
@@ -138,10 +153,6 @@ msgstr "Matchergebnis"
 #: .\bots\messages\match_details.py:93
 msgid "Result"
 msgstr "Ergebnis"
-
-#: .\bots\messages\match_details.py:94
-msgid "Termin"
-msgstr "Termin"
 
 #: .\bots\messages\match_details.py:98
 msgid "Your lineup"

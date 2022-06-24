@@ -1,13 +1,8 @@
-from unittest import skip
-
 from django.test import TestCase
 from django.utils import translation
 
-from app_prime_league.models import Team, Match, Player, Suggestion
-from bots.messages import NewLineupNotificationMessage, WeeklyNotificationMessage, \
-    OwnNewTimeSuggestionsNotificationMessage, EnemyNewTimeSuggestionsNotificationMessage, \
-    ScheduleConfirmationNotification, NewMatchNotification, NewCommentsNotificationMessage
-from modules.parsing.logs import LogSchedulingConfirmation, LogSchedulingAutoConfirmation, LogChangeTime
+from app_prime_league.models import Team, Match, Player
+from bots.messages import NewCommentsNotificationMessage
 from modules.test_utils import string_to_datetime
 from utils.utils import format_datetime
 
@@ -31,29 +26,29 @@ class DiscordMessageTests(TestCase):
 
     def test_i18n(self):
         # todo test i18n
-        self.team_a.language = "en"
+        self.team_a.language = "de"
         msg = NewCommentsNotificationMessage(match=self.match, team=self.team_a, new_comment_ids=[123456789])
         result = msg.generate_message()
 
-        expected = ("There is [a new comment](https://www.primeleague.gg/de/leagues/matches/1#comment:"
-                    "123456789) for [gameday 1](https://www.primeleague.gg/de/leagues/"
-                    "matches/1#comment:123456789) against [xyz](https://www.primeleague.gg/de/leagues/teams/2).")
+        expected = ("Es gibt [einen neuen Kommentar](https://www.primeleague.gg/de/leagues/matches/1#comment:"
+                    "123456789) für [Spieltag 1](https://www.primeleague.gg/de/leagues/"
+                    "matches/1#comment:123456789) gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2).")
 
-        print("Result:")
-        print(result)
-        print("Expected:")
-        print(expected)
+        # print("Result:")
+        # print(result)
+        # print("Expected:")
+        # print(expected)
         self.assertEqual(result, expected, )
 
     def test_datetime_format(self):
         self.match.begin = string_to_datetime("2022-02-17 15:00")
-        with translation.override("en"):
+        with translation.override("de"):
             result = format_datetime(self.match.begin)
         self.assertEqual(
-            "Thursday, 17. February 2022 15:00 PM",
+            "Donnerstag, 17. Februar 2022 15:00 Uhr",
             result,
         )
         self.assertEqual(
             format_datetime(self.match.begin),
-            "Donnerstag, 17. Februar 2022 15:00 Uhr",
+            "Thursday, 17. February 2022 15:00 PM",
         )
