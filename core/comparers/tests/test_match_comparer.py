@@ -1,8 +1,8 @@
 from django.test import TestCase
 
 from app_prime_league.models import Match, Team, Player
-from modules.comparers.match_comparer import MatchComparer
-from modules.test_utils import string_to_datetime, create_temporary_match_data
+from core.comparers.match_comparer import MatchComparer
+from core.test_utils import string_to_datetime, create_temporary_match_data
 
 
 class SuggestionsTest(TestCase):

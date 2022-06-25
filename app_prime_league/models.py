@@ -75,6 +75,7 @@ class Team(models.Model):
                 match.enemy_lineup.all().delete()
                 match.delete()
             self.setting_set.all().delete()
+            # TODO: team auf standardeinstellungen zurücksetzen (scouting website, sprache)
 
     def get_scouting_url(self, match: "Match", lineup=True):
         """

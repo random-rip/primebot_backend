@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     "corsheaders",
     # own
     'app_prime_league',
-    'modules',
+    'core',
     'bots',
 ]
 

@@ -5,8 +5,8 @@ import traceback
 
 from app_prime_league.models import Team, Player, Match, Suggestion
 from bots.telegram_interface.tg_singleton import send_message_to_devs
-from modules.processors.team_processor import TeamDataProcessor
-from modules.temporary_match_data import TemporaryMatchData
+from core.processors.team_processor import TeamDataProcessor
+from core.temporary_match_data import TemporaryMatchData
 from prime_league_bot import settings
 from utils.messages_logger import log_exception
 

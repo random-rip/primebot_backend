@@ -4,16 +4,16 @@ from app_prime_league.models import Team, Match, Player, Suggestion
 from bots.messages import NewLineupNotificationMessage, WeeklyNotificationMessage, \
     OwnNewTimeSuggestionsNotificationMessage, EnemyNewTimeSuggestionsNotificationMessage, \
     ScheduleConfirmationNotification, NewMatchNotification, NewCommentsNotificationMessage
-from modules.parsing.logs import LogSchedulingConfirmation, LogSchedulingAutoConfirmation, LogChangeTime
-from modules.test_utils import string_to_datetime
+from core.parsing.logs import LogSchedulingConfirmation, LogSchedulingAutoConfirmation, LogChangeTime
+from core.test_utils import string_to_datetime
 from django.test import TestCase
 
 from app_prime_league.models import Team, Match, Player, Suggestion
 from bots.messages import NewLineupNotificationMessage, WeeklyNotificationMessage, \
     OwnNewTimeSuggestionsNotificationMessage, EnemyNewTimeSuggestionsNotificationMessage, \
     ScheduleConfirmationNotification, NewMatchNotification, NewCommentsNotificationMessage
-from modules.parsing.logs import LogSchedulingConfirmation, LogSchedulingAutoConfirmation, LogChangeTime
-from modules.test_utils import string_to_datetime
+from core.parsing.logs import LogSchedulingConfirmation, LogSchedulingAutoConfirmation, LogChangeTime
+from core.test_utils import string_to_datetime
 
 
 class DiscordMessageTests(TestCase):

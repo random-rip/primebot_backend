@@ -6,7 +6,7 @@ from datetime import datetime
 from django.core.management import BaseCommand
 
 from app_prime_league.models import Team
-from modules.updater.teams_check_executor import update_teams
+from core.updater.teams_check_executor import update_teams
 
 thread_local = threading.local()
 logger = logging.getLogger("updates")

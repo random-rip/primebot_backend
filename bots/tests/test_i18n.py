@@ -3,7 +3,7 @@ from django.utils import translation
 
 from app_prime_league.models import Team, Match, Player
 from bots.messages import NewCommentsNotificationMessage
-from modules.test_utils import string_to_datetime
+from core.test_utils import string_to_datetime
 from utils.utils import format_datetime
 
 

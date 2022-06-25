@@ -13,8 +13,8 @@ from bots.messages import (
     NewLineupNotificationMessage,
     NewCommentsNotificationMessage
 )
-from modules.comparers.match_comparer import MatchComparer
-from modules.temporary_match_data import TemporaryMatchData
+from core.comparers.match_comparer import MatchComparer
+from core.temporary_match_data import TemporaryMatchData
 from utils.exceptions import Match404Exception
 from utils.messages_logger import log_exception
 

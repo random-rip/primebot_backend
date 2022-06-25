@@ -1,7 +1,7 @@
 from abc import abstractmethod
 
-from modules.parsing.logs import BaseLog, LogSchedulingConfirmation, LogSchedulingAutoConfirmation, LogChangeTime
-from modules.providers.prime_league import PrimeLeagueProvider
+from core.parsing.logs import BaseLog, LogSchedulingConfirmation, LogSchedulingAutoConfirmation, LogChangeTime
+from core.providers.prime_league import PrimeLeagueProvider
 from utils.utils import timestamp_to_datetime
 
 

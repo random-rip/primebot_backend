@@ -3,7 +3,7 @@ import os
 
 from rest_framework import status
 
-from modules.api import PrimeLeagueAPI
+from core.api import PrimeLeagueAPI
 from prime_league_bot import settings
 from utils.exceptions import TeamWebsite404Exception, PrimeLeagueConnectionException, PrimeLeagueParseException, \
     Match404Exception

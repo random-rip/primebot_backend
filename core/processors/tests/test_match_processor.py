@@ -2,9 +2,9 @@ from unittest.mock import patch
 
 from django.test import TestCase
 
-from modules.processors.match_processor import MatchDataProcessor
-from modules.providers.prime_league import PrimeLeagueProvider
-from modules.test_utils import string_to_datetime
+from core.processors.match_processor import MatchDataProcessor
+from core.providers.prime_league import PrimeLeagueProvider
+from core.test_utils import string_to_datetime
 
 
 class MatchBeginTest(TestCase):

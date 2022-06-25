@@ -3,7 +3,7 @@ from django.utils.translation import gettext as _
 
 from app_prime_league.models import Team, Match
 from bots.messages.base import MatchMessage
-from modules.parsing.logs import LogSchedulingAutoConfirmation, LogSchedulingConfirmation, LogChangeTime
+from core.parsing.logs import LogSchedulingAutoConfirmation, LogSchedulingConfirmation, LogChangeTime
 from utils.utils import format_datetime
 
 

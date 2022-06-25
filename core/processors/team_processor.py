@@ -1,6 +1,6 @@
 from abc import abstractmethod
 
-from modules.providers.prime_league import PrimeLeagueProvider
+from core.providers.prime_league import PrimeLeagueProvider
 
 
 class __TeamDataMethods:

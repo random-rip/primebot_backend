@@ -1,6 +1,6 @@
 ### SETUP
 Requirements:
-- Python 3.8.10+
+- Python 3.8+
 - MariaDB/MySQL (Windowsprogramm: XAMPP)
 - virtualenv (pip package):  `pip install virtualenv`
 
@@ -19,16 +19,16 @@ Requirements:
 ### Projektstruktur
 
 - ``app_prime_league`` enthält Models und Commands.
-  - Model ``Match``: Relevante Informationen zu einen Match
+  - Model ``Match``: Relevante Informationen zu einem Match
   - Model ``Player``: Relevante Informationen zu einem Spieler (bspw. Summonername)
   - Model ``Team``: Relevante Informationen zu einem Team (bspw. Name, Tag, Bild, Discord Channel ID, )
   - Model ``ScoutingWebsite``: Hält alle möglichen Scoutingwebsites (aktuell: op.gg, u.gg, xdx.gg)
   - Model ``Suggestion``: Suggestions von Matches
-  - Model ``Setting``: Einstellungen von Teams zu Benachrichtungen etc.
+  - Model ``Setting``: Einstellungen von Teams zu Benachrichtigungen etc.
   - Model ``Comment``: Kommentare zu Matches
   - ``MatchMetaData``: Vergleichsobjekt zu einem `Match` für den Comparer
 - ``bots`` enthält alle relevanten Discord- und Telegram-Skripte, LanguageFiles, und den MessageDispatcher.
-- ``modules`` enthält alle die gesamte PrimeLeague-Kommunikation, Parsing und Comparing. Folgende Hauptmodule sollten außerhalb benutzt werden:
+- ``core`` enthält alle die gesamte PrimeLeague-Kommunikation, Parsing und Comparing. Folgende modules sollten außerhalb benutzt werden:
   - Package `processors`: Die Klassen übernehmen die Kommunikation mit dem Filesystem/der API, das JSON-Parsing und Funktionsbereitstellung von `Teams` und `Matches`
   - Package `comparing`: Die hier vorhandenen Funktionen übernehmen den Vergleich zwischen Datenbank und `MatchMetaData`-Objekten und die Parallelisierung im Produktivumgebungen
 - ``storage`` hält die heruntergeladenen json-Dateien fürs Development. Es ist üblich, erst einen Request über die Api zu machen und anschließend das lokale Filesystem zu benutzen. (.env)

@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
 
 from app_prime_league.models import Team
-from modules.processors.match_processor import MatchDataProcessor
-from modules.processors.team_processor import TeamDataProcessor
+from core.processors.match_processor import MatchDataProcessor
+from core.processors.team_processor import TeamDataProcessor
 from utils.exceptions import GMDNotInitialisedException
 from utils.utils import timestamp_to_datetime
 

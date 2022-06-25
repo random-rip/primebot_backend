@@ -3,7 +3,7 @@ from datetime import datetime
 import pytz
 
 from app_prime_league.models import Comment
-from modules.temporary_match_data import TemporaryComment, TemporaryMatchData
+from core.temporary_match_data import TemporaryComment, TemporaryMatchData
 from utils.utils import timestamp_to_datetime
 
 

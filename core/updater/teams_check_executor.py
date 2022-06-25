@@ -11,8 +11,8 @@ from app_prime_league.teams import create_matches
 from bots.message_dispatcher import MessageDispatcher
 from bots.messages import MatchesOverview
 from bots.telegram_interface.tg_singleton import send_message_to_devs
-from modules.processors.team_processor import TeamDataProcessor
-from modules.comparers.team_comparer import TeamComparer
+from core.processors.team_processor import TeamDataProcessor
+from core.comparers.team_comparer import TeamComparer
 from utils.messages_logger import log_exception
 
 thread_local = threading.local()

@@ -1,8 +1,8 @@
 from django.test import TestCase
 
 from app_prime_league.models import Match, Team, Player, Comment
-from modules.comparers.match_comparer import MatchComparer
-from modules.test_utils import create_temporary_match_data, create_temporary_comment, create_comment
+from core.comparers.match_comparer import MatchComparer
+from core.test_utils import create_temporary_match_data, create_temporary_comment, create_comment
 
 
 class CompareCommentsTest(TestCase):

@@ -1,7 +1,7 @@
 from typing import Union, List
 
 from app_prime_league.models import Match
-from modules.temporary_match_data import TemporaryMatchData
+from core.temporary_match_data import TemporaryMatchData
 
 
 class MatchComparer:
