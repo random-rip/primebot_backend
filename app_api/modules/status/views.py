@@ -13,7 +13,7 @@ from core.api import PrimeLeagueAPI
 logger = logging.getLogger("django")
 
 
-class Gitlab:
+class GitHub:
     BASE_URL = "https://api.github.com/repos/random-rip/primebot_backend"
     RELEASES = BASE_URL + "/releases"
     RELEASES_CACHE_KEY = "releases"
@@ -38,7 +38,7 @@ class Gitlab:
             return []
 
     @classmethod
-    def latest_version(cls):
+    def latest_version(cls) -> dict:
         cached = cache.get(cls.RELEASES_CACHE_KEY, )
         ret = {
             "version": None,
@@ -63,14 +63,14 @@ class ChangelogView(APIView):
     permission_classes = []
 
     def get(self, request, ):
-        gitlab_data = Gitlab.releases()
+        github_data = GitHub.releases()
         changelogs = [
             {
                 "version": x["tag_name"],
                 "released_at": x["published_at"],
                 "notes": x["body"]
             }
-            for x in gitlab_data
+            for x in github_data
         ]
         data = {
             "changelogs": changelogs,
@@ -85,7 +85,7 @@ class StatusView(APIView):
     def get(self, request, ):
         logger.info("Request PrimeBot Website")
         data = {
-            "latest": Gitlab.latest_version(),
+            "latest": GitHub.latest_version(),
             "prime_league_status": self._get_prime_league_status(),
             "discord_status": self._get_discord_bot_status(),
             "telegram_status": self._get_telegram_bot_status(),

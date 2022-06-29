@@ -9,6 +9,7 @@ from discord import Webhook, RequestsWebhookAdapter, Embed, Colour, NotFound, Fi
 from discord.ext import commands
 from django.conf import settings
 
+from app_api.modules.status.views import GitHub
 from app_api.modules.team_settings.maker import SettingsMaker
 from app_prime_league.models import Team, Match
 from app_prime_league.teams import register_team
@@ -17,7 +18,6 @@ from bots.base.bot import Bot
 from bots.messages import MatchesOverview, MatchOverview
 from bots.messages.base import BaseMessage
 from bots.utils import mysql_has_gone_away
-from utils.changelogs import CHANGELOGS
 from utils.exceptions import CouldNotParseURLException, PrimeLeagueConnectionException, TeamWebsite404Exception, \
     Div1orDiv2TeamException
 from utils.messages_logger import log_from_discord
@@ -41,7 +41,7 @@ class DiscordBot(Bot):
         help_command = commands.DefaultHelpCommand(
             no_category='Commands'
         )
-
+        project_version = GitHub.latest_version().get("version", None)
         super().__init__(
             bot=commands.Bot,
             bot_config={
@@ -52,9 +52,9 @@ class DiscordBot(Bot):
                     "und hat damit keinen direkten Bezug zur Prime League. Dieser Bot wurde aufgrund von versäumten "
                     "Matches entworfen und programmiert. Der Bot wurde nach bestem Gewissen realisiert, und nach einer "
                     "Testphase für andere Teams zur Verfügung gestellt.\n"
-                    "Dennoch sind alle Angaben ohne Gewähr! _Version: {version}_"
+                    "Dennoch sind alle Angaben ohne Gewähr! Version: {version}"
                 ).format(
-                    version=CHANGELOGS[sorted(CHANGELOGS.keys())[-1]]["version"]),
+                    version=project_version),
                 "help_command": help_command
             },
         )
