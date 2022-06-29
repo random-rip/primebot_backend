@@ -152,7 +152,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = env.str("STATIC_ROOT", None)
 
-GAME_SPORTS_BASE_URL = "https://api.gamesports.net/leagues/primebot"
+GAME_SPORTS_BASE_URL = env.str("GAME_SPORTS_BASE_URL", None)
 
 MATCH_URI = "https://www.primeleague.gg/de/leagues/matches/"
 TEAM_URI = "https://www.primeleague.gg/de/leagues/teams/"
@@ -163,9 +163,6 @@ STORAGE_DIR = os.path.join(BASE_DIR, "storage", )
 TELEGRAM_BOT_KEY = env.str("TELEGRAM_BOT_API_KEY", None)
 TG_DEVELOPER_GROUP = env.int("TG_DEVELOPER_GROUP", None)
 TELEGRAM_START_LINK = "https://t.me/prime_league_bot?startgroup=start"
-
-GIT_TOKEN = env.str("GIT_TOKEN", None)
-PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
 DISCORD_BOT_KEY = env.str("DISCORD_API_KEY", None)
 DISCORD_APP_CLIENT_ID = env.int("DISCORD_APP_CLIENT_ID", None)

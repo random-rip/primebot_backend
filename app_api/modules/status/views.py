@@ -14,14 +14,14 @@ logger = logging.getLogger("django")
 
 
 class Gitlab:
-    URL = "https://gitlab.com/api/v4/projects/19644883"
-    RELEASES = URL + "/releases/"
+    BASE_URL = "https://api.github.com/repos/random-rip/primebot_backend"
+    RELEASES = BASE_URL + "/releases"
     RELEASES_CACHE_KEY = "releases"
     CACHE_DURATION = 60 * 60
 
     @classmethod
     def get_json(cls, url):
-        data = requests.get(cls.RELEASES, headers={"PRIVATE-TOKEN": settings.GIT_TOKEN}).json()
+        data = requests.get(url).json()
         return data
 
     @classmethod
@@ -46,13 +46,13 @@ class Gitlab:
         }
         if cached:
             ret["version"] = cached[0].get("tag_name", None)
-            ret["released_at"] = cached[0].get("released_at", None)
+            ret["released_at"] = cached[0].get("published_at", None)
             return ret
         try:
             data = cls.get_json(cls.RELEASES)
             cache.set(cls.RELEASES_CACHE_KEY, data, cls.CACHE_DURATION)
             ret["version"] = data[0].get("tag_name", None)
-            ret["released_at"] = data[0].get("released_at", None)
+            ret["released_at"] = data[0].get("published_at", None)
             return ret
         except Exception:
             return ret
@@ -67,8 +67,8 @@ class ChangelogView(APIView):
         changelogs = [
             {
                 "version": x["tag_name"],
-                "released_at": x["released_at"],
-                "notes": x["description"]
+                "released_at": x["published_at"],
+                "notes": x["body"]
             }
             for x in gitlab_data
         ]
