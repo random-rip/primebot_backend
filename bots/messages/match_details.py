@@ -90,7 +90,7 @@ class MatchOverview(MatchMessage):
     def _add_results(self):
         name = _("Match result")
         value = ""
-        value += f"ℹ️ " + _("Result") + ": {self.match.result}\n"
+        value += f"ℹ️ " + _("Result") + f": {self.match.result}\n"
         value += f"📆️ " + _("Date") + f": {format_datetime(self.match.begin)}\n"
         self.embed.add_field(name=name, value=value, inline=False)
 
@@ -148,7 +148,7 @@ class MatchOverview(MatchMessage):
         value = _(
             "[against {enemy_team_name}]({match_url})"
         ).format(
-            enemy_team_name=self.match.enemy_team.name,
+            enemy_team_name=self.match.get_enemy_team().name,
             match_url=f"{settings.MATCH_URI}{self.match.match_id}",
         )
         value += "\n"

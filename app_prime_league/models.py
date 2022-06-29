@@ -1,6 +1,3 @@
-from datetime import datetime
-from typing import Union
-
 from django.conf import settings
 from django.db import models
 from django.db.models import F
@@ -9,7 +6,6 @@ from django.utils.translation import gettext_lazy as _
 
 from app_prime_league.model_manager import TeamManager, MatchManager, PlayerManager, ScoutingWebsiteManager, \
     ChampionManager
-from utils.exceptions import GMDNotInitialisedException
 
 
 class Team(models.Model):
@@ -91,7 +87,7 @@ class Team(models.Model):
         if lineup and match.enemy_lineup_available:
             qs = match.enemy_lineup
         else:
-            qs = match.enemy_team.player_set
+            qs = match.get_enemy_team().player_set
 
         names = list(qs.get_active_players().values_list("summoner_name", flat=True))
         if self.scouting_website:
@@ -199,13 +195,6 @@ class Match(models.Model):
         self.match_begin_confirmed = gmd.match_begin_confirmed
         self.save()
 
-    def update_enemy_team(self, gmd):
-        if gmd.enemy_team is None:
-            raise GMDNotInitialisedException("GMD Enemy Team Data is not initialized yet. Aborting...")
-        enemy_team, created = Team.objects.update_or_create(id=gmd.enemy_team_id, defaults=self.enemy_team)
-        _ = Player.objects.create_or_update_players(gmd.enemy_team_members, enemy_team)
-        self.set_enemy_team(gmd=gmd)
-
     def update_latest_suggestions(self, md):
         if md.latest_suggestions is not None:
             self.suggestion_set.all().delete()
@@ -239,6 +228,12 @@ class Match(models.Model):
     @property
     def team_lineup_available(self):
         return self.team_lineup.all().count() > 0
+
+    def get_enemy_team(self) -> Team:
+        return self.enemy_team or Team(
+            name=_("Deleted Team"),
+            team_tag=_("Deleted Team"),
+        )
 
 
 class ScoutingWebsite(models.Model):

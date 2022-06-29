@@ -22,9 +22,5 @@ class PrimeLeagueParseException(PrimeLeagueConnectionException):
     pass
 
 
-class GMDNotInitialisedException(Exception):
-    pass
-
-
 class Div1orDiv2TeamException(Exception):
     pass

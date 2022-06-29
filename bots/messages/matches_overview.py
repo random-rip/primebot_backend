@@ -55,7 +55,7 @@ class MatchesOverview(BaseMessage):
             value = _(
                 "[against {enemy_team_name}]({match_url})"
             ).format(
-                enemy_team_name=match.enemy_team.name,
+                enemy_team_name=match.get_enemy_team().name,
                 match_url=f"{settings.MATCH_URI}{match.match_id}",
             )
             value += f"\n> 🔍 [{self.scouting_website}]({match.team.get_scouting_url(match=match, lineup=False)})"
