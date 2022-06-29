@@ -113,12 +113,13 @@ gesetzt werden. Danach benutzen die ``Provider`` das Filesystem.
 
 Die Files können untereinander Abhängigkeiten aufweisen (In team_*.json gibt es eine Liste mit match_ids, die auf
 Kalibrierungsmatches oder Matches aus der Starterdiv zeigen). Aus diesem Grund können nicht beliebig Teams aus
-dem ``storage`` registriert werden.
+dem ``storage`` **vollständig** registriert werden (teams werden trotz unvollständigen matches registriert).
 
-Teams, die registriert werden können:
+Teams, die vollständig registriert werden können:
 
-- ``!start 183281`` (https://www.primeleague.gg/leagues/teams/183281-demacia-for-win)
-- ``!start 114250`` (https://www.primeleague.gg/leagues/teams/114250-ewolves)
+- ``!start 183281`` [DEMACIA FOR WIN (BTZ) Swiss Starter](https://www.primeleague.gg/leagues/teams/183281-demacia-for-win)
+- ``!start 114250`` [eWolves Div 4.7](https://www.primeleague.gg/leagues/teams/114250)
+- ``!start 90935`` [404-multigaming Div 4.7](https://www.primeleague.gg/leagues/teams/90935)
 
 ## Contributing
 
