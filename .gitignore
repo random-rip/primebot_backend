@@ -2,7 +2,6 @@
 .idea/
 
 storage/*
-!storage/.gitkeep
 logs/*
 !logs/.gitkeep
 *.temp

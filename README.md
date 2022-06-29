@@ -2,8 +2,8 @@
 
 The unofficial Prime League Bot for sending push notifications via discord and telegram.
 
-Der Bot ist nicht dazu gedacht eigenständig gehostet zu werden! Die PrimeBot-Server-IP wurde exklusiv von der
-PrimeLeague whitelisted.
+**Der Bot ist nicht dazu gedacht eigenständig gehostet zu werden! Die PrimeBot-Server-IP wurde exklusiv von der
+PrimeLeague whitelisted.**
 
 ## Development
 
@@ -97,6 +97,28 @@ mit ``python manage.py compilemessages`` erstellt werden. Dazu wird das externe 
 benötigt ([Windows Installation](https://www.gnu.org/software/gettext/)
 und [Ubuntu Installation](https://installati.one/ubuntu/20.04/gettext/)). Danach kann ``python manage.py test``
 ausgeführt werden.
+
+### Alternative zu API
+
+Wir haben von Anfang an einer Lösung zur Reduzierung von API Requests im Development gearbeitet. Aus diesem Grund wird
+jede Response eines API Requests lokal in einer JSON Datei gespeichert. Aufgrund von IP Whitelisting ist es nicht
+möglich, dass fürs Development die API angesprochen werden kann. Unter ``storage/`` gibt es Beispielteams und -matches.
+Um diese zu benutzen, muss in der `.env`
+
+```
+FILES_FROM_STORAGE="True"
+```
+
+gesetzt werden. Danach benutzen die ``Provider`` das Filesystem.
+
+Die Files können untereinander Abhängigkeiten aufweisen (In team_*.json gibt es eine Liste mit match_ids, die auf
+Kalibrierungsmatches oder Matches aus der Starterdiv zeigen). Aus diesem Grund können nicht beliebig Teams aus
+dem ``storage`` registriert werden.
+
+Teams, die registriert werden können:
+
+- ``!start 183281`` (https://www.primeleague.gg/leagues/teams/183281-demacia-for-win)
+- ``!start 114250`` (https://www.primeleague.gg/leagues/teams/114250-ewolves)
 
 ## Contributing
 
