@@ -1,3 +1,6 @@
+from datetime import datetime
+from typing import Union
+
 from django.conf import settings
 from django.db import models
 from django.db.models import F
@@ -164,19 +167,14 @@ class Match(models.Model):
     class Meta:
         db_table = "matches"
         unique_together = [("match_id", "team")]
-        verbose_name = "Spiel"
-        verbose_name_plural = "Spiele"
+        verbose_name = "Match"
+        verbose_name_plural = "Matches"
 
     def __repr__(self):
         return f"{self.match_id}"
 
     def __str__(self):
         return f"Match {self.match_id} from {self.team}"
-
-    @property
-    def get_first_suggested_match_begin(self):
-        suggestion = self.suggestion_set.all().order_by("created_at").first()
-        return None if suggestion is None else suggestion.begin
 
     def set_enemy_team(self, gmd):
         if self.enemy_team is not None:

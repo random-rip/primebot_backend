@@ -1,7 +1,8 @@
 # custom files
 .idea/
 
-storage
+storage/*
+!storage/.gitkeep
 logs/*
 !logs/.gitkeep
 *.temp
