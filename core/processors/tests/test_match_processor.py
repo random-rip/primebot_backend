@@ -403,6 +403,26 @@ class EnemyTeamIDTest(TestCase):
         processor = MatchDataProcessor(1, 100)
         self.assertIsNone(processor.get_enemy_team_id())
 
+    @patch.object(PrimeLeagueProvider, 'get_match')
+    def test_team_zero(self, get_match):
+        get_match.return_value = {
+            "match": {
+                "team_id_1": 0,
+                "team_id_2": 100,
+            }
+        }
+        processor = MatchDataProcessor(1, 100)
+        self.assertIsNone(processor.get_enemy_team_id())
+
+        get_match.return_value = {
+            "match": {
+                "team_id_1": 100,
+                "team_id_2": 0,
+            }
+        }
+        processor = MatchDataProcessor(1, 100)
+        self.assertIsNone(processor.get_enemy_team_id())
+
 
 class MatchDayTest(TestCase):
     databases = []
