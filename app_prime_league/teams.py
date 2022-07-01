@@ -88,16 +88,17 @@ def create_match_and_enemy_team(team, match_id, ):
         match.team_lineup.add(*players)
 
     # Create Enemy Team
-    processor = TeamDataProcessor(team_id=tmd.enemy_team_id)
-    enemy_team, created = Team.objects.update_or_create(id=tmd.enemy_team_id, defaults={
-        "name": processor.get_team_name(),
-        "team_tag": processor.get_team_tag(),
-        "division": processor.get_current_division(),
-    })
-    match.enemy_team = enemy_team
+    if tmd.enemy_team_id is not None:
+        processor = TeamDataProcessor(team_id=tmd.enemy_team_id)
+        enemy_team, created = Team.objects.update_or_create(id=tmd.enemy_team_id, defaults={
+            "name": processor.get_team_name(),
+            "team_tag": processor.get_team_tag(),
+            "division": processor.get_current_division(),
+        })
+        match.enemy_team = enemy_team
 
-    # Create Enemy Players
-    _ = Player.objects.create_or_update_players(processor.get_members(), enemy_team)
+        # Create Enemy Players
+        _ = Player.objects.create_or_update_players(processor.get_members(), enemy_team)
 
     # Create Enemy Lineup
     # TODO: duplicate code, refactor to use match.update_enemy_lineup(md=tmd)

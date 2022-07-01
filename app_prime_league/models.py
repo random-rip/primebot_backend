@@ -6,7 +6,6 @@ from django.utils.translation import gettext_lazy as _
 
 from app_prime_league.model_manager import TeamManager, MatchManager, PlayerManager, ScoutingWebsiteManager, \
     ChampionManager
-from utils.exceptions import GMDNotInitialisedException
 
 
 class Team(models.Model):
@@ -88,7 +87,7 @@ class Team(models.Model):
         if lineup and match.enemy_lineup_available:
             qs = match.enemy_lineup
         else:
-            qs = match.enemy_team.player_set
+            qs = match.get_enemy_team().player_set
 
         names = list(qs.get_active_players().values_list("summoner_name", flat=True))
         if self.scouting_website:
@@ -164,19 +163,14 @@ class Match(models.Model):
     class Meta:
         db_table = "matches"
         unique_together = [("match_id", "team")]
-        verbose_name = "Spiel"
-        verbose_name_plural = "Spiele"
+        verbose_name = "Match"
+        verbose_name_plural = "Matches"
 
     def __repr__(self):
         return f"{self.match_id}"
 
     def __str__(self):
         return f"Match {self.match_id} from {self.team}"
-
-    @property
-    def get_first_suggested_match_begin(self):
-        suggestion = self.suggestion_set.all().order_by("created_at").first()
-        return None if suggestion is None else suggestion.begin
 
     def set_enemy_team(self, gmd):
         if self.enemy_team is not None:
@@ -200,13 +194,6 @@ class Match(models.Model):
         self.begin = gmd.begin
         self.match_begin_confirmed = gmd.match_begin_confirmed
         self.save()
-
-    def update_enemy_team(self, gmd):
-        if gmd.enemy_team is None:
-            raise GMDNotInitialisedException("GMD Enemy Team Data is not initialized yet. Aborting...")
-        enemy_team, created = Team.objects.update_or_create(id=gmd.enemy_team_id, defaults=self.enemy_team)
-        _ = Player.objects.create_or_update_players(gmd.enemy_team_members, enemy_team)
-        self.set_enemy_team(gmd=gmd)
 
     def update_latest_suggestions(self, md):
         if md.latest_suggestions is not None:
@@ -241,6 +228,12 @@ class Match(models.Model):
     @property
     def team_lineup_available(self):
         return self.team_lineup.all().count() > 0
+
+    def get_enemy_team(self) -> Team:
+        return self.enemy_team or Team(
+            name=_("Deleted Team"),
+            team_tag=_("Deleted Team"),
+        )
 
 
 class ScoutingWebsite(models.Model):

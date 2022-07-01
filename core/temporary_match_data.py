@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from app_prime_league.models import Team
 from core.processors.match_processor import MatchDataProcessor
 from core.processors.team_processor import TeamDataProcessor
-from utils.exceptions import GMDNotInitialisedException
+from utils.exceptions import TeamWebsite404Exception
 from utils.utils import timestamp_to_datetime
 
 
@@ -123,8 +123,11 @@ class TemporaryMatchData:
 
     def create_enemy_team_data_from_website(self):
         if self.enemy_team_id is None:
-            raise GMDNotInitialisedException("GMD is not initialized yet. Aborting...")
-        processor = TeamDataProcessor(team_id=self.enemy_team_id)
+            return
+        try:
+            processor = TeamDataProcessor(team_id=self.enemy_team_id)
+        except TeamWebsite404Exception:
+            return
         self.enemy_team = {
             "name": processor.get_team_name(),
             "team_tag": processor.get_team_tag(),

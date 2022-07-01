@@ -22,9 +22,15 @@ class PrimeLeagueParseException(PrimeLeagueConnectionException):
     pass
 
 
-class GMDNotInitialisedException(Exception):
-    pass
-
-
 class Div1orDiv2TeamException(Exception):
     pass
+
+
+class UnauthorizedException(PrimeLeagueConnectionException):
+    def __init__(self):
+        msg = (
+            "You can only use the local file storage in development. "
+            "See README.md 'Alternative to API' for further information."
+        )
+        print(msg)
+        super(UnauthorizedException, self).__init__(msg)

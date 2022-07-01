@@ -204,7 +204,8 @@ class MatchDataProcessor(__MatchDataMethods, ):
         Returns: Integer or None
 
         """
-        return self.data_match.get("team_id_2") if self.team_is_team_1 else self.data_match.get("team_id_1")
+        team_id = self.data_match.get("team_id_2") if self.team_is_team_1 else self.data_match.get("team_id_1")
+        return team_id if team_id != 0 else None
 
     def get_match_day(self):
         return self.data_match.get("match_playday")
