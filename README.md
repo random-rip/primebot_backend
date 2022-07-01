@@ -1,20 +1,21 @@
 ## PrimeBot Backend
 
-The unofficial Prime League Bot for sending push notifications via discord and telegram.
+The unofficial [Strauss Prime League](https://www.primeleague.gg/) Bot for sending push notifications via discord and
+telegram.
 
-**Der Bot ist nicht dazu gedacht eigenständig gehostet zu werden! Die PrimeBot-Server-IP wurde exklusiv von der
-PrimeLeague whitelisted.**
+**Der Bot ist nicht dazu gedacht eigenständig gehostet zu werden! Die Server-IP des PrimeBots wurde exklusiv von der
+Prime League whitelisted.**
 
 ## Development
 
 ### Techstack
 
 - Python
-- Django (+ DRF)
 - MariaDB/MySQL
-- discord.py
-- Telepot
-- python-telegram-bot
+- Django (+ DRF) (python package)
+- discord.py (python package)
+- Telepot (python package)
+- python-telegram-bot (python package)
 
 ### Setup
 
@@ -25,55 +26,57 @@ Requirements:
 - virtualenv (pip package):  `pip install virtualenv`
 
 
-1. Git Repository klonen HTTPS `git clone https://github.com/random-rip/primebot_backend.git`
+1. Clone repository `git clone https://github.com/random-rip/primebot_backend.git`
 2. `cd primebot_backend`
-3. Erstelle virtuelle environment `virtualenv venv` oder über die IDE
-4. Venv aktivieren (Linux): `source venv/Scripts/activate` oder in Windows Powershell (PS): `venv\Scripts\Activate.bat`
-5. Installiere requirements `pip install -r requirements.txt`
-6. Erstelle `.env` File aus der `.env.example` und setze Variablen
-    1. Es muss ein Bot-Token und die Application ID aus dem
-       Discord [Developerportal](https://discord.com/developers/applications) geholt werden
-    2. Es muss ein Telegrambot bei Telegram erstellt werden (Chat mit Botfather)
-7. Datenbank erstellen
-8. Migrations auf Datenbank anwenden `python manage.py migrate`
+3. Create a virtual environment, for example `virtualenv venv`
+4. Activate created venv
+    - Linux: `source venv/Scripts/activate`
+    - Windows powershell: `venv\Scripts\Activate.bat`
+5. Install requirements `pip install -r requirements.txt`
+6. Create `.env` file from `.env.example` at the root folder and set variables according to your setup
+    - Discord bot token and application ID from [Discord Developerportal](https://discord.com/developers/applications)
+    - Telegrambot token from Telegram Botfather
+7. Create a database according to your ``.env``
+8. Apply migrations `python manage.py migrate`
 
-### Projektstruktur
+### Project structure
 
-- ``app_prime_league`` enthält Models und Commands.
-    - Model ``Match``: Relevante Informationen zu einem Match
-    - Model ``Player``: Relevante Informationen zu einem Spieler (bspw. Summonername)
-    - Model ``Team``: Relevante Informationen zu einem Team (bspw. Name, Tag, Bild, Discord Channel ID, )
-    - Model ``ScoutingWebsite``: Hält alle möglichen Scoutingwebsites (aktuell: op.gg, u.gg, xdx.gg)
-    - Model ``Suggestion``: Suggestions von Matches
-    - Model ``Setting``: Einstellungen von Teams zu Benachrichtigungen etc.
-    - Model ``Comment``: Kommentare zu Matches
-- ``bots`` enthält alle relevanten Discord- und Telegram-Skripte, LanguageFiles, und den MessageDispatcher.
-- ``core`` enthält die PrimeLeague-Kommunikation, Parsing, Comparing und Updating
-    - Module ``comparers``: Die hier vorhandenen Klassen übernehmen den Vergleich zwischen
-      Datenbank, `TeamDataProcessor` und `TemporaryMatchData`
-    - Module ``parsing``: Die hier vorhandenen Klassen parsen die Logs, die von der API übergeben werden (legacy)
-    - Module ``processors``: Die hier vorhandenen Klassen bilden die Schnittstelle zwischen der Datenverarbeitung in
-      python und den `Provider`-Klassen
-    - Module `providers`: Die Klassen übernehmen die Kommunikation mit dem Filesystem, der Prime League API (und die
-      Differenzierung ob Filesystem oder API) und das JSON-Parsing
-    - Module `updater`: Die Klassen übernehmen Aktualisierung von Matches, den Teams und der Parallelisierung im
-      Produktivsystem
-    - Module `api.py`: Die Klasse stellt eine low level prime league api zur Verfügung
-    - Module `temporary_match_data.py`: Die Klasse stellt Methoden zur Konvertierung der API-Daten in ``Comparer``
-      -freundliche Daten bereit und kümmert sich um die Datenanreicherung von gegnerischen Teams zu einem Match
-- ``storage`` hält die API-Daten als JSON-Dateien fürs Development. Es ist üblich, erst einen Request über die Api zu
-  machen und anschließend das lokale Filesystem zu benutzen. (.env: ``FILES_FROM_STORAGE=True``)
+- ``app_prime_league`` contains models, commands and model communications (for example `register_team`)
+    - Model ``Match``: Relevant information about a match
+    - Model ``Player``: Relevant information about a player (e.g. UserID, summoner_name)
+    - Model ``Team``: Relevant information about a team and registered communication platform(e.g. name, tag, picture,
+      discord_channel_id, )
+    - Model ``ScoutingWebsite``: Holds all possible scouting websites (currently: op.gg, u.gg, xdx.gg,
+      leagueofgraphs.com)
+    - Model ``Suggestion``: Suggestions of matches
+    - Model ``Setting``: settings of teams for notifications, language, etc.
+    - Model ``Comment``: comments on matches
+- ``bots`` contains all relevant Discord and Telegram scripts, Language files, and the MessageDispatcher
+- ``core`` contains the Prime League communication, parsing, comparing and updating
+    - Module ``comparers``: These classes take over the comparison between the database, `TeamDataProcessor`
+      and `TemporaryMatchData`.
+    - Module ``parsing`` (legacy): The classes take over the parsing of logs passed by the API
+    - Module ``processors``: The classes take over the interface between the data processing in python and
+      the `provider` classes.
+    - Module `providers`: The classes take over the communication with the filesystem, the Prime League API (and the
+      differentiation between filesystem and API) and the JSON parsing.
+    - Module `updater`: The classes take over updating matches and teams. In production, the updates take place in
+      parallel.
+    - Module `api.py`: The class provides a low level Prime League api
+    - Module `temporary_match_data.py`: The class provides methods for converting the API data into ``Comparer``
+      -friendly data and takes care of the data enrichment of opposing teams to a match
+- ``storage`` holds the API data as JSON files for development
 
 ### Manage.py Commands
 
-- `python manage.py discord_bot` - Discordbot starten
-- `python manage.py telegram_bot` - Telegrambot starten
-- `python manage.py update_teams` - Teamupdates-script starten
-- `python manage.py update_matches` - Matchupdates-script starten
-- `python manage.py weekly_notifications` - Wöchentliche Benachrichtigungen-script starten
-- `python manage.py runscript feedback` - Feedback-script starten
-- `python manage.py runscript season_messages` - Season Messages-script starten
-- `python manage.py runscript debug` - Debug-Skript starten
+- `python manage.py discord_bot` - start Discordbot
+- `python manage.py telegram_bot` - start Telegrambot
+- `python manage.py update_teams` - start team updates
+- `python manage.py update_matches` - start match updates
+- `python manage.py weekly_notifications` - start weekly notifications
+- `python manage.py runscript feedback` - start feedback
+- `python manage.py runscript season_messages` - start season notification
+- `python manage.py runscript debug` - start debug
 
 ### Shell Commands
 
@@ -84,7 +87,7 @@ Requirements:
 - `./weekly_notifications.sh`
 - `./feedback.sh`
 
-Alle Shell-Skripte sind unter `shell_scripts` zu finden.
+All shell scripts can be found under `shell_scripts`.
 
 ### Testing
 
@@ -92,30 +95,32 @@ Alle Shell-Skripte sind unter `shell_scripts` zu finden.
 python manage.py test
 ```
 
-Einige Tests beziehen sich auf I18n und T10n und benötigen kompilierte ``django.mo``-Dateien. Diese müssen
-mit ``python manage.py compilemessages`` erstellt werden. Dazu wird das externe Programm gettext
-benötigt ([Windows Installation](https://www.gnu.org/software/gettext/)
-und [Ubuntu Installation](https://installati.one/ubuntu/20.04/gettext/)). Danach kann ``python manage.py test``
-ausgeführt werden.
+Some tests refer to I18n and T10n and require compiled ``django.mo`` files. These must be created
+with ``python manage.py compilemessages``. This requires the external program gettext:
 
-### Alternative zu API
+- [Windows installation](https://www.gnu.org/software/gettext/)
+- [Ubuntu installation](https://installati.one/ubuntu/20.04/gettext/))
 
-Wir haben von Anfang an einer Lösung zur Reduzierung von API Requests im Development gearbeitet. Aus diesem Grund wird
-jede Response eines API Requests lokal in einer JSON Datei gespeichert. Aufgrund von IP Whitelisting ist es nicht
-möglich, dass fürs Development die API angesprochen werden kann. Unter ``storage/`` gibt es Beispielteams und -matches.
-Um diese zu benutzen, muss in der `.env`
+After that ``python manage.py test`` can be executed.
+
+### Alternative to Prime League API
+
+We have been working on a solution to reduce API requests in development from the very beginning. For this reason each
+response of an API request is stored locally in a JSON file. Due to IP whitelisting it is not possible to possible that
+the API can be accessed for development. Under ``storage/`` there are sample teams and matches. To use them, in
+the `.env` you have to add
 
 ```
 FILES_FROM_STORAGE="True"
 ```
 
-gesetzt werden. Danach benutzen die ``Provider`` das Filesystem.
+After that the ``providers`` use the filesystem.
 
-Die Files können untereinander Abhängigkeiten aufweisen (In team_*.json gibt es eine Liste mit match_ids, die auf
-Kalibrierungsmatches oder Matches aus der Starterdiv zeigen). Aus diesem Grund können nicht beliebig Teams aus
-dem ``storage`` **vollständig** registriert werden (teams werden trotz unvollständigen matches registriert).
+The files can have dependencies among each other (for example: in team_*.json there is a list of match_ids pointing to
+calibration matches or matches from the starter div). For this reason, teams cannot be arbitrarily selected from
+the ``storage`` **completely** (a team will still be registered incomplete).
 
-Teams, die vollständig registriert werden können:
+Teams that can be fully registered from storage:
 
 - ``!start 183281`` [DEMACIA FOR WIN (BTZ) Swiss Starter](https://www.primeleague.gg/leagues/teams/183281-demacia-for-win)
 - ``!start 114250`` [eWolves Div 4.7](https://www.primeleague.gg/leagues/teams/114250)
@@ -124,7 +129,7 @@ Teams, die vollständig registriert werden können:
 ## Contributing
 
 Feel free to implement new features and create pull requests. Also feel free to create tickets for new features or bugs
-even if you cannot implement or fix them. Also it is not only about programming. We need feedback for features from
+even if you cannot implement or fix them. Also, it is not only about programming! We need feedback for features from
 teams. Don't hesitate to start a discussion below feature requests.
 
-TODO @OrbisK
+If you create a pull request, make sure that ``python manage.py test`` does not fail.
