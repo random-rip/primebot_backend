@@ -6,7 +6,7 @@ from rest_framework import status
 from core.api import PrimeLeagueAPI
 from prime_league_bot import settings
 from utils.exceptions import TeamWebsite404Exception, PrimeLeagueConnectionException, PrimeLeagueParseException, \
-    Match404Exception
+    Match404Exception, UnauthorizedException
 
 LOCAL = settings.FILES_FROM_STORAGE
 SAVE_REQUEST = settings.DEBUG and not LOCAL
@@ -44,8 +44,10 @@ class PrimeLeagueProvider:
         resp = cls.api.request_match(match_id)
 
         if not status.is_success(resp.status_code):
-            if resp.status_code == 404:
+            if resp.status_code == status.HTTP_404_NOT_FOUND:
                 raise Match404Exception(status_code=resp.status_code, msg=f"Match {match_id}")
+            if resp.status_code == status.HTTP_403_FORBIDDEN and settings.DEBUG:
+                raise UnauthorizedException()
             raise PrimeLeagueConnectionException(status_code=resp.status_code, msg=f"Match {match_id}")
 
         if SAVE_REQUEST:
@@ -73,6 +75,8 @@ class PrimeLeagueProvider:
         if not status.is_success(resp.status_code):
             if resp.status_code == status.HTTP_404_NOT_FOUND:
                 raise TeamWebsite404Exception(msg=f"Team {team_id}")
+            if resp.status_code == status.HTTP_403_FORBIDDEN and settings.DEBUG:
+                raise UnauthorizedException()
             raise PrimeLeagueConnectionException(status_code=resp.status_code, msg=f"Team {team_id}")
 
         try:

@@ -50,6 +50,8 @@ def get_valid_team_id(value: Union[str, int]) -> int:
     Returns: int: Team ID
     Raises: CouldNotParseURLException, Div1orDiv2TeamException
     """
+    if value is None:
+        raise CouldNotParseURLException()
     try:
         team_id = int(value)
     except ValueError:
