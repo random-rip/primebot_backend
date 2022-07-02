@@ -1,12 +1,13 @@
 import json
 import os
 
+from django.conf import settings
 from rest_framework import status
 
 from core.api import PrimeLeagueAPI
-from prime_league_bot import settings
-from utils.exceptions import TeamWebsite404Exception, PrimeLeagueConnectionException, PrimeLeagueParseException, \
-    Match404Exception, UnauthorizedException
+from utils.exceptions import (
+    TeamWebsite404Exception, PrimeLeagueConnectionException, PrimeLeagueParseException,
+    Match404Exception, UnauthorizedException)
 
 LOCAL = settings.FILES_FROM_STORAGE
 SAVE_REQUEST = settings.DEBUG and not LOCAL

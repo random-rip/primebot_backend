@@ -1,10 +1,10 @@
 ## PrimeBot Backend
 
-The unofficial [Strauss Prime League](https://www.primeleague.gg/) Bot for sending push notifications via discord and
-telegram.
+The unofficial [Strauss Prime League](https://www.primeleague.gg/) Bot for sending push notifications via Discord and
+Telegram.
 
-**Der Bot ist nicht dazu gedacht eigenständig gehostet zu werden! Die Server-IP des PrimeBots wurde exklusiv von der
-Prime League whitelisted.**
+**The bot is not intended to be self-hosted! The server IP of the PrimeBot has been exclusively whitelisted by the Prime
+League.**
 
 ## Development
 
@@ -27,17 +27,28 @@ Requirements:
 
 
 1. Clone repository `git clone https://github.com/random-rip/primebot_backend.git`
-2. `cd primebot_backend`
+2. Go into cloned directory `cd primebot_backend` and checkout branch develop ``git checkout develop``
 3. Create a virtual environment, for example `virtualenv venv`
 4. Activate created venv
     - Linux: `source venv/Scripts/activate`
-    - Windows powershell: `venv\Scripts\Activate.bat`
+    - Windows powershell: `.\venv\Scripts\activate`
 5. Install requirements `pip install -r requirements.txt`
 6. Create `.env` file from `.env.example` at the root folder and set variables according to your setup
-    - Discord bot token and application ID from [Discord Developerportal](https://discord.com/developers/applications)
-    - Telegrambot token from Telegram Botfather
+    - ``DJANGO_SECRET_KEY``
+    - ``DJANGO_DEBUG``
+    - ``DJANGO_ALLOWED_HOSTS``
+    - Database connection
+    - Optional: ``DISCORD_API_KEY`` from [Discord Developerportal](https://discord.com/developers/applications)
+    - Optional: ``DISCORD_APP_CLIENT_ID`` from [Discord Developerportal](https://discord.com/developers/applications)
+    - Optional: ``TELEGRAM_BOT_API_KEY`` from Telegram Botfather
+    - Optional: ``FILES_FROM_STORAGE``
+    - Optional: ``LOGGING_DIR``
+    - Optional: ``FERNET_SECRET_KEY``
+    - Optional: ``SITE_ID``
 7. Create a database according to your ``.env``
 8. Apply migrations `python manage.py migrate`
+
+For further information have a look at **Contributing** section at the end of the README.
 
 ### Project structure
 
@@ -99,7 +110,7 @@ Some tests refer to I18n and T10n and require compiled ``django.mo`` files. Thes
 with ``python manage.py compilemessages``. This requires the external program gettext:
 
 - [Windows installation](https://www.gnu.org/software/gettext/)
-- [Ubuntu installation](https://installati.one/ubuntu/20.04/gettext/))
+- [Ubuntu installation](https://installati.one/ubuntu/20.04/gettext/)
 
 After that ``python manage.py test`` can be executed.
 
@@ -132,4 +143,7 @@ Feel free to implement new features and create pull requests. Also feel free to 
 even if you cannot implement or fix them. Also, it is not only about programming! We need feedback for features from
 teams. Don't hesitate to start a discussion below feature requests.
 
-If you create a pull request, make sure that ``python manage.py test`` does not fail.
+If you create a pull request, make sure that
+
+- you create one from branch ``develop`` and
+- ``python manage.py test`` does not fail.

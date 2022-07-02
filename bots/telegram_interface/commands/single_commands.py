@@ -14,7 +14,6 @@ from bots.base.bop import GIFinator
 from bots.messages import MatchesOverview
 from bots.telegram_interface.validation_messages import channel_not_registered
 from bots.utils import mysql_has_gone_away_decorator
-from prime_league_bot.settings import STORAGE_DIR
 from utils.messages_logger import log_command
 
 logger = logging.getLogger("commands")
@@ -27,7 +26,7 @@ def set_photo(chat_id, context: CallbackContext, url):
         return False
 
     try:
-        file_name = os.path.join(STORAGE_DIR, f"temp_{chat_id}.temp")
+        file_name = os.path.join(settings.STORAGE_DIR, f"temp_{chat_id}.temp")
         _ = urllib.request.urlretrieve(url, file_name)
         with open(file_name, 'rb') as f:
             context.bot.set_chat_photo(

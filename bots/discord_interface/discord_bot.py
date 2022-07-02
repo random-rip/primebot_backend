@@ -19,7 +19,7 @@ from bots.messages import MatchesOverview, MatchOverview
 from bots.messages.base import BaseMessage
 from bots.utils import mysql_has_gone_away
 from utils.exceptions import CouldNotParseURLException, PrimeLeagueConnectionException, TeamWebsite404Exception, \
-    Div1orDiv2TeamException
+    Div1orDiv2TeamException, VariableNotSetException
 from utils.messages_logger import log_from_discord
 from utils.utils import get_valid_team_id
 
@@ -38,6 +38,10 @@ class DiscordBot(Bot):
     """
 
     def __init__(self):
+        if not settings.DISCORD_BOT_KEY:
+            raise VariableNotSetException("DISCORD_BOT_KEY")
+        if not settings.DISCORD_APP_CLIENT_ID:
+            raise VariableNotSetException("DISCORD_APP_CLIENT_ID")
         help_command = commands.DefaultHelpCommand(
             no_category='Commands'
         )

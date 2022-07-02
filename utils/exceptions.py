@@ -33,4 +33,12 @@ class UnauthorizedException(PrimeLeagueConnectionException):
             "See README.md 'Alternative to API' for further information."
         )
         print(msg)
-        super(UnauthorizedException, self).__init__(msg)
+        super().__init__(msg)
+
+
+class VariableNotSetException(Exception):
+    def __init__(self, variable_name):
+        msg = (
+            f"Environment variable '{variable_name}' not set. Did you setup the .env correctly?"
+        )
+        super().__init__(msg)

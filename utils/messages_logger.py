@@ -1,6 +1,8 @@
 import html
 import logging
 
+from django.conf import settings
+
 from bots.telegram_interface.tg_singleton import send_message_to_devs
 from utils.utils import Encoder
 
@@ -9,7 +11,7 @@ logger = logging.getLogger("commands")
 
 def create_log_message(prefix=None, separator="\n", **kwargs, ):
     """
-    Anonymisiere ``user`` und ``chat_id`` und erstelle dann eine message.
+    Anonymisiere ``user``, `channel` und ``chat_id`` und erstelle dann eine message.
     Args:
         prefix: Optional vorangestellter String
         separator: Join-Separator
@@ -19,6 +21,8 @@ def create_log_message(prefix=None, separator="\n", **kwargs, ):
     """
     if "user" in kwargs:
         kwargs["user"] = Encoder.blake2b(kwargs["user"])
+    if "channel" in kwargs:
+        kwargs["channel"] = Encoder.blake2b(kwargs["channel"])
     if "chat_id" in kwargs:
         kwargs["chat_id"] = Encoder.blake2b(kwargs["chat_id"])
 
@@ -31,10 +35,11 @@ def create_log_message(prefix=None, separator="\n", **kwargs, ):
 
 def log_command(fn):
     def wrapper(*args, **kwargs):
+        result = fn(*args, **kwargs)
+        if settings.DEBUG:
+            return result
         update = args[0]
         command = fn.__name__
-        result = fn(*args, **kwargs)
-
         params = {
             "chat_id": Encoder.blake2b(update.message.chat.id),
             "command": command,
@@ -44,10 +49,9 @@ def log_command(fn):
         if update.effective_user:
             params["user"] = update.effective_user.first_name
 
-        message = create_log_message(prefix="TELEGRAM\n", **params)
+        log_text = create_log_message(prefix="TELEGRAM\n", **params)
 
-        logger.info(message)
-        send_message_to_devs(message)
+        spread_message(log_text)
         return result
 
     return wrapper
@@ -60,6 +64,8 @@ def log_callbacks(fn):
         message = args[0].callback_query.data
         question = args[0].callback_query.message.text.replace("\n", " ")
         result = fn(*args, **kwargs)
+        if settings.DEBUG:
+            return result
 
         params = {
             "chat_id": Encoder.blake2b(chat_id),
@@ -70,14 +76,16 @@ def log_callbacks(fn):
         }
 
         log_text = create_log_message(prefix="TELEGRAM\n", **params)
-        logger.info(log_text)
-        send_message_to_devs(log_text)
+        spread_message(log_text)
         return result
 
     return wrapper
 
 
 async def log_from_discord(ctx, optional=None):
+    if settings.DEBUG:
+        return True
+
     author = ctx.message.author
     content = ctx.message.content
 
@@ -85,6 +93,7 @@ async def log_from_discord(ctx, optional=None):
         "user": author.name,
         "command": html.escape(str(content)),
         "server": html.escape(str(author.guild.name)),
+        "channel": html.escape(str(ctx.channel.id)),
         "members": author.guild.member_count,
     }
 
@@ -92,8 +101,7 @@ async def log_from_discord(ctx, optional=None):
         params["optional"] = html.escape(str(optional))
 
     log_text = create_log_message(prefix="DISCORD\n", **params)
-    logger.info(log_text)
-    send_message_to_devs(log_text)
+    spread_message(log_text)
     return True
 
 
@@ -104,5 +112,12 @@ def log_exception(fn):
             return result
         except Exception as e:
             logging.getLogger("updates").exception(e)
+            text = f"Error in Updates: <code>{e}</code>\n. See <code>update.log</code> for more information."
+            # send_message_to_devs(text) # TODO Nur einen Log senden und nicht 1000 alle 15 Minuten"
 
     return wrapper
+
+
+def spread_message(log_text: str, ):
+    logger.info(log_text.replace("\n", ";"))
+    send_message_to_devs(log_text)

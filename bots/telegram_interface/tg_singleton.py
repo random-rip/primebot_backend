@@ -1,9 +1,8 @@
 import logging
 
 import telepot
+from django.conf import settings
 from telegram import ParseMode
-
-from prime_league_bot import settings
 
 bot = telepot.Bot(token=settings.TELEGRAM_BOT_KEY)
 

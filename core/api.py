@@ -1,6 +1,6 @@
 import requests
+from django.conf import settings
 
-from prime_league_bot import settings
 from utils.exceptions import PrimeLeagueConnectionException
 
 
