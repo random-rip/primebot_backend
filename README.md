@@ -3,7 +3,7 @@
 The unofficial [Strauss Prime League](https://www.primeleague.gg/) Bot for sending push notifications via Discord and
 Telegram.
 
-**The bot is not intended to be self hosted! The server IP of the PrimeBot has been exclusively whitelisted by
+**The bot is not intended to be self-hosted! The server IP of the PrimeBot has been exclusively whitelisted by
 the Prime League.**
 
 ## Development
@@ -31,7 +31,7 @@ Requirements:
 3. Create a virtual environment, for example `virtualenv venv`
 4. Activate created venv
     - Linux: `source venv/Scripts/activate`
-    - Windows powershell: `venv\Scripts\Activate.bat`
+    - Windows powershell: `.\venv\Scripts\activate`
 5. Install requirements `pip install -r requirements.txt`
 6. Create `.env` file from `.env.example` at the root folder and set variables according to your setup
     - Discord bot token and application ID from [Discord Developerportal](https://discord.com/developers/applications)
