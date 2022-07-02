@@ -14,6 +14,7 @@ from bots.messages.base import BaseMessage
 from bots.telegram_interface.commands import single_commands
 from bots.telegram_interface.conversations import start_conversation
 from bots.telegram_interface.tg_singleton import send_message_to_devs
+from utils.exceptions import VariableNotSetException
 
 notifications_logger = logging.getLogger("notifications")
 
@@ -24,6 +25,8 @@ class TelegramBot(Bot):
     """
 
     def __init__(self):
+        if not settings.TELEGRAM_BOT_KEY:
+            raise VariableNotSetException("TELEGRAM_BOT_KEY")
         super().__init__(
             bot=Updater,
             bot_config={
