@@ -3,8 +3,8 @@
 The unofficial [Strauss Prime League](https://www.primeleague.gg/) Bot for sending push notifications via Discord and
 Telegram.
 
-**The bot is not intended to be self-hosted! The server IP of the PrimeBot has been exclusively whitelisted by
-the Prime League.**
+**The bot is not intended to be self-hosted! The server IP of the PrimeBot has been exclusively whitelisted by the Prime
+League.**
 
 ## Development
 
@@ -34,8 +34,17 @@ Requirements:
     - Windows powershell: `.\venv\Scripts\activate`
 5. Install requirements `pip install -r requirements.txt`
 6. Create `.env` file from `.env.example` at the root folder and set variables according to your setup
-    - Discord bot token and application ID from [Discord Developerportal](https://discord.com/developers/applications)
-    - Telegrambot token from Telegram Botfather
+    - ``DJANGO_SECRET_KEY``
+    - ``DJANGO_DEBUG``
+    - ``DJANGO_ALLOWED_HOSTS``
+    - Database connection
+    - Optional: ``DISCORD_API_KEY`` from [Discord Developerportal](https://discord.com/developers/applications)
+    - Optional: ``DISCORD_APP_CLIENT_ID`` from [Discord Developerportal](https://discord.com/developers/applications)
+    - Optional: ``TELEGRAM_BOT_API_KEY`` from Telegram Botfather
+    - Optional: ``FILES_FROM_STORAGE``
+    - Optional: ``LOGGING_DIR``
+    - Optional: ``FERNET_SECRET_KEY``
+    - Optional: ``SITE_ID``
 7. Create a database according to your ``.env``
 8. Apply migrations `python manage.py migrate`
 
