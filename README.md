@@ -132,4 +132,6 @@ Feel free to implement new features and create pull requests. Also feel free to 
 even if you cannot implement or fix them. Also, it is not only about programming! We need feedback for features from
 teams. Don't hesitate to start a discussion below feature requests.
 
-If you create a pull request, make sure that ``python manage.py test`` does not fail.
+If you create a pull request, make sure that 
+- you create one from branch ``develop`` and
+- ``python manage.py test`` does not fail.
