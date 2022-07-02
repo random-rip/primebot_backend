@@ -1,6 +1,6 @@
 # English Translation for bots.
 # Copyright (C) 2022 Janek Mangold
-# This file is distributed under the same license as the prime_bot_backend package.
+# This file is distributed under the same license as the primebot_backend package.
 # Janek Mangold <mangold.janek@web.de>, 2022.
 #
 #, fuzzy

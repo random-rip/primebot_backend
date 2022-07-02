@@ -1,7 +1,5 @@
 from django.db import migrations
 
-from prime_league_bot import settings
-
 
 def add_seeds(apps, schema_editor):
     pass
