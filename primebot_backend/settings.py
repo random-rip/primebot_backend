@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     # 3rd party
     'django_extensions',
     "corsheaders",
+    "django_q",
     # own
     'app_prime_league',
     'core',
@@ -209,14 +210,15 @@ Q_CLUSTER = {
     'recycle': 500,  # number of jobs before memory resources will be released
     'timeout': 20,  # maximum seconds for a task
     'retry': 25,  # Failed task will be queued after 25 seconds
-    'max_attempts': 0,  # Maximum retry attempts for failed tasks
+    'max_attempts': 3,  # Maximum retry attempts for failed tasks
     'queue_limit': 50,
     'compress': False,  # Compress large payload
-    'scheduler': False,  # disable schedulers reduce overhead
+    'scheduler': True,  # disable schedulers reduce overhead
     'save_limit': 0,  # Limits the amount of successful tasks save to Django
+    "ack_failures": True,
     'redis': {
-        'host': env.str("REDIS_HOST"),
-        'port': env.str("REDIS_PORT"),
+        'host': env.str("REDIS_HOST", None),
+        'port': env.str("REDIS_PORT", None),
         'password': env.str("REDIS_PASSWORD", None),
         'db': 0,
     } if DEBUG else {

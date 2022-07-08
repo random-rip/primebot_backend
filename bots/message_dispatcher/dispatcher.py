@@ -1,6 +1,10 @@
 from core.async_wrapper import AsyncWrapper
 
 
+def dispatch(bot, msg, team):
+    bot.send_message(msg=msg, team=team)
+
+
 class MessageDispatcher(AsyncWrapper):
     """
     Wrapper for creating an async task for Q cluster. Call `MessageDispatcher(Message).enqueue()` to
@@ -13,5 +17,12 @@ class MessageDispatcher(AsyncWrapper):
         self.msg = msg
         self.team = team
 
-    def _process(self):
-        self.bot.send_message(msg=self.msg, team=self.team)
+    def arguments(self):
+        return {
+            "bot": self.bot,
+            "msg": self.msg,
+            "team": self.team,
+        }
+
+    def function_to_execute(self):
+        return dispatch

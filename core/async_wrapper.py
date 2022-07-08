@@ -1,19 +1,28 @@
 import logging
 from abc import abstractmethod
-from typing import Any, Tuple, Union
+from typing import Any, Tuple, Union, Callable
 
 import redis
-from django.conf import settings
 from django_q.tasks import async_task
 
 
 class AsyncWrapper:
     __name__ = 'AsyncWrapper'
     logger = logging.getLogger("django")
+    group = None
 
     @abstractmethod
-    def _process(self) -> None:
+    def function_to_execute(self) -> Callable:
         pass
+
+    def arguments(self) -> dict:
+        return {}
+
+    @property
+    def q_options(self):
+        return {
+            "task_name": self.__name__,
+        }
 
     def enqueue(self) -> Tuple[bool, Union[None, Any]]:
         """
@@ -25,20 +34,17 @@ class AsyncWrapper:
 
         """
         self.logger.info("Creating new task...")
-        if settings.USE_Q_CLUSTER:
-            try:
-                task_id = async_task(self._process, )
-                self.logger.info(f"Created task {task_id}...")
-                return True, self._after_enqueue()
-            except (redis.exceptions.ConnectionError, Exception) as e:
-                self.logger.exception(e)
-                self.logger.error((
-                    "Could not connect to Redis Server. Is the service Running? "
-                    "Synchronous process started..."
-                ))
-                self._process()
-        else:
-            self._process()
+        try:
+            task_id = async_task(self.function_to_execute(), *self.arguments(), q_options=self.q_options)
+            self.logger.info(f"Created task {task_id}...")
+            return True, self._after_enqueue()
+        except (redis.exceptions.ConnectionError, Exception) as e:
+            self.logger.exception(e)
+            self.logger.error((
+                "Could not connect to Redis Server. Is the service Running? "
+                "Synchronous process started..."
+            ))
+            self.function_to_execute()(*self.arguments())
 
         return False, self._after_enqueue()
 

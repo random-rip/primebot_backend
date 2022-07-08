@@ -43,7 +43,7 @@ def main():
     for team in teams:
         try:
             collector = MessageCollector(team)
-            collector.dispatch(msg_class=NotificationToTeamMessage, team=team, custom_message=message)
+            collector.dispatch(msg_class=NotificationToTeamMessage, custom_message=message)
         except Exception as e:
             print(e)
 

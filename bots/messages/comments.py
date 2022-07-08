@@ -1,6 +1,5 @@
 from django.utils.translation import gettext, ngettext
 
-from app_prime_league.models import Team, Match
 from bots.messages.base import MatchMessage
 
 
@@ -8,8 +7,8 @@ class NewCommentsNotificationMessage(MatchMessage):
     settings_key = "NEW_COMMENTS_OF_UNKNOWN_USERS"
     mentionable = True
 
-    def __init__(self, team: Team, match: Match, new_comment_ids):
-        super().__init__(team, match)
+    def __init__(self, team_id: int, match_id: int, new_comment_ids):
+        super().__init__(team_id=team_id, match_id=match_id)
         self.new_comment_ids = new_comment_ids
 
     def _generate_title(self):

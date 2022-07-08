@@ -1,6 +1,5 @@
 from django.utils.translation import gettext as _
 
-from app_prime_league.models import Team, Match
 from bots.messages.base import MatchMessage
 
 
@@ -8,8 +7,8 @@ class WeeklyNotificationMessage(MatchMessage):
     settings_key = "WEEKLY_MATCH_DAY"
     mentionable = True
 
-    def __init__(self, team: Team, match: Match):
-        super().__init__(team, match)
+    def __init__(self, team_id: int, match_id: int):
+        super().__init__(team_id=team_id, match_id=match_id)
 
     def _generate_title(self):
         return "🌟 " + _("Weekly overview")
