@@ -26,7 +26,7 @@ class MatchOverview(MatchMessage):
         value = (
             "> {match_begin}\n"
         ).format(
-            match_begin=self.helper.display_match_schedule(self.match),
+            match_begin=self.match_helper.display_match_schedule(self.match),
         )
 
         if not self.match.match_begin_confirmed:
@@ -143,7 +143,7 @@ class MatchOverview(MatchMessage):
 
         self._add_disclaimer()
         name = "⚔ {match_day}".format(
-            match_day=self.helper.display_match_day(self.match).title(),
+            match_day=self.match_helper.display_match_day(self.match).title(),
         )
         value = _(
             "[against {enemy_team_name}]({match_url})"

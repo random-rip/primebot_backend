@@ -30,7 +30,7 @@ class EnemyNewTimeSuggestionsNotificationMessage(MatchMessage):
         ).format(
             enemy_team_tag=enemy_team_tag,
             enemy_team_url=self.enemy_team_url,
-            match_day=self.helper.display_match_day(self.match),
+            match_day=self.match_helper.display_match_day(self.match),
             match_url=self.match_url
         )
 

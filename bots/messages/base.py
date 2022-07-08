@@ -34,7 +34,7 @@ class BaseMessage:
 
     def __init__(self, team: Team, **kwargs):
         self.team = team
-        self.helper = MatchDisplayHelper
+        self.match_helper = MatchDisplayHelper
 
     @abstractmethod
     def _generate_title(self) -> str:

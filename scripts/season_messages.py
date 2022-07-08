@@ -1,6 +1,6 @@
 from app_prime_league.models import Team
-from bots.message_dispatcher import MessageDispatcher
-from bots.messages import NotificationToTeamMessage, MatchesOverview
+from bots.message_dispatcher import MessageCollector
+from bots.messages import NotificationToTeamMessage
 
 season_end_message = """
 Hallo {team.name}, 
@@ -42,10 +42,8 @@ def main():
     teams = Team.objects.get_registered_teams().filter()
     for team in teams:
         try:
-            print(team)
-            dispatcher = MessageDispatcher(team)
-            msg = NotificationToTeamMessage(team=team, custom_message=message)
-            dispatcher.dispatch_raw_message(msg=msg)
+            collector = MessageCollector(team)
+            collector.dispatch(msg_class=NotificationToTeamMessage, team=team, custom_message=message)
         except Exception as e:
             print(e)
 

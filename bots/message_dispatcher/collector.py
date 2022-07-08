@@ -1,10 +1,11 @@
 from app_prime_league.models import Team
 from bots.discord_interface.discord_bot import DiscordBot
+from bots.message_dispatcher.dispatcher import MessageDispatcher
 from bots.messages.base import BaseMessage
 from bots.telegram_interface.telegram_bot import TelegramBot
 
 
-class MessageDispatcher:
+class MessageCollector:
 
     def __init__(self, team: Team):
         self.team = team
@@ -23,8 +24,4 @@ class MessageDispatcher:
         if not msg.team_wants_notification():
             return
         for bot in self.bots:
-            bot.send_message(msg=msg, team=self.team)
-
-    def dispatch_raw_message(self, msg, **kwargs):
-        for bot in self.bots:
-            bot.send_message(msg=msg, team=self.team, )
+            MessageDispatcher(bot=bot, msg=msg, team=self.team).enqueue()

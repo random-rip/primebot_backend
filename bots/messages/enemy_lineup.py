@@ -21,7 +21,7 @@ class NewLineupNotificationMessage(MatchMessage):
         ).format(
             enemy_team_tag=self.match.enemy_team.team_tag,
             enemy_team_url=self.enemy_team_url,
-            match_day=self.helper.display_match_day(self.match),
+            match_day=self.match_helper.display_match_day(self.match),
             match_url=self.match_url,
             scouting_url=self.enemy_lineup_scouting_url,
         )

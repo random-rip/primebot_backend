@@ -6,7 +6,7 @@ import requests
 from django.conf import settings
 
 from app_prime_league.models import Match
-from bots.message_dispatcher import MessageDispatcher
+from bots.message_dispatcher import MessageCollector
 from bots.messages import (
     EnemyNewTimeSuggestionsNotificationMessage,
     OwnNewTimeSuggestionsNotificationMessage, ScheduleConfirmationNotification,
@@ -47,31 +47,31 @@ def check_match(match: Match):
     # TODO: Nice to have: Eventuell nach einem comparing und updaten mit match.refresh_from_db() arbeiten
     log_message = f"New notification for {match_id=} ({team=}): "
     update_logger.info(f"Checking {match_id=} ({team=})...")
-    dispatcher = MessageDispatcher(team)
+    collector = MessageCollector(team)
     if cmp.compare_new_suggestion(of_enemy_team=True):
         notifications_logger.info(f"{log_message}Neuer Terminvorschlag der Gegner")
         match.update_latest_suggestions(tmd)
-        dispatcher.dispatch(EnemyNewTimeSuggestionsNotificationMessage, match=match)
+        collector.dispatch(EnemyNewTimeSuggestionsNotificationMessage, match=match)
     if cmp.compare_new_suggestion():
         notifications_logger.info(f"{log_message}Eigener neuer Terminvorschlag")
         match.update_latest_suggestions(tmd)
-        dispatcher.dispatch(OwnNewTimeSuggestionsNotificationMessage, match=match)
+        collector.dispatch(OwnNewTimeSuggestionsNotificationMessage, match=match)
     if cmp.compare_scheduling_confirmation():
         notifications_logger.info(f"{log_message}Termin wurde festgelegt")
         match.update_match_begin(tmd)
-        dispatcher.dispatch(ScheduleConfirmationNotification, match=match,
-                            latest_confirmation_log=tmd.latest_confirmation_log)
+        collector.dispatch(ScheduleConfirmationNotification, match=match,
+                           latest_confirmation_log=tmd.latest_confirmation_log)
     if cmp.compare_lineup_confirmation(of_enemy_team=True):
         notifications_logger.info(f"{log_message}Neues Lineup des gegnerischen Teams")
         match.update_enemy_lineup(tmd)
-        dispatcher.dispatch(NewLineupNotificationMessage, match=match)
+        collector.dispatch(NewLineupNotificationMessage, match=match)
     if cmp.compare_lineup_confirmation(of_enemy_team=False):
         notifications_logger.info(f"Silenced notification for {match_id=} ({team=}): Neues eigenes Lineup")
         match.update_team_lineup(tmd)
     if comment_ids := cmp.compare_new_comments():
         notifications_logger.info(f"{log_message}Neue Kommentare: {comment_ids}")
         match.update_comments(tmd)
-        dispatcher.dispatch(NewCommentsNotificationMessage, match=match, new_comment_ids=comment_ids)
+        collector.dispatch(NewCommentsNotificationMessage, match=match, new_comment_ids=comment_ids)
 
     match.update_match_data(tmd)
 

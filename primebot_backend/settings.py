@@ -170,6 +170,8 @@ DISCORD_SERVER_LINK = "https://discord.gg/K8bYxJMDzu"
 
 LOGIN_URL = "/admin/login/"
 
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+
 LOGGING_DIR = env.str("LOGGING_DIR", "logs")
 try:
     os.mkdir(LOGGING_DIR)
@@ -199,6 +201,28 @@ LOCALE_PATHS = [
     BASE_DIR / "bots" / "locale",
     BASE_DIR / "app_prime_league" / "locale",
 ]
+
+Q_CLUSTER = {
+    'name': 'primebot',
+    'workers': 4,  # in general the count of cpus
+    'daemonize_workers': True,  #
+    'recycle': 500,  # number of jobs before memory resources will be released
+    'timeout': 20,  # maximum seconds for a task
+    'retry': 25,  # Failed task will be queued after 25 seconds
+    'max_attempts': 0,  # Maximum retry attempts for failed tasks
+    'queue_limit': 50,
+    'compress': False,  # Compress large payload
+    'scheduler': False,  # disable schedulers reduce overhead
+    'save_limit': 0,  # Limits the amount of successful tasks save to Django
+    'redis': {
+        'host': env.str("REDIS_HOST"),
+        'port': env.str("REDIS_PORT"),
+        'password': env.str("REDIS_PASSWORD", None),
+        'db': 0,
+    } if DEBUG else {
+        'unix_socket_path': "unix:/var/run/memcached/memcached.sock",
+    }
+}
 
 if not DEBUG:
     LOGGING = {

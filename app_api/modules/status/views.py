@@ -2,7 +2,6 @@ import logging
 import subprocess
 
 import requests
-from django.conf import settings
 from django.core.cache import cache
 from rest_framework.response import Response
 from rest_framework.views import APIView

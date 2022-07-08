@@ -25,7 +25,7 @@ class NewMatchNotification(MatchMessage):
             "[{match_day}]({match_url}) against [{enemy_team_tag}]({enemy_team_url}):\n"
             "Here is your [{website} link]({scouting_url}) of the team."
         ).format(
-            match_day=self.helper.display_match_day(self.match),
+            match_day=self.match_helper.display_match_day(self.match),
             match_url=self.match_url,
             enemy_team_tag=self.match.enemy_team.team_tag,
             enemy_team_url=self.enemy_team_url,

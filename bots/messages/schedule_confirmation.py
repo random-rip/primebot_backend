@@ -44,5 +44,5 @@ class ScheduleConfirmationNotification(MatchMessage):
             enemy_team_tag=enemy_team_tag,
             match_url=f"{settings.MATCH_URI}{self.match.match_id}",
             enemy_team_url=f"{settings.TEAM_URI}{self.match.enemy_team.id}",
-            match_day=self.helper.display_match_day(self.match),
+            match_day=self.match_helper.display_match_day(self.match),
         )

@@ -18,6 +18,6 @@ class OwnNewTimeSuggestionsNotificationMessage(MatchMessage):
         return _(
             "New date proposed by you for [{match_day}]({match_url})."
         ).format(
-            match_day=self.helper.display_match_day(self.match),
+            match_day=self.match_helper.display_match_day(self.match),
             match_url=self.match_url
         )
