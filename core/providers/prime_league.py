@@ -111,9 +111,12 @@ class PrimeLeagueProvider:
     @classmethod
     def __get_local_json(cls, file_name, file_path=None):
         file_path = os.path.join(settings.STORAGE_DIR if file_path is None else file_path, file_name)
-        with open(file_path, 'r', encoding='utf8') as f:
-            text = f.read()
-        return json.loads(text)
+        try:
+            with open(file_path, 'r', encoding='utf8') as f:
+                text = f.read()
+            return json.loads(text)
+        except FileNotFoundError:
+            raise TeamWebsite404Exception()
 
     @classmethod
     def __save_object_to_file(cls, obj, file_name):

@@ -3,6 +3,7 @@ from discord import Embed, Colour
 from django.conf import settings
 from django.utils.translation import gettext as _
 
+from app_prime_league.models import Team
 from bots.messages.base import BaseMessage
 
 
@@ -10,8 +11,8 @@ class MatchesOverview(BaseMessage):
     settings_key = "NEW_MATCHES_NOTIFICATION"
     mentionable = True
 
-    def __init__(self, team_id: int, match_ids=None):
-        super().__init__(team_id=team_id)
+    def __init__(self, team: Team, match_ids: list = None):
+        super().__init__(team=team, )
         self.matches = self.__get_relevant_matches(match_ids)
 
     def _generate_title(self):

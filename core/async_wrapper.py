@@ -15,8 +15,8 @@ class AsyncWrapper:
     def function_to_execute(self) -> Callable:
         pass
 
-    def arguments(self) -> dict:
-        return {}
+    def arguments(self) -> Tuple:
+        return (),
 
     @property
     def q_options(self):

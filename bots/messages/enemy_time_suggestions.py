@@ -1,5 +1,6 @@
 from django.utils.translation import gettext, ngettext
 
+from app_prime_league.models import Team, Match
 from bots.messages.base import MatchMessage, emoji_numbers
 from utils.utils import format_datetime
 
@@ -8,8 +9,8 @@ class EnemyNewTimeSuggestionsNotificationMessage(MatchMessage):
     settings_key = "ENEMY_SCHEDULING_SUGGESTION"
     mentionable = True
 
-    def __init__(self, team_id: int, match_id: int):
-        super().__init__(team_id=team_id, match_id=match_id)
+    def __init__(self, team: Team, match: Match,):
+        super().__init__(team=team, match=match)
 
     def _generate_title(self):
         return "📆 " + gettext("New date proposed by an opponent")

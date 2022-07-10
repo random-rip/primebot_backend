@@ -1,5 +1,6 @@
 from django.utils.translation import gettext as _
 
+from app_prime_league.models import Team, Match
 from bots.messages.base import MatchMessage
 
 
@@ -12,8 +13,8 @@ class NewMatchNotification(MatchMessage):
     settings_key = "NEW_MATCH_NOTIFICATION"
     mentionable = True
 
-    def __init__(self, team_id: int, match_id: int):
-        super().__init__(team_id=team_id, match_id=match_id)
+    def __init__(self, team: Team, match: Match,):
+        super().__init__(team=team, match=match)
 
     def _generate_title(self):
         return "🔥 " + _("New match")

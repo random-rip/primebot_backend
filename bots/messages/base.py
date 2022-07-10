@@ -32,8 +32,8 @@ class BaseMessage:
     settings_key = None  # Message kann über die Settings gesteuert werden, ob sie gesendet wird, oder nicht
     mentionable = False  # Rollenerwähnung bei discord falls Rolle gesetzt
 
-    def __init__(self, team_id: int, **kwargs):
-        self.team = Team.objects.get(id=team_id)
+    def __init__(self, team: Team, **kwargs):
+        self.team = team
         self.match_helper = MatchDisplayHelper
 
     @abstractmethod
@@ -71,9 +71,9 @@ class BaseMessage:
 
 
 class MatchMessage(BaseMessage, ABC):
-    def __init__(self, team_id: int, match_id: int):
-        super().__init__(team_id)
-        self.match = Match.objects.get(id=match_id) # yes, id=match_id
+    def __init__(self, team: Team, match: Match):
+        super().__init__(team=team)
+        self.match = match
 
     @property
     def match_url(self):

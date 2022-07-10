@@ -1,13 +1,14 @@
 from django.utils.translation import gettext as _
 
+from app_prime_league.models import Team
 from bots.messages.base import BaseMessage
 
 
 class NotificationToTeamMessage(BaseMessage):
     mentionable = True
 
-    def __init__(self, team_id: int, custom_message: str, **kwargs):
-        super().__init__(team_id, **kwargs)
+    def __init__(self, team: Team, custom_message: str, **kwargs):
+        super().__init__(team, **kwargs)
         self.custom_message = custom_message
         self._generate_message()
 

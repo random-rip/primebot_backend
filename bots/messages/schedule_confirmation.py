@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.utils.translation import gettext as _
 
+from app_prime_league.models import Team, Match
 from bots.messages.base import MatchMessage
 from core.parsing.logs import LogSchedulingAutoConfirmation, LogSchedulingConfirmation, LogChangeTime
 from utils.utils import format_datetime
@@ -10,8 +11,8 @@ class ScheduleConfirmationNotification(MatchMessage):
     settings_key = "SCHEDULING_CONFIRMATION"
     mentionable = True
 
-    def __init__(self, team_id: int, match_id: int, latest_confirmation_log):  # TODO
-        super().__init__(team_id=team_id, match_id=match_id)
+    def __init__(self, team: Team, match: Match, latest_confirmation_log):
+        super().__init__(team=team, match=match)
         self.latest_confirmation_log = latest_confirmation_log
 
     def _generate_title(self):

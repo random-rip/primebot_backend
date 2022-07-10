@@ -2,7 +2,7 @@ from discord import Embed, Colour
 from django.conf import settings
 from django.utils.translation import gettext as _
 
-from app_prime_league.models import Champion, ScoutingWebsite
+from app_prime_league.models import Champion, ScoutingWebsite, Team, Match
 from bots.messages.base import MatchMessage, MessageNotImplementedError, emoji_numbers
 from utils.emojis import EMJOI_MAGN_GLASS
 from utils.utils import format_datetime
@@ -13,8 +13,8 @@ class MatchOverview(MatchMessage):
     def _generate_title(self) -> str:
         return "🔥 " + _("Match overview")
 
-    def __init__(self, team_id: int, match_id: int):
-        super().__init__(team_id=team_id, match_id=match_id)
+    def __init__(self, team: Team, match: Match,):
+        super().__init__(team=team, match=match)
         self.embed = Embed(color=Colour.gold())
 
     def _generate_message(self):

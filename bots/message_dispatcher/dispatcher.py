@@ -2,6 +2,9 @@ from core.async_wrapper import AsyncWrapper
 
 
 def dispatch(bot, msg, team):
+    print(bot)
+    print(msg)
+    print(team)
     bot.send_message(msg=msg, team=team)
 
 
@@ -18,11 +21,7 @@ class MessageDispatcher(AsyncWrapper):
         self.team = team
 
     def arguments(self):
-        return {
-            "bot": self.bot,
-            "msg": self.msg,
-            "team": self.team,
-        }
+        return self.bot, self.msg, self.team,
 
     def function_to_execute(self):
         return dispatch
