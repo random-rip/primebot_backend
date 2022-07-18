@@ -1,6 +1,6 @@
 from app_prime_league.models import Team
 from bots.message_dispatcher import MessageDispatcher
-from bots.messages import NotificationToTeamMessage, MatchesOverview
+from bots.messages import NotificationToTeamMessage
 
 season_end_message = """
 Hallo {team.name}, 
@@ -29,9 +29,12 @@ Grayknife und Orbis
 message = """
 Hallo {team.name},
 
-🔥 die Prime League API ist aktuell für den PrimeBot nicht erreichbar, dementsprechend können keine Benachrichtigungen bei Änderungen gesendet werden. :(
-Wir stehen bereits mit der Prime League in Kontakt, sodass wir den Fehler hoffentlich schnell beheben werden.
-📌 Den Status zur API findet ihr auf https://primebot.me/
+einige haben es gefordert, viele haben es sich gewünscht: der PrimeBot ist jetzt OpenSource. Wenn ihr Ideen zu Features habt, 
+neue Features implementieren wollt oder Bugs beheben möchtet, findet ihr alles weitere dazu auf [GitHub](https://github.com/random-rip/primebot_backend). Auch wenn ihr keine Programmierer:innen seid, wir sammeln auch Feedback zu Features die in der Pipeline sind. 
+Schaut also gerne bei den Issues vorbei, die mit "Teamfeedback needed" getaggt sind!
+
+**Werbung** Partnerschaft mit singularIT
+<MAX>
 
 Sternige Grüße
 Grayknife, Orbis & Mörlin
