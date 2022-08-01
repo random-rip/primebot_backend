@@ -287,7 +287,7 @@ class DiscordBot(Bot):
 
             # Multiple matches are possible in tiebreaker matches (they all have `match_day=99` )
             found_matches = await sync_to_async(list)(
-                team.matches_against.filter(match_type=Match.MATCH_TYPE_LEAGUE, match_day=match_day).all())
+                team.matches_against.filter(match_type=Match.MATCH_TYPE_PLAYOFF, match_day=match_day).all())
             if not found_matches:
                 await ctx.send(
                     content=(
