@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 from app_prime_league.model_manager import TeamManager, MatchManager, PlayerManager, ScoutingWebsiteManager, \
     ChampionManager
+from utils.utils import current_match_day
 
 
 class Team(models.Model):
@@ -99,6 +100,27 @@ class Team(models.Model):
 
     def get_open_matches_ordered(self):
         return self.matches_against.filter(closed=False).order_by(F('match_day').asc(nulls_last=True))
+
+    def get_obvious_matches_based_on_stage(self, match_day: int):
+        """
+        Get ``Match`` queryset, where match_type will be set based on the current stage of the split.
+        Args:
+            match_day: Match day
+
+        Returns: Matches Queryset based on current stage
+
+        """
+        qs_filter = {
+            "match_day": match_day,
+            "match_type": Match.MATCH_TYPE_LEAGUE,
+        }
+        week = current_match_day()
+        if week <= -1:
+            qs_filter["match_type"] = Match.MATCH_TYPE_GROUP
+        elif week > 8:
+            if self.matches_against.filter(match_type=Match.MATCH_TYPE_PLAYOFF).exists():
+                qs_filter["match_type"] = Match.MATCH_TYPE_PLAYOFF
+        return self.matches_against.filter(**qs_filter)
 
     def update(self, **kwargs):
         for key, value in kwargs.items():

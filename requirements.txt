@@ -6,7 +6,7 @@ django-cors-headers==3.10.1
 django-environ==0.9.0
 django-extensions==3.0.2
 djangorestframework==3.13.1
-mysqlclient==2.0.1
+mysqlclient==2.0.3
 python-dateutil==2.8.2
 python-telegram-bot==12.8
 requests==2.24.0

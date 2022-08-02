@@ -12,9 +12,11 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import errno
 import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from datetime import datetime
 from pathlib import Path
 
 import environ
+import pytz
 from django.utils.translation import gettext_lazy as _
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -157,6 +159,8 @@ GAME_SPORTS_BASE_URL = env.str("GAME_SPORTS_BASE_URL", None)
 MATCH_URI = "https://www.primeleague.gg/de/leagues/matches/"
 TEAM_URI = "https://www.primeleague.gg/de/leagues/teams/"
 SITE_ID = env.str("SITE_ID", None)
+
+CURRENT_SPLIT_START = datetime(2022, 6, 6).astimezone(pytz.timezone("Europe/Berlin"))
 
 STORAGE_DIR = os.path.join(BASE_DIR, "storage", )
 

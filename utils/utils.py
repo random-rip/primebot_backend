@@ -5,7 +5,7 @@ from typing import Union
 import pytz
 from babel import dates as babel
 from django.conf import settings
-from django.utils import translation
+from django.utils import translation, timezone
 
 from utils.exceptions import CouldNotParseURLException, Div1orDiv2TeamException
 
@@ -34,9 +34,12 @@ def timestamp_to_datetime(x):
 
 
 def current_match_day():
-    start_date = datetime(2022, 6, 6).astimezone(pytz.timezone("Europe/Berlin"))
-    current_date = datetime.now().astimezone(pytz.timezone("Europe/Berlin"))
-    match_day = ((current_date - start_date) / 7).days + 1
+    current_date = timezone.now().astimezone(pytz.timezone("Europe/Berlin"))
+    return count_weeks(settings.CURRENT_SPLIT_START, current_date)
+
+
+def count_weeks(split_start: datetime, another: datetime):
+    match_day = ((another - split_start) / 7).days + 1
     return match_day
 
 
