@@ -62,8 +62,6 @@ class MatchOverview(MatchMessage):
         self.embed.add_field(name=name, value=text, inline=False)
 
     def _add_enemy_team(self):
-        if self.match.enemy_team is None:
-            return
         name = _("Opposing team")
         value = ""
         multi = ScoutingWebsite.objects.get_multi_websites()
@@ -77,8 +75,6 @@ class MatchOverview(MatchMessage):
         self.embed.add_field(name=name, value=value, inline=False)
 
     def _add_enemy_players(self):
-        if self.match.enemy_team is None:
-            return
         name = _("Opposing players (leagueofgraphs.com)")
         value = ""
         single = ScoutingWebsite.objects.filter(multi=False).first()
@@ -101,8 +97,6 @@ class MatchOverview(MatchMessage):
         self.embed.add_field(name=name, value=value, inline=False)
 
     def _add_team_lineup(self, result=False):
-        if self.match.enemy_team is None:
-            return
         name = _("Your lineup")
         value = ""
         if self.match.team_lineup_available:
@@ -115,8 +109,6 @@ class MatchOverview(MatchMessage):
         self.embed.add_field(name=name, value=value)
 
     def _add_enemy_lineup(self, result=False):
-        if self.match.enemy_team is None:
-            return
         name = _("Lineup of opponent")
         value = ""
         if self.match.enemy_lineup_available:
@@ -167,14 +159,16 @@ class MatchOverview(MatchMessage):
 
         if self.match.closed:
             self._add_results()
-            self._add_team_lineup(result=True)
-            self._add_enemy_lineup(result=True)
+            if self.match.enemy_team is not None:
+                self._add_team_lineup(result=True)
+                self._add_enemy_lineup(result=True)
         else:
             self._add_schedule()
-            self._add_enemy_team()
-            self._add_enemy_players()
-            self._add_team_lineup()
-            self._add_enemy_lineup()
+            if self.match.enemy_team is not None:
+                self._add_enemy_team()
+                self._add_enemy_players()
+                self._add_team_lineup()
+                self._add_enemy_lineup()
             self._add_general_information()
         self.embed.set_footer(
             text=_("Different scouting website? Use !settings to change it."))
