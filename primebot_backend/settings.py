@@ -161,6 +161,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = env.str("STATIC_ROOT", None)
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = env.str("MEDIA_ROOT", None)
+
 GAME_SPORTS_BASE_URL = env.str("GAME_SPORTS_BASE_URL", None)
 
 MATCH_URI = "https://www.primeleague.gg/de/leagues/matches/"
