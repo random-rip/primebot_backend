@@ -1,5 +1,7 @@
+from django.conf import settings
 from django.contrib import admin
 from django.db.models import Q
+from django.utils.html import format_html
 
 
 class PlatformFilter(admin.SimpleListFilter):
@@ -53,6 +55,7 @@ class TeamAdmin(admin.ModelAdmin):
         'division',
         'discord_registered',
         'telegram_registered',
+        "prime_league_link",
         'scouting_website',
         'language',
         'created_at',
@@ -62,12 +65,23 @@ class TeamAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at", "updated_at",)
     search_fields = ['id', 'name', 'team_tag']
 
+    def prime_league_link(self, obj):
+        return format_html(
+            '<a class="button" href="{}" target="_blank">Zur PL</a>&nbsp;',
+            f"{settings.TEAM_URI}{obj.id}",
+        )
+
+    prime_league_link.allow_tags = True
+    prime_league_link.short_description = "Prime League"
+
     def discord_registered(self, obj):
         return bool(obj.discord_webhook_token)
 
     discord_registered.boolean = True
+    discord_registered.short_description = "Discord"
 
     def telegram_registered(self, obj):
         return bool(obj.telegram_id)
 
     telegram_registered.boolean = True
+    telegram_registered.short_description = "Telegram"
