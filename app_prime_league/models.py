@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.db.models import F
-from django.template.defaultfilters import urlencode
+from django.template.defaultfilters import urlencode, truncatechars
 from django.utils.translation import gettext_lazy as _
 
 from app_prime_league.model_manager import TeamManager, MatchManager, PlayerManager, ScoutingWebsiteManager, \
@@ -40,7 +40,8 @@ class Team(models.Model):
         return f"{self.id} - {self.name}"
 
     def __str__(self):
-        return f"Team {self.id} - {self.name}"
+        name = self.name or ""
+        return f"{self.id}  - {truncatechars(name, 15)}"
 
     def value_of_setting(self, setting):
         return self.settings_dict().get(setting, True)
@@ -192,7 +193,7 @@ class Match(models.Model):
         return f"{self.match_id}"
 
     def __str__(self):
-        return f"Match {self.match_id} from {self.team}"
+        return f"{self.match_id} of Team {self.team}"
 
     def set_enemy_team(self, gmd):
         if self.enemy_team is not None:
