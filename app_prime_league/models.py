@@ -253,9 +253,14 @@ class Match(models.Model):
         return self.team_lineup.all().count() > 0
 
     def get_enemy_team(self) -> Team:
+        """
+        Safe Method to get a `Team` object even if the enemy_team is None.
+        Returns: Enemy Team  or dummy Team object
+
+        """
         return self.enemy_team or Team(
-            name=_("Deleted Team"),
-            team_tag=_("Deleted Team"),
+            name=_("Deleted Team/TBD"),
+            team_tag=_("Deleted Team/TBD"),
         )
 
 
