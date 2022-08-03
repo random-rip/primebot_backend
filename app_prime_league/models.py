@@ -22,7 +22,7 @@ class Team(models.Model):
     discord_webhook_token = models.CharField(max_length=100, null=True, blank=True, )
     discord_channel_id = models.CharField(max_length=50, unique=True, null=True, blank=True, )
     discord_role_id = models.CharField(max_length=50, null=True, blank=True, )
-    logo_url = models.CharField(max_length=1000, null=True, blank=True, )
+    logo_url = models.URLField(max_length=1000, null=True, blank=True, )
     scouting_website = models.ForeignKey("app_prime_league.ScoutingWebsite", on_delete=models.SET_NULL, null=True,
                                          blank=True, )
     language = models.CharField(max_length=2, choices=Languages.choices, default=Languages.GERMAN)

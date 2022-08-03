@@ -3,6 +3,8 @@ from django.contrib import admin
 from django.db.models import Q
 from django.utils.html import format_html
 
+from app_prime_league.models import Match
+
 
 class PlatformFilter(admin.SimpleListFilter):
     title = 'Platform'
@@ -47,7 +49,28 @@ class RegisterFilter(admin.SimpleListFilter):
         return queryset
 
 
+class MatchInline(admin.TabularInline):
+    model = Match
+    classes = ("collapse",)
+    extra = 0
+    fk_name = "team"
+    fields = ("match_id", "match_day", "match_type", "enemy_team", "begin", "closed", "result",)
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+
 class TeamAdmin(admin.ModelAdmin):
+    inlines = [
+        MatchInline,
+    ]
+
     list_display = (
         'id',
         'name',
@@ -61,8 +84,46 @@ class TeamAdmin(admin.ModelAdmin):
         'created_at',
         'updated_at',
     )
+
+    fieldsets = (
+        ("General", {
+            "fields": (
+                "name",
+                ("prime_league_link",),
+                ("team_tag",),
+                ("division",),
+                ("created_at",),
+                ("updated_at",),
+            ),
+        }),
+        ("Registered Infos", {
+            "fields": (
+                ("discord_registered",),
+                ("telegram_registered",),
+                ("logo_url",),
+                ("scouting_website",),
+                ("language",),
+            ),
+        }),
+        ("Discord", {
+            "fields": (
+                ("discord_webhook_id",),
+                ("discord_webhook_token",),
+                ("discord_channel_id",),
+                ("discord_role_id",),
+            ),
+            "classes": ("collapse",)
+        }),
+        ("Telegram", {
+            "fields": (
+                ("telegram_id",),
+            ),
+            "classes": ("collapse",)
+        }),
+    )
+
     list_filter = [PlatformFilter, RegisterFilter, 'language', 'created_at', 'updated_at', ]
-    readonly_fields = ("created_at", "updated_at",)
+    readonly_fields = ("created_at", "updated_at", "discord_registered", "telegram_registered", "prime_league_link")
     search_fields = ['id', 'name', 'team_tag']
 
     def prime_league_link(self, obj):
@@ -74,14 +135,10 @@ class TeamAdmin(admin.ModelAdmin):
     prime_league_link.allow_tags = True
     prime_league_link.short_description = "Prime League"
 
+    @admin.display(boolean=True, description='Discord')
     def discord_registered(self, obj):
         return bool(obj.discord_webhook_token)
 
-    discord_registered.boolean = True
-    discord_registered.short_description = "Discord"
-
+    @admin.display(boolean=True, description='Telegram', )
     def telegram_registered(self, obj):
         return bool(obj.telegram_id)
-
-    telegram_registered.boolean = True
-    telegram_registered.short_description = "Telegram"
