@@ -66,7 +66,8 @@ class MatchOverview(MatchMessage):
         value = ""
         multi = ScoutingWebsite.objects.get_multi_websites()
 
-        names = list(self.match.enemy_team.player_set.get_active_players().values_list("summoner_name", flat=True))
+        names = list(
+            self.match.get_enemy_team().player_set.get_active_players().values_list("summoner_name", flat=True))
         for i in multi:
             value += (
                 f"> {EMJOI_MAGN_GLASS} [{i.name}]({i.generate_url(names)})\n"
@@ -80,7 +81,8 @@ class MatchOverview(MatchMessage):
         if not single:
             return
 
-        names = list(self.match.enemy_team.player_set.get_active_players().values_list("summoner_name", flat=True))
+        names = list(
+            self.match.get_enemy_team().player_set.get_active_players().values_list("summoner_name", flat=True))
         for i, player in enumerate(names):
             value += (
                 f"> {emoji_numbers[i]} {EMJOI_MAGN_GLASS} [{player}]({single.generate_url(player)})\n"
