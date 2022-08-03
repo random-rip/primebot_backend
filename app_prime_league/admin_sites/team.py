@@ -50,6 +50,7 @@ class RegisterFilter(admin.SimpleListFilter):
 
 
 class MatchInline(admin.TabularInline):
+    ordering = ("match_day", "closed")
     model = Match
     classes = ("collapse",)
     extra = 0
