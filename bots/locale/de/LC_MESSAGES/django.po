@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-03 15:42+0200\n"
+"POT-Creation-Date: 2022-08-03 16:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -110,7 +110,7 @@ msgstr "Offene Terminvorschläge von euch."
 msgid "Match overview"
 msgstr "Matchübersicht"
 
-#: .\bots\messages\match_details.py:24 .\bots\messages\match_details.py:96
+#: .\bots\messages\match_details.py:24 .\bots\messages\match_details.py:100
 msgid "Date"
 msgstr "Termin"
 
@@ -138,43 +138,43 @@ msgstr "bis Patch"
 msgid "The rulebook is available [here.]"
 msgstr "The rulebook is available [here.]"
 
-#: .\bots\messages\match_details.py:65
+#: .\bots\messages\match_details.py:67
 msgid "Opposing team"
 msgstr "Gegnerteam"
 
-#: .\bots\messages\match_details.py:78
+#: .\bots\messages\match_details.py:82
 msgid "Opposing players (leagueofgraphs.com)"
 msgstr "Gegnerische Spieler (leagueofgraphs.com)"
 
-#: .\bots\messages\match_details.py:93
+#: .\bots\messages\match_details.py:97
 msgid "Match result"
 msgstr "Matchergebnis"
 
-#: .\bots\messages\match_details.py:95
+#: .\bots\messages\match_details.py:99
 msgid "Result"
 msgstr "Ergebnis"
 
-#: .\bots\messages\match_details.py:100
+#: .\bots\messages\match_details.py:104
 msgid "Your lineup"
 msgstr "Eure Aufstellung"
 
-#: .\bots\messages\match_details.py:104
+#: .\bots\messages\match_details.py:108
 msgid "Own lineup submitted:"
 msgstr "Eigenes Lineup aufgestellt:"
 
-#: .\bots\messages\match_details.py:108 .\bots\messages\match_details.py:127
+#: .\bots\messages\match_details.py:112 .\bots\messages\match_details.py:131
 msgid "No lineup has been submitted yet."
 msgstr "Es wurde noch kein Lineup aufgestellt."
 
-#: .\bots\messages\match_details.py:112
+#: .\bots\messages\match_details.py:116
 msgid "Lineup of opponent"
 msgstr "Gegnerische Aufstellung"
 
-#: .\bots\messages\match_details.py:131
+#: .\bots\messages\match_details.py:135
 msgid "Disclaimer"
 msgstr ""
 
-#: .\bots\messages\match_details.py:133
+#: .\bots\messages\match_details.py:137
 msgid ""
 "This command is in beta! We still collect feedback for this.\n"
 "What other information would you like to see?\n"
@@ -185,13 +185,13 @@ msgstr ""
 "Welche Informationen fehlen euch noch?\n"
 "[Schreibt es uns auf Discord!](https://discord.gg/7NYgT2uFPm)"
 
-#: .\bots\messages\match_details.py:151 .\bots\messages\matches_overview.py:56
+#: .\bots\messages\match_details.py:155 .\bots\messages\matches_overview.py:56
 #, python-brace-format
 msgid "[against {enemy_team_name}]({match_url})"
 msgstr "[gegen {enemy_team_name}]({match_url})"
 
-#: .\bots\messages\match_details.py:172 .\bots\messages\matches_overview.py:73
-msgid "Different scouting website? Use `!settings` to change it."
+#: .\bots\messages\match_details.py:178 .\bots\messages\matches_overview.py:73
+msgid "Different scouting website? Use !settings to change it."
 msgstr "Andere Scouting Website? mit !settings einfach anpassen."
 
 #: .\bots\messages\matches_overview.py:19
