@@ -258,6 +258,13 @@ if not DEBUG:
                 'when': 'midnight',
                 'formatter': 'to_file',
             },
+            'discord': {
+                'level': "INFO",
+                'class': 'logging.handlers.TimedRotatingFileHandler',
+                'filename': os.path.join(LOGGING_DIR, 'discord.log'),
+                'when': 'midnight',
+                'formatter': 'to_file',
+            },
         },
         'loggers': {
             'django': {
@@ -277,6 +284,11 @@ if not DEBUG:
             },
             'updates': {
                 'handlers': ['updates'],
+                'level': "DEBUG",
+                'propagate': False,
+            },
+            'discord': {
+                'handlers': ['discord'],
                 'level': "DEBUG",
                 'propagate': False,
             }

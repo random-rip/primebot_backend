@@ -23,6 +23,8 @@ from utils.exceptions import CouldNotParseURLException, PrimeLeagueConnectionExc
 from utils.messages_logger import log_from_discord
 from utils.utils import get_valid_team_id
 
+logger = logging.getLogger('discord')
+
 MENTION_PREFIX = "<@&"
 MENTION_POSTFIX = ">"
 
