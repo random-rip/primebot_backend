@@ -226,3 +226,39 @@ class CompareNewLineupTest(TestCase):
                         "Enemy has new lineup, but was not recognized")
 
 
+class CompareEnemyTeamIDTest(TestCase):
+    def setUp(self) -> None:
+        self.team = Team.objects.create(id=1, name="Team 1", team_tag="T1")
+        self.enemy_team = Team.objects.create(id=2, name="Team 2", team_tag="T2")
+
+    def test_not_set(self):
+        match = Match.objects.create(match_id=1, match_day=1, match_type=Match.MATCH_TYPE_LEAGUE, team=self.team,
+                                     has_side_choice=True, enemy_team=None)
+
+        md = create_temporary_match_data(team=self.team)
+        cp = MatchComparer(match_old=match, match_new=md)
+        self.assertFalse(cp.compare_new_enemy_team())
+
+    def test_not_changed(self):
+        match = Match.objects.create(match_id=1, match_day=1, match_type=Match.MATCH_TYPE_LEAGUE, team=self.team,
+                                     has_side_choice=True, enemy_team=self.enemy_team)
+
+        md = create_temporary_match_data(team=self.team, enemy_team=self.enemy_team)
+        cp = MatchComparer(match_old=match, match_new=md)
+        self.assertFalse(cp.compare_new_enemy_team())
+
+    def test_new_set(self):
+        match = Match.objects.create(match_id=1, match_day=1, match_type=Match.MATCH_TYPE_LEAGUE, team=self.team,
+                                     has_side_choice=True, enemy_team=None)
+
+        md = create_temporary_match_data(team=self.team, enemy_team=self.enemy_team)
+        cp = MatchComparer(match_old=match, match_new=md)
+        self.assertTrue(cp.compare_new_enemy_team())
+
+    def test_unset(self):
+        match = Match.objects.create(match_id=1, match_day=1, match_type=Match.MATCH_TYPE_LEAGUE, team=self.team,
+                                     has_side_choice=True, enemy_team=self.enemy_team)
+
+        md = create_temporary_match_data(team=self.team, enemy_team=None)
+        cp = MatchComparer(match_old=match, match_new=md)
+        self.assertTrue(cp.compare_new_enemy_team())

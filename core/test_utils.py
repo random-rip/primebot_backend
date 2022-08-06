@@ -48,7 +48,7 @@ def create_temporary_match_data(match_id=1, match_day=1, team=None, enemy_team=N
         "match_id": match_id,
         "match_day": match_day,
         "team": team if team else team,
-        "enemy_team_id": enemy_team.id if enemy_team else enemy_team.id,
+        "enemy_team_id": enemy_team.id if enemy_team else None,
         "enemy_lineup": enemy_lineup,
         "closed": closed,
         "team_made_latest_suggestion": team_made_latest_suggestion,

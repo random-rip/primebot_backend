@@ -90,7 +90,7 @@ def create_match_and_enemy_team(team, match_id, ):
 
     # Create Enemy Team
     if tmd.enemy_team_id is not None:
-        processor = TeamDataProcessor(team_id=tmd.enemy_team_id)
+        processor = TeamDataProcessor(team_id=tmd.enemy_team_id) # TODO duplicate code
         enemy_team, created = Team.objects.update_or_create(id=tmd.enemy_team_id, defaults={
             "name": processor.get_team_name(),
             "team_tag": processor.get_team_tag(),

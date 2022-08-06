@@ -47,7 +47,7 @@ class MatchComparer:
             return True
         return False
 
-    def compare_new_comments(self) -> Union[List[int],bool]:
+    def compare_new_comments(self) -> Union[List[int], bool]:
         """
         Check if new comments occurred which are not from team members.
         The list is sorted by comment_ids ascending.
@@ -59,3 +59,6 @@ class MatchComparer:
         new_comment_ids_without_team_comments = set(
             [x.comment_id for x in self.match_new.comments if x.user_id not in user_ids_of_team])
         return sorted(list(new_comment_ids_without_team_comments - old_comment_ids_without_team_comments)) or False
+
+    def compare_new_enemy_team(self):
+        return not self.match_new.enemy_team_id == self.match_old.enemy_team_id
