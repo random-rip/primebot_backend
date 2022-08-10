@@ -5,7 +5,7 @@ import threading
 import requests
 from django.conf import settings
 
-from app_prime_league.models import Match
+from app_prime_league.models import Match, Team, Player
 from bots.message_dispatcher import MessageDispatcher
 from bots.messages import (
     EnemyNewTimeSuggestionsNotificationMessage,
@@ -14,6 +14,7 @@ from bots.messages import (
     NewCommentsNotificationMessage
 )
 from core.comparers.match_comparer import MatchComparer
+from core.processors.team_processor import TeamDataProcessor
 from core.temporary_match_data import TemporaryMatchData
 from utils.exceptions import Match404Exception
 from utils.messages_logger import log_exception
@@ -48,6 +49,16 @@ def check_match(match: Match):
     log_message = f"New notification for {match_id=} ({team=}): "
     update_logger.info(f"Checking {match_id=} ({team=})...")
     dispatcher = MessageDispatcher(team)
+    if cmp.compare_new_enemy_team():
+        processor = TeamDataProcessor(team_id=tmd.enemy_team_id)
+        enemy_team, created = Team.objects.update_or_create(id=tmd.enemy_team_id, defaults={
+            "name": processor.get_team_name(),
+            "team_tag": processor.get_team_tag(),
+            "division": processor.get_current_division(),
+        })
+        match.enemy_team = enemy_team
+        _ = Player.objects.create_or_update_players(processor.get_members(), enemy_team)
+
     if cmp.compare_new_suggestion(of_enemy_team=True):
         notifications_logger.info(f"{log_message}Neuer Terminvorschlag der Gegner")
         match.update_latest_suggestions(tmd)

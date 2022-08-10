@@ -1,11 +1,12 @@
 from django.conf import settings
 from django.db import models
 from django.db.models import F
-from django.template.defaultfilters import urlencode
+from django.template.defaultfilters import urlencode, truncatechars
 from django.utils.translation import gettext_lazy as _
 
 from app_prime_league.model_manager import TeamManager, MatchManager, PlayerManager, ScoutingWebsiteManager, \
     ChampionManager
+from utils.utils import current_match_day
 
 
 class Team(models.Model):
@@ -21,7 +22,7 @@ class Team(models.Model):
     discord_webhook_token = models.CharField(max_length=100, null=True, blank=True, )
     discord_channel_id = models.CharField(max_length=50, unique=True, null=True, blank=True, )
     discord_role_id = models.CharField(max_length=50, null=True, blank=True, )
-    logo_url = models.CharField(max_length=1000, null=True, blank=True, )
+    logo_url = models.URLField(max_length=1000, null=True, blank=True, )
     scouting_website = models.ForeignKey("app_prime_league.ScoutingWebsite", on_delete=models.SET_NULL, null=True,
                                          blank=True, )
     language = models.CharField(max_length=2, choices=Languages.choices, default=Languages.GERMAN)
@@ -39,7 +40,8 @@ class Team(models.Model):
         return f"{self.id} - {self.name}"
 
     def __str__(self):
-        return f"Team {self.id} - {self.name}"
+        name = self.name or ""
+        return f"{self.id}  - {truncatechars(name, 15)}"
 
     def value_of_setting(self, setting):
         return self.settings_dict().get(setting, True)
@@ -99,6 +101,27 @@ class Team(models.Model):
 
     def get_open_matches_ordered(self):
         return self.matches_against.filter(closed=False).order_by(F('match_day').asc(nulls_last=True))
+
+    def get_obvious_matches_based_on_stage(self, match_day: int):
+        """
+        Get ``Match`` queryset, where match_type will be set based on the current stage of the split.
+        Args:
+            match_day: Match day
+
+        Returns: Matches Queryset based on current stage
+
+        """
+        qs_filter = {
+            "match_day": match_day,
+            "match_type": Match.MATCH_TYPE_LEAGUE,
+        }
+        week = current_match_day()
+        if week <= -1:
+            qs_filter["match_type"] = Match.MATCH_TYPE_GROUP
+        elif week > 8:
+            if self.matches_against.filter(match_type=Match.MATCH_TYPE_PLAYOFF).exists():
+                qs_filter["match_type"] = Match.MATCH_TYPE_PLAYOFF
+        return self.matches_against.filter(**qs_filter)
 
     def update(self, **kwargs):
         for key, value in kwargs.items():
@@ -170,7 +193,7 @@ class Match(models.Model):
         return f"{self.match_id}"
 
     def __str__(self):
-        return f"Match {self.match_id} from {self.team}"
+        return f"{self.match_id} of Team {self.team}"
 
     def set_enemy_team(self, gmd):
         if self.enemy_team is not None:
@@ -230,9 +253,14 @@ class Match(models.Model):
         return self.team_lineup.all().count() > 0
 
     def get_enemy_team(self) -> Team:
+        """
+        Safe Method to get a `Team` object even if the enemy_team is None.
+        Returns: Enemy Team  or dummy Team object
+
+        """
         return self.enemy_team or Team(
-            name=_("Deleted Team"),
-            team_tag=_("Deleted Team"),
+            name=_("Deleted Team/TBD"),
+            team_tag=_("Deleted Team/TBD"),
         )
 
 

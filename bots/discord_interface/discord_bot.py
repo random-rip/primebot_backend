@@ -11,7 +11,7 @@ from django.conf import settings
 
 from app_api.modules.status.views import GitHub
 from app_api.modules.team_settings.maker import SettingsMaker
-from app_prime_league.models import Team, Match
+from app_prime_league.models import Team
 from app_prime_league.teams import register_team
 from bots.base.bop import GIFinator
 from bots.base.bot import Bot
@@ -22,6 +22,8 @@ from utils.exceptions import CouldNotParseURLException, PrimeLeagueConnectionExc
     Div1orDiv2TeamException, VariableNotSetException
 from utils.messages_logger import log_from_discord
 from utils.utils import get_valid_team_id
+
+logger = logging.getLogger('discord')
 
 MENTION_PREFIX = "<@&"
 MENTION_POSTFIX = ">"
@@ -285,9 +287,9 @@ class DiscordBot(Bot):
                 )
                 return
 
-            # Multiple matches are possible in tiebreaker matches (they all have `match_day=99` )
+            # Multiple matches are possible in tiebreaker matches and playoffs
             found_matches = await sync_to_async(list)(
-                team.matches_against.filter(match_type=Match.MATCH_TYPE_LEAGUE, match_day=match_day).all())
+                await sync_to_async(team.get_obvious_matches_based_on_stage)(match_day=match_day))
             if not found_matches:
                 await ctx.send(
                     content=(

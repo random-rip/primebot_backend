@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-02 14:26+0200\n"
+"POT-Creation-Date: 2022-08-03 15:42+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,14 +18,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\app_prime_league\models.py:13
+#: .\app_prime_league\models.py:14
 msgid "german"
 msgstr "deutsch"
 
-#: .\app_prime_league\models.py:14
+#: .\app_prime_league\models.py:15
 msgid "english"
 msgstr "englisch"
 
-#: .\app_prime_league\models.py:234 .\app_prime_league\models.py:235
-msgid "Deleted Team"
-msgstr "Gelöschtes Team"
+#: .\app_prime_league\models.py:262 .\app_prime_league\models.py:263
+#, fuzzy
+#| msgid "Deleted Team"
+msgid "Deleted Team/TBD"
+msgstr "Gelöschtes Team/TBD"

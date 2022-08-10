@@ -12,9 +12,11 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import errno
 import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from datetime import datetime
 from pathlib import Path
 
 import environ
+import pytz
 from django.utils.translation import gettext_lazy as _
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,6 +44,9 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 INSTALLED_APPS = [
+    "admin_interface",
+    "colorfield",
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -88,6 +93,10 @@ TEMPLATES = [
         },
     },
 ]
+
+X_FRAME_OPTIONS = "SAMEORIGIN"
+SILENCED_SYSTEM_CHECKS = ["security.W019"]
+
 
 WSGI_APPLICATION = 'primebot_backend.wsgi.application'
 
@@ -146,17 +155,24 @@ USE_L10N = True
 
 USE_TZ = True
 
+DEFAULT_AUTO_FIELD="django.db.models.BigAutoField"
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
 STATIC_ROOT = env.str("STATIC_ROOT", None)
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = env.str("MEDIA_ROOT", None)
+
 GAME_SPORTS_BASE_URL = env.str("GAME_SPORTS_BASE_URL", None)
 
 MATCH_URI = "https://www.primeleague.gg/de/leagues/matches/"
 TEAM_URI = "https://www.primeleague.gg/de/leagues/teams/"
 SITE_ID = env.str("SITE_ID", None)
+
+CURRENT_SPLIT_START = datetime(2022, 6, 6).astimezone(pytz.timezone("Europe/Berlin"))
 
 STORAGE_DIR = os.path.join(BASE_DIR, "storage", )
 
@@ -244,6 +260,13 @@ if not DEBUG:
                 'when': 'midnight',
                 'formatter': 'to_file',
             },
+            'discord': {
+                'level': "INFO",
+                'class': 'logging.handlers.TimedRotatingFileHandler',
+                'filename': os.path.join(LOGGING_DIR, 'discord.log'),
+                'when': 'midnight',
+                'formatter': 'to_file',
+            },
         },
         'loggers': {
             'django': {
@@ -263,6 +286,11 @@ if not DEBUG:
             },
             'updates': {
                 'handlers': ['updates'],
+                'level': "DEBUG",
+                'propagate': False,
+            },
+            'discord': {
+                'handlers': ['discord'],
                 'level': "DEBUG",
                 'propagate': False,
             }

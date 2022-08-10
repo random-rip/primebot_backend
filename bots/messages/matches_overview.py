@@ -33,7 +33,7 @@ class MatchesOverview(BaseMessage):
             ).format(
                 match_day=self.helper.display_match_day(match).title(),
                 match_url=f"{settings.MATCH_URI}{match.match_id}",
-                enemy_team_name=match.enemy_team.name,
+                enemy_team_name=match.get_enemy_team().name,
                 website=self.scouting_website,
                 scouting_url=match.team.get_scouting_url(match=match, lineup=False),
             )
@@ -70,5 +70,5 @@ class MatchesOverview(BaseMessage):
 
             embed.add_field(name=name, value=value, inline=False)
         embed.set_footer(
-            text=_("Different scouting website? Use `!settings` to change it."))
+            text=_("Different scouting website? Use !settings to change it."))
         return embed

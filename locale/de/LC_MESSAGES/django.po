@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-02 14:26+0200\n"
+"POT-Creation-Date: 2022-08-03 15:42+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,13 +18,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\primebot_backend\settings.py:137
+#: .\primebot_backend\settings.py:146
 msgid "German"
 msgstr "Deutsch"
 
-#: .\primebot_backend\settings.py:138
+#: .\primebot_backend\settings.py:147
 msgid "English"
 msgstr "Englisch"
+
+#: .\venv\Lib\site-packages\colorfield\validators.py:14
+msgid "Enter a valid hex color, eg. #000000"
+msgstr ""
+
+#: .\venv\Lib\site-packages\colorfield\validators.py:20
+msgid "Enter a valid hexa color, eg. #00000000"
+msgstr ""
 
 #: .\venv\Lib\site-packages\django\contrib\messages\apps.py:7
 msgid "Messages"
@@ -578,6 +586,7 @@ msgid "Order"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\forms\formsets.py:391
+#: .\venv\Lib\site-packages\flat\templates\admin\related_widget_wrapper.html:23
 msgid "Delete"
 msgstr ""
 
@@ -631,6 +640,8 @@ msgid "Currently"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\forms\widgets.py:400
+#: .\venv\Lib\site-packages\flat\templates\admin\edit_inline\tabular.html:31
+#: .\venv\Lib\site-packages\flat\templates\admin\related_widget_wrapper.html:9
 msgid "Change"
 msgstr ""
 
@@ -1229,6 +1240,85 @@ msgstr ""
 
 #: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:409
 msgid "Connect, get help, or contribute"
+msgstr ""
+
+#: .\venv\Lib\site-packages\flat\templates\admin\base_site.html:3
+#: .\venv\Lib\site-packages\flat_responsive\templates\admin\base_site.html:4
+msgid "Django site admin"
+msgstr ""
+
+#: .\venv\Lib\site-packages\flat\templates\admin\base_site.html:6
+#: .\venv\Lib\site-packages\flat_responsive\templates\admin\base_site.html:7
+msgid "Django administration"
+msgstr ""
+
+#: .\venv\Lib\site-packages\flat\templates\admin\edit_inline\tabular.html:17
+msgid "Delete?"
+msgstr ""
+
+#: .\venv\Lib\site-packages\flat\templates\admin\edit_inline\tabular.html:33
+msgid "View on site"
+msgstr ""
+
+#: .\venv\Lib\site-packages\flat\templates\admin\edit_inline\tabular.html:79
+#, python-format
+msgid "Add another %(verbose_name)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\flat\templates\admin\edit_inline\tabular.html:80
+msgid "Remove"
+msgstr ""
+
+#: .\venv\Lib\site-packages\flat\templates\admin\related_widget_wrapper.html:8
+#, python-format
+msgid "Change selected %(model)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\flat\templates\admin\related_widget_wrapper.html:15
+#, python-format
+msgid "Add another %(model)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\flat\templates\admin\related_widget_wrapper.html:16
+msgid "Add"
+msgstr ""
+
+#: .\venv\Lib\site-packages\flat\templates\admin\related_widget_wrapper.html:22
+#, python-format
+msgid "Delete selected %(model)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\flat\templates\admin\search_form.html:7
+msgid "Search"
+msgstr ""
+
+#: .\venv\Lib\site-packages\flat\templates\admin\search_form.html:9
+#, python-format
+msgid "%(counter)s result"
+msgid_plural "%(counter)s results"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\flat\templates\admin\search_form.html:9
+#, python-format
+msgid "%(full_result_count)s total"
+msgstr ""
+
+#: .\venv\Lib\site-packages\flat\templates\admin\search_form.html:9
+msgid "Show all"
+msgstr ""
+
+#: .\venv\Lib\site-packages\flat\templates\gis\admin\openlayers.html:35
+#: .\venv\Lib\site-packages\flat\templates\gis\openlayers.html:18
+msgid "Delete all Features"
+msgstr ""
+
+#: .\venv\Lib\site-packages\flat\templates\gis\admin\openlayers.html:37
+msgid "WKT debugging window:"
+msgstr ""
+
+#: .\venv\Lib\site-packages\flat\templates\gis\openlayers.html:19
+msgid "Debugging window (serialized value)"
 msgstr ""
 
 #: .\venv\Lib\site-packages\tornado\locale.py:371

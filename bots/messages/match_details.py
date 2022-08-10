@@ -66,7 +66,8 @@ class MatchOverview(MatchMessage):
         value = ""
         multi = ScoutingWebsite.objects.get_multi_websites()
 
-        names = list(self.match.enemy_team.player_set.get_active_players().values_list("summoner_name", flat=True))
+        names = list(
+            self.match.get_enemy_team().player_set.get_active_players().values_list("summoner_name", flat=True))
         for i in multi:
             value += (
                 f"> {EMJOI_MAGN_GLASS} [{i.name}]({i.generate_url(names)})\n"
@@ -80,7 +81,8 @@ class MatchOverview(MatchMessage):
         if not single:
             return
 
-        names = list(self.match.enemy_team.player_set.get_active_players().values_list("summoner_name", flat=True))
+        names = list(
+            self.match.get_enemy_team().player_set.get_active_players().values_list("summoner_name", flat=True))
         for i, player in enumerate(names):
             value += (
                 f"> {emoji_numbers[i]} {EMJOI_MAGN_GLASS} [{player}]({single.generate_url(player)})\n"
@@ -157,16 +159,18 @@ class MatchOverview(MatchMessage):
 
         if self.match.closed:
             self._add_results()
-            self._add_team_lineup(result=True)
-            self._add_enemy_lineup(result=True)
+            if self.match.enemy_team is not None:
+                self._add_team_lineup(result=True)
+                self._add_enemy_lineup(result=True)
         else:
             self._add_schedule()
-            self._add_enemy_team()
-            self._add_enemy_players()
-            self._add_team_lineup()
-            self._add_enemy_lineup()
+            if self.match.enemy_team is not None:
+                self._add_enemy_team()
+                self._add_enemy_players()
+                self._add_team_lineup()
+                self._add_enemy_lineup()
             self._add_general_information()
         self.embed.set_footer(
-            text=_("Different scouting website? Use `!settings` to change it."))
+            text=_("Different scouting website? Use !settings to change it."))
 
         return self.embed

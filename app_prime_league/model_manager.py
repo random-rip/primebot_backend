@@ -33,7 +33,7 @@ class TeamManager(models.Manager):
 
 class MatchManager(models.Manager):
 
-    def get_uncompleted_matches(self):
+    def get_matches_to_update(self):
         """
         Gibt alle Matches zurück die nicht `closed` oder `NULL` sind oder deren Spielbeginn weniger als 2 Tage her ist.
         Returns: queryset
@@ -44,12 +44,6 @@ class MatchManager(models.Manager):
             Q(closed__isnull=True) |
             Q(closed=True, begin__gte=timezone.now() - timedelta(days=2)))
         return qs
-
-    def get_match_of_team(self, match_id, team):
-        try:
-            return self.model.objects.get(match_id=match_id, team=team)
-        except self.model.DoesNotExist:
-            return None
 
 
 class PlayerManager(models.Manager):
