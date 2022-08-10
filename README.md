@@ -1,10 +1,33 @@
-# PrimeBot Backend
+<p align="center">
+  <a href="https://www.primebot.me/">
+    <picture>
+      <source media="(prefers-color-scheme: dark)"  srcset="./documents/primebot_logo.jpg">
+      <source media="(prefers-color-scheme: light)" srcset="./documents/primebot_logo.jpg">
+      <img alt="PrimeBot Logo" src="./documents/primebot_logo.jpg">
+    </picture>    
+  </a>
+</p>
+<p align="center">
+  <a href="https://discord.gg/K8bYxJMDzu">
+    <img src="https://img.shields.io/github/v/release/random-rip/primebot_backend?label=Latest%20release" alt="npm"/>
+  </a>|
+  <a href="https://www.primebot.me">
+    <img src="https://img.shields.io/website?down_message=offline&label=primebot.me&up_message=online&url=https%3A%2F%2Fwww.primebot.me" alt="npm"/>
+  </a> |
+  <a href="https://discord.gg/K8bYxJMDzu">
+    <img src="https://img.shields.io/discord/945020028238053456?label=Discord" alt="npm"/>
+  </a>
 
-The unofficial [Strauss Prime League](https://www.primeleague.gg/) Bot for sending push notifications via Discord and
+</p>
+<h4 align="center">
+The unofficial <i>Strauss Prime League</i> Bot for sending push notifications via Discord and
 Telegram.
+</h4>
 
-**The bot is not intended to be self-hosted! The server IP of the PrimeBot has been exclusively whitelisted by the Prime
-League.**
+<p align="center">
+The bot is not intended to be self-hosted! The server IP of the PrimeBot has been exclusively whitelisted by the Prime
+League.
+</p>
 
 ## Partners
 
@@ -166,6 +189,12 @@ If you create a pull request, make sure that
 
 - you create one from branch ``develop`` and
 - ``python manage.py test`` does not fail.
+
+### Help
+
+Join us on Discord if you have questions :)
+
+![Discord](https://img.shields.io/discord/945020028238053456?label=Discord)
 
 ## License
 
