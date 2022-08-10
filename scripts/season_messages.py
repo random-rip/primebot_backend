@@ -29,9 +29,18 @@ Grayknife und Orbis
 message = """
 Hallo {team.name},
 
-🔥 die Prime League API ist aktuell für den PrimeBot nicht erreichbar, dementsprechend können keine Benachrichtigungen bei Änderungen gesendet werden. :(
-Wir stehen bereits mit der Prime League in Kontakt, sodass wir den Fehler hoffentlich schnell beheben werden.
-📌 Den Status zur API findet ihr auf https://primebot.me/
+im folgenden möchten wir euch zwei Neuigkeiten mitteilen, an denen wir die letzten Wochen gearbeitet haben:
+
+1️⃣ In den vergangenen Splits hat sich die Nachfrage des PrimeBots und neuer Features stark erhöht. Deswegen haben wir beschlossen den PrimeBot als [OpenSource](https://github.com/random-rip/primebot_backend/) 🔥 bereitzustellen. Weiteres dazu findet ihr in der [README.md](https://github.com/random-rip/primebot_backend/blob/master/README.md).
+
+2️⃣ Da der PrimeBot dauerhaft kostenlos für alle sein soll, aber der Betrieb nicht kostenfrei bleibt, kooperieren wir ab sofort mit der [singularIT](https://www.singular-it.de/) 🏢. 
+Wir drei arbeiten als Entwickler bei der singularIT und haben die Möglichkeit erhalten, Teile der Entwicklung am PrimeBot als SideProject-Time während unserer Arbeitszeit zu realisieren. Auch unterstützt uns die singularIT finanziell bei den Serverkosten.
+
+Als Teil von singularIT deshalb an der Stelle ein kleiner Shoutout:
+> Die singularIT ist ein Softwareunternehmen mit Schwerpunkt auf Webentwicklung (Frontend und Backend), Mobile Development und Data Analytics. 
+> Wer Lust hat, Teil unseres [Teams](https://www.singular-it.de/team) zu werden und mit uns Projekte zu verwirklichen, ist sehr gerne eingeladen sich bei uns zu melden.
+
+Wir freuen uns auf die gemeinsame Zukunft des PrimeBots!
 
 Sternige Grüße
 Grayknife, Orbis & Mörlin
@@ -44,8 +53,7 @@ def main():
         try:
             print(team)
             dispatcher = MessageDispatcher(team)
-            msg = NotificationToTeamMessage(team=team, custom_message=message)
-            dispatcher.dispatch_raw_message(msg=msg)
+            dispatcher.dispatch_raw_message(msg=NotificationToTeamMessage(team=team, custom_message=message))
         except Exception as e:
             print(e)
 
