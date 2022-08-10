@@ -174,7 +174,6 @@ class SettingsMaker(Encoder):
             setting.attr_value = value
             setting.save()
 
-        if self.scouting_website != settings.DEFAULT_SCOUTING_NAME:
-            self.team.scouting_website = self.scouting_website
+        self.team.scouting_website = self.scouting_website
         self.team.language = self.language
         self.team.save()
