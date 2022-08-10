@@ -1,4 +1,4 @@
-## PrimeBot Backend
+# PrimeBot Backend
 
 The unofficial [Strauss Prime League](https://www.primeleague.gg/) Bot for sending push notifications via Discord and
 Telegram.
@@ -10,7 +10,7 @@ League.**
 
 <p align="center">
   <a href="https://www.singular-it.de/">
-    <picture style="max-height: 50px">
+    <picture>
       <source media="(prefers-color-scheme: dark)"  srcset="./documents/singular_it_dark.png">
       <source media="(prefers-color-scheme: light)" srcset="./documents/singular_it_light.png">
       <img alt="singularIT Logo" src="./documents/singular_it_light.png">
@@ -25,7 +25,7 @@ League.**
 
 <h4 align="center">Ihre Spezialist:innen für Data Analytics, webbasierte Systeme und Mobile App-Entwicklungen.</h4>
 
-## Development
+# Development
 
 ### Techstack
 
