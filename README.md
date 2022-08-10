@@ -10,7 +10,7 @@ League.**
 
 <p align="center">
   <a href="https://www.singular-it.de/">
-    <picture>
+    <picture style="max-height: 50px">
       <source media="(prefers-color-scheme: dark)"  srcset="./documents/singular_it_dark.png">
       <source media="(prefers-color-scheme: light)" srcset="./documents/singular_it_light.png">
       <img alt="singularIT Logo" src="./documents/singular_it_light.png">
@@ -23,7 +23,7 @@ League.**
   <a href="https://www.singular-it.de/team">Team</a>
 </p>
 
-<h3 align="center">Ihre Spezialist:innen für Data Analytics, webbasierte Systeme und Mobile App-Entwicklungen</h3>
+<h4 align="center">Ihre Spezialist:innen für Data Analytics, webbasierte Systeme und Mobile App-Entwicklungen.</h4>
 
 ## Development
 
