@@ -126,13 +126,9 @@ class SettingsMaker(Encoder):
                 "NEW_COMMENTS_OF_UNKNOWN_USERS",
             ]):
                 self.errors.append(MISSING_CONTENT)
-            scouting_website_name = self.settings.pop("SCOUTING_WEBSITE")
-            if scouting_website_name != settings.DEFAULT_SCOUTING_NAME:
-                scouting_website_name = scouting_website_name.lower()
-                self.scouting_website = ScoutingWebsite.objects.get_multi_websites().get(
-                    name=scouting_website_name)
-            else:
-                self.scouting_website = scouting_website_name
+            scouting_website_name = self.settings.pop("SCOUTING_WEBSITE", "").lower()
+            self.scouting_website = ScoutingWebsite.objects.get_multi_websites().get(
+                name=scouting_website_name)
             self.language = self.settings.pop("LANGUAGE")
         except (KeyError, ScoutingWebsite.DoesNotExist):
             self.errors.append(MALFORMED_CONTENT)
