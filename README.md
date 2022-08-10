@@ -166,3 +166,9 @@ If you create a pull request, make sure that
 
 - you create one from branch ``develop`` and
 - ``python manage.py test`` does not fail.
+
+## License
+
+[![license](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/random-rip/primebot_backend/blob/master/LICENSE)
+
+This project is licensed under the terms of the [MIT license](/LICENSE).
