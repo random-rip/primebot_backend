@@ -1,16 +1,12 @@
 <p align="center">
   <a href="https://www.primebot.me/">
     <picture>
-      <source media="(prefers-color-scheme: dark)"  srcset="./documents/primebot_logo.jpg">
-      <source media="(prefers-color-scheme: light)" srcset="./documents/primebot_logo.jpg">
-      <img alt="PrimeBot Logo" src="./documents/primebot_logo.jpg">
+      <img width="200px" alt="PrimeBot Logo" src="./documents/primebot_logo.jpg">
     </picture>    
   </a>
 </p>
 <p align="center">
-  <a href="https://discord.gg/K8bYxJMDzu">
-    <img src="https://img.shields.io/github/v/release/random-rip/primebot_backend?label=Latest%20release" alt="npm"/>
-  </a>|
+  <img src="https://img.shields.io/github/v/release/random-rip/primebot_backend?label=Latest%20release" alt="idk"/> |
   <a href="https://www.primebot.me">
     <img src="https://img.shields.io/website?down_message=offline&label=primebot.me&up_message=online&url=https%3A%2F%2Fwww.primebot.me" alt="npm"/>
   </a> |
@@ -36,7 +32,7 @@ League.
     <picture>
       <source media="(prefers-color-scheme: dark)"  srcset="./documents/singular_it_dark.png">
       <source media="(prefers-color-scheme: light)" srcset="./documents/singular_it_light.png">
-      <img alt="singularIT Logo" src="./documents/singular_it_light.png">
+      <img width="500px" alt="singularIT Logo" src="./documents/singular_it_light.png">
     </picture>    
   </a>
 </p>
