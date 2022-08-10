@@ -31,7 +31,8 @@ Hallo {team.name},
 
 im folgenden möchten wir euch zwei Neuigkeiten mitteilen, an denen wir die letzten Wochen gearbeitet haben:
 
-1️⃣ In den vergangenen Splits hat sich die Nachfrage des PrimeBots und neuer Features stark erhöht. Deswegen haben wir beschlossen den PrimeBot als [OpenSource](https://github.com/random-rip/primebot_backend/) 🔥 bereitzustellen. Weiteres dazu findet ihr in der [README.md](https://github.com/random-rip/primebot_backend/blob/master/README.md).
+1️⃣ In den vergangenen Splits hat sich die Nachfrage des PrimeBots und neuer Features stark erhöht. Deswegen haben wir beschlossen den PrimeBot als OpenSource 🔥 bereitzustellen. 
+Wenn ihr Ideen zu Features habt, neue Features implementieren wollt oder Bugs beheben möchtet, findet ihr alles weitere dazu auf [GitHub](https://github.com/random-rip/primebot_backend). Auch wenn ihr keine Programmierer:innen seid, wir sammeln auch Feedback zu Features, die in der Pipeline sind.
 
 2️⃣ Da der PrimeBot dauerhaft kostenlos für alle sein soll, aber der Betrieb nicht kostenfrei bleibt, kooperieren wir ab sofort mit der [singularIT](https://www.singular-it.de/) 🏢. 
 Wir drei arbeiten als Entwickler bei der singularIT und haben die Möglichkeit erhalten, Teile der Entwicklung am PrimeBot als SideProject-Time während unserer Arbeitszeit zu realisieren. Auch unterstützt uns die singularIT finanziell bei den Serverkosten.
