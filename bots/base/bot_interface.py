@@ -3,7 +3,7 @@ from abc import abstractmethod
 from bots.messages.base import BaseMessage
 
 
-class Bot:
+class BotInterface:
     def __init__(self, *, bot, bot_config):
         self.bot = bot(**bot_config)
         self.token = bot_config.get("token")
@@ -13,7 +13,6 @@ class Bot:
     def run(self):
         pass
 
-    @abstractmethod
     def _initialize(self):
         pass
 

@@ -1,4 +1,5 @@
 import hashlib
+import re
 from datetime import datetime, time
 from typing import Union
 
@@ -53,18 +54,28 @@ def get_valid_team_id(value: Union[str, int]) -> int:
     Returns: int: Team ID
     Raises: CouldNotParseURLException, Div1orDiv2TeamException
     """
-    if value is None:
-        raise CouldNotParseURLException()
-    try:
-        team_id = int(value)
-    except ValueError:
+    if is_url(value=value):
         if "/leagues/" not in value:
             raise Div1orDiv2TeamException()
         try:
-            team_id = int(value.split("/teams/")[-1].split("-")[0])
+            return int(value.split("/teams/")[-1].split("-")[0])
         except Exception:
             raise CouldNotParseURLException()
-    return team_id
+    try:
+        return int(value)
+    except ValueError:
+        raise CouldNotParseURLException()
+
+
+def is_url(value):
+    regex = re.compile(
+        r'^(?:http|ftp)s?://'  # http:// or https://
+        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'  # domain...
+        r'localhost|'  # localhost...
+        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
+        r'(?::\d+)?'  # optional port
+        r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+    return re.match(regex, value) is not None
 
 
 class Encoder:

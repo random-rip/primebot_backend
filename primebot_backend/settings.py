@@ -97,7 +97,6 @@ TEMPLATES = [
 X_FRAME_OPTIONS = "SAMEORIGIN"
 SILENCED_SYSTEM_CHECKS = ["security.W019"]
 
-
 WSGI_APPLICATION = 'primebot_backend.wsgi.application'
 
 # Database
@@ -155,7 +154,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-DEFAULT_AUTO_FIELD="django.db.models.BigAutoField"
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
@@ -183,9 +182,11 @@ TELEGRAM_START_LINK = "https://t.me/prime_league_bot?startgroup=start"
 DISCORD_BOT_KEY = env.str("DISCORD_API_KEY", None)
 DISCORD_APP_CLIENT_ID = env.int("DISCORD_APP_CLIENT_ID", None)
 DISCORD_SERVER_LINK = "https://discord.gg/K8bYxJMDzu"
+DISCORD_GUILD_ID = env.int("DISCORD_GUILD_ID", None)  # Only used for development
 
 LOGIN_URL = "/admin/login/"
 
+GITHUB_URL = "https://github.com/random-rip/primebot_backend"
 LOGGING_DIR = env.str("LOGGING_DIR", "logs")
 try:
     os.mkdir(LOGGING_DIR)

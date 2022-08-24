@@ -1,6 +1,6 @@
 from app_prime_league.models import Team
 from bots.message_dispatcher import MessageDispatcher
-from bots.messages import NotificationToTeamMessage, MatchesOverview
+from bots.messages import NotificationToTeamMessage
 
 season_end_message = """
 Hallo {team.name}, 
@@ -29,19 +29,17 @@ Grayknife und Orbis
 message = """
 Hallo {team.name},
 
-im folgenden möchten wir euch zwei Neuigkeiten mitteilen, an denen wir die letzten Wochen gearbeitet haben:
+**für Discord**:
+da Discord nach dem 31.8. API Versionen einstampft und Beschränkungen zu Daten erhöht (https://support-dev.discord.com/hc/en-us/articles/4404772028055), mussten wir zwangsweise die `discord.py` Version erhöhen.
 
-1️⃣ In den vergangenen Splits hat sich die Nachfrage des PrimeBots und neuer Features stark erhöht. Deswegen haben wir beschlossen den PrimeBot als OpenSource 🔥 bereitzustellen. 
-Wenn ihr Ideen zu Features habt, neue Features implementieren wollt oder Bugs beheben möchtet, findet ihr alles weitere dazu auf [GitHub](https://github.com/random-rip/primebot_backend). Auch wenn ihr keine Programmierer:innen seid, wir sammeln auch Feedback zu Features, die in der Pipeline sind.
+Dadurch ergeben sich folgende Änderungen für euch:
+1️⃣ Um mit dem PrimeBot in Zukunft zu kommunizieren, benötigt er weitere Berechtigungen (Slashbefehle). Dazu müsst ihr den Bot von eurem Server entfernen und neu hinzufügen (https://discord.com/api/oauth2/authorize?client_id=739550721703280700&permissions=2684472384&scope=bot).
+2️⃣ Weil dadurch der Bot gekickt wurde, wurden alle Webhooks gelöscht. In jedem registrierten Channel muss deswegen `/fix` ausgeführt werden.
+3️⃣ Ab sofort gibt es nur noch Slash-Befehle. Führt dazu am besten `/help` aus, um eine Übersicht aller Befehle anzuschauen.
 
-2️⃣ Da der PrimeBot dauerhaft kostenlos für alle sein soll, aber der Betrieb nicht kostenfrei bleibt, kooperieren wir ab sofort mit der [singularIT](https://www.singular-it.de/) 🏢. 
-Wir drei arbeiten als Entwickler bei der singularIT und haben die Möglichkeit erhalten, Teile der Entwicklung am PrimeBot als SideProject-Time während unserer Arbeitszeit zu realisieren. Auch unterstützt uns die singularIT finanziell bei den Serverkosten.
+Diese Schritte solltet ihr **unbedingt ausführen**, ansonsten funktioniert der PrimeBot für euer Team nicht mehr.
 
-Als Teil von singularIT deshalb an der Stelle ein kleiner Shoutout:
-> Die singularIT ist ein Softwareunternehmen mit Schwerpunkt auf Webentwicklung (Frontend und Backend), Mobile Development und Data Analytics. 
-> Wer Lust hat, Teil unseres [Teams](https://www.singular-it.de/team) zu werden und mit uns Projekte zu verwirklichen, ist sehr gerne eingeladen sich bei uns zu melden.
-
-Wir freuen uns auf die gemeinsame Zukunft des PrimeBots!
+Alle weiteren Änderungen findet ihr auf unserer Website: https://www.primebot.me/changelogs
 
 Sternige Grüße
 Grayknife, Orbis & Mörlin

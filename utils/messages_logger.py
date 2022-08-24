@@ -82,27 +82,23 @@ def log_callbacks(fn):
     return wrapper
 
 
-async def log_from_discord(ctx, optional=None):
-    if settings.DEBUG:
-        return True
-
-    author = ctx.message.author
-    content = ctx.message.content
+async def log_from_discord(message, optional=None):
+    author = message.author
 
     params = {
         "user": author.name,
-        "command": html.escape(str(content)),
-        "server": html.escape(str(author.guild.name)),
-        "channel": html.escape(str(ctx.channel.id)),
-        "members": author.guild.member_count,
+        "command": html.escape(str(message.content)),
+        "channel": html.escape(str(message.channel.id)),
     }
+    if hasattr(author, "guild"):
+        params["server"] = html.escape(str(author.guild.name))
+        params["members"] = author.guild.member_count
 
     if optional is not None:
         params["optional"] = html.escape(str(optional))
 
     log_text = create_log_message(prefix="DISCORD\n", **params)
     spread_message(log_text)
-    return True
 
 
 def log_exception(fn):
