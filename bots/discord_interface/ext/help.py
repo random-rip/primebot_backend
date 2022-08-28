@@ -22,8 +22,8 @@ async def bot_help(ctx: commands.Context, ) -> None:
         value = command.help
         embed.add_field(name=name, value=value, inline=False)
     general = _(
-        "PrimeBot Website for API Status und help: {website}\n"
-        "Discordserver for help and updates: {discord_url}\n"
+        "PrimeBot Website for API status and help: {website}\n"
+        "Discord Community Server for help and updates: {discord_url}\n"
         "Checkout our Github for contributions: {github_url}\n"
         "_Version: {version}_\n"
     ).format(version=project_version, website=settings.SITE_ID, discord_url=settings.DISCORD_SERVER_LINK,
