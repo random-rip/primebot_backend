@@ -1,6 +1,7 @@
 import html
 import logging
 
+from discord import Message
 from django.conf import settings
 
 from bots.telegram_interface.tg_singleton import send_message_to_devs
@@ -82,27 +83,26 @@ def log_callbacks(fn):
     return wrapper
 
 
-async def log_from_discord(ctx, optional=None):
-    if settings.DEBUG:
-        return True
-
-    author = ctx.message.author
-    content = ctx.message.content
-
+async def log_from_discord(message: Message, optional=None):
+    author = message.author
     params = {
         "user": author.name,
-        "command": html.escape(str(content)),
-        "server": html.escape(str(author.guild.name)),
-        "channel": html.escape(str(ctx.channel.id)),
-        "members": author.guild.member_count,
+        "channel": html.escape(str(message.channel.id)),
+        "channel_type": html.escape(str(message.channel.name)),
     }
+    if message.interaction is not None:
+        params["command"] = html.escape(str(message.interaction.name))
+
+    if hasattr(author, "guild"):
+        params["server"] = html.escape(str(author.guild.name))
+        params["members"] = author.guild.member_count
+        params["channel"] = author.guild.member_count
 
     if optional is not None:
         params["optional"] = html.escape(str(optional))
 
     log_text = create_log_message(prefix="DISCORD\n", **params)
     spread_message(log_text)
-    return True
 
 
 def log_exception(fn):

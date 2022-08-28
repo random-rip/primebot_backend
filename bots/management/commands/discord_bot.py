@@ -5,5 +5,4 @@ from bots.discord_interface.discord_bot import DiscordBot
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        print("Bot is listening...")
         DiscordBot().run()
