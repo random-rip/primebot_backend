@@ -15,6 +15,7 @@ from utils.messages_logger import log_from_discord
 
 logger = logging.getLogger("commands")
 notifications_logger = logging.getLogger("notifications")
+discord_logger = logging.getLogger("discord")
 
 
 class DiscordBot(BotInterface):
@@ -113,11 +114,11 @@ class _DiscordBotV2(commands.Bot):
             await self.load_extension(name=ext, package="bots.discord_interface")
 
     async def sync_commands(self):
-        print("syncing")
+        discord_logger.info("syncing commands")
         if settings.DEBUG:
             guild = discord.Object(id=settings.DISCORD_GUILD_ID)
             self.tree.copy_global_to(guild=guild)
             await self.tree.sync(guild=guild)
         else:
             await self.tree.sync()
-        print("synced")
+        discord_logger.info("synced commands")
