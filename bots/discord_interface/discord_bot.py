@@ -100,7 +100,7 @@ class _DiscordBotV2(commands.Bot):
     async def setup_hook(self):
         logger.info("Hook setup...")
         await self.load_extensions()
-        await self.sync_commands()
+        # await self.sync_commands()
         logger.info("Hooked setup.")
 
     async def on_message(self, message: Message, /):

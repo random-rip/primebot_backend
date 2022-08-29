@@ -88,7 +88,7 @@ async def log_from_discord(message: Message, optional=None):
     params = {
         "user": author.name,
         "channel": html.escape(str(message.channel.id)),
-        "channel_type": html.escape(str(message.channel.name)),
+        "channel_type": html.escape(str(message.channel.type.name)),
     }
     if message.interaction is not None:
         params["command"] = html.escape(str(message.interaction.name))
