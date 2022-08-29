@@ -28,21 +28,13 @@ class DiscordBot(BotInterface):
             raise VariableNotSetException("DISCORD_BOT_KEY")
         if not settings.DISCORD_APP_CLIENT_ID:
             raise VariableNotSetException("DISCORD_APP_CLIENT_ID")
-        super().__init__(
-            bot=_DiscordBotV2,
-            bot_config={
-                "token": settings.DISCORD_BOT_KEY,
-                "command_prefix": commands.when_mentioned_or('!'),
-                "case_insensitive": True,
-                "intents": discord.Intents.default(),
-            },
-        )
+        super().__init__(bot=_DiscordBotV2, )
 
     def _initialize(self):
         self.bot.remove_command("help")
 
     def run(self):
-        self.bot.run(self.token)
+        self.bot.run(settings.DISCORD_BOT_KEY)
 
     @staticmethod
     def send_message(*, msg: BaseMessage, team):
@@ -64,8 +56,7 @@ class _DiscordBotV2(commands.Bot):
     discord.py v2.0 bot class
     """
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, ):
         ext_directory = "ext"
         self.initial_extensions = [f".{ext_directory}.{x}" for x in [
             "bop",
@@ -76,6 +67,10 @@ class _DiscordBotV2(commands.Bot):
             "matches",
             "help",
         ]]
+        super().__init__(
+            command_prefix="!",
+            intents=discord.Intents.default(),
+        )
 
     async def on_ready(self):
         logger.info(f"{self.user} has connected to Discord!")
@@ -102,7 +97,7 @@ class _DiscordBotV2(commands.Bot):
             "An unknown error has occurred. Please contact the developers on Discord at {discord_link}."
         ).format(discord_link=settings.DISCORD_SERVER_LINK), suppress_embeds=True)
 
-    async def setup_hook(self) -> None:
+    async def setup_hook(self):
         logger.info("Hook setup...")
         await self.load_extensions()
         await self.sync_commands()
