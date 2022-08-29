@@ -105,7 +105,7 @@ def helpcommand(update: Update, context: CallbackContext):
             "/delete - um das registrierte Team zu entfernen\n"
             "/bop - What's boppin'?\n"
             "/cancel - um den aktuellen Vorgang abzubrechen\n"
-            "/set_logo - um ein neues Logo aus der PrimeLeague zu holen\n"
+            "/set_logo - um ein neues Logo aus der Prime League zu holen\n"
         ),
         reply_markup=ReplyKeyboardRemove(),
         disable_web_page_preview=True,

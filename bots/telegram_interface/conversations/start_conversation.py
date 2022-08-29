@@ -166,7 +166,7 @@ def team_registration(update: Update, context: CallbackContext):
     except PrimeLeagueConnectionException:
         update.message.reply_markdown(
             text=(
-                "Momentan kann keine Verbindung zu der PrimeLeague Website hergestellt werden. "
+                "Momentan kann keine Verbindung zu der Prime League Website hergestellt werden. "
                 "Probiere es in ein paar Stunden noch einmal.\n"
                 f"Wenn es später immer noch nicht funktioniert, schaue auf https://primebot.me/crew/ nach Hilfe."
             )

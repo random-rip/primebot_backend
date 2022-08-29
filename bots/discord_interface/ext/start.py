@@ -53,9 +53,9 @@ async def start(ctx: commands.Context, team_id_or_url: TeamIDConverter):
 
         except PrimeLeagueConnectionException:
             return await ctx.send(_(
-                "Currently unable to connect to the PrimeLeague website. Try again in a few hours.\n"
+                "Currently unable to connect to the Prime League website. Try again in a few hours.\n"
                 "If it still doesn't work later, check our website {website} for help "
-                "or join our Discord Community Server ({discord})."
+                "or join our Discord Community Server {discord}."
             ).format(website=settings.SITE_ID, discord=settings.DISCORD_SERVER_LINK))
 
     msg = await sync_to_async(MatchesOverview)(team=team)
@@ -78,33 +78,33 @@ async def start(ctx: commands.Context, team_id_or_url: TeamIDConverter):
 async def start_error(ctx, error):
     error = getattr(error, 'original', error)
     if isinstance(error, commands.BadArgument):
-        return await ctx.send(_(
+        return await ctx.reply(_(
             "No ID could be found from the passed argument.\nCheck out our website {website} for help "
-            "or join our Discord Community Server ({discord})."
+            "or join our Discord Community Server {discord}."
         ).format(website=settings.SITE_ID, discord=settings.DISCORD_SERVER_LINK))
     elif isinstance(error, Div1orDiv2TeamException):
         return await ctx.send(_("No teams from Division 1 or 2 can be registered."))
     elif isinstance(error, ChannelInUse):
-        return await ctx.send(_(
+        return await ctx.reply(_(
             "There is already a team registered for this channel. If you want to register another team here, "
             "first delete the link to the current team with `/delete`. If no more notifications arrive in the channel, "
             "but you have already registered the team, please use `/fix`."
         ))
     elif isinstance(error, TeamInUse):
-        return await ctx.send(_(
+        return await ctx.reply(_(
             "This team is already registered in another channel. "
             "First delete the link in the other channel with `/delete`.\n Check our website {website} for help "
-            "or join our Discord Community Server ({discord})."
+            "or join our Discord Community Server {discord}."
         ).format(website=settings.SITE_ID, discord=settings.DISCORD_SERVER_LINK))
     elif isinstance(error, NoWebhookPermissions):
-        return await ctx.send(_(
+        return await ctx.reply(_(
                 "I lack the permission to manage webhooks. Please make sure I have that permission. "
                 "If necessary, wait an hour before running the command again. "
                 "If it still doesn't work after that, check our website {website}/ for help "
-                "or join our Discord Community Server ({discord})."
+                "or join our Discord Community Server {discord}."
             ).format(website=settings.SITE_ID, discord=settings.DISCORD_SERVER_LINK))
     logging.getLogger("commands").exception(error)
-    return await ctx.send(_(
+    return await ctx.reply(_(
         "An unknown error has occurred. Please contact the developers on Discord at {discord_link}."
     ).format(discord_link=settings.DISCORD_SERVER_LINK), suppress_embeds=True)
 

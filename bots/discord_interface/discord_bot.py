@@ -114,11 +114,13 @@ class _DiscordBotV2(commands.Bot):
         logger.info("Commands loaded.")
 
     async def sync_commands(self):
-        logger.info(f"Syncing commands: {self.tree.get_commands()} ...")
+        logger.info(f"Syncing commands: {[x.name for x in self.tree.get_commands()]} ...")
         if settings.DEBUG:
             guild = discord.Object(id=settings.DISCORD_GUILD_ID)
+            logger.info(f"Debug is true, so commands will be synced to guild {guild}...")
             self.tree.copy_global_to(guild=guild)
             synced_commands = await self.tree.sync(guild=guild)
         else:
+            logger.info(f"Debug is false, so commands will be synced globally. This can take up to an hour...")
             synced_commands = await self.tree.sync()
-        logger.info(f"Synced commands: {synced_commands}")
+        logger.info(f"Synced commands: {[x.name for x in synced_commands]}")

@@ -18,7 +18,7 @@ async def fix(ctx):
                 "I lack the permission to manage webhooks. Please make sure I have that permission. "
                 "If necessary, wait an hour before running the command again. "
                 "If it still doesn't work after that, check our website {website}/discord/ for help "
-                "or join our Discord Community Server ({discord})."
+                "or join our Discord Community Server {discord}."
             ).format(website=settings.SITE_ID, discord=settings.DISCORD_SERVER_LINK))
 
         team.discord_webhook_id = webhook.id
@@ -27,7 +27,7 @@ async def fix(ctx):
     await ctx.send(_(
         "The webhook has been recreated. "
         "If you still experience problems, check our website {website}/discord/ for help "
-        "or join our Discord Community Server ({discord})."
+        "or join our Discord Community Server {discord}."
     ).format(website=settings.SITE_ID, discord=settings.DISCORD_SERVER_LINK))
 
 
