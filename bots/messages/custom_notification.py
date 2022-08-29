@@ -7,9 +7,10 @@ from bots.messages.base import BaseMessage
 class NotificationToTeamMessage(BaseMessage):
     mentionable = True
 
-    def __init__(self, team: Team, custom_message, **kwargs):
-        super().__init__(team, **kwargs)
+    def __init__(self, team: Team, custom_message, **message_elements):
+        super().__init__(team)
         self.custom_message = custom_message
+        self._message_elements = message_elements
         self._generate_message()
 
     def _generate_title(self):
@@ -17,4 +18,4 @@ class NotificationToTeamMessage(BaseMessage):
 
     def _generate_message(self):
         # TODO i18n ?! Oder eher dann ins adminpanel auslagern
-        return self.custom_message.format(team=self.team)
+        return self.custom_message.format(team=self.team, **self._message_elements)
