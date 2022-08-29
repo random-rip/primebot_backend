@@ -13,9 +13,9 @@ from bots.messages.base import BaseMessage
 from utils.exceptions import VariableNotSetException
 from utils.messages_logger import log_from_discord
 
-logger = logging.getLogger("commands")
+logger = logging.getLogger("discord")
 notifications_logger = logging.getLogger("notifications")
-discord_logger = logging.getLogger("discord")
+commands_logger = logging.getLogger("commands")
 
 
 class DiscordBot(BotInterface):
@@ -78,7 +78,7 @@ class _DiscordBotV2(commands.Bot):
         ]]
 
     async def on_ready(self):
-        logging.getLogger("django").info(f"{self.user} has connected to Discord!")
+        logger.info(f"{self.user} has connected to Discord!")
 
     async def on_command_error(self, ctx, exception: errors.CommandError, /):
 
@@ -97,14 +97,14 @@ class _DiscordBotV2(commands.Bot):
         elif isinstance(exception, NoPrivateMessage):
             await ctx.send(_("This is a channel command."))
             return
-        logger.exception(exception)
+        commands_logger.exception(exception)
         return await ctx.send(_(
             "An unknown error has occurred. Please contact the developers on Discord at {discord_link}."
         ).format(discord_link=settings.DISCORD_SERVER_LINK), suppress_embeds=True)
 
     async def setup_hook(self) -> None:
         await self.load_extensions()
-        # await self.sync_commands()
+        await self.sync_commands()
 
     async def on_message(self, message: Message, /):
         await log_from_discord(message)
@@ -114,11 +114,11 @@ class _DiscordBotV2(commands.Bot):
             await self.load_extension(name=ext, package="bots.discord_interface")
 
     async def sync_commands(self):
-        discord_logger.info("syncing commands")
+        logger.info("syncing commands")
         if settings.DEBUG:
             guild = discord.Object(id=settings.DISCORD_GUILD_ID)
             self.tree.copy_global_to(guild=guild)
             await self.tree.sync(guild=guild)
         else:
             await self.tree.sync()
-        discord_logger.info("synced commands")
+        logger.info("synced commands")
