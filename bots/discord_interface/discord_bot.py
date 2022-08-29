@@ -113,7 +113,7 @@ class _DiscordBotV2(commands.Bot):
         logger.info("Commands loaded.")
 
     async def sync_commands(self):
-        logger.info("Syncing commands...")
+        logger.info(f"Syncing commands: {self.tree.get_commands()} ...")
         if settings.DEBUG:
             guild = discord.Object(id=settings.DISCORD_GUILD_ID)
             self.tree.copy_global_to(guild=guild)
