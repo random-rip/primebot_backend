@@ -104,7 +104,8 @@ class _DiscordBotV2(commands.Bot):
         logger.info("Hooked setup.")
 
     async def on_message(self, message: Message, /):
-        await log_from_discord(message)
+        if message.interaction is not None:
+            await log_from_discord(message)
 
     async def load_extensions(self):
         logger.info("Loading commands...")

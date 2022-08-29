@@ -87,16 +87,14 @@ async def log_from_discord(message: Message, optional=None):
     author = message.author
     params = {
         "user": author.name,
+        "command": html.escape(str(message.interaction.name)),
         "channel": html.escape(str(message.channel.id)),
         "channel_type": html.escape(str(message.channel.type.name)),
     }
-    if message.interaction is not None:
-        params["command"] = html.escape(str(message.interaction.name))
 
     if hasattr(author, "guild"):
         params["server"] = html.escape(str(author.guild.name))
         params["members"] = author.guild.member_count
-        params["channel"] = author.guild.member_count
 
     if optional is not None:
         params["optional"] = html.escape(str(optional))
