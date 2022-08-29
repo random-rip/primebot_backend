@@ -103,22 +103,26 @@ class _DiscordBotV2(commands.Bot):
         ).format(discord_link=settings.DISCORD_SERVER_LINK), suppress_embeds=True)
 
     async def setup_hook(self) -> None:
+        logger.info("Hook setup...")
         await self.load_extensions()
         await self.sync_commands()
+        logger.info("Hooked setup.")
 
     async def on_message(self, message: Message, /):
         await log_from_discord(message)
 
     async def load_extensions(self):
+        logger.info("Loading commands...")
         for ext in self.initial_extensions:
             await self.load_extension(name=ext, package="bots.discord_interface")
+        logger.info("Commands loaded.")
 
     async def sync_commands(self):
-        logger.info("syncing commands")
+        logger.info("Syncing commands...")
         if settings.DEBUG:
             guild = discord.Object(id=settings.DISCORD_GUILD_ID)
             self.tree.copy_global_to(guild=guild)
-            await self.tree.sync(guild=guild)
+            synced_commands = await self.tree.sync(guild=guild)
         else:
-            await self.tree.sync()
-        logger.info("synced commands")
+            synced_commands = await self.tree.sync()
+        logger.info(f"Synced commands: {synced_commands}")
