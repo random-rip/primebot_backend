@@ -24,11 +24,16 @@ async def set_role(ctx, role: typing.Optional[discord.Role], ):
             "You can turn it back on if needed, just use `/role ROLE_NAME`."
         ))
         return
+    if role.name == "@everyone":
+        await ctx.send(_(
+            "You can't use role **everyone**. Please choose a different role."
+        ))
+        return
 
     team.discord_role_id = role.id
     await sync_to_async(team.save)()
     await ctx.send(
-        _("Okay, I'll inform the role **@{role_name}** for new notifications from now on. 📯").format(
+        _("Okay, I'll inform the role **{role_name}** for new notifications from now on. 📯").format(
             role_name=role.name))
 
 

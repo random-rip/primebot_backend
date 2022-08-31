@@ -1,7 +1,7 @@
 import html
 import logging
 
-from discord import Message
+from discord import Interaction
 from django.conf import settings
 
 from bots.telegram_interface.tg_singleton import send_message_to_devs
@@ -83,18 +83,25 @@ def log_callbacks(fn):
     return wrapper
 
 
-async def log_from_discord(message: Message, optional=None):
-    author = message.author
+async def log_from_discord(interaction: Interaction, optional=None):
+    author = interaction.user
     params = {
         "user": author.name,
-        "command": html.escape(str(message.interaction.name)),
-        "channel": html.escape(str(message.channel.id)),
-        "channel_type": html.escape(str(message.channel.type.name)),
+        "user_locale": html.escape(str(interaction.locale)),
+        "command": html.escape(str(interaction.command.name)),
+        "channel": html.escape(str(interaction.channel_id)),
+        "channel_type": html.escape(str(interaction.channel.type.name)),
     }
+    if "options" in interaction.data:
+        readable_parameters = [
+            f"{x['name']}: {html.escape(x['value'])}"
+            for x in interaction.data["options"]]
+        params["parameters"] = str(readable_parameters)
 
     if hasattr(author, "guild"):
         params["server"] = html.escape(str(author.guild.name))
         params["members"] = author.guild.member_count
+        params["preferred_guild_locale"] = author.guild.preferred_locale
 
     if optional is not None:
         params["optional"] = html.escape(str(optional))

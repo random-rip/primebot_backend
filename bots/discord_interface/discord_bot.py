@@ -1,9 +1,7 @@
 import logging
 
-import discord
-from discord import NotFound, Message
-from discord.ext import commands
-from discord.ext.commands import errors, NoPrivateMessage
+from discord import NotFound, Message, SyncWebhook, Intents, Object
+from discord.ext.commands import errors, NoPrivateMessage, Bot
 from django.conf import settings
 from django.utils.translation import gettext as _
 
@@ -38,7 +36,7 @@ class DiscordBot(BotInterface):
 
     @staticmethod
     def send_message(*, msg: BaseMessage, team):
-        webhook = discord.SyncWebhook.partial(
+        webhook = SyncWebhook.partial(
             id=team.discord_webhook_id,
             token=team.discord_webhook_token,
         )
@@ -51,7 +49,7 @@ class DiscordBot(BotInterface):
             notifications_logger.exception(f"Could not send message to {team}: '{msg}. -> {e}'")
 
 
-class _DiscordBotV2(commands.Bot):
+class _DiscordBotV2(Bot):
     """
     discord.py v2.0 bot class
     """
@@ -69,7 +67,7 @@ class _DiscordBotV2(commands.Bot):
         ]]
         super().__init__(
             command_prefix="!",
-            intents=discord.Intents.default(),
+            intents=Intents.default(),
         )
 
     async def on_ready(self):
@@ -104,8 +102,15 @@ class _DiscordBotV2(commands.Bot):
         logger.info("Hooked setup.")
 
     async def on_message(self, message: Message, /):
-        if message.interaction is not None:
-            await log_from_discord(message)
+        pass
+
+    async def on_interaction(self, interaction):
+        await log_from_discord(interaction)
+        # TODO Ist hier der Platz für I18n activation
+
+    async def on_app_command_completion(self, interaction, command):
+        # TODO Ist hier der Platz für I18n deactivation
+        pass
 
     async def load_extensions(self):
         logger.info("Loading commands...")
@@ -116,7 +121,7 @@ class _DiscordBotV2(commands.Bot):
     async def sync_commands(self):
         logger.info(f"Syncing commands: {[x.name for x in self.tree.get_commands()]} ...")
         if settings.DEBUG:
-            guild = discord.Object(id=settings.DISCORD_GUILD_ID)
+            guild = Object(id=settings.DISCORD_GUILD_ID)
             logger.info(f"Debug is true, so commands will be synced to guild {guild}...")
             self.tree.copy_global_to(guild=guild)
             synced_commands = await self.tree.sync(guild=guild)
