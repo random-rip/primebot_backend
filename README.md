@@ -120,8 +120,8 @@ For further information have a look at **Contributing** section at the end of th
 
 - `python manage.py discord_bot` - start Discordbot
 - `python manage.py telegram_bot` - start Telegrambot
-- `python manage.py update_teams` - start team updates (synchronize)
-- `python manage.py update_matches` - start match updates
+- `python manage.py update_teams` - synchronize teams 
+- `python manage.py update_matches` - synchronize matches
 - `python manage.py weekly_notifications` - start weekly notifications
 - `python manage.py runscript feedback` - start feedback
 - `python manage.py runscript season_messages` - start season notification
