@@ -120,7 +120,7 @@ For further information have a look at **Contributing** section at the end of th
 
 - `python manage.py discord_bot` - start Discordbot
 - `python manage.py telegram_bot` - start Telegrambot
-- `python manage.py update_teams` - start team updates
+- `python manage.py update_teams` - start team updates (synchronize)
 - `python manage.py update_matches` - start match updates
 - `python manage.py weekly_notifications` - start weekly notifications
 - `python manage.py runscript feedback` - start feedback
@@ -155,7 +155,7 @@ After that ``python manage.py test`` can be executed.
 ### Alternative to Prime League API
 
 We have been working on a solution to reduce API requests in development from the very beginning. For this reason each
-response of an API request is stored locally in a JSON file. Due to IP whitelisting it is not possible to possible that
+response of an API request is stored locally in a JSON file. Due to IP whitelisting it is not possible that
 the API can be accessed for development. Under ``storage/`` there are sample teams and matches. To use them, in
 the `.env` you have to add
 
