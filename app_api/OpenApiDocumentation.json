@@ -1,7 +1,5 @@
 {
   "swagger": "2.0",
-  "openapi": "3.0.0",
-
   "info": {
     "version": "1.0.0",
     "title": "Prime bot API",
@@ -22,7 +20,6 @@
           }
         }
       }
-      }
     },
     "/matches": {
       "get": {
@@ -32,15 +29,15 @@
             "description": "Successful response"
           }
         }
-      },
-      "/matches/{id}": {
-        "get": {
-          "description": "Returns detailed information about a match.",
-          "responses": {
+      }
+    },
+    "/matches/{id}": {
+      "get": {
+        "description": "Returns detailed information about a match.",
+        "responses": {
           "200": {
             "description": "Successful response"
           }
-        }
         }
       }
     },
@@ -65,3 +62,4 @@
       }
     }
   }
+}
