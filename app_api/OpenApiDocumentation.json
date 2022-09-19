@@ -8,8 +8,8 @@
   "produces": [
     "application/json"
   ],
-  "host": "127.0.0.1:8000",
-  "basePath": "/api/v1",
+  "host": "https://www.primebot.me",
+  "basePath": "/api",
   "paths": {
     "/": {
       "get": {
