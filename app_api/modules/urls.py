@@ -1,9 +1,9 @@
 from django.urls import path
 from rest_framework.routers import SimpleRouter
 
-from app_api.modules.views import api_root
-from app_api.modules.teams.views import TeamViewSet
 from app_api.modules.matches.views import MatchViewSet
+from app_api.modules.teams.views import TeamViewSet
+from app_api.modules.views import api_root
 
 router = SimpleRouter()
 router.register(r'teams', TeamViewSet, basename='team')

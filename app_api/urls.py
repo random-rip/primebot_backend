@@ -5,4 +5,3 @@ urlpatterns = [
     path('status/', include("app_api.modules.status.urls"), ),
     path('', include("app_api.modules.urls"), ),
 ]
-

@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+
 from app_api.common.serializers import TeamSerializer, TeamDetailSerializer
 from app_prime_league.models import Team
 
@@ -12,4 +13,3 @@ class TeamViewSet(viewsets.ReadOnlyModelViewSet):
         if self.action == 'retrieve':
             return self.detail_serializer_class
         return self.serializer_class
-
