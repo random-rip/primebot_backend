@@ -1,0 +1,40 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Prime bot API
+  description: Yields information about teams and matches
+produces:
+  - application/json
+host: https://www.primebot.me
+basePath: /api
+paths:
+  /:
+    get:
+      description: Api root
+      responses:
+        '200':
+          description: Successful response
+  /matches:
+    get:
+      description: Returns list of all matches available. Key information for each match are provided.
+      responses:
+        '200':
+          description: Successful response
+  /matches/{id}:
+    get:
+      description: Returns detailed information about a match.
+      responses:
+        '200':
+          description: Successful response
+  /teams:
+    get:
+      description: Returns list of all teams available. Key information for each team are provided.
+      responses:
+        '200':
+          description: Successful response
+  /teams/{id}:
+    get:
+      description: Returns detailed information about a team.
+      responses:
+        '200':
+          description: Successful response
