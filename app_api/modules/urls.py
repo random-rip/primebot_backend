@@ -10,7 +10,7 @@ router.register(r'teams', TeamViewSet, basename='team')
 router.register(r'matches', MatchViewSet, basename='match')
 
 urlpatterns = [
-    path('', api_root)
+    path('', api_root, name='api-root')
 ]
 
 urlpatterns += router.urls
