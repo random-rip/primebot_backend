@@ -64,7 +64,7 @@ async def start(ctx: commands.Context, team_id_or_url: TeamIDConverter):
         "Perfect, this channel was registered for team **{team_name}**.\n"
         "The most important commands:\n"
         "📌 `/role ROLE_NAME` - to set a role to be mentioned in notifications\n\n"
-        "📌 `/settings` - to personalize the notifications, set the language to English or change the "
+        "📌 `/settings` - to personalize the notifications, change the PrimeBot language or change the "
         "scouting website (default: op.gg)\n"
         "📌 `/matches` - to get an overview of the matches that are still open\n"
         "📌 `/match MATCH_DAY` - to receive detailed information about a match day\n\n"
