@@ -297,3 +297,13 @@ if not DEBUG:
             }
         }
     }
+
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.ScopedRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'teams': '250/day',
+        'matches': '250/day',
+    }
+}

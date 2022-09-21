@@ -9,6 +9,8 @@ class TeamViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = TeamSerializer
     detail_serializer_class = TeamDetailSerializer
 
+    throttle_scope = 'teams'
+
     def get_serializer_class(self):
         if self.action == 'retrieve':
             return self.detail_serializer_class
