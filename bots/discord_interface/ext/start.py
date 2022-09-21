@@ -100,7 +100,7 @@ async def start_error(ctx, error):
         return await ctx.reply(_(
                 "I lack the permission to manage webhooks. Please make sure I have that permission. "
                 "If necessary, wait an hour before running the command again. "
-                "If it still doesn't work after that, check our website {website}/ for help "
+                "If it still doesn't work after that, check our website {website} for help "
                 "or join our Discord Community Server {discord}."
             ).format(website=settings.SITE_ID, discord=settings.DISCORD_SERVER_LINK))
     logging.getLogger("commands").exception(error)
