@@ -9,6 +9,8 @@ class MatchViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = MatchSerializer
     detail_serializer_class = MatchDetailSerializer
 
+    throttle_scope = 'matches'
+
     def get_serializer_class(self):
         if self.action == 'retrieve':
             return self.detail_serializer_class
