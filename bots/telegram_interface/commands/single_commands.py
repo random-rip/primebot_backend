@@ -99,13 +99,13 @@ def helpcommand(update: Update, context: CallbackContext):
     update.message.reply_markdown(
         text=(
             "Überblick:\n"
-            "/start - um dein Team zu registrieren\n"
+            "/start - um euer Team zu registrieren\n"
             "/settings - um die Einstellungen fürs Team zu bearbeiten\n"
             "/matches - um eine Übersicht der offenen Matches zu erhalten\n"
-            "/delete - um das registrierte Team zu entfernen\n"
+            "/delete - um euer registrierter Team aus der Gruppe zu entfernen\n"
             "/bop - What's boppin'?\n"
             "/cancel - um den aktuellen Vorgang abzubrechen\n"
-            "/set_logo - um ein neues Logo aus der Prime League zu holen\n"
+            "/set\\_logo - um das Gruppenbild zu aktualisieren (Logo von der Prime League)\n"
         ),
         reply_markup=ReplyKeyboardRemove(),
         disable_web_page_preview=True,

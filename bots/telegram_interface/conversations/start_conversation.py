@@ -3,7 +3,7 @@ from telegram import Update, ParseMode
 from telegram.error import BadRequest
 from telegram.ext import CallbackContext, ConversationHandler
 
-from app_prime_league.models import Team
+from app_prime_league.models import Team, ScoutingWebsite
 from app_prime_league.teams import register_team
 from bots.messages import MatchesOverview
 from bots.telegram_interface.commands.single_commands import set_photo
@@ -261,12 +261,12 @@ def finish_registration(update: Update, context: CallbackContext):
     context.bot.send_message(
         text=(
             "Dein registriertes Team:\n"
-            "*{team.name}*\n"
+            "*{team_name}*\n"
             "Perfekt! Ich sende dir jetzt Benachrichtigungen in diese Gruppe, "
             "wenn es neue Updates zu euren Matches gibt. 🏆\n"
             "Du kannst noch mit /settings Benachrichtigungen personalisieren und "
-            "die Scouting Website (Standard: {}) ändern."
-        ),
+            "die Scouting Website (Standard: {scouting_website}) ändern."
+        ).format(team_name=team.name, scouting_website=ScoutingWebsite.default().name),
         chat_id=chat_id,
         disable_web_page_preview=True,
         parse_mode=ParseMode.MARKDOWN,
