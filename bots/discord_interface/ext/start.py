@@ -6,6 +6,7 @@ from discord.ext.commands import BadArgument
 from django.conf import settings
 from django.utils.translation import gettext as _
 
+from app_prime_league.models import ScoutingWebsite
 from app_prime_league.teams import register_team
 from bots.discord_interface.utils import (
     DiscordHelper, ChannelInUse, TeamInUse, NoWebhookPermissions, check_channel_not_in_use, check_team_not_registered)
@@ -65,12 +66,12 @@ async def start(ctx: commands.Context, team_id_or_url: TeamIDConverter):
         "The most important commands:\n"
         "📌 `/role ROLE_NAME` - to set a role to be mentioned in notifications\n\n"
         "📌 `/settings` - to personalize the notifications, change the PrimeBot language or change the "
-        "scouting website (default: op.gg)\n"
+        "scouting website (default: {scouting_website})\n"
         "📌 `/matches` - to get an overview of the matches that are still open\n"
         "📌 `/match MATCH_DAY` - to receive detailed information about a match day\n\n"
         "Just try it out! 🎁 \n"
         "The **status of the Prime League API** can be viewed at any time on {website}."
-    ).format(team_name=team.name, website=settings.SITE_ID)
+    ).format(team_name=team.name, website=settings.SITE_ID, scouting_website=ScoutingWebsite.default().name)
     return await ctx.send(response, embed=embed)
 
 
