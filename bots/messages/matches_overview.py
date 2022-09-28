@@ -1,6 +1,7 @@
 import discord
 from discord import Embed, Colour
 from django.conf import settings
+from django.db.models import F
 from django.utils.translation import gettext as _
 
 from app_prime_league.models import Team
@@ -22,7 +23,8 @@ class MatchesOverview(BaseMessage):
         if match_ids is None:
             return self.team.get_open_matches_ordered()
         else:
-            return self.team.matches_against.filter(match_id__in=match_ids)
+            return self.team.matches_against.filter(match_id__in=match_ids).order_by(
+                F('match_day').asc(nulls_last=True))
 
     def _generate_message(self):
         if len(self.matches) == 0:
