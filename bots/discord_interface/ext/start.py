@@ -30,14 +30,14 @@ class TeamIDConverter(commands.Converter):
 @commands.guild_only()
 @check_channel_not_in_use()
 async def start(ctx: commands.Context, team_id_or_url: TeamIDConverter):
-    team_id = team_id_or_url
-    await check_team_not_registered(team_id)
-
-    webhook = await DiscordHelper.create_new_webhook(ctx)
-    if webhook is None:
-        raise NoWebhookPermissions
-
     async with ctx.typing():
+        team_id = team_id_or_url
+        await check_team_not_registered(team_id)
+
+        webhook = await DiscordHelper.create_new_webhook(ctx)
+        if webhook is None:
+            raise NoWebhookPermissions
+
         await ctx.send(_(
             "All right, I'll see what I can find on this.\n"
             "This may take a moment...⏳\n"

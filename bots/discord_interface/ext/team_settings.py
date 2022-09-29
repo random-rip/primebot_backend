@@ -14,24 +14,25 @@ from bots.discord_interface.utils import DiscordHelper, check_channel_in_use, CO
 @commands.guild_only()
 @check_channel_in_use()
 async def set_role(ctx, role: typing.Optional[discord.Role], ):
-    channel_id = ctx.message.channel.id
-    team = await DiscordHelper.get_registered_team_by_channel_id(channel_id=channel_id)
-    if role is None:
-        team.discord_role_id = None
-        await sync_to_async(team.save)()
-        await ctx.send(_(
-            "All right, I've removed the role mention. "
-            "You can turn it back on if needed, just use `/role ROLE_NAME`."
-        ))
-        return
-    if role.name == "@everyone":
-        await ctx.send(_(
-            "You can't use role **everyone**. Please choose a different role."
-        ))
-        return
+    async with ctx.typing():
+        channel_id = ctx.message.channel.id
+        team = await DiscordHelper.get_registered_team_by_channel_id(channel_id=channel_id)
+        if role is None:
+            team.discord_role_id = None
+            await sync_to_async(team.save)()
+            await ctx.send(_(
+                "All right, I've removed the role mention. "
+                "You can turn it back on if needed, just use `/role ROLE_NAME`."
+            ))
+            return
+        if role.name == "@everyone":
+            await ctx.send(_(
+                "You can't use role **everyone**. Please choose a different role."
+            ))
+            return
 
-    team.discord_role_id = role.id
-    await sync_to_async(team.save)()
+        team.discord_role_id = role.id
+        await sync_to_async(team.save)()
     await ctx.send(
         _("Okay, I'll inform the role **{role_name}** for new notifications from now on. 📯").format(
             role_name=role.name))
