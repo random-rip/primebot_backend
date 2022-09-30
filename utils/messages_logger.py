@@ -94,7 +94,7 @@ async def log_from_discord(interaction: Interaction, optional=None):
     }
     if "options" in interaction.data:
         readable_parameters = [
-            f"{x['name']}: {html.escape(x['value'])}"
+            f"{x['name']}: {html.escape(str(x['value']))}"
             for x in interaction.data["options"]]
         params["parameters"] = str(readable_parameters)
 
