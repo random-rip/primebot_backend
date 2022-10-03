@@ -84,12 +84,10 @@ class _DiscordBotV2(Bot):
         exception = getattr(exception, 'original', exception)
 
         if isinstance(exception, ChannelNotInUse):
-            await ctx.send(
+            return await ctx.send(
                 _("There is currently no team registered in this channel. Use `/start` to register a team."))
-            return
         elif isinstance(exception, NoPrivateMessage):
-            await ctx.send(_("This is a channel command."))
-            return
+            return await ctx.send(_("This is a channel command."))
         commands_logger.exception(exception)
         return await ctx.send(_(
             "An unknown error has occurred. Please contact the developers on Discord at {discord_link}."
@@ -122,9 +120,9 @@ class _DiscordBotV2(Bot):
         logger.info(f"Syncing commands: {[x.name for x in self.tree.get_commands()]} ...")
         if settings.DEBUG:
             guild = Object(id=settings.DISCORD_GUILD_ID)
-            logger.info(f"Debug is true, so commands will be synced to guild {guild}...")
+            logger.info(f"Debug is true, so commands will be synced to guild {guild.id}...")
             self.tree.copy_global_to(guild=guild)
-            synced_commands = await self.tree.sync(guild=guild)
+            synced_commands = self.tree.get_commands(guild=guild)
         else:
             logger.info(f"Debug is false, so commands will be synced globally. This can take up to an hour...")
             synced_commands = await self.tree.sync()
