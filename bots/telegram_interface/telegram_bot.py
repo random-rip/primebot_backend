@@ -3,7 +3,6 @@ import sys
 import traceback
 
 from django.conf import settings
-from telegram import ParseMode
 from telegram.ext import Updater, CommandHandler, MessageHandler, ConversationHandler, CallbackQueryHandler
 from telegram.ext.filters import Filters
 from telepot.exception import BotWasKickedError, BotWasBlockedError
@@ -94,7 +93,7 @@ def error(update, context):
         text = f"The error <code>{context.error}</code> happened in one of the telegram chats.\n" \
                f"Full trace: <code>{trace}</code>"
         notifications_logger.exception(trace)
-        context.bot.send_message(settings.TG_DEVELOPER_GROUP, text, parse_mode=ParseMode.HTML)
+        send_message_to_devs(text)
 
         if update and update.effective_message:
             text = "Hey, es ist ein unerwarteter Fehler aufgetreten, während ich euren Befehl verarbeiten wollte. " \
