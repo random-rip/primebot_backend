@@ -35,8 +35,6 @@ async def start(ctx: commands.Context, team_id_or_url: TeamIDConverter):
         await check_team_not_registered(team_id)
 
         webhook = await DiscordHelper.create_new_webhook(ctx)
-        if webhook is None:
-            raise NoWebhookPermissions
 
         await ctx.send(_(
             "All right, I'll see what I can find on this.\n"
@@ -59,19 +57,19 @@ async def start(ctx: commands.Context, team_id_or_url: TeamIDConverter):
                 "or join our Discord Community Server {discord}."
             ).format(website=settings.SITE_ID, discord=settings.DISCORD_SERVER_LINK))
 
-    msg = await sync_to_async(MatchesOverview)(team=team)
-    embed = await sync_to_async(msg.generate_discord_embed)()
-    response = _(
-        "Perfect, this channel was registered for team **{team_name}**.\n"
-        "The most important commands:\n"
-        "📌 `/role ROLE_NAME` - to set a role to be mentioned in notifications\n"
-        "📌 `/settings` - to personalize the notifications, change the PrimeBot language or change the "
-        "scouting website (default: {scouting_website})\n"
-        "📌 `/matches` - to get an overview of the matches that are still open\n"
-        "📌 `/match MATCH_DAY` - to receive detailed information about a match day\n\n"
-        "Just try it out! 🎁 \n"
-        "The **status of the Prime League API** can be viewed at any time on {website}."
-    ).format(team_name=team.name, website=settings.SITE_ID, scouting_website=ScoutingWebsite.default().name)
+        msg = await sync_to_async(MatchesOverview)(team=team)
+        embed = await sync_to_async(msg.generate_discord_embed)()
+        response = _(
+            "Perfect, this channel was registered for team **{team_name}**.\n"
+            "The most important commands:\n"
+            "📌 `/role ROLE_NAME` - to set a role to be mentioned in notifications\n"
+            "📌 `/settings` - to personalize the notifications, change the PrimeBot language or change the "
+            "scouting website (default: {scouting_website})\n"
+            "📌 `/matches` - to get an overview of the matches that are still open\n"
+            "📌 `/match MATCH_DAY` - to receive detailed information about a match day\n\n"
+            "Just try it out! 🎁 \n"
+            "The **status of the Prime League API** can be viewed at any time on {website}."
+        ).format(team_name=team.name, website=settings.SITE_ID, scouting_website=ScoutingWebsite.default().name)
     return await ctx.send(response, embed=embed)
 
 
@@ -99,11 +97,11 @@ async def start_error(ctx, error):
         ).format(website=settings.SITE_ID, discord=settings.DISCORD_SERVER_LINK))
     elif isinstance(error, NoWebhookPermissions):
         return await ctx.reply(_(
-                "I lack the permission to manage webhooks. Please make sure I have that permission. "
-                "If necessary, wait an hour before running the command again. "
-                "If it still doesn't work after that, check our website {website} for help "
-                "or join our Discord Community Server {discord}."
-            ).format(website=settings.SITE_ID, discord=settings.DISCORD_SERVER_LINK))
+            "I lack the permission to manage webhooks. Please make sure I have that permission. "
+            "If necessary, wait an hour before running the command again. "
+            "If it still doesn't work after that, check our website {website} for help "
+            "or join our Discord Community Server {discord}."
+        ).format(website=settings.SITE_ID, discord=settings.DISCORD_SERVER_LINK))
     logging.getLogger("commands").exception(error)
     return await ctx.reply(_(
         "An unknown error has occurred. Please contact the developers on Discord at {discord_link}."

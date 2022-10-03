@@ -13,13 +13,6 @@ async def fix(ctx):
     async with ctx.typing():
         team = await DiscordHelper.get_registered_team_by_channel_id(channel_id=ctx.message.channel.id)
         webhook = await DiscordHelper.create_new_webhook(ctx)
-        if webhook is None:
-            return await ctx.send(_(
-                "I lack the permission to manage webhooks. Please make sure I have that permission. "
-                "If necessary, wait an hour before running the command again. "
-                "If it still doesn't work after that, check our website {website} for help "
-                "or join our Discord Community Server {discord}."
-            ).format(website=settings.SITE_ID, discord=settings.DISCORD_SERVER_LINK))
 
         team.discord_webhook_id = webhook.id
         team.discord_webhook_token = webhook.token

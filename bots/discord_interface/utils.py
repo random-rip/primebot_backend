@@ -2,7 +2,7 @@ import os
 from typing import Callable, Union
 
 from asgiref.sync import sync_to_async
-from discord import Colour, Embed, Webhook
+from discord import Colour, Embed, Webhook, Forbidden
 from discord.ext import commands
 from django.conf import settings
 
@@ -35,7 +35,7 @@ class ChannelNotInUse(commands.CheckFailure):
 
 class DiscordHelper:
     @staticmethod
-    def create_msg_arguments(*, msg:BaseMessage, discord_role_id, color=COLOR_NOTIFICATION, **kwargs):
+    def create_msg_arguments(*, msg: BaseMessage, discord_role_id, color=COLOR_NOTIFICATION, **kwargs):
         arguments = kwargs
         arguments["embed"] = Embed(description=msg.generate_message(), color=color)
         arguments["content"] = DiscordHelper.mask_message_with_mention(
@@ -72,8 +72,8 @@ class DiscordHelper:
             new_webhook = await channel.create_webhook(name="PrimeBot", avatar=avatar)
             for webhook in webhooks:
                 await webhook.delete()
-        except Exception as e:
-            await log_from_discord(ctx.message, optional=f"{e}")
+        except (Forbidden, Exception,) as e:
+            await log_from_discord(ctx.interaction, optional=f"{e}")
             raise NoWebhookPermissions
         return new_webhook
 
