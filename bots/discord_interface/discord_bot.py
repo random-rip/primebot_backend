@@ -1,4 +1,6 @@
 import logging
+import sys
+import traceback
 
 from discord import NotFound, Message, SyncWebhook, Intents, Object
 from discord.ext.commands import errors, NoPrivateMessage, Bot
@@ -11,7 +13,7 @@ from bots.messages.base import BaseMessage
 from utils.exceptions import VariableNotSetException
 from utils.messages_logger import log_from_discord
 
-logger = logging.getLogger("discord")
+discord_logger = logging.getLogger("discord")
 notifications_logger = logging.getLogger("notifications")
 commands_logger = logging.getLogger("commands")
 
@@ -71,7 +73,7 @@ class _DiscordBotV2(Bot):
         )
 
     async def on_ready(self):
-        logger.info(f"{self.user} has connected to Discord!")
+        discord_logger.info(f"{self.user} has connected to Discord!")
 
     async def on_command_error(self, ctx, exception: errors.CommandError, /):
 
@@ -88,16 +90,16 @@ class _DiscordBotV2(Bot):
                 _("There is currently no team registered in this channel. Use `/start` to register a team."))
         elif isinstance(exception, NoPrivateMessage):
             return await ctx.send(_("This is a channel command."))
-        commands_logger.exception(exception)
+        discord_logger.exception(exception, exc_info=True)
         return await ctx.send(_(
             "An unknown error has occurred. Please contact the developers on Discord at {discord_link}."
         ).format(discord_link=settings.DISCORD_SERVER_LINK), suppress_embeds=True)
 
     async def setup_hook(self):
-        logger.info("Hook setup...")
+        discord_logger.info("Hook setup...")
         await self.load_extensions()
         # await self.sync_commands()
-        logger.info("Hooked setup.")
+        discord_logger.info("Hooked setup.")
 
     async def on_message(self, message: Message, /):
         pass
@@ -111,19 +113,19 @@ class _DiscordBotV2(Bot):
         pass
 
     async def load_extensions(self):
-        logger.info("Loading commands...")
+        discord_logger.info("Loading commands...")
         for ext in self.initial_extensions:
             await self.load_extension(name=ext, package="bots.discord_interface")
-        logger.info("Commands loaded.")
+        discord_logger.info("Commands loaded.")
 
     async def sync_commands(self):
-        logger.info(f"Syncing commands: {[x.name for x in self.tree.get_commands()]} ...")
+        discord_logger.info(f"Syncing commands: {[x.name for x in self.tree.get_commands()]} ...")
         if settings.DEBUG:
             guild = Object(id=settings.DISCORD_GUILD_ID)
-            logger.info(f"Debug is true, so commands will be synced to guild {guild.id}...")
+            discord_logger.info(f"Debug is true, so commands will be synced to guild {guild.id}...")
             self.tree.copy_global_to(guild=guild)
             synced_commands = self.tree.get_commands(guild=guild)
         else:
-            logger.info(f"Debug is false, so commands will be synced globally. This can take up to an hour...")
+            discord_logger.info(f"Debug is false, so commands will be synced globally. This can take up to an hour...")
             synced_commands = await self.tree.sync()
-        logger.info(f"Synced commands: {[x.name for x in synced_commands]}")
+        discord_logger.info(f"Synced commands: {[x.name for x in synced_commands]}")
