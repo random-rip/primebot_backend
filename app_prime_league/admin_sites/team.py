@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.db.models import Q
 from django.utils.html import format_html
 
-from app_prime_league.models import Match
+from app_prime_league.models import Match, Player
 
 
 class PlatformFilter(admin.SimpleListFilter):
@@ -49,6 +49,24 @@ class RegisterFilter(admin.SimpleListFilter):
         return queryset
 
 
+class PlayerInline(admin.TabularInline):
+    ordering = ("name",)
+    model = Player
+    classes = ("collapse",)
+    extra = 0
+    fields = ("id", "name", "summoner_name", "is_leader", "created_at", "updated_at",)
+    readonly_fields = ("id", "created_at", "updated_at",)
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+
 class MatchInline(admin.TabularInline):
     ordering = ("match_day", "closed")
     model = Match
@@ -69,6 +87,7 @@ class MatchInline(admin.TabularInline):
 
 class TeamAdmin(admin.ModelAdmin):
     inlines = [
+        PlayerInline,
         MatchInline,
     ]
 
