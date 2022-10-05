@@ -10,13 +10,11 @@ Hallo {team.name},
 
 🔥 Version {version} ist draußen 🔥
 
-1️⃣ Migrierung von Textcommands zu Slash Commands. Da Discord am 31.8.2022 alte API Versionen einstampft und den Messagecontent als privileged Intent einstuft (https://support-dev.discord.com/hc/en-us/articles/4404772028055), mussten wir die `discord.py` Version erhöhen.
-Wir haben die Materie von Slash commands noch nicht zu 100% durchschaut, weswegen es noch zu Fehlern kommen kann. Bitte teilt diese uns mit. ♥
+1️⃣ Implementierung einer eigenen API für euch. Aktuell sind Teams und Matches (inklusive Spieler) implementiert. Die API Dokumentation findet ihr unter https://github.com/random-rip/primebot_backend/blob/master/openapi.yml .
+Gebt uns gerne Feedback dazu, was ihr davon haltet und was für Daten ihr noch gerne möchtet.
+2️⃣ Einige kleine Fehler wurden behoben, wie beispielsweise dass nicht jeder `/match MATCH_DAY` funktioniert hat.
 
-Dadurch ergeben sich folgende Änderungen für Discorduser:
-- Ab sofort sind alle Interaktionen mit dem Bot über Slash Commands geregelt, also nicht mehr `!bop` sondern `/bop`. Am besten probiert ihr es aus. Wenn es nicht funktioniert, sind eventuell Slash Commands auf eurem Server deaktiviert oder ihr habt keine Berechtigungen Slash Commands auszuführen. Wendet euch dann an eure zuständigen Serveradmins (Hier ein Artikel dazu https://support.discord.com/hc/de/articles/4644915651095-Command-Permissions)
-
-2️⃣ Alle weiteren Änderungen findet ihr auf unserer Website: https://www.primebot.me/changelogs
+Alle weiteren Änderungen findet ihr auf unserer Website: https://www.primebot.me/changelogs
 
 Sternige Grüße
 – PrimeBot devs
