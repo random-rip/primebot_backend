@@ -48,9 +48,19 @@ class MatchManager(models.Manager):
 
 class PlayerManager(models.Manager):
 
+    def remove_old_player_relations(self, players_list: list, team: "Team") -> List["Player"]:
+        current_account_ids = [account_id for account_id, *_ in players_list]
+        for player in team.player_set.all():
+            if player.id in current_account_ids:
+                continue
+            player.team = None
+            player.save()
+
     def create_or_update_players(self, players_list: list, team) -> List["Player"]:
-        players = []
+        current_players = []
         for (account_id, name, summoner_name, is_leader,) in players_list:
+            if any([name is None, summoner_name is None]):
+                continue
             to_update = {
                 "name": name,
                 "summoner_name": summoner_name,
@@ -68,8 +78,8 @@ class PlayerManager(models.Manager):
                         f"Cannot update player {to_update}. Missing values."
                     )
                     continue
-            players.append(player)
-        return players
+            current_players.append(player)
+        return current_players
 
     def get_active_players(self):
         """

@@ -40,6 +40,7 @@ def update_team(team: Team):
         team.update(**to_update)
 
     try:
+        Player.objects.remove_old_player_relations(processor.get_members(), team)
         Player.objects.create_or_update_players(processor.get_members(), team)
     except Exception:
         update_logger.warning(

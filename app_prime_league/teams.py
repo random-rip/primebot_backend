@@ -99,7 +99,8 @@ def create_match_and_enemy_team(team, match_id, ):
         match.enemy_team = enemy_team
 
         # Create Enemy Players
-        _ = Player.objects.create_or_update_players(processor.get_members(), enemy_team)
+        Player.objects.remove_old_player_relations(processor.get_members(), team)
+        Player.objects.create_or_update_players(processor.get_members(), enemy_team)
 
     # Create Enemy Lineup
     # TODO: duplicate code, refactor to use match.update_enemy_lineup(md=tmd)

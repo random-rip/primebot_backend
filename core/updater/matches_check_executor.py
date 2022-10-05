@@ -57,7 +57,8 @@ def check_match(match: Match):
             "division": processor.get_current_division(),
         })
         match.enemy_team = enemy_team
-        _ = Player.objects.create_or_update_players(processor.get_members(), enemy_team)
+        Player.objects.remove_old_player_relations(processor.get_members(), team)
+        Player.objects.create_or_update_players(processor.get_members(), enemy_team)
 
     if cmp.compare_new_suggestion(of_enemy_team=True):
         notifications_logger.info(f"{log_message}Neuer Terminvorschlag der Gegner")
