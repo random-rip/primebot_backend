@@ -6,20 +6,29 @@ from django.utils import translation
 
 from app_prime_league.models import Team, Match
 from bots.messages.helpers import MatchDisplayHelper
-from utils.emojis import EMOJI_ONE, EMOJI_TWO, EMOJI_THREE, EMOJI_FOUR, EMOJI_FIVE, EMOJI_SIX, EMOJI_SEVEN, EMOJI_EIGHT, \
-    EMOJI_NINE, EMOJI_TEN
+from utils import emojis
 
 emoji_numbers = [
-    EMOJI_ONE,
-    EMOJI_TWO,
-    EMOJI_THREE,
-    EMOJI_FOUR,
-    EMOJI_FIVE,
-    EMOJI_SIX,
-    EMOJI_SEVEN,
-    EMOJI_EIGHT,
-    EMOJI_NINE,
-    EMOJI_TEN,
+    emojis.EMOJI_ONE,
+    emojis.EMOJI_TWO,
+    emojis.EMOJI_THREE,
+    emojis.EMOJI_FOUR,
+    emojis.EMOJI_FIVE,
+    emojis.EMOJI_SIX,
+    emojis.EMOJI_SEVEN,
+    emojis.EMOJI_EIGHT,
+    emojis.EMOJI_NINE,
+    emojis.EMOJI_TEN,
+    emojis.EMOJI_ELEVEN,
+    emojis.EMOJI_TWELVE,
+    emojis.EMOJI_THIRTEEN,
+    emojis.EMOJI_FOURTEEN,
+    emojis.EMOJI_FIFTEEN,
+    emojis.EMOJI_SIXTEEN,
+    emojis.EMOJI_SEVENTEEN,
+    emojis.EMOJI_EIGHTEEN,
+    emojis.EMOJI_NINETEEN,
+    emojis.EMOJI_TWENTY,
 ]
 
 

@@ -118,9 +118,8 @@ class Team(models.Model):
         week = current_match_day()
         if week <= -1:
             qs_filter["match_type"] = Match.MATCH_TYPE_GROUP
-        elif week > 8:
-            if self.matches_against.filter(match_type=Match.MATCH_TYPE_PLAYOFF).exists():
-                qs_filter["match_type"] = Match.MATCH_TYPE_PLAYOFF
+        elif week > 8 and self.matches_against.filter(match_type=Match.MATCH_TYPE_PLAYOFF).exists():
+            qs_filter["match_type"] = Match.MATCH_TYPE_PLAYOFF
         return self.matches_against.filter(**qs_filter)
 
     def update(self, **kwargs):
