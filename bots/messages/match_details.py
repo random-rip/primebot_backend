@@ -83,11 +83,22 @@ class MatchOverview(MatchMessage):
 
         names = list(
             self.match.get_enemy_team().player_set.get_active_players().values_list("summoner_name", flat=True))
+
+        next_player_if_split = 0
         for i, player in enumerate(names):
-            value += (
-                f"> {emoji_numbers[i]} {EMJOI_MAGN_GLASS} [{player}]({single.generate_url(player)})\n"
-            )
+            add_string = f"> {emoji_numbers[i]} {EMJOI_MAGN_GLASS} [{player}]({single.generate_url(player)})\n"
+            if len(value + add_string) > 1024:
+                next_player_if_split = i
+                break
+            value += add_string
         self.embed.add_field(name=name, value=value, inline=False)
+
+        value = ""
+        if next_player_if_split > 0:
+            for i, player in enumerate(names, start=next_player_if_split):
+                add_string = f"> {emoji_numbers[i]} {EMJOI_MAGN_GLASS} [{player}]({single.generate_url(player)})\n"
+                value += add_string
+        self.embed.add_field(name="", value=value, inline=True)
 
     def _add_results(self):
         name = _("Match result")
