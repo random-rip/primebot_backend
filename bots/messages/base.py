@@ -7,29 +7,20 @@ from django.utils import translation
 from app_prime_league.models import Team, Match
 from bots.messages.helpers import MatchDisplayHelper
 from utils import emojis
+from utils.emojis import EMOJI_RAUTE
 
-emoji_numbers = [
-    emojis.EMOJI_ONE,
-    emojis.EMOJI_TWO,
-    emojis.EMOJI_THREE,
-    emojis.EMOJI_FOUR,
-    emojis.EMOJI_FIVE,
-    emojis.EMOJI_SIX,
-    emojis.EMOJI_SEVEN,
-    emojis.EMOJI_EIGHT,
-    emojis.EMOJI_NINE,
-    emojis.EMOJI_TEN,
-    emojis.EMOJI_ELEVEN,
-    emojis.EMOJI_TWELVE,
-    emojis.EMOJI_THIRTEEN,
-    emojis.EMOJI_FOURTEEN,
-    emojis.EMOJI_FIFTEEN,
-    emojis.EMOJI_SIXTEEN,
-    emojis.EMOJI_SEVENTEEN,
-    emojis.EMOJI_EIGHTEEN,
-    emojis.EMOJI_NINETEEN,
-    emojis.EMOJI_TWENTY,
-]
+NUMBER_TO_EMOJI = {
+    0: emojis.EMOJI_ZERO,
+    1: emojis.EMOJI_ONE,
+    2: emojis.EMOJI_TWO,
+    3: emojis.EMOJI_THREE,
+    4: emojis.EMOJI_FOUR,
+    5: emojis.EMOJI_FIVE,
+    6: emojis.EMOJI_SIX,
+    7: emojis.EMOJI_SEVEN,
+    8: emojis.EMOJI_EIGHT,
+    9: emojis.EMOJI_NINE,
+}
 
 
 class MessageNotImplementedError(NotImplementedError):
@@ -77,6 +68,9 @@ class BaseMessage:
     @property
     def scouting_website(self):
         return settings.DEFAULT_SCOUTING_NAME if not self.team.scouting_website else self.team.scouting_website.name
+
+    def _get_number_as_emojis(self, number: int) -> str:
+        return "".join([NUMBER_TO_EMOJI.get(int(d), EMOJI_RAUTE) for d in str(number)])
 
 
 class MatchMessage(BaseMessage, ABC):
