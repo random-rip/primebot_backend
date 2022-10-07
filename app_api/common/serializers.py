@@ -4,12 +4,15 @@ from app_prime_league.models import Team, Match, Player
 
 
 class TeamSerializer(serializers.ModelSerializer):
+    matches_count = serializers.IntegerField(source="matches_against.count")
+
     class Meta:
         model = Team
         fields = [
             'id',
+            "name",
             'team_tag',
-            'division',
+            'matches_count',
         ]
 
 
@@ -26,17 +29,21 @@ class PlayerSerializer(serializers.ModelSerializer):
         ]
 
 
-class MatchIdSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Match
-        fields = [
-            'id',
-        ]
-
-
 class TeamDetailSerializer(serializers.ModelSerializer):
+    class MatchSerializer(serializers.ModelSerializer):
+        enemy_team_name = serializers.CharField(source="enemy_team.name")
+
+        class Meta:
+            model = Match
+            fields = [
+                'id',
+                "match_id",
+                "enemy_team_id",
+                "enemy_team_name",
+            ]
+
     players = PlayerSerializer(many=True, source="player_set")
-    matches_against = MatchIdSerializer(many=True)
+    matches_against = MatchSerializer(many=True)
 
     class Meta:
         model = Team
@@ -71,6 +78,8 @@ class MatchSerializer(serializers.ModelSerializer):
 class MatchDetailSerializer(serializers.ModelSerializer):
     team = TeamSerializer()
     enemy_team = TeamSerializer()
+    team_lineup = PlayerSerializer(many=True)
+    enemy_lineup = PlayerSerializer(many=True)
 
     class Meta:
         model = Match
