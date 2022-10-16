@@ -171,9 +171,9 @@ the ``storage`` **completely** (a team will still be registered incomplete).
 
 Teams that can be fully registered from storage:
 
-- ``!start 183281`` [DEMACIA FOR WIN (BTZ) Swiss Starter](https://www.primeleague.gg/leagues/teams/183281-demacia-for-win)
-- ``!start 114250`` [eWolves Div 4.7](https://www.primeleague.gg/leagues/teams/114250)
-- ``!start 90935`` [404-multigaming Div 4.7](https://www.primeleague.gg/leagues/teams/90935)
+- ``/start 183281`` [DEMACIA FOR WIN (BTZ) Swiss Starter](https://www.primeleague.gg/leagues/teams/183281-demacia-for-win)
+- ``/start 114250`` [eWolves Div 4.7](https://www.primeleague.gg/leagues/teams/114250)
+- ``/start 90935`` [404-multigaming Div 4.7](https://www.primeleague.gg/leagues/teams/90935)
 
 ## Contributing
 
@@ -188,7 +188,7 @@ If you create a pull request, make sure that
 
 ### Help
 
-Join us on Discord if you have questions :)
+Join us on Discord if you have questions. :)
 
 <a href="https://discord.gg/K8bYxJMDzu">
 <img src="https://img.shields.io/discord/945020028238053456?label=Discord" alt="npm"/>
