@@ -3,12 +3,13 @@ from discord.ext import commands
 from django.conf import settings
 from django.utils.translation import gettext as _
 
-from bots.discord_interface.utils import DiscordHelper, check_channel_in_use
+from bots.discord_interface.utils import DiscordHelper, check_channel_in_use, translation_override
 
 
 @commands.hybrid_command(help="Recreates the notification webhook", )
 @commands.guild_only()
 @check_channel_in_use()
+@translation_override
 async def fix(ctx):
     async with ctx.typing():
         team = await DiscordHelper.get_registered_team_by_channel_id(channel_id=ctx.message.channel.id)

@@ -4,10 +4,11 @@ from django.conf import settings
 from django.utils.translation import gettext as _
 
 from app_api.modules.status.views import GitHub
-from bots.discord_interface.utils import COLOR_SETTINGS
+from bots.discord_interface.utils import COLOR_SETTINGS, translation_override
 
 
 @commands.hybrid_command(name="help", help="Creates an overview of the bot and commands", )
+@translation_override
 async def bot_help(ctx: commands.Context, ) -> None:
     async with ctx.typing():
         embed = Embed(title=_("Help"), color=COLOR_SETTINGS)

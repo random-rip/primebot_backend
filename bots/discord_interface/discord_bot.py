@@ -1,6 +1,4 @@
 import logging
-import sys
-import traceback
 
 from discord import NotFound, Message, SyncWebhook, Intents, Object
 from discord.ext.commands import errors, NoPrivateMessage, Bot
@@ -8,7 +6,7 @@ from django.conf import settings
 from django.utils.translation import gettext as _
 
 from bots.base.bot_interface import BotInterface
-from bots.discord_interface.utils import ChannelNotInUse, DiscordHelper
+from bots.discord_interface.utils import ChannelNotInUse, DiscordHelper, translation_override
 from bots.messages.base import BaseMessage
 from utils.exceptions import VariableNotSetException
 from utils.messages_logger import log_from_discord
@@ -75,6 +73,7 @@ class _DiscordBotV2(Bot):
     async def on_ready(self):
         discord_logger.info(f"{self.user} has connected to Discord!")
 
+    @translation_override
     async def on_command_error(self, ctx, exception: errors.CommandError, /):
 
         # This prevents any commands with local handlers being handled here in on_command_error.
@@ -106,10 +105,8 @@ class _DiscordBotV2(Bot):
 
     async def on_interaction(self, interaction):
         await log_from_discord(interaction)
-        # TODO Ist hier der Platz für I18n activation
 
     async def on_app_command_completion(self, interaction, command):
-        # TODO Ist hier der Platz für I18n deactivation
         pass
 
     async def load_extensions(self):

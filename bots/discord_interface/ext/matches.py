@@ -1,14 +1,16 @@
 from asgiref.sync import sync_to_async
 from discord.ext import commands
+from django.utils.translation import gettext as _
 
 from bots.discord_interface.discord_bot import discord_logger
-from bots.discord_interface.utils import DiscordHelper, check_channel_in_use
+from bots.discord_interface.utils import DiscordHelper, check_channel_in_use, translation_override
 from bots.messages import MatchesOverview, MatchOverview
 
 
 @commands.hybrid_command(help="Creates an overview for open matches", )
 @commands.guild_only()
 @check_channel_in_use()
+@translation_override
 async def matches(ctx, ):
     async with ctx.typing():
         channel_id = ctx.message.channel.id
@@ -21,6 +23,7 @@ async def matches(ctx, ):
 @commands.hybrid_command(name="match", help="Creates an overview for a given match day", )
 @commands.guild_only()
 @check_channel_in_use()
+@translation_override
 async def match_information(ctx, match_day: int, ):
     async with ctx.typing():
         try:
@@ -28,9 +31,8 @@ async def match_information(ctx, match_day: int, ):
             found_matches = await sync_to_async(list)(
                 await sync_to_async(team.get_obvious_matches_based_on_stage)(match_day=match_day))
             if not found_matches:
-                return await ctx.send("This match day was not found. Try `/match 1`.")
+                return await ctx.send(_("This match day was not found. Try `/match 1`."))
             for i in found_matches:
-
                 msg = await sync_to_async(MatchOverview)(team=team, match=i)
                 embed = await sync_to_async(msg.generate_discord_embed)()
                 await ctx.send(embed=embed)

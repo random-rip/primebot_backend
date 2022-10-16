@@ -2,14 +2,14 @@ import logging
 
 from asgiref.sync import sync_to_async
 from discord.ext import commands
-from discord.ext.commands import BadArgument
 from django.conf import settings
 from django.utils.translation import gettext as _
 
 from app_prime_league.models import ScoutingWebsite
 from app_prime_league.teams import register_team
 from bots.discord_interface.utils import (
-    DiscordHelper, ChannelInUse, TeamInUse, NoWebhookPermissions, check_channel_not_in_use, check_team_not_registered)
+    DiscordHelper, ChannelInUse, TeamInUse, NoWebhookPermissions, check_channel_not_in_use, check_team_not_registered,
+    translation_override)
 from bots.messages import MatchesOverview
 from utils.exceptions import (
     CouldNotParseURLException, TeamWebsite404Exception, PrimeLeagueConnectionException, Div1orDiv2TeamException)
@@ -21,7 +21,7 @@ class TeamIDConverter(commands.Converter):
         try:
             team_id = get_valid_team_id(argument)
         except CouldNotParseURLException:
-            raise BadArgument()
+            raise commands.BadArgument()
 
         return team_id
 
@@ -29,6 +29,7 @@ class TeamIDConverter(commands.Converter):
 @commands.hybrid_command(help="Registers the Prime League team in the channel")
 @commands.guild_only()
 @check_channel_not_in_use()
+@translation_override
 async def start(ctx: commands.Context, team_id_or_url: TeamIDConverter):
     async with ctx.typing():
         team_id = team_id_or_url
@@ -57,8 +58,6 @@ async def start(ctx: commands.Context, team_id_or_url: TeamIDConverter):
                 "or join our Discord Community Server {discord}."
             ).format(website=settings.SITE_ID, discord=settings.DISCORD_SERVER_LINK))
 
-        msg = await sync_to_async(MatchesOverview)(team=team)
-        embed = await sync_to_async(msg.generate_discord_embed)()
         response = _(
             "Perfect, this channel was registered for team **{team_name}**.\n"
             "The most important commands:\n"
@@ -70,10 +69,13 @@ async def start(ctx: commands.Context, team_id_or_url: TeamIDConverter):
             "Just try it out! 🎁 \n"
             "The **status of the Prime League API** can be viewed at any time on {website}."
         ).format(team_name=team.name, website=settings.SITE_ID, scouting_website=ScoutingWebsite.default().name)
+        msg = await sync_to_async(MatchesOverview)(team=team)
+        embed = await sync_to_async(msg.generate_discord_embed)()
     return await ctx.send(response, embed=embed)
 
 
 @start.error
+@translation_override
 async def start_error(ctx, error):
     error = getattr(error, 'original', error)
     if isinstance(error, commands.BadArgument):

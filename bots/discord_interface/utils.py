@@ -1,10 +1,13 @@
+import functools
 import os
 from typing import Callable, Union
 
 from asgiref.sync import sync_to_async
-from discord import Colour, Embed, Webhook, Forbidden
+from discord import Colour, Embed, Webhook, Forbidden, Interaction
 from discord.ext import commands
+from discord.ext.commands import Context
 from django.conf import settings
+from django.utils import translation
 
 from app_prime_league.models import Team
 from bots.messages.base import BaseMessage
@@ -121,3 +124,39 @@ async def check_team_not_registered(team_id: int) -> bool:
     if await DiscordHelper.get_registered_team_by_team_id(team_id) is not None:
         raise TeamInUse
     return True
+
+
+async def detect_language(interaction: Interaction) -> str:
+    """
+    Returns the language code from team, and if not registered from ``user.locale``.
+    Returns: Language code
+    """
+    team = await DiscordHelper.get_registered_team_by_channel_id(channel_id=interaction.channel_id)
+    if team is not None:
+        return team.language
+    return str(interaction.locale)
+
+
+def translation_override(func):
+    """
+    Decorator to enable and disable translation. The language is set based on the passed ``Context``. If no context
+    is present, the default language from settings will be used.
+    """
+
+    @functools.wraps(func)
+    async def wrapper_decorator(*args, **kwargs):
+        for arg in args:
+            if type(arg) == Context:
+                context = arg
+                break
+        else:
+            context = None
+        language = await detect_language(context.interaction) if context is not None else settings.LANGUAGE_CODE
+        translation.activate(language)
+        try:
+            value = await func(*args, **kwargs)
+        finally:
+            translation.deactivate()
+        return value
+
+    return wrapper_decorator

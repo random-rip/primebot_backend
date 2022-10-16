@@ -7,12 +7,13 @@ from django.conf import settings
 from django.utils.translation import gettext as _
 
 from app_api.modules.team_settings.maker import SettingsMaker
-from bots.discord_interface.utils import DiscordHelper, check_channel_in_use, COLOR_SETTINGS
+from bots.discord_interface.utils import DiscordHelper, check_channel_in_use, COLOR_SETTINGS, translation_override
 
 
 @commands.hybrid_command(name="role", help="Sets a Discord role that will be used in notifications.")
 @commands.guild_only()
 @check_channel_in_use()
+@translation_override
 async def set_role(ctx, role: typing.Optional[discord.Role], ):
     async with ctx.typing():
         channel_id = ctx.message.channel.id
@@ -41,6 +42,7 @@ async def set_role(ctx, role: typing.Optional[discord.Role], ):
 @commands.hybrid_command(name="settings", help="Creates a temporary link to make notification settings", )
 @commands.guild_only()
 @check_channel_in_use()
+@translation_override
 async def team_settings(ctx, ):
     async with ctx.typing():
         channel_id = ctx.message.channel.id
