@@ -1,11 +1,5 @@
-from django.test import TestCase
+from pprint import pprint
 
-from app_prime_league.models import Team, Match, Player, Suggestion
-from bots.messages import NewLineupNotificationMessage, WeeklyNotificationMessage, \
-    OwnNewTimeSuggestionsNotificationMessage, EnemyNewTimeSuggestionsNotificationMessage, \
-    ScheduleConfirmationNotification, NewMatchNotification, NewCommentsNotificationMessage
-from core.parsing.logs import LogSchedulingConfirmation, LogSchedulingAutoConfirmation, LogChangeTime
-from core.test_utils import string_to_datetime
 from django.test import TestCase
 
 from app_prime_league.models import Team, Match, Player, Suggestion
@@ -61,13 +55,20 @@ class DiscordMessageTests(TestCase):
         self.assertEqual(msg.generate_message(), expected, )
 
     def test_own_time_suggestions(self):
+        Suggestion.objects.create(begin=string_to_datetime("2022-01-01 17:30"), match=self.match)
+        Suggestion.objects.create(begin=string_to_datetime("2022-01-02 15:00"), match=self.match)
+        Suggestion.objects.create(begin=string_to_datetime("2022-01-02 17:00"), match=self.match)
+
         msg = OwnNewTimeSuggestionsNotificationMessage(match=self.match, team=self.team_a)
 
         self.assertEqual(msg.settings_key, "TEAM_SCHEDULING_SUGGESTION", )
         self.assertEqual(msg.mentionable, True, )
 
         expected = (
-            "Neuer Terminvorschlag von euch für [Spieltag 1](https://www.primeleague.gg/de/leagues/matches/1)."
+            "Neue Terminvorschläge von euch für [Spieltag 1](https://www.primeleague.gg/de/leagues/matches/1):\n"
+            "1️⃣Samstag, 1. Januar 2022 17:30 Uhr\n"
+            "2️⃣Sonntag, 2. Januar 2022 15:00 Uhr\n"
+            "3️⃣Sonntag, 2. Januar 2022 17:00 Uhr"
         )
 
         self.assertEqual(msg.generate_message(), expected, )

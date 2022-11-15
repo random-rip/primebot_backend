@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-16 14:23+0200\n"
+"POT-Creation-Date: 2022-11-15 20:41+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -470,14 +470,16 @@ msgstr ""
 "[{match_day}]({match_url}) gegen [{enemy_team_tag}]({enemy_team_url}):\n"
 "Hier ist der [{website} Link]({scouting_url}) des Teams."
 
-#: .\bots\messages\own_time_suggestions.py:15
+#: .\bots\messages\own_time_suggestions.py:17
 msgid "New date proposed by you"
 msgstr "Eigener neuer Terminvorschlag"
 
-#: .\bots\messages\own_time_suggestions.py:19
+#: .\bots\messages\own_time_suggestions.py:23
 #, python-brace-format
-msgid "New date proposed by you for [{match_day}]({match_url})."
-msgstr "Neuer Terminvorschlag von euch für [{match_day}]({match_url})."
+msgid "New date proposed by you for [{match_day}]({match_url}):"
+msgid_plural "New dates proposed by you for [{match_day}]({match_url}):"
+msgstr[0] "Neuer Terminvorschlag von euch für [{match_day}]({match_url}):"
+msgstr[1] "Neue Terminvorschläge von euch für [{match_day}]({match_url}):"
 
 #: .\bots\messages\schedule_confirmation.py:19
 msgid "Confirmation of the scheduled date"
