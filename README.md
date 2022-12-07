@@ -17,7 +17,7 @@
 </p>
 <h4 align="center">
 The unofficial <i>Strauss Prime League</i> Bot for sending push notifications via Discord and
-Telegram.
+Telegram. The unofficial <i>Strauss Prime League</i> API.
 </h4>
 
 <p align="center">
