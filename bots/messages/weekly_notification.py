@@ -18,7 +18,7 @@ class WeeklyNotificationMessage(MatchMessage):
         op_link = self.enemy_team_scouting_url
         if op_link is None:
             raise Exception(f"HOW THE FUCK IS the op_link None? This is illegal! {self.match.enemy_team}")
-        enemy_team_tag = self.match.enemy_team.team_tag
+        enemy_team_tag = self.match.get_enemy_team().team_tag
         return _(
             "The next gameday:\n"
             "[{match_day}]({match_url}) against [{enemy_team_tag}]({enemy_team_url}):\n"

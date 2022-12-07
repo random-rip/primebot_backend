@@ -1,9 +1,11 @@
+from typing import List
+
 from discord import Embed, Colour
 from django.conf import settings
 from django.utils.translation import gettext as _
 
 from app_prime_league.models import Champion, ScoutingWebsite, Team, Match
-from bots.messages.base import MatchMessage, MessageNotImplementedError, emoji_numbers
+from bots.messages.base import MatchMessage, MessageNotImplementedError
 from utils.emojis import EMJOI_MAGN_GLASS
 from utils.utils import format_datetime
 
@@ -30,8 +32,8 @@ class MatchOverview(MatchMessage):
         )
 
         if not self.match.match_begin_confirmed:
-            for i, x in enumerate(self.match.suggestion_set.all()):
-                value += f"> ➕ {emoji_numbers[i]} {format_datetime(x.begin)}\n"
+            for i, x in enumerate(self.match.suggestion_set.all(), start=1):
+                value += f"> ➕ {self._get_number_as_emojis(i)} {format_datetime(x.begin)}\n"
 
         self.embed.add_field(name=name, value=value, inline=False)
 
@@ -66,7 +68,8 @@ class MatchOverview(MatchMessage):
         value = ""
         multi = ScoutingWebsite.objects.get_multi_websites()
 
-        names = list(self.match.enemy_team.player_set.get_active_players().values_list("summoner_name", flat=True))
+        names = list(
+            self.match.get_enemy_team().player_set.get_active_players().values_list("summoner_name", flat=True))
         for i in multi:
             value += (
                 f"> {EMJOI_MAGN_GLASS} [{i.name}]({i.generate_url(names)})\n"
@@ -75,17 +78,45 @@ class MatchOverview(MatchMessage):
 
     def _add_enemy_players(self):
         name = _("Opposing players (leagueofgraphs.com)")
-        value = ""
         single = ScoutingWebsite.objects.filter(multi=False).first()
         if not single:
             return
 
-        names = list(self.match.enemy_team.player_set.get_active_players().values_list("summoner_name", flat=True))
-        for i, player in enumerate(names):
-            value += (
-                f"> {emoji_numbers[i]} {EMJOI_MAGN_GLASS} [{player}]({single.generate_url(player)})\n"
+        names = list(
+            self.match.get_enemy_team().player_set.get_active_players().order_by(
+                "summoner_name").values_list("summoner_name", flat=True))
+
+        if len(names) < 9:
+            self.embed.add_field(
+                name=name,
+                value=self.__get_players_embed_value(names, single),
+                inline=False
             )
-        self.embed.add_field(name=name, value=value, inline=False)
+            return
+
+        split_at = (len(names) // 2) + 1
+        names_first_part = names[:split_at]
+        names_second_part = names[split_at:]
+
+        self.embed.add_field(
+            name=name,
+            value=self.__get_players_embed_value(names_first_part, single),
+            inline=True
+        )
+        self.embed.add_field(
+            name=name,
+            value=self.__get_players_embed_value(names_second_part, single, start_at=split_at + 1),
+            inline=True
+        )
+
+    def __get_players_embed_value(self, names: List[str], scouting_website: ScoutingWebsite, start_at: int = 1) -> str:
+        value = ""
+        for player in names:
+            number = self._get_number_as_emojis(start_at)
+            add_string = f"> {number} {EMJOI_MAGN_GLASS} [{player}]({scouting_website.generate_url(player)})\n"
+            value += add_string
+            start_at += 1
+        return value
 
     def _add_results(self):
         name = _("Match result")
@@ -100,11 +131,11 @@ class MatchOverview(MatchMessage):
         if self.match.team_lineup_available:
             if not result:
                 value += "✅ " + _("Own lineup submitted:") + "\n"
-            for i, x in enumerate(self.match.team_lineup.all()):
-                value += f" > {emoji_numbers[i]} {x.summoner_name}\n"
+            for i, x in enumerate(self.match.team_lineup.all(), start=1):
+                value += f" > {self._get_number_as_emojis(i)} {x.summoner_name}\n"
         else:
             value += f"⚠ " + _("No lineup has been submitted yet.") + "\n"
-        self.embed.add_field(name=name, value=value)
+        self.embed.add_field(name=name, value=value, inline=False)
 
     def _add_enemy_lineup(self, result=False):
         name = _("Lineup of opponent")
@@ -119,11 +150,11 @@ class MatchOverview(MatchMessage):
                         f"{i.generate_url(list(names.values_list('summoner_name', flat=True)))})\n"
                     )
 
-            for i, x in enumerate(names):
-                value += f"> {emoji_numbers[i]} {x.summoner_name}\n"
+            for i, x in enumerate(names, start=1):
+                value += f"> {self._get_number_as_emojis(i)} {x.summoner_name}\n"
         else:
             value += _("No lineup has been submitted yet.") + "\n"
-        self.embed.add_field(name=name, value=value)
+        self.embed.add_field(name=name, value=value, inline=False)
 
     def _add_disclaimer(self):
         name = _("Disclaimer")
@@ -157,16 +188,18 @@ class MatchOverview(MatchMessage):
 
         if self.match.closed:
             self._add_results()
-            self._add_team_lineup(result=True)
-            self._add_enemy_lineup(result=True)
+            if self.match.enemy_team is not None:
+                self._add_team_lineup(result=True)
+                self._add_enemy_lineup(result=True)
         else:
             self._add_schedule()
-            self._add_enemy_team()
-            self._add_enemy_players()
-            self._add_team_lineup()
-            self._add_enemy_lineup()
+            if self.match.enemy_team is not None:
+                self._add_enemy_team()
+                self._add_enemy_players()
+                self._add_team_lineup()
+                self._add_enemy_lineup()
             self._add_general_information()
         self.embed.set_footer(
-            text=_("Different scouting website? Use `!settings` to change it."))
+            text=_("Different scouting website? Use /settings to change it."))
 
         return self.embed

@@ -90,7 +90,7 @@ def create_match_and_enemy_team(team, match_id, ):
 
     # Create Enemy Team
     if tmd.enemy_team_id is not None:
-        processor = TeamDataProcessor(team_id=tmd.enemy_team_id)
+        processor = TeamDataProcessor(team_id=tmd.enemy_team_id) # TODO duplicate code
         enemy_team, created = Team.objects.update_or_create(id=tmd.enemy_team_id, defaults={
             "name": processor.get_team_name(),
             "team_tag": processor.get_team_tag(),
@@ -99,7 +99,8 @@ def create_match_and_enemy_team(team, match_id, ):
         match.enemy_team = enemy_team
 
         # Create Enemy Players
-        _ = Player.objects.create_or_update_players(processor.get_members(), enemy_team)
+        Player.objects.remove_old_player_relations(processor.get_members(), team)
+        Player.objects.create_or_update_players(processor.get_members(), enemy_team)
 
     # Create Enemy Lineup
     # TODO: duplicate code, refactor to use match.update_enemy_lineup(md=tmd)

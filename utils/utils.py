@@ -1,11 +1,12 @@
 import hashlib
+import re
 from datetime import datetime, time
 from typing import Union
 
 import pytz
 from babel import dates as babel
 from django.conf import settings
-from django.utils import translation
+from django.utils import translation, timezone
 
 from utils.exceptions import CouldNotParseURLException, Div1orDiv2TeamException
 
@@ -34,9 +35,12 @@ def timestamp_to_datetime(x):
 
 
 def current_match_day():
-    start_date = datetime(2022, 6, 6).astimezone(pytz.timezone("Europe/Berlin"))
-    current_date = datetime.now().astimezone(pytz.timezone("Europe/Berlin"))
-    match_day = ((current_date - start_date) / 7).days + 1
+    current_date = timezone.now().astimezone(pytz.timezone("Europe/Berlin"))
+    return count_weeks(settings.CURRENT_SPLIT_START, current_date)
+
+
+def count_weeks(split_start: datetime, another: datetime):
+    match_day = ((another - split_start) / 7).days + 1
     return match_day
 
 
@@ -50,18 +54,28 @@ def get_valid_team_id(value: Union[str, int]) -> int:
     Returns: int: Team ID
     Raises: CouldNotParseURLException, Div1orDiv2TeamException
     """
-    if value is None:
-        raise CouldNotParseURLException()
-    try:
-        team_id = int(value)
-    except ValueError:
+    if is_url(value=value):
         if "/leagues/" not in value:
             raise Div1orDiv2TeamException()
         try:
-            team_id = int(value.split("/teams/")[-1].split("-")[0])
+            return int(value.split("/teams/")[-1].split("-")[0])
         except Exception:
             raise CouldNotParseURLException()
-    return team_id
+    try:
+        return int(value)
+    except ValueError:
+        raise CouldNotParseURLException()
+
+
+def is_url(value):
+    regex = re.compile(
+        r'^(?:http|ftp)s?://'  # http:// or https://
+        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'  # domain...
+        r'localhost|'  # localhost...
+        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
+        r'(?::\d+)?'  # optional port
+        r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+    return re.match(regex, value) is not None
 
 
 class Encoder:

@@ -1,12 +1,50 @@
-## PrimeBot Backend
+<p align="center">
+  <a href="https://www.primebot.me/">
+    <picture>
+      <img width="200px" alt="PrimeBot Logo" src="./documents/primebot_logo.jpg">
+    </picture>    
+  </a>
+</p>
+<p align="center">
+  <img src="https://img.shields.io/github/v/release/random-rip/primebot_backend?label=Latest%20release" alt="idk"/>
+  <a href="https://www.primebot.me">
+    <img src="https://img.shields.io/website?down_message=offline&label=primebot.me&up_message=online&url=https%3A%2F%2Fwww.primebot.me" alt="npm"/>
+  </a>
+  <a href="https://discord.gg/K8bYxJMDzu">
+    <img src="https://img.shields.io/discord/945020028238053456?label=Discord" alt="npm"/>
+  </a>
 
-The unofficial [Strauss Prime League](https://www.primeleague.gg/) Bot for sending push notifications via Discord and
+</p>
+<h4 align="center">
+The unofficial <i>Strauss Prime League</i> Bot for sending push notifications via Discord and
 Telegram.
+</h4>
 
-**The bot is not intended to be self-hosted! The server IP of the PrimeBot has been exclusively whitelisted by the Prime
-League.**
+<p align="center">
+The bot is not intended to be self-hosted! The server IP of the PrimeBot has been exclusively whitelisted by the Prime
+League.
+</p>
 
-## Development
+## Partners
+
+<p align="center">
+  <a href="https://www.singular-it.de/">
+    <picture>
+      <source media="(prefers-color-scheme: dark)"  srcset="./documents/singular_it_dark.png">
+      <source media="(prefers-color-scheme: light)" srcset="./documents/singular_it_light.png">
+      <img width="500px" alt="singularIT Logo" src="./documents/singular_it_light.png">
+    </picture>    
+  </a>
+</p>
+<p align="center">
+  <a href="https://www.singular-it.de/">Website</a> |
+  <a href="https://blog.singular-it.de/">Blog</a> |
+  <a href="https://www.singular-it.de/team">Team</a>
+</p>
+
+<h4 align="center">Ihre Spezialist:innen für Data Analytics, webbasierte Systeme und Mobile App-Entwicklungen.</h4>
+
+# Development
 
 ### Techstack
 
@@ -82,8 +120,8 @@ For further information have a look at **Contributing** section at the end of th
 
 - `python manage.py discord_bot` - start Discordbot
 - `python manage.py telegram_bot` - start Telegrambot
-- `python manage.py update_teams` - start team updates
-- `python manage.py update_matches` - start match updates
+- `python manage.py update_teams` - synchronize teams 
+- `python manage.py update_matches` - synchronize matches
 - `python manage.py weekly_notifications` - start weekly notifications
 - `python manage.py runscript feedback` - start feedback
 - `python manage.py runscript season_messages` - start season notification
@@ -117,7 +155,7 @@ After that ``python manage.py test`` can be executed.
 ### Alternative to Prime League API
 
 We have been working on a solution to reduce API requests in development from the very beginning. For this reason each
-response of an API request is stored locally in a JSON file. Due to IP whitelisting it is not possible to possible that
+response of an API request is stored locally in a JSON file. Due to IP whitelisting it is not possible that
 the API can be accessed for development. Under ``storage/`` there are sample teams and matches. To use them, in
 the `.env` you have to add
 
@@ -133,9 +171,9 @@ the ``storage`` **completely** (a team will still be registered incomplete).
 
 Teams that can be fully registered from storage:
 
-- ``!start 183281`` [DEMACIA FOR WIN (BTZ) Swiss Starter](https://www.primeleague.gg/leagues/teams/183281-demacia-for-win)
-- ``!start 114250`` [eWolves Div 4.7](https://www.primeleague.gg/leagues/teams/114250)
-- ``!start 90935`` [404-multigaming Div 4.7](https://www.primeleague.gg/leagues/teams/90935)
+- ``/start 183281`` [DEMACIA FOR WIN (BTZ) Swiss Starter](https://www.primeleague.gg/leagues/teams/183281-demacia-for-win)
+- ``/start 114250`` [eWolves Div 4.7](https://www.primeleague.gg/leagues/teams/114250)
+- ``/start 90935`` [404-multigaming Div 4.7](https://www.primeleague.gg/leagues/teams/90935)
 
 ## Contributing
 
@@ -147,3 +185,17 @@ If you create a pull request, make sure that
 
 - you create one from branch ``develop`` and
 - ``python manage.py test`` does not fail.
+
+### Help
+
+Join us on Discord if you have questions. :)
+
+<a href="https://discord.gg/K8bYxJMDzu">
+<img src="https://img.shields.io/discord/945020028238053456?label=Discord" alt="npm"/>
+</a>
+
+## License
+
+[![license](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/random-rip/primebot_backend/blob/master/LICENSE)
+
+This project is licensed under the terms of the [MIT license](/LICENSE).

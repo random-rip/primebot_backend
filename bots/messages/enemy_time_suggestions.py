@@ -1,7 +1,7 @@
 from django.utils.translation import gettext, ngettext
 
 from app_prime_league.models import Team, Match
-from bots.messages.base import MatchMessage, emoji_numbers
+from bots.messages.base import MatchMessage
 from utils.utils import format_datetime
 
 
@@ -35,4 +35,4 @@ class EnemyNewTimeSuggestionsNotificationMessage(MatchMessage):
         )
 
         return prefix + "\n" + '\n'.join(
-            [f"{emoji_numbers[i]}{format_datetime(x)}" for i, x in enumerate(details)])
+            [f"{self._get_number_as_emojis(i)}{format_datetime(x)}" for i, x in enumerate(details, start=1)])
