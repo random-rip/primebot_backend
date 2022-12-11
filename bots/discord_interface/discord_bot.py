@@ -36,6 +36,9 @@ class DiscordBot(BotInterface):
 
     @staticmethod
     def send_message(*, msg: BaseMessage, team):
+        """
+        This method is designed to be used of the q cluster. It is not used for user interaction.
+        """
         webhook = SyncWebhook.partial(
             id=team.discord_webhook_id,
             token=team.discord_webhook_token,
@@ -46,7 +49,8 @@ class DiscordBot(BotInterface):
             team.set_discord_null()
             notifications_logger.info(f"Could not send message to {team}: {e}. Soft deleted'")
         except Exception as e:
-            notifications_logger.exception(f"Could not send message to {team}: '{msg}. -> {e}'")
+            notifications_logger.exception(f"Could not send message to {team}: '{msg}. Error: {e}'")
+            raise
 
 
 class _DiscordBotV2(Bot):

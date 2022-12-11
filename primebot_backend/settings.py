@@ -222,22 +222,24 @@ LOCALE_PATHS = [
 
 Q_CLUSTER = {
     # 'name': 'primebot',
-    'timeout': 20,  # maximum seconds for a task
-    'retry': 60,  # Failed task will be queued after 25 seconds
-    'max_attempts': 3,  # Maximum retry attempts for failed tasks
+    'timeout': 10,  # maximum seconds for a task
+    'retry': 30,  # Failed task will be queued after 30 seconds
+    'max_attempts': 5,  # Maximum retry attempts for failed tasks
     'save_limit': 0,  # Limits the amount of successful tasks save to Django
     "ack_failures": False,
-    "sync":True,
-    'redis': {
-        'host': env.str("REDIS_HOST", None),
-        'port': env.str("REDIS_PORT", None),
-        'password': env.str("REDIS_PASSWORD", None),
-        'db': 0,
-        'socket_timeout': None,
-        'charset': "utf-8",
-        'errors': "strict",
-    } if DEBUG else {
-        'unix_socket_path': "unix:/var/run/memcached/memcached.sock",
+    "sync": False,
+    'mongo': {
+        'host': env.str("MONGODB_URI", None)
+    },
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.ScopedRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'teams': '1000/day',
+        'matches': '1000/day',
     }
 }
 
@@ -318,16 +320,6 @@ if not DEBUG:
                 'handlers': ['discord'],
                 'level': "DEBUG",
                 'propagate': False,
-            }
+            },
         }
     }
-
-REST_FRAMEWORK = {
-    'DEFAULT_THROTTLE_CLASSES': [
-        'rest_framework.throttling.ScopedRateThrottle',
-    ],
-    'DEFAULT_THROTTLE_RATES': {
-        'teams': '250/day',
-        'matches': '250/day',
-    }
-}

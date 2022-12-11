@@ -82,8 +82,9 @@ class TelegramBot(BotInterface):
             team.set_telegram_null()
             notifications_logger.info(f"Soft deleted Telegram {team}'")
             return
-        except Exception:
-            return
+        except Exception as e:
+            notifications_logger.info(f"Could not send message to {team}: '{msg}. Error: {e}'")
+            raise
 
 
 def error(update, context):
