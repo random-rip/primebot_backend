@@ -6,7 +6,9 @@ from .dispatcher import MessageDispatcherJob
 
 
 class MessageCollector:
-
+    """
+    This class is used to fire *message_sends* to different platforms.
+    """
     def __init__(self, team: Team):
         self.team = team
         self.bots = []
@@ -19,6 +21,15 @@ class MessageCollector:
             self.bots.append(DiscordBot)
 
     def dispatch(self, msg_class, **kwargs):
+        """
+        This method fires *message_sends* to all registered platforms via the `MessageDispatcherJob`.
+        Args:
+            msg_class:
+            **kwargs:
+
+        Returns:
+
+        """
         assert issubclass(msg_class, BaseMessage)
         msg = msg_class(team=self.team, **kwargs)
         if not msg.team_wants_notification():

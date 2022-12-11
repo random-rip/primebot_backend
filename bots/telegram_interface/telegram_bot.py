@@ -76,6 +76,11 @@ class TelegramBot(BotInterface):
 
     @staticmethod
     def send_message(*, msg: BaseMessage, team):
+        """
+        This method is designed to send non-interactive messages. This is usually triggered by prime league updates.
+        To send a message from a user triggered action (f.e. a reply message), use context based messages
+        directly. This is different for each of the communication platforms.
+        """
         try:
             send_message(msg=msg.generate_message(), chat_id=team.telegram_id, raise_again=True)
         except (BotWasKickedError, BotWasBlockedError) as e:
