@@ -229,7 +229,8 @@ Q_CLUSTER = {
     "ack_failures": False,
     "sync": False,
     'mongo': {
-        'host': env.str("MONGODB_URI", None)
+        'host': env.str("MONGODB_URI", None),
+        "serverSelectionTimeoutMS": 5_000,
     },
 }
 
