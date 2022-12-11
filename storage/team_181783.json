@@ -1,1 +1,110 @@
-{"team":{"team_id":181783,"team_name":"Ajax DauerStramm","team_short":"ADS","team_prefix":"","team_logo_img":"jpg","team_logo_img_time":1653757857,"flag_id":1,"flag_short":"de","flag_title_en":"Germany","flag_title_de":"Deutschland","_title":"Deutschland","flag_title":"Deutschland","team_logo_img_url":"https:\/\/cdn0.gamesports.net\/league_team_logos\/181000\/181783.jpg?1653757857","_url":"https:\/\/www.primeleague.gg\/leagues\/teams\/181783-ajax-dauerstramm"},"members":[{"user_id":1311655,"user_name":"M1nus","account_value":"oSenpaii","tu_id":1232083,"tu_status":30,"tu_time_joined":1646862713},{"user_id":1996323,"user_name":"maximalbetrunkenercrazy","account_value":"OneAndOnlyCrazy","tu_id":1232411,"tu_status":20,"tu_time_joined":1647021237},{"user_id":1995787,"user_name":"TheCrimsonFvcker","account_value":"TheCrimsonFvcker","tu_id":1232403,"tu_status":20,"tu_time_joined":1647020815},{"user_id":1995759,"user_name":"xb4sti","account_value":"dontgiv\u00e9mekata","tu_id":1232091,"tu_status":20,"tu_time_joined":1646863772},{"user_id":1995755,"user_name":"Toaster0815","account_value":"Toaster0815","tu_id":1232087,"tu_status":20,"tu_time_joined":1646863297},{"user_id":2034214,"user_name":"Fornex","account_value":"F0rnex","tu_id":1271982,"tu_status":10,"tu_time_joined":1655038642},{"user_id":2034218,"user_name":"UnlimitedBurst887","account_value":"UnlimitedBurst","tu_id":1271974,"tu_status":10,"tu_time_joined":1655038441},{"user_id":2028869,"user_name":"Kaydaron","account_value":"KaydaronPhoenix","tu_id":1265989,"tu_status":10,"tu_time_joined":1653829528},{"user_id":2027929,"user_name":"dwnde","account_value":"dwndE","tu_id":1264421,"tu_status":10,"tu_time_joined":1653737886}],"stages":[],"matches":[929589,930445,931545,932509,933065,933613,934581,935341,945113,945125,945141,945153,945181,945193,945201]}
+{
+  "team": {
+    "team_id": 181783,
+    "team_name": "Ajax DauerStramm",
+    "team_short": "ADS",
+    "team_prefix": "",
+    "team_logo_img": "jpg",
+    "team_logo_img_time": 1653757857,
+    "flag_id": 1,
+    "flag_short": "de",
+    "flag_title_en": "Germany",
+    "flag_title_de": "Deutschland",
+    "_title": "Deutschland",
+    "flag_title": "Deutschland",
+    "team_logo_img_url": "https:\/\/cdn0.gamesports.net\/league_team_logos\/181000\/181783.jpg?1653757857",
+    "_url": "https:\/\/www.primeleague.gg\/leagues\/teams\/181783-ajax-dauerstramm"
+  },
+  "members": [
+    {
+      "user_id": 1311655,
+      "user_name": "M1nus",
+      "account_value": "oSenpaii",
+      "tu_id": 1232083,
+      "tu_status": 30,
+      "tu_time_joined": 1646862713
+    },
+    {
+      "user_id": 1996323,
+      "user_name": "maximalbetrunkenercrazy",
+      "account_value": "OneAndOnlyCrazy",
+      "tu_id": 1232411,
+      "tu_status": 20,
+      "tu_time_joined": 1647021237
+    },
+    {
+      "user_id": 1995787,
+      "user_name": "TheCrimsonFvcker",
+      "account_value": "TheCrimsonFvcker",
+      "tu_id": 1232403,
+      "tu_status": 20,
+      "tu_time_joined": 1647020815
+    },
+    {
+      "user_id": 1995759,
+      "user_name": "xb4sti",
+      "account_value": "dontgiv\u00e9mekata",
+      "tu_id": 1232091,
+      "tu_status": 20,
+      "tu_time_joined": 1646863772
+    },
+    {
+      "user_id": 1995755,
+      "user_name": "Toaster0815",
+      "account_value": "Toaster0815",
+      "tu_id": 1232087,
+      "tu_status": 20,
+      "tu_time_joined": 1646863297
+    },
+    {
+      "user_id": 2034214,
+      "user_name": "Fornex",
+      "account_value": "F0rnex",
+      "tu_id": 1271982,
+      "tu_status": 10,
+      "tu_time_joined": 1655038642
+    },
+    {
+      "user_id": 2034218,
+      "user_name": "UnlimitedBurst887",
+      "account_value": "UnlimitedBurst",
+      "tu_id": 1271974,
+      "tu_status": 10,
+      "tu_time_joined": 1655038441
+    },
+    {
+      "user_id": 2028869,
+      "user_name": "Kaydaron",
+      "account_value": "KaydaronPhoenix",
+      "tu_id": 1265989,
+      "tu_status": 10,
+      "tu_time_joined": 1653829528
+    },
+    {
+      "user_id": 2027929,
+      "user_name": "dwnde",
+      "account_value": "dwndE",
+      "tu_id": 1264421,
+      "tu_status": 10,
+      "tu_time_joined": 1653737886
+    }
+  ],
+  "stages": [],
+  "matches": [
+    929589,
+    930445,
+    931545,
+    932509,
+    933065,
+    933613,
+    934581,
+    935341,
+    945113,
+    945125,
+    945141,
+    945153,
+    945181,
+    945193,
+    945201
+  ]
+}

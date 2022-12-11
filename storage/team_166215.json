@@ -1,1 +1,61 @@
-{"team":{"team_id":166215,"team_name":"Mecha Trident","team_short":"MET","team_prefix":"","team_logo_img":"jpg","team_logo_img_time":1649599543,"flag_id":1,"flag_short":"de","flag_title_en":"Germany","flag_title_de":"Deutschland","_title":"Deutschland","flag_title":"Deutschland","team_logo_img_url":"https:\/\/cdn0.gamesports.net\/league_team_logos\/166000\/166215.jpg?1649599543","_url":"https:\/\/www.primeleague.gg\/leagues\/teams\/166215-mecha-trident"},"members":[{"user_id":1570034,"user_name":"DeadUtility","account_value":"MET DeadUtility","tu_id":1117251,"tu_status":30,"tu_time_joined":1631817774},{"user_id":1597345,"user_name":"Fennix123","account_value":"MET Fennix","tu_id":1117259,"tu_status":20,"tu_time_joined":1631817818},{"user_id":929575,"user_name":"Genu","account_value":"MET Genu","tu_id":1231679,"tu_status":10,"tu_time_joined":1646749174}],"stages":[],"matches":[929861,931021,931457,932485,933261,933873,934473,935329,945637,945653,945681,945685,945705,945713]}
+{
+  "team": {
+    "team_id": 166215,
+    "team_name": "Mecha Trident",
+    "team_short": "MET",
+    "team_prefix": "",
+    "team_logo_img": "jpg",
+    "team_logo_img_time": 1649599543,
+    "flag_id": 1,
+    "flag_short": "de",
+    "flag_title_en": "Germany",
+    "flag_title_de": "Deutschland",
+    "_title": "Deutschland",
+    "flag_title": "Deutschland",
+    "team_logo_img_url": "https:\/\/cdn0.gamesports.net\/league_team_logos\/166000\/166215.jpg?1649599543",
+    "_url": "https:\/\/www.primeleague.gg\/leagues\/teams\/166215-mecha-trident"
+  },
+  "members": [
+    {
+      "user_id": 1570034,
+      "user_name": "DeadUtility",
+      "account_value": "MET DeadUtility",
+      "tu_id": 1117251,
+      "tu_status": 30,
+      "tu_time_joined": 1631817774
+    },
+    {
+      "user_id": 1597345,
+      "user_name": "Fennix123",
+      "account_value": "MET Fennix",
+      "tu_id": 1117259,
+      "tu_status": 20,
+      "tu_time_joined": 1631817818
+    },
+    {
+      "user_id": 929575,
+      "user_name": "Genu",
+      "account_value": "MET Genu",
+      "tu_id": 1231679,
+      "tu_status": 10,
+      "tu_time_joined": 1646749174
+    }
+  ],
+  "stages": [],
+  "matches": [
+    929861,
+    931021,
+    931457,
+    932485,
+    933261,
+    933873,
+    934473,
+    935329,
+    945637,
+    945653,
+    945681,
+    945685,
+    945705,
+    945713
+  ]
+}

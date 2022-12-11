@@ -1,1 +1,86 @@
-{"team":{"team_id":101925,"team_name":"1. Esport Club Frankfurt e.V.","team_short":"1.ECF","team_prefix":"","team_logo_img":"jpg","team_logo_img_time":1643800841,"flag_id":1,"flag_short":"de","flag_title_en":"Germany","flag_title_de":"Deutschland","_title":"Deutschland","flag_title":"Deutschland","team_logo_img_url":"https:\/\/cdn0.gamesports.net\/league_team_logos\/101000\/101925.jpg?1643800841","_url":"https:\/\/www.primeleague.gg\/leagues\/teams\/101925-1-esport-club-frankfurt-e-v"},"members":[{"user_id":1652282,"user_name":"OhToodles","account_value":"ECF OhToodles","tu_id":1247405,"tu_status":30,"tu_time_joined":1650998408},{"user_id":1390910,"user_name":"Corona Mortis","account_value":"ECF CoronaMortis","tu_id":1220503,"tu_status":20,"tu_time_joined":1643800466},{"user_id":1405532,"user_name":"Parsi","account_value":"ECF Parsi","tu_id":1129026,"tu_status":20,"tu_time_joined":1633276121},{"user_id":2032418,"user_name":"Sayanami","account_value":"Wasted13900IP","tu_id":1270374,"tu_status":10,"tu_time_joined":1654542956},{"user_id":1666566,"user_name":"Jukebox 1o1","account_value":"ECF Jukebox 1o1","tu_id":1263445,"tu_status":10,"tu_time_joined":1653682850},{"user_id":1490618,"user_name":"Lilium1","account_value":"ECF Lilium","tu_id":1263001,"tu_status":10,"tu_time_joined":1653670567},{"user_id":800627,"user_name":"Spirest","account_value":"ECF Spirest","tu_id":1261445,"tu_status":10,"tu_time_joined":1653564947}],"stages":[],"matches":[936425,936445,936465,936485,936489,936509,936529]}
+{
+  "team": {
+    "team_id": 101925,
+    "team_name": "1. Esport Club Frankfurt e.V.",
+    "team_short": "1.ECF",
+    "team_prefix": "",
+    "team_logo_img": "jpg",
+    "team_logo_img_time": 1643800841,
+    "flag_id": 1,
+    "flag_short": "de",
+    "flag_title_en": "Germany",
+    "flag_title_de": "Deutschland",
+    "_title": "Deutschland",
+    "flag_title": "Deutschland",
+    "team_logo_img_url": "https:\/\/cdn0.gamesports.net\/league_team_logos\/101000\/101925.jpg?1643800841",
+    "_url": "https:\/\/www.primeleague.gg\/leagues\/teams\/101925-1-esport-club-frankfurt-e-v"
+  },
+  "members": [
+    {
+      "user_id": 1652282,
+      "user_name": "OhToodles",
+      "account_value": "ECF OhToodles",
+      "tu_id": 1247405,
+      "tu_status": 30,
+      "tu_time_joined": 1650998408
+    },
+    {
+      "user_id": 1390910,
+      "user_name": "Corona Mortis",
+      "account_value": "ECF CoronaMortis",
+      "tu_id": 1220503,
+      "tu_status": 20,
+      "tu_time_joined": 1643800466
+    },
+    {
+      "user_id": 1405532,
+      "user_name": "Parsi",
+      "account_value": "ECF Parsi",
+      "tu_id": 1129026,
+      "tu_status": 20,
+      "tu_time_joined": 1633276121
+    },
+    {
+      "user_id": 2032418,
+      "user_name": "Sayanami",
+      "account_value": "Wasted13900IP",
+      "tu_id": 1270374,
+      "tu_status": 10,
+      "tu_time_joined": 1654542956
+    },
+    {
+      "user_id": 1666566,
+      "user_name": "Jukebox 1o1",
+      "account_value": "ECF Jukebox 1o1",
+      "tu_id": 1263445,
+      "tu_status": 10,
+      "tu_time_joined": 1653682850
+    },
+    {
+      "user_id": 1490618,
+      "user_name": "Lilium1",
+      "account_value": "ECF Lilium",
+      "tu_id": 1263001,
+      "tu_status": 10,
+      "tu_time_joined": 1653670567
+    },
+    {
+      "user_id": 800627,
+      "user_name": "Spirest",
+      "account_value": "ECF Spirest",
+      "tu_id": 1261445,
+      "tu_status": 10,
+      "tu_time_joined": 1653564947
+    }
+  ],
+  "stages": [],
+  "matches": [
+    936425,
+    936445,
+    936465,
+    936485,
+    936489,
+    936509,
+    936529
+  ]
+}

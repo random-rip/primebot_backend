@@ -1,1 +1,86 @@
-{"team":{"team_id":90392,"team_name":"AS eSports","team_short":"AS","team_prefix":"","team_logo_img":"jpg","team_logo_img_time":1641571496,"flag_id":1,"flag_short":"de","flag_title_en":"Germany","flag_title_de":"Deutschland","_title":"Deutschland","flag_title":"Deutschland","team_logo_img_url":"https:\/\/cdn0.gamesports.net\/league_team_logos\/90000\/90392.jpg?1641571496","_url":"https:\/\/www.primeleague.gg\/leagues\/teams\/90392-as-esports"},"members":[{"user_id":1388057,"user_name":"AS Beat","account_value":"AS Beat","tu_id":562241,"tu_status":30,"tu_time_joined":1536578352},{"user_id":1882476,"user_name":"AS Yossy","account_value":"AS William","tu_id":1117867,"tu_status":20,"tu_time_joined":1631871701},{"user_id":1869267,"user_name":"Stonehoof","account_value":"Stonehoof","tu_id":1088915,"tu_status":20,"tu_time_joined":1627848450},{"user_id":1507742,"user_name":"Undaq","account_value":"AS Undaq","tu_id":1252941,"tu_status":10,"tu_time_joined":1652377172},{"user_id":1706400,"user_name":"Norik2","account_value":"AS Vertigo","tu_id":1145208,"tu_status":10,"tu_time_joined":1639067170},{"user_id":1514630,"user_name":"LordSteve","account_value":"AS LordSteve","tu_id":1144686,"tu_status":10,"tu_time_joined":1638895010},{"user_id":1701916,"user_name":"impact adc role","account_value":"AS Namaste","tu_id":1036058,"tu_status":10,"tu_time_joined":1622133205}],"stages":[],"matches":[936433,936441,936465,936477,936493,936505,936533]}
+{
+  "team": {
+    "team_id": 90392,
+    "team_name": "AS eSports",
+    "team_short": "AS",
+    "team_prefix": "",
+    "team_logo_img": "jpg",
+    "team_logo_img_time": 1641571496,
+    "flag_id": 1,
+    "flag_short": "de",
+    "flag_title_en": "Germany",
+    "flag_title_de": "Deutschland",
+    "_title": "Deutschland",
+    "flag_title": "Deutschland",
+    "team_logo_img_url": "https:\/\/cdn0.gamesports.net\/league_team_logos\/90000\/90392.jpg?1641571496",
+    "_url": "https:\/\/www.primeleague.gg\/leagues\/teams\/90392-as-esports"
+  },
+  "members": [
+    {
+      "user_id": 1388057,
+      "user_name": "AS Beat",
+      "account_value": "AS Beat",
+      "tu_id": 562241,
+      "tu_status": 30,
+      "tu_time_joined": 1536578352
+    },
+    {
+      "user_id": 1882476,
+      "user_name": "AS Yossy",
+      "account_value": "AS William",
+      "tu_id": 1117867,
+      "tu_status": 20,
+      "tu_time_joined": 1631871701
+    },
+    {
+      "user_id": 1869267,
+      "user_name": "Stonehoof",
+      "account_value": "Stonehoof",
+      "tu_id": 1088915,
+      "tu_status": 20,
+      "tu_time_joined": 1627848450
+    },
+    {
+      "user_id": 1507742,
+      "user_name": "Undaq",
+      "account_value": "AS Undaq",
+      "tu_id": 1252941,
+      "tu_status": 10,
+      "tu_time_joined": 1652377172
+    },
+    {
+      "user_id": 1706400,
+      "user_name": "Norik2",
+      "account_value": "AS Vertigo",
+      "tu_id": 1145208,
+      "tu_status": 10,
+      "tu_time_joined": 1639067170
+    },
+    {
+      "user_id": 1514630,
+      "user_name": "LordSteve",
+      "account_value": "AS LordSteve",
+      "tu_id": 1144686,
+      "tu_status": 10,
+      "tu_time_joined": 1638895010
+    },
+    {
+      "user_id": 1701916,
+      "user_name": "impact adc role",
+      "account_value": "AS Namaste",
+      "tu_id": 1036058,
+      "tu_status": 10,
+      "tu_time_joined": 1622133205
+    }
+  ],
+  "stages": [],
+  "matches": [
+    936433,
+    936441,
+    936465,
+    936477,
+    936493,
+    936505,
+    936533
+  ]
+}
