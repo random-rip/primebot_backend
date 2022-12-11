@@ -221,13 +221,12 @@ LOCALE_PATHS = [
 ]
 
 Q_CLUSTER = {
-    # 'name': 'primebot',
     'timeout': 10,  # maximum seconds for a task
     'retry': 30,  # Failed task will be queued after 30 seconds
     'max_attempts': 5,  # Maximum retry attempts for failed tasks
     'save_limit': 0,  # Limits the amount of successful tasks save to Django
     "ack_failures": False,
-    "sync": False,
+    "sync": DEBUG,
     'mongo': {
         'host': env.str("MONGODB_URI", None),
         "serverSelectionTimeoutMS": 5_000,

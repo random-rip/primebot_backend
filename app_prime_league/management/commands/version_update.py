@@ -2,7 +2,7 @@ from django.core.management import BaseCommand
 
 from app_api.modules.status.views import GitHub
 from app_prime_league.models import Team
-from bots.message_dispatcher import MessageDispatcher
+from bots.message_dispatcher import MessageCollector
 from bots.messages import NotificationToTeamMessage
 
 message = """
@@ -27,8 +27,8 @@ class Command(BaseCommand):
         for team in teams:
             try:
                 print(team)
-                dispatcher = MessageDispatcher(team)
-                dispatcher.dispatch_raw_message(
+                dispatcher = MessageCollector(team)
+                dispatcher.dispatch(
                     msg=NotificationToTeamMessage(
                         team=team,
                         custom_message=message,
