@@ -42,6 +42,7 @@ class TelegramMatchTestCase(TestCase):
             enemy_team=self.enemy_team,
             match_day=2,
             has_side_choice=False,
+            match_type=Match.MATCH_TYPE_LEAGUE,
         )
 
     def update_factory(self, message: Message) -> Update:
@@ -92,6 +93,8 @@ class TelegramMatchTestCase(TestCase):
         self.simulate_call_match("/match 2")
         response_text = self.bot.response_text
 
+        print(Match.objects.count())
+
         expected = (
             "*Disclaimer*\n"
             "Dieser Befehl befindet sich noch in der Beta! Wir sammeln dazu noch Feedback.\n"
@@ -116,5 +119,7 @@ class TelegramMatchTestCase(TestCase):
             "> Ihr habt im *zweiqten* Match Seitenwahl.\n"
             "> The rulebook is available [here.](https://www.primeleague.gg/statics/rules_general)\n"
         )
+
+        print(response_text)
 
         self.assertEqual(expected, response_text)
