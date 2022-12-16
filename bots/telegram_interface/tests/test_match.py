@@ -60,10 +60,7 @@ class TelegramMatchTestCase(TestCase):
         self.simulate_call_match("/match")
         response_text = self.bot.response_text
 
-        expected = (
-            "Anscheinend hast du vergessen, mir einen Spieltag mitzuteilen.\n"
-            "Probiere es nochmals mit '/match <Tag>', also zum Beispiel '/match 1'"
-        )
+        expected = "Invalider Spieltag. Versuche es mit `/match 1`."
 
         self.assertEqual(expected, response_text)
 
@@ -71,10 +68,15 @@ class TelegramMatchTestCase(TestCase):
         self.simulate_call_match("/match zwei")
         response_text = self.bot.response_text
 
-        expected = (
-            "Leider kann ich den von dir angegebenen Tag nicht verarbeiten.\n"
-            "Versuche es bitte nochmals mit einer richtigen Zahl, zum Beispiel '/match 1'"
-        )
+        expected = "Invalider Spieltag. Versuche es mit `/match 1`."
+
+        self.assertEqual(expected, response_text)
+
+    def test_invalid_match_day_format_spacing(self):
+        self.simulate_call_match("/match 2 2")
+        response_text = self.bot.response_text
+
+        expected = "Invalider Spieltag. Versuche es mit `/match 1`."
 
         self.assertEqual(expected, response_text)
 
