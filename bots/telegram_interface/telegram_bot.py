@@ -42,6 +42,7 @@ class TelegramBot(BotInterface):
             CommandHandler("help", single_commands.helpcommand),
             CommandHandler("bop", single_commands.bop),
             CommandHandler("setlogo", single_commands.set_logo),
+            CommandHandler("match", single_commands.match),
             CommandHandler("matches", single_commands.matches),
             CommandHandler("delete", single_commands.delete),
             CommandHandler("settings", single_commands.team_settings),

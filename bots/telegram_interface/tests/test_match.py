@@ -13,7 +13,7 @@ class DummyBot:
     response_text: str = ''
 
     def send_message(self, chat_id, *args, **kwargs):
-        self.response_text = args[0]
+        self.response_text = args[0] if args else kwargs.get("text", "")
 
         return None
 
@@ -27,7 +27,7 @@ class TelegramMatchTestCase(TestCase):
         self.chat = Chat(1, Chat.CHANNEL)
         self.bot = DummyBot()
 
-        self.team = Team.objects.create(name="Team")
+        self.team = Team.objects.create(name="Team", telegram_id=1)
         Player.objects.create(name="player_1", team=self.team)
         Player.objects.create(name="player_2", team=self.team)
         Player.objects.create(name="player_3", team=self.team)
