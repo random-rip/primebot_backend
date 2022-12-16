@@ -5,7 +5,7 @@ from django.conf import settings
 from django.utils.translation import gettext as _
 
 from app_prime_league.models import Team, Match, Champion, ScoutingWebsite
-from bots.messages.base import MatchMessage, MessageNotImplementedError
+from bots.messages.base import MatchMessage
 from utils.emojis import EMJOI_MAGN_GLASS
 from utils.utils import format_datetime
 
@@ -20,7 +20,25 @@ class MatchOverview(MatchMessage):
         self.embed = Embed(color=Colour.gold())
 
     def _generate_message(self):
-        raise MessageNotImplementedError()
+        self.generate_discord_embed()
+        result = ""
+
+        for field in self.embed.fields:
+            telegramized_field_value = self.telegramize_from_discord(field.value)
+
+            result += f"*{field.name}*\n"
+            result += f"{telegramized_field_value}\n"
+
+        return result
+    
+    def telegramize_from_discord(self, value: str) -> str:
+        result = value.replace("!]", "]")
+
+        if result[0] == '_' and result[-1] == '_':
+            result = result[1:-1]
+
+        result = result.replace("**", "*")
+        return result
 
     def _add_schedule(self, ):
         name = _("Date")

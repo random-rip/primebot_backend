@@ -1,4 +1,7 @@
+from datetime import datetime
+
 from django.test import TestCase
+from django.utils.timezone import make_aware
 from telegram import Chat, Message, Update
 
 from app_prime_league.models import Match, Team, Player
@@ -43,6 +46,7 @@ class TelegramMatchTestCase(TestCase):
             match_day=2,
             has_side_choice=False,
             match_type=Match.MATCH_TYPE_LEAGUE,
+            begin=make_aware(datetime(2022, 2, 2))
         )
 
     def update_factory(self, message: Message) -> Update:
@@ -93,33 +97,29 @@ class TelegramMatchTestCase(TestCase):
         self.simulate_call_match("/match 2")
         response_text = self.bot.response_text
 
-        print(Match.objects.count())
-
         expected = (
             "*Disclaimer*\n"
-            "Dieser Befehl befindet sich noch in der Beta! Wir sammeln dazu noch Feedback.\n"
-            "Welche Informationen fehlen euch noch?\n"
-            "[Schreibt es uns auf Discord](https://discord.gg/7NYgT2uFPm)\n"
-            "*⚔ Spieltag 2*\n"
-            "[gegen Enemy Team](https://www.primeleague.gg/de/leagues/matches/1)\n\n"
+            "This command is in beta! We still collect feedback for this.\n"
+            "What other information would you like to see?\n"
+            "[Write us on Discord](https://discord.gg/7NYgT2uFPm)\n"
+            "*⚔ Gameday 2*\n"
+            "[against Enemy Team](https://www.primeleague.gg/de/leagues/matches/1)\n\n"
 
-            "*Termin*\n"
-            "> 📆 Keine Terminvorschläge. Ausweichtermin: Dienstag, 13. Dezember 2022 23:09 Uhr\n\n"
+            "*Date*\n"
+            "> 📆 No dates proposed. Alternative date: Mittwoch, 2. Februar 2022 0:00 Uhr\n\n"
 
-            "*Gegnerteam*\n"
+            "*Opposing team*\n"
             "> 🔍 [op.gg](https://euw.op.gg/multisearch/euw?summoners=)\n\n"
 
-            "*Eure Aufstellung*\n"
-            "⚠ Es wurde noch kein Lineup aufgestellt.\n\n"
+            "*Your lineup*\n"
+            "⚠ No lineup has been submitted yet.\n\n"
 
-            "*Gegnerische Aufstellung*\n"
-            "Es wurde noch kein Lineup aufgestellt.\n\n"
+            "*Lineup of opponent*\n"
+            "No lineup has been submitted yet.\n\n"
 
-            "*Sonstige Informationen*\n"
-            "> Ihr habt im *zweiqten* Match Seitenwahl.\n"
-            "> The rulebook is available [here.](https://www.primeleague.gg/statics/rules_general)\n"
+            "*Other information*\n"
+            "> You have a choice of sides in the *second* game.\n"
+            "> The rulebook is available [here.](https://www.primeleague.gg/statics/rules_general)\n\n"
         )
-
-        print(response_text)
 
         self.assertEqual(expected, response_text)
