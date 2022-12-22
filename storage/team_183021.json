@@ -1,1 +1,93 @@
-{"team":{"team_id":183021,"team_name":"Made of Steel","team_short":"MOS","team_prefix":"","team_logo_img":"jpg","team_logo_img_time":1648990502,"flag_id":1,"flag_short":"de","flag_title_en":"Germany","flag_title_de":"Deutschland","_title":"Deutschland","flag_title":"Deutschland","team_logo_img_url":"https:\/\/cdn0.gamesports.net\/league_team_logos\/183000\/183021.jpg?1648990502","_url":"https:\/\/www.primeleague.gg\/leagues\/teams\/183021-made-of-steel"},"members":[{"user_id":1688760,"user_name":"Irones","account_value":"MOS IntTrain","tu_id":1238985,"tu_status":30,"tu_time_joined":1648990502},{"user_id":2027077,"user_name":"Stone Love","account_value":"Stone Love","tu_id":1262573,"tu_status":10,"tu_time_joined":1653650696},{"user_id":2026465,"user_name":"MOS Keislius","account_value":"Keislius","tu_id":1261381,"tu_status":10,"tu_time_joined":1653554878},{"user_id":1973407,"user_name":"Decyphr","account_value":"MOS Dcyphr","tu_id":1239073,"tu_status":10,"tu_time_joined":1648998589},{"user_id":1105641,"user_name":"Winterwish","account_value":"MOS Cold Aether","tu_id":1239065,"tu_status":10,"tu_time_joined":1648998348},{"user_id":1601473,"user_name":"xQzen","account_value":"xQzen","tu_id":1239061,"tu_status":10,"tu_time_joined":1648998345},{"user_id":1983683,"user_name":"EINS_Soulscar","account_value":"MOS Soulscar","tu_id":1239057,"tu_status":10,"tu_time_joined":1648998191}],"stages":[],"matches":[929525,930981,931273,932365,932917,933929,934449,935365,945813,945833,945841,945853,945869,945885]}
+{
+  "team": {
+    "team_id": 183021,
+    "team_name": "Made of Steel",
+    "team_short": "MOS",
+    "team_prefix": "",
+    "team_logo_img": "jpg",
+    "team_logo_img_time": 1648990502,
+    "flag_id": 1,
+    "flag_short": "de",
+    "flag_title_en": "Germany",
+    "flag_title_de": "Deutschland",
+    "_title": "Deutschland",
+    "flag_title": "Deutschland",
+    "team_logo_img_url": "https:\/\/cdn0.gamesports.net\/league_team_logos\/183000\/183021.jpg?1648990502",
+    "_url": "https:\/\/www.primeleague.gg\/leagues\/teams\/183021-made-of-steel"
+  },
+  "members": [
+    {
+      "user_id": 1688760,
+      "user_name": "Irones",
+      "account_value": "MOS IntTrain",
+      "tu_id": 1238985,
+      "tu_status": 30,
+      "tu_time_joined": 1648990502
+    },
+    {
+      "user_id": 2027077,
+      "user_name": "Stone Love",
+      "account_value": "Stone Love",
+      "tu_id": 1262573,
+      "tu_status": 10,
+      "tu_time_joined": 1653650696
+    },
+    {
+      "user_id": 2026465,
+      "user_name": "MOS Keislius",
+      "account_value": "Keislius",
+      "tu_id": 1261381,
+      "tu_status": 10,
+      "tu_time_joined": 1653554878
+    },
+    {
+      "user_id": 1973407,
+      "user_name": "Decyphr",
+      "account_value": "MOS Dcyphr",
+      "tu_id": 1239073,
+      "tu_status": 10,
+      "tu_time_joined": 1648998589
+    },
+    {
+      "user_id": 1105641,
+      "user_name": "Winterwish",
+      "account_value": "MOS Cold Aether",
+      "tu_id": 1239065,
+      "tu_status": 10,
+      "tu_time_joined": 1648998348
+    },
+    {
+      "user_id": 1601473,
+      "user_name": "xQzen",
+      "account_value": "xQzen",
+      "tu_id": 1239061,
+      "tu_status": 10,
+      "tu_time_joined": 1648998345
+    },
+    {
+      "user_id": 1983683,
+      "user_name": "EINS_Soulscar",
+      "account_value": "MOS Soulscar",
+      "tu_id": 1239057,
+      "tu_status": 10,
+      "tu_time_joined": 1648998191
+    }
+  ],
+  "stages": [],
+  "matches": [
+    929525,
+    930981,
+    931273,
+    932365,
+    932917,
+    933929,
+    934449,
+    935365,
+    945813,
+    945833,
+    945841,
+    945853,
+    945869,
+    945885
+  ]
+}

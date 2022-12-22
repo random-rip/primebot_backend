@@ -1,1 +1,174 @@
-{"match":{"match_id":936481,"season_id":2525,"stage_id":509,"group_id":5561,"playoff_id":0,"team_id_1":120484,"team_id_2":114250,"match_time":1656860400,"match_playday":4,"match_mode":"2g","match_score_mode":"auto","match_status":"upcoming","match_score_1":0,"match_score_2":0,"match_report_team1":0,"match_report_team2":0,"match_report_team1_score":"","match_report_team2_score":"","match_hosting_mode":"user","match_hosting_platform":"riot","match_hosting_time_start":0,"match_hosting_status":0,"match_hosting_user_id":0,"match_lineup_mode":"user","match_lineup_readyup":1,"match_lineup_standins":2,"match_lineup_replacements":0,"match_lineup_coaches":0,"match_lineup_time_submit":0,"match_lineup_time_readyup_start":-15,"match_lineup_time_readyup":0,"match_scheduling_mode":"regulated","match_scheduling_time":48,"match_scheduling_start":1656280800,"match_scheduling_end":1657490340,"match_scheduling_status":2,"match_scheduling_suggest_time":1656494461,"match_scheduling_suggest_0":1656604800,"match_scheduling_suggest_1":0,"match_scheduling_suggest_2":0},"stage":{"season_id":2525,"stage_id":509,"ss_active":1,"ss_time_start":1653861600,"ss_group_type":"robin","ss_mode_ranking":"default","ss_mode_table":"scores","ss_rosterchg_active":1,"league_id":365,"stage_title":"Gruppenphase","stage_type":"league","stage_flag_pre":0},"group":{"group_id":5561,"season_id":2525,"stage_id":509,"gss_active":1,"gss_concluded":0,"division_id":680,"group_title":"Division 4.7","league_id":365,"division_title":"Division 4","dss_active":1,"dss_group_type":"","dss_mode_ranking":"","dss_mode_table":""},"lineups":[],"logs":[{"log_time":1656358629,"log_side":2,"log_action":"scheduling_suggest","log_target_id":0,"log_details":"0: Sat, 02 Jul 2022 13:00:00 +0200<br>1: Sat, 02 Jul 2022 14:00:00 +0200","user_id":1486207},{"log_time":1656493884,"log_side":1,"log_action":"scheduling_suggest","log_target_id":0,"log_details":"0: Sun, 03 Jul 2022 21:00:00 +0200","user_id":1384472},{"log_time":1656494461,"log_side":2,"log_action":"scheduling_suggest","log_target_id":0,"log_details":"0: Thu, 30 Jun 2022 18:00:00 +0200","user_id":1486207}],"comments":[{"comment_id":6594922,"comment_parent_id":0,"comment_time":1656358686,"user_id":1486207,"comment_edit_user_id":0,"comment_flag_staff":0,"comment_flag_official":0},{"comment_id":6595034,"comment_parent_id":0,"comment_time":1656417605,"user_id":1486207,"comment_edit_user_id":0,"comment_flag_staff":0,"comment_flag_official":0},{"comment_id":6595070,"comment_parent_id":0,"comment_time":1656428613,"user_id":1384472,"comment_edit_user_id":0,"comment_flag_staff":0,"comment_flag_official":0},{"comment_id":6595186,"comment_parent_id":0,"comment_time":1656442502,"user_id":1486207,"comment_edit_user_id":0,"comment_flag_staff":0,"comment_flag_official":0},{"comment_id":6595222,"comment_parent_id":0,"comment_time":1656448029,"user_id":1384472,"comment_edit_user_id":0,"comment_flag_staff":0,"comment_flag_official":0},{"comment_id":6595258,"comment_parent_id":0,"comment_time":1656462296,"user_id":1486207,"comment_edit_user_id":0,"comment_flag_staff":0,"comment_flag_official":0},{"comment_id":6595306,"comment_parent_id":0,"comment_time":1656493852,"user_id":1384472,"comment_edit_user_id":0,"comment_flag_staff":0,"comment_flag_official":0},{"comment_id":6595310,"comment_parent_id":0,"comment_time":1656494423,"user_id":1486207,"comment_edit_user_id":0,"comment_flag_staff":0,"comment_flag_official":0}]}
+{
+  "match": {
+    "match_id": 936481,
+    "season_id": 2525,
+    "stage_id": 509,
+    "group_id": 5561,
+    "playoff_id": 0,
+    "team_id_1": 120484,
+    "team_id_2": 114250,
+    "match_time": 1656860400,
+    "match_playday": 4,
+    "match_mode": "2g",
+    "match_score_mode": "auto",
+    "match_status": "upcoming",
+    "match_score_1": 0,
+    "match_score_2": 0,
+    "match_report_team1": 0,
+    "match_report_team2": 0,
+    "match_report_team1_score": "",
+    "match_report_team2_score": "",
+    "match_hosting_mode": "user",
+    "match_hosting_platform": "riot",
+    "match_hosting_time_start": 0,
+    "match_hosting_status": 0,
+    "match_hosting_user_id": 0,
+    "match_lineup_mode": "user",
+    "match_lineup_readyup": 1,
+    "match_lineup_standins": 2,
+    "match_lineup_replacements": 0,
+    "match_lineup_coaches": 0,
+    "match_lineup_time_submit": 0,
+    "match_lineup_time_readyup_start": -15,
+    "match_lineup_time_readyup": 0,
+    "match_scheduling_mode": "regulated",
+    "match_scheduling_time": 48,
+    "match_scheduling_start": 1656280800,
+    "match_scheduling_end": 1657490340,
+    "match_scheduling_status": 2,
+    "match_scheduling_suggest_time": 1656494461,
+    "match_scheduling_suggest_0": 1656604800,
+    "match_scheduling_suggest_1": 0,
+    "match_scheduling_suggest_2": 0
+  },
+  "stage": {
+    "season_id": 2525,
+    "stage_id": 509,
+    "ss_active": 1,
+    "ss_time_start": 1653861600,
+    "ss_group_type": "robin",
+    "ss_mode_ranking": "default",
+    "ss_mode_table": "scores",
+    "ss_rosterchg_active": 1,
+    "league_id": 365,
+    "stage_title": "Gruppenphase",
+    "stage_type": "league",
+    "stage_flag_pre": 0
+  },
+  "group": {
+    "group_id": 5561,
+    "season_id": 2525,
+    "stage_id": 509,
+    "gss_active": 1,
+    "gss_concluded": 0,
+    "division_id": 680,
+    "group_title": "Division 4.7",
+    "league_id": 365,
+    "division_title": "Division 4",
+    "dss_active": 1,
+    "dss_group_type": "",
+    "dss_mode_ranking": "",
+    "dss_mode_table": ""
+  },
+  "lineups": [],
+  "logs": [
+    {
+      "log_time": 1656358629,
+      "log_side": 2,
+      "log_action": "scheduling_suggest",
+      "log_target_id": 0,
+      "log_details": "0: Sat, 02 Jul 2022 13:00:00 +0200<br>1: Sat, 02 Jul 2022 14:00:00 +0200",
+      "user_id": 1486207
+    },
+    {
+      "log_time": 1656493884,
+      "log_side": 1,
+      "log_action": "scheduling_suggest",
+      "log_target_id": 0,
+      "log_details": "0: Sun, 03 Jul 2022 21:00:00 +0200",
+      "user_id": 1384472
+    },
+    {
+      "log_time": 1656494461,
+      "log_side": 2,
+      "log_action": "scheduling_suggest",
+      "log_target_id": 0,
+      "log_details": "0: Thu, 30 Jun 2022 18:00:00 +0200",
+      "user_id": 1486207
+    }
+  ],
+  "comments": [
+    {
+      "comment_id": 6594922,
+      "comment_parent_id": 0,
+      "comment_time": 1656358686,
+      "user_id": 1486207,
+      "comment_edit_user_id": 0,
+      "comment_flag_staff": 0,
+      "comment_flag_official": 0
+    },
+    {
+      "comment_id": 6595034,
+      "comment_parent_id": 0,
+      "comment_time": 1656417605,
+      "user_id": 1486207,
+      "comment_edit_user_id": 0,
+      "comment_flag_staff": 0,
+      "comment_flag_official": 0
+    },
+    {
+      "comment_id": 6595070,
+      "comment_parent_id": 0,
+      "comment_time": 1656428613,
+      "user_id": 1384472,
+      "comment_edit_user_id": 0,
+      "comment_flag_staff": 0,
+      "comment_flag_official": 0
+    },
+    {
+      "comment_id": 6595186,
+      "comment_parent_id": 0,
+      "comment_time": 1656442502,
+      "user_id": 1486207,
+      "comment_edit_user_id": 0,
+      "comment_flag_staff": 0,
+      "comment_flag_official": 0
+    },
+    {
+      "comment_id": 6595222,
+      "comment_parent_id": 0,
+      "comment_time": 1656448029,
+      "user_id": 1384472,
+      "comment_edit_user_id": 0,
+      "comment_flag_staff": 0,
+      "comment_flag_official": 0
+    },
+    {
+      "comment_id": 6595258,
+      "comment_parent_id": 0,
+      "comment_time": 1656462296,
+      "user_id": 1486207,
+      "comment_edit_user_id": 0,
+      "comment_flag_staff": 0,
+      "comment_flag_official": 0
+    },
+    {
+      "comment_id": 6595306,
+      "comment_parent_id": 0,
+      "comment_time": 1656493852,
+      "user_id": 1384472,
+      "comment_edit_user_id": 0,
+      "comment_flag_staff": 0,
+      "comment_flag_official": 0
+    },
+    {
+      "comment_id": 6595310,
+      "comment_parent_id": 0,
+      "comment_time": 1656494423,
+      "user_id": 1486207,
+      "comment_edit_user_id": 0,
+      "comment_flag_staff": 0,
+      "comment_flag_official": 0
+    }
+  ]
+}

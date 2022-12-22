@@ -1,1 +1,102 @@
-{"team":{"team_id":114250,"team_name":"eWolves","team_short":"EWS","team_prefix":"","team_logo_img":"jpg","team_logo_img_time":1586127805,"flag_id":1,"flag_short":"de","flag_title_en":"Germany","flag_title_de":"Deutschland","_title":"Deutschland","flag_title":"Deutschland","team_logo_img_url":"https:\/\/cdn0.gamesports.net\/league_team_logos\/114000\/114250.jpg?1586127805","_url":"https:\/\/www.primeleague.gg\/leagues\/teams\/114250-ewolves"},"members":[{"user_id":1486207,"user_name":"Forsaken53","account_value":"EWS Forsaken53","tu_id":759256,"tu_status":30,"tu_time_joined":1585493814},{"user_id":59245,"user_name":"Stixxl","account_value":"EWS Stixxl","tu_id":1266321,"tu_status":20,"tu_time_joined":1653839554},{"user_id":1437810,"user_name":"Mika ix","account_value":"EWS Mikax","tu_id":1186695,"tu_status":20,"tu_time_joined":1642176581},{"user_id":1006145,"user_name":"LittleLaudi","account_value":"EWS LittleLaudi","tu_id":1266833,"tu_status":10,"tu_time_joined":1653850089},{"user_id":781109,"user_name":"excaliburt","account_value":"EWS Excaliburt","tu_id":1252249,"tu_status":10,"tu_time_joined":1652262031},{"user_id":1634151,"user_name":"FNC Cluey","account_value":"EWS Cluey","tu_id":1204875,"tu_status":10,"tu_time_joined":1642964528},{"user_id":1435338,"user_name":"FlowsnakeIce","account_value":"EWS Flowsnake","tu_id":1186131,"tu_status":10,"tu_time_joined":1642154803},{"user_id":1028246,"user_name":"Noori","account_value":"EWS Noori","tu_id":1175311,"tu_status":10,"tu_time_joined":1641830054},{"user_id":1571935,"user_name":"Xad the Chad","account_value":"Chadoom","tu_id":759262,"tu_status":10,"tu_time_joined":1585493858}],"stages":[],"matches":[936429,936469,936441,936481,936489,936517,936521]}
+{
+  "team": {
+    "team_id": 114250,
+    "team_name": "eWolves",
+    "team_short": "EWS",
+    "team_prefix": "",
+    "team_logo_img": "jpg",
+    "team_logo_img_time": 1586127805,
+    "flag_id": 1,
+    "flag_short": "de",
+    "flag_title_en": "Germany",
+    "flag_title_de": "Deutschland",
+    "_title": "Deutschland",
+    "flag_title": "Deutschland",
+    "team_logo_img_url": "https:\/\/cdn0.gamesports.net\/league_team_logos\/114000\/114250.jpg?1586127805",
+    "_url": "https:\/\/www.primeleague.gg\/leagues\/teams\/114250-ewolves"
+  },
+  "members": [
+    {
+      "user_id": 1486207,
+      "user_name": "Forsaken53",
+      "account_value": "EWS Forsaken53",
+      "tu_id": 759256,
+      "tu_status": 30,
+      "tu_time_joined": 1585493814
+    },
+    {
+      "user_id": 59245,
+      "user_name": "Stixxl",
+      "account_value": "EWS Stixxl",
+      "tu_id": 1266321,
+      "tu_status": 20,
+      "tu_time_joined": 1653839554
+    },
+    {
+      "user_id": 1437810,
+      "user_name": "Mika ix",
+      "account_value": "EWS Mikax",
+      "tu_id": 1186695,
+      "tu_status": 20,
+      "tu_time_joined": 1642176581
+    },
+    {
+      "user_id": 1006145,
+      "user_name": "LittleLaudi",
+      "account_value": "EWS LittleLaudi",
+      "tu_id": 1266833,
+      "tu_status": 10,
+      "tu_time_joined": 1653850089
+    },
+    {
+      "user_id": 781109,
+      "user_name": "excaliburt",
+      "account_value": "EWS Excaliburt",
+      "tu_id": 1252249,
+      "tu_status": 10,
+      "tu_time_joined": 1652262031
+    },
+    {
+      "user_id": 1634151,
+      "user_name": "FNC Cluey",
+      "account_value": "EWS Cluey",
+      "tu_id": 1204875,
+      "tu_status": 10,
+      "tu_time_joined": 1642964528
+    },
+    {
+      "user_id": 1435338,
+      "user_name": "FlowsnakeIce",
+      "account_value": "EWS Flowsnake",
+      "tu_id": 1186131,
+      "tu_status": 10,
+      "tu_time_joined": 1642154803
+    },
+    {
+      "user_id": 1028246,
+      "user_name": "Noori",
+      "account_value": "EWS Noori",
+      "tu_id": 1175311,
+      "tu_status": 10,
+      "tu_time_joined": 1641830054
+    },
+    {
+      "user_id": 1571935,
+      "user_name": "Xad the Chad",
+      "account_value": "Chadoom",
+      "tu_id": 759262,
+      "tu_status": 10,
+      "tu_time_joined": 1585493858
+    }
+  ],
+  "stages": [],
+  "matches": [
+    936429,
+    936469,
+    936441,
+    936481,
+    936489,
+    936517,
+    936521
+  ]
+}
