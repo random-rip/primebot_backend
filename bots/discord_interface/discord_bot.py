@@ -51,9 +51,9 @@ class DiscordBot(BotInterface):
             team.set_discord_null()
             notifications_logger.info(f"Soft deleted Discord {team}'")
         except Exception as e:
-            notifications_logger.error(f"Could not send Discord Message {msg.__name__} to {team}. Error below...")
-            notifications_logger.exception(e)
-            raise
+            notifications_logger.error(
+                f"Could not send Discord Message {msg.__class__.__name__} to {team}")
+            raise e
 
 
 class _DiscordBotV2(Bot):
