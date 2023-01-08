@@ -9,8 +9,8 @@ class EnemyNewTimeSuggestionsNotificationMessage(MatchMessage):
     settings_key = "ENEMY_SCHEDULING_SUGGESTION"
     mentionable = True
 
-    def __init__(self, team: Team, match: Match):
-        super().__init__(team, match)
+    def __init__(self, team: Team, match: Match,):
+        super().__init__(team=team, match=match)
 
     def _generate_title(self):
         return "📆 " + gettext("New date proposed by an opponent")
@@ -30,7 +30,7 @@ class EnemyNewTimeSuggestionsNotificationMessage(MatchMessage):
         ).format(
             enemy_team_tag=enemy_team_tag,
             enemy_team_url=self.enemy_team_url,
-            match_day=self.helper.display_match_day(self.match),
+            match_day=self.match_helper.display_match_day(self.match),
             match_url=self.match_url
         )
 

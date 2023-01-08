@@ -3,7 +3,7 @@ import logging
 from django.core.management import BaseCommand
 
 from app_prime_league.models import Team
-from bots.message_dispatcher import MessageDispatcher
+from bots.message_dispatcher import MessageCollector
 from bots.messages import WeeklyNotificationMessage
 from utils.utils import current_match_day
 
@@ -21,7 +21,7 @@ class Command(BaseCommand):
                 next_match = team.matches_against.filter(match_day=match_day).last()
                 if next_match is not None:
                     logger.debug(f"Sending Weekly Notification to {team}...")
-                    MessageDispatcher(team=team).dispatch(WeeklyNotificationMessage, match=next_match)
+                    MessageCollector(team=team).dispatch(WeeklyNotificationMessage, match=next_match)
             except Exception as e:
                 self.stdout.write(self.style.ERROR(f"{e}"))
                 logger.exception(f"Error {team}: {e}")

@@ -4,7 +4,7 @@ from discord import Embed, Colour
 from django.conf import settings
 from django.utils.translation import gettext as _
 
-from app_prime_league.models import Team, Match, Champion, ScoutingWebsite
+from app_prime_league.models import Champion, ScoutingWebsite, Team, Match
 from bots.messages.base import MatchMessage, MessageNotImplementedError
 from utils.emojis import EMJOI_MAGN_GLASS
 from utils.utils import format_datetime
@@ -15,8 +15,8 @@ class MatchOverview(MatchMessage):
     def _generate_title(self) -> str:
         return "🔥 " + _("Match overview")
 
-    def __init__(self, team: Team, match: Match):
-        super().__init__(team, match)
+    def __init__(self, team: Team, match: Match,):
+        super().__init__(team=team, match=match)
         self.embed = Embed(color=Colour.gold())
 
     def _generate_message(self):
@@ -28,7 +28,7 @@ class MatchOverview(MatchMessage):
         value = (
             "> {match_begin}\n"
         ).format(
-            match_begin=self.helper.display_match_schedule(self.match),
+            match_begin=self.match_helper.display_match_schedule(self.match),
         )
 
         if not self.match.match_begin_confirmed:
@@ -174,7 +174,7 @@ class MatchOverview(MatchMessage):
 
         self._add_disclaimer()
         name = "⚔ {match_day}".format(
-            match_day=self.helper.display_match_day(self.match).title(),
+            match_day=self.match_helper.display_match_day(self.match).title(),
         )
         value = _(
             "[against {enemy_team_name}]({match_url})"

@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "rest_framework",
     'django_extensions',
     "corsheaders",
+    "django_q",
     # own
     'app_prime_league',
     'core',
@@ -219,6 +220,30 @@ LOCALE_PATHS = [
     BASE_DIR / "app_prime_league" / "locale",
 ]
 
+Q_CLUSTER = {
+    'timeout': 10,  # maximum seconds for a task
+    'retry': 30,  # Failed task will be queued after 30 seconds
+    'max_attempts': 5,  # Maximum retry attempts for failed tasks
+    'save_limit': 0,  # Limits the amount of successful tasks save to Django
+    "ack_failures": False,
+    "sync": DEBUG,
+    'mongo': {
+        'host': env.str("MONGODB_URI", None),
+        "serverSelectionTimeoutMS": 5_000,
+    },
+    "time_zone": "Europe/Berlin",
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.ScopedRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'teams': '1000/day',
+        'matches': '1000/day',
+    }
+}
+
 if not DEBUG:
     LOGGING = {
         'version': 1,
@@ -296,16 +321,6 @@ if not DEBUG:
                 'handlers': ['discord'],
                 'level': "DEBUG",
                 'propagate': False,
-            }
+            },
         }
     }
-
-REST_FRAMEWORK = {
-    'DEFAULT_THROTTLE_CLASSES': [
-        'rest_framework.throttling.ScopedRateThrottle',
-    ],
-    'DEFAULT_THROTTLE_RATES': {
-        'teams': '250/day',
-        'matches': '250/day',
-    }
-}

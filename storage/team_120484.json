@@ -1,1 +1,102 @@
-{"team":{"team_id":120484,"team_name":"eSports Cologne Team Rocket","team_short":"ECO","team_prefix":"","team_logo_img":"jpg","team_logo_img_time":1600271968,"flag_id":1,"flag_short":"de","flag_title_en":"Germany","flag_title_de":"Deutschland","_title":"Deutschland","flag_title":"Deutschland","team_logo_img_url":"https:\/\/cdn0.gamesports.net\/league_team_logos\/120000\/120484.jpg?1600271968","_url":"https:\/\/www.primeleague.gg\/leagues\/teams\/120484-esports-cologne-team-rocket"},"members":[{"user_id":1385651,"user_name":"TL Ricochet","account_value":"ECO Ricochet","tu_id":1252857,"tu_status":30,"tu_time_joined":1652369445},{"user_id":1384472,"user_name":"Bootshaus","account_value":"Bootshaus","tu_id":1266865,"tu_status":20,"tu_time_joined":1653850565},{"user_id":2034890,"user_name":"Ghetis","account_value":"ECO WeSeRS","tu_id":1272774,"tu_status":10,"tu_time_joined":1655296890},{"user_id":1413470,"user_name":"JJonah","account_value":"JJonah","tu_id":1267997,"tu_status":10,"tu_time_joined":1654012799},{"user_id":1675728,"user_name":"Kirodox","account_value":"Kirodox","tu_id":1267101,"tu_status":10,"tu_time_joined":1653855284},{"user_id":1526036,"user_name":"xShadezzy","account_value":"xSh\u00e1dezz","tu_id":1266897,"tu_status":10,"tu_time_joined":1653850926},{"user_id":1438776,"user_name":"ECO Jessie","account_value":"Par\u00e1dox","tu_id":1266889,"tu_status":10,"tu_time_joined":1653850794},{"user_id":578299,"user_name":"Autumnlol","account_value":"Autumn Ornn","tu_id":1266861,"tu_status":10,"tu_time_joined":1653850476},{"user_id":329397,"user_name":"Glupanda","account_value":"Glupanda","tu_id":1266829,"tu_status":10,"tu_time_joined":1653850073}],"stages":[],"matches":[936425,936453,936481,936457,936493,936513,936525]}
+{
+  "team": {
+    "team_id": 120484,
+    "team_name": "eSports Cologne Team Rocket",
+    "team_short": "ECO",
+    "team_prefix": "",
+    "team_logo_img": "jpg",
+    "team_logo_img_time": 1600271968,
+    "flag_id": 1,
+    "flag_short": "de",
+    "flag_title_en": "Germany",
+    "flag_title_de": "Deutschland",
+    "_title": "Deutschland",
+    "flag_title": "Deutschland",
+    "team_logo_img_url": "https:\/\/cdn0.gamesports.net\/league_team_logos\/120000\/120484.jpg?1600271968",
+    "_url": "https:\/\/www.primeleague.gg\/leagues\/teams\/120484-esports-cologne-team-rocket"
+  },
+  "members": [
+    {
+      "user_id": 1385651,
+      "user_name": "TL Ricochet",
+      "account_value": "ECO Ricochet",
+      "tu_id": 1252857,
+      "tu_status": 30,
+      "tu_time_joined": 1652369445
+    },
+    {
+      "user_id": 1384472,
+      "user_name": "Bootshaus",
+      "account_value": "Bootshaus",
+      "tu_id": 1266865,
+      "tu_status": 20,
+      "tu_time_joined": 1653850565
+    },
+    {
+      "user_id": 2034890,
+      "user_name": "Ghetis",
+      "account_value": "ECO WeSeRS",
+      "tu_id": 1272774,
+      "tu_status": 10,
+      "tu_time_joined": 1655296890
+    },
+    {
+      "user_id": 1413470,
+      "user_name": "JJonah",
+      "account_value": "JJonah",
+      "tu_id": 1267997,
+      "tu_status": 10,
+      "tu_time_joined": 1654012799
+    },
+    {
+      "user_id": 1675728,
+      "user_name": "Kirodox",
+      "account_value": "Kirodox",
+      "tu_id": 1267101,
+      "tu_status": 10,
+      "tu_time_joined": 1653855284
+    },
+    {
+      "user_id": 1526036,
+      "user_name": "xShadezzy",
+      "account_value": "xSh\u00e1dezz",
+      "tu_id": 1266897,
+      "tu_status": 10,
+      "tu_time_joined": 1653850926
+    },
+    {
+      "user_id": 1438776,
+      "user_name": "ECO Jessie",
+      "account_value": "Par\u00e1dox",
+      "tu_id": 1266889,
+      "tu_status": 10,
+      "tu_time_joined": 1653850794
+    },
+    {
+      "user_id": 578299,
+      "user_name": "Autumnlol",
+      "account_value": "Autumn Ornn",
+      "tu_id": 1266861,
+      "tu_status": 10,
+      "tu_time_joined": 1653850476
+    },
+    {
+      "user_id": 329397,
+      "user_name": "Glupanda",
+      "account_value": "Glupanda",
+      "tu_id": 1266829,
+      "tu_status": 10,
+      "tu_time_joined": 1653850073
+    }
+  ],
+  "stages": [],
+  "matches": [
+    936425,
+    936453,
+    936481,
+    936457,
+    936493,
+    936513,
+    936525
+  ]
+}

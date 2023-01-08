@@ -12,8 +12,8 @@ class MatchesOverview(BaseMessage):
     settings_key = "NEW_MATCHES_NOTIFICATION"
     mentionable = True
 
-    def __init__(self, team: Team, match_ids=None):
-        super().__init__(team)
+    def __init__(self, team: Team, match_ids: list = None):
+        super().__init__(team=team, )
         self.matches = self.__get_relevant_matches(match_ids)
 
     def _generate_title(self):
@@ -33,7 +33,7 @@ class MatchesOverview(BaseMessage):
             (
                 "[{match_day}]({match_url}) ⚔ {enemy_team_name} ➡ [{website}]({scouting_url})\n"
             ).format(
-                match_day=self.helper.display_match_day(match).title(),
+                match_day=self.match_helper.display_match_day(match).title(),
                 match_url=f"{settings.MATCH_URI}{match.match_id}",
                 enemy_team_name=match.get_enemy_team().name,
                 website=self.scouting_website,
@@ -52,7 +52,7 @@ class MatchesOverview(BaseMessage):
 
         for match in self.matches:
             name = "⚔ {match_day}".format(
-                match_day=self.helper.display_match_day(match).title(),
+                match_day=self.match_helper.display_match_day(match).title(),
             )
             value = _(
                 "[against {enemy_team_name}]({match_url})"
@@ -61,7 +61,7 @@ class MatchesOverview(BaseMessage):
                 match_url=f"{settings.MATCH_URI}{match.match_id}",
             )
             value += f"\n> 🔍 [{self.scouting_website}]({match.team.get_scouting_url(match=match, lineup=False)})"
-            value += f"\n> {self.helper.display_match_schedule(match)}"
+            value += f"\n> {self.match_helper.display_match_schedule(match)}"
 
             if match.enemy_lineup_available:
                 value += (

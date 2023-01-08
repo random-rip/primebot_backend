@@ -1,1 +1,110 @@
-{"team":{"team_id":101978,"team_name":"Austrian Force FIRE Nation","team_short":"AF","team_prefix":"","team_logo_img":"jpg","team_logo_img_time":1643789055,"flag_id":248,"flag_short":"at","flag_title_en":"Austria","flag_title_de":"\u00d6sterreich","_title":"\u00d6sterreich","flag_title":"\u00d6sterreich","team_logo_img_url":"https:\/\/cdn0.gamesports.net\/league_team_logos\/101000\/101978.jpg?1643789055","_url":"https:\/\/www.primeleague.gg\/leagues\/teams\/101978-austrian-force-fire-nation"},"members":[{"user_id":1515086,"user_name":"riceeaterdat","account_value":"AF Light","tu_id":1119831,"tu_status":30,"tu_time_joined":1631920727},{"user_id":1409210,"user_name":"Stefan3210","account_value":"AF Stefan3210","tu_id":1267413,"tu_status":20,"tu_time_joined":1653905485},{"user_id":1622346,"user_name":"21Stripes","account_value":"AF ARBEZ","tu_id":1214771,"tu_status":20,"tu_time_joined":1643390242},{"user_id":1511981,"user_name":"Kyzier","account_value":"AF empyrean","tu_id":1271178,"tu_status":10,"tu_time_joined":1654801664},{"user_id":527047,"user_name":"adc enjoyer","account_value":"Cryt\u00e8k","tu_id":1267541,"tu_status":10,"tu_time_joined":1653924771},{"user_id":1851941,"user_name":"VG Youngnastyman","account_value":"AF Youngnastyman","tu_id":1267449,"tu_status":10,"tu_time_joined":1653914154},{"user_id":1800846,"user_name":"Raven kekW","account_value":"yungle enyoyer","tu_id":1267169,"tu_status":10,"tu_time_joined":1653857153},{"user_id":1992551,"user_name":"Slina","account_value":"AF Slina","tu_id":1229727,"tu_status":10,"tu_time_joined":1646161970},{"user_id":1406735,"user_name":"Pogerhontas","account_value":"AF Pogerhontas","tu_id":1214767,"tu_status":10,"tu_time_joined":1643390211},{"user_id":1556990,"user_name":"JNWest","account_value":"AF JNWest","tu_id":1214759,"tu_status":10,"tu_time_joined":1643390177}],"stages":[],"matches":[936437,936469,936453,936473,936497,936505,936529]}
+{
+  "team": {
+    "team_id": 101978,
+    "team_name": "Austrian Force FIRE Nation",
+    "team_short": "AF",
+    "team_prefix": "",
+    "team_logo_img": "jpg",
+    "team_logo_img_time": 1643789055,
+    "flag_id": 248,
+    "flag_short": "at",
+    "flag_title_en": "Austria",
+    "flag_title_de": "\u00d6sterreich",
+    "_title": "\u00d6sterreich",
+    "flag_title": "\u00d6sterreich",
+    "team_logo_img_url": "https:\/\/cdn0.gamesports.net\/league_team_logos\/101000\/101978.jpg?1643789055",
+    "_url": "https:\/\/www.primeleague.gg\/leagues\/teams\/101978-austrian-force-fire-nation"
+  },
+  "members": [
+    {
+      "user_id": 1515086,
+      "user_name": "riceeaterdat",
+      "account_value": "AF Light",
+      "tu_id": 1119831,
+      "tu_status": 30,
+      "tu_time_joined": 1631920727
+    },
+    {
+      "user_id": 1409210,
+      "user_name": "Stefan3210",
+      "account_value": "AF Stefan3210",
+      "tu_id": 1267413,
+      "tu_status": 20,
+      "tu_time_joined": 1653905485
+    },
+    {
+      "user_id": 1622346,
+      "user_name": "21Stripes",
+      "account_value": "AF ARBEZ",
+      "tu_id": 1214771,
+      "tu_status": 20,
+      "tu_time_joined": 1643390242
+    },
+    {
+      "user_id": 1511981,
+      "user_name": "Kyzier",
+      "account_value": "AF empyrean",
+      "tu_id": 1271178,
+      "tu_status": 10,
+      "tu_time_joined": 1654801664
+    },
+    {
+      "user_id": 527047,
+      "user_name": "adc enjoyer",
+      "account_value": "Cryt\u00e8k",
+      "tu_id": 1267541,
+      "tu_status": 10,
+      "tu_time_joined": 1653924771
+    },
+    {
+      "user_id": 1851941,
+      "user_name": "VG Youngnastyman",
+      "account_value": "AF Youngnastyman",
+      "tu_id": 1267449,
+      "tu_status": 10,
+      "tu_time_joined": 1653914154
+    },
+    {
+      "user_id": 1800846,
+      "user_name": "Raven kekW",
+      "account_value": "yungle enyoyer",
+      "tu_id": 1267169,
+      "tu_status": 10,
+      "tu_time_joined": 1653857153
+    },
+    {
+      "user_id": 1992551,
+      "user_name": "Slina",
+      "account_value": "AF Slina",
+      "tu_id": 1229727,
+      "tu_status": 10,
+      "tu_time_joined": 1646161970
+    },
+    {
+      "user_id": 1406735,
+      "user_name": "Pogerhontas",
+      "account_value": "AF Pogerhontas",
+      "tu_id": 1214767,
+      "tu_status": 10,
+      "tu_time_joined": 1643390211
+    },
+    {
+      "user_id": 1556990,
+      "user_name": "JNWest",
+      "account_value": "AF JNWest",
+      "tu_id": 1214759,
+      "tu_status": 10,
+      "tu_time_joined": 1643390177
+    }
+  ],
+  "stages": [],
+  "matches": [
+    936437,
+    936469,
+    936453,
+    936473,
+    936497,
+    936505,
+    936529
+  ]
+}

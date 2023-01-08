@@ -8,8 +8,8 @@ class NewCommentsNotificationMessage(MatchMessage):
     settings_key = "NEW_COMMENTS_OF_UNKNOWN_USERS"
     mentionable = True
 
-    def __init__(self, team: Team, match: Match, new_comment_ids):
-        super().__init__(team, match)
+    def __init__(self, team: Team, match: Match, new_comment_ids: list):
+        super().__init__(team=team, match=match)
         self.new_comment_ids = new_comment_ids
 
     def _generate_title(self):
@@ -26,7 +26,7 @@ class NewCommentsNotificationMessage(MatchMessage):
         )
 
         return gettext(message).format(
-            match_day=self.helper.display_match_day(self.match),
+            match_day=self.match_helper.display_match_day(self.match),
             enemy_team_tag=enemy_team_tag,
             match_url=f"{self.match_url}#comment:{self.new_comment_ids[0]}",
             enemy_team_url=self.enemy_team_url,

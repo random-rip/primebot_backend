@@ -1,1 +1,305 @@
-{"match":{"match_id":936449,"season_id":2525,"stage_id":509,"group_id":5561,"playoff_id":0,"team_id_1":168138,"team_id_2":90935,"match_time":1656522000,"match_playday":2,"match_mode":"2g","match_score_mode":"auto","match_status":"upcoming","match_score_1":0,"match_score_2":0,"match_report_team1":0,"match_report_team2":0,"match_report_team1_score":"","match_report_team2_score":"","match_hosting_mode":"user","match_hosting_platform":"riot","match_hosting_time_start":0,"match_hosting_status":0,"match_hosting_user_id":0,"match_lineup_mode":"user","match_lineup_readyup":1,"match_lineup_standins":2,"match_lineup_replacements":0,"match_lineup_coaches":0,"match_lineup_time_submit":0,"match_lineup_time_readyup_start":-15,"match_lineup_time_readyup":0,"match_scheduling_mode":"regulated","match_scheduling_time":0,"match_scheduling_start":1655071200,"match_scheduling_end":1656885540,"match_scheduling_status":0,"match_scheduling_suggest_time":0,"match_scheduling_suggest_0":0,"match_scheduling_suggest_1":0,"match_scheduling_suggest_2":0},"stage":{"season_id":2525,"stage_id":509,"ss_active":1,"ss_time_start":1653861600,"ss_group_type":"robin","ss_mode_ranking":"default","ss_mode_table":"scores","ss_rosterchg_active":1,"league_id":365,"stage_title":"Gruppenphase","stage_type":"league","stage_flag_pre":0},"group":{"group_id":5561,"season_id":2525,"stage_id":509,"gss_active":1,"gss_concluded":0,"division_id":680,"group_title":"Division 4.7","league_id":365,"division_title":"Division 4","dss_active":1,"dss_group_type":"","dss_mode_ranking":"","dss_mode_table":""},"lineups":[{"team_id":90935,"user_id":1650266,"user_name":"Chaaki","account_value":"404 Chaki","tl_flag_confirmed":0,"tl_flag_standin":0,"tl_time_created":1655120365,"tl_time_confirmed":0},{"team_id":90935,"user_id":1040897,"user_name":"keule183","account_value":"404 Keule183","tl_flag_confirmed":0,"tl_flag_standin":0,"tl_time_created":1655120365,"tl_time_confirmed":0},{"team_id":90935,"user_id":1531658,"user_name":"RedeemedAD","account_value":"404 Redeemed","tl_flag_confirmed":0,"tl_flag_standin":0,"tl_time_created":1655120365,"tl_time_confirmed":0},{"team_id":90935,"user_id":2002491,"user_name":"SJ03","account_value":"404 S J","tl_flag_confirmed":0,"tl_flag_standin":0,"tl_time_created":1655120365,"tl_time_confirmed":0},{"team_id":90935,"user_id":1015625,"user_name":"TemptAzn","account_value":"404 TemptAzn","tl_flag_confirmed":0,"tl_flag_standin":0,"tl_time_created":1655120365,"tl_time_confirmed":0},{"team_id":168138,"user_id":2032078,"user_name":"a Huy","account_value":"a Huy","tl_flag_confirmed":0,"tl_flag_standin":0,"tl_time_created":1655278153,"tl_time_confirmed":0},{"team_id":168138,"user_id":1977015,"user_name":"Babydorie","account_value":"Baby Dorie","tl_flag_confirmed":0,"tl_flag_standin":0,"tl_time_created":1655278153,"tl_time_confirmed":0},{"team_id":168138,"user_id":529769,"user_name":"Brownboyy","account_value":"Brownb\u00f8y","tl_flag_confirmed":0,"tl_flag_standin":0,"tl_time_created":1655278153,"tl_time_confirmed":0},{"team_id":168138,"user_id":1597675,"user_name":"Demetora","account_value":"Ro\u0107k","tl_flag_confirmed":0,"tl_flag_standin":0,"tl_time_created":1655278153,"tl_time_confirmed":0},{"team_id":168138,"user_id":1403099,"user_name":"lLionl","account_value":"lLionl","tl_flag_confirmed":0,"tl_flag_standin":0,"tl_time_created":1655278153,"tl_time_confirmed":0}],"logs":[{"log_time":1655120365,"log_side":2,"log_action":"lineup_submit","log_target_id":0,"log_details":"1650266:Chaaki, 1040897:keule183, 1531658:RedeemedAD, 2002491:SJ03, 1015625:TemptAzn","user_id":1896547},{"log_time":1655278135,"log_side":1,"log_action":"scheduling_suggest","log_target_id":0,"log_details":"0: Thu, 16 Jun 2022 18:00:00 +0200","user_id":529769},{"log_time":1655278153,"log_side":1,"log_action":"lineup_submit","log_target_id":0,"log_details":"2032078:a Huy, 1977015:Babydorie, 529769:Brownboyy, 1597675:Demetora, 1403099:lLionl","user_id":529769},{"log_time":1655279136,"log_side":2,"log_action":"scheduling_suggest","log_target_id":0,"log_details":"0: Sun, 19 Jun 2022 17:00:00 +0200<br>1: Sat, 18 Jun 2022 17:00:00 +0200","user_id":1896547},{"log_time":1655317184,"log_side":1,"log_action":"scheduling_suggest","log_target_id":0,"log_details":"0: Mon, 20 Jun 2022 19:00:00 +0200<br>1: Mon, 20 Jun 2022 18:00:00 +0200","user_id":529769},{"log_time":1655485396,"log_side":0,"log_action":"change_time","log_target_id":0,"log_details":"Manually adjusted time to 2022-06-29 15:00 +0200","user_id":1330305},{"log_time":1655485466,"log_side":0,"log_action":"change_time","log_target_id":0,"log_details":"Manually adjusted time to 2022-06-29 19:00 +0200","user_id":1330305},{"log_time":1655486443,"log_side":2,"log_action":"scheduling_suggest","log_target_id":0,"log_details":"0: Wed, 29 Jun 2022 19:00:00 +0200","user_id":1896547},{"log_time":1655606779,"log_side":1,"log_action":"scheduling_confirm","log_target_id":0,"log_details":"Wed, 29 Jun 2022 19:00:00 +0200","user_id":529769}],"comments":[{"comment_id":6588958,"comment_parent_id":0,"comment_time":1655413326,"user_id":1330305,"comment_edit_user_id":0,"comment_flag_staff":1,"comment_flag_official":1},{"comment_id":6588998,"comment_parent_id":0,"comment_time":1655451200,"user_id":1403099,"comment_edit_user_id":0,"comment_flag_staff":0,"comment_flag_official":0},{"comment_id":6589122,"comment_parent_id":0,"comment_time":1655475635,"user_id":1330305,"comment_edit_user_id":0,"comment_flag_staff":1,"comment_flag_official":1},{"comment_id":6589130,"comment_parent_id":0,"comment_time":1655476705,"user_id":1403099,"comment_edit_user_id":0,"comment_flag_staff":0,"comment_flag_official":0},{"comment_id":6589230,"comment_parent_id":0,"comment_time":1655484955,"user_id":1896547,"comment_edit_user_id":0,"comment_flag_staff":0,"comment_flag_official":0},{"comment_id":6589234,"comment_parent_id":0,"comment_time":1655485477,"user_id":1330305,"comment_edit_user_id":0,"comment_flag_staff":1,"comment_flag_official":1}]}
+{
+  "match": {
+    "match_id": 936449,
+    "season_id": 2525,
+    "stage_id": 509,
+    "group_id": 5561,
+    "playoff_id": 0,
+    "team_id_1": 168138,
+    "team_id_2": 90935,
+    "match_time": 1656522000,
+    "match_playday": 2,
+    "match_mode": "2g",
+    "match_score_mode": "auto",
+    "match_status": "upcoming",
+    "match_score_1": 0,
+    "match_score_2": 0,
+    "match_report_team1": 0,
+    "match_report_team2": 0,
+    "match_report_team1_score": "",
+    "match_report_team2_score": "",
+    "match_hosting_mode": "user",
+    "match_hosting_platform": "riot",
+    "match_hosting_time_start": 0,
+    "match_hosting_status": 0,
+    "match_hosting_user_id": 0,
+    "match_lineup_mode": "user",
+    "match_lineup_readyup": 1,
+    "match_lineup_standins": 2,
+    "match_lineup_replacements": 0,
+    "match_lineup_coaches": 0,
+    "match_lineup_time_submit": 0,
+    "match_lineup_time_readyup_start": -15,
+    "match_lineup_time_readyup": 0,
+    "match_scheduling_mode": "regulated",
+    "match_scheduling_time": 0,
+    "match_scheduling_start": 1655071200,
+    "match_scheduling_end": 1656885540,
+    "match_scheduling_status": 0,
+    "match_scheduling_suggest_time": 0,
+    "match_scheduling_suggest_0": 0,
+    "match_scheduling_suggest_1": 0,
+    "match_scheduling_suggest_2": 0
+  },
+  "stage": {
+    "season_id": 2525,
+    "stage_id": 509,
+    "ss_active": 1,
+    "ss_time_start": 1653861600,
+    "ss_group_type": "robin",
+    "ss_mode_ranking": "default",
+    "ss_mode_table": "scores",
+    "ss_rosterchg_active": 1,
+    "league_id": 365,
+    "stage_title": "Gruppenphase",
+    "stage_type": "league",
+    "stage_flag_pre": 0
+  },
+  "group": {
+    "group_id": 5561,
+    "season_id": 2525,
+    "stage_id": 509,
+    "gss_active": 1,
+    "gss_concluded": 0,
+    "division_id": 680,
+    "group_title": "Division 4.7",
+    "league_id": 365,
+    "division_title": "Division 4",
+    "dss_active": 1,
+    "dss_group_type": "",
+    "dss_mode_ranking": "",
+    "dss_mode_table": ""
+  },
+  "lineups": [
+    {
+      "team_id": 90935,
+      "user_id": 1650266,
+      "user_name": "Chaaki",
+      "account_value": "404 Chaki",
+      "tl_flag_confirmed": 0,
+      "tl_flag_standin": 0,
+      "tl_time_created": 1655120365,
+      "tl_time_confirmed": 0
+    },
+    {
+      "team_id": 90935,
+      "user_id": 1040897,
+      "user_name": "keule183",
+      "account_value": "404 Keule183",
+      "tl_flag_confirmed": 0,
+      "tl_flag_standin": 0,
+      "tl_time_created": 1655120365,
+      "tl_time_confirmed": 0
+    },
+    {
+      "team_id": 90935,
+      "user_id": 1531658,
+      "user_name": "RedeemedAD",
+      "account_value": "404 Redeemed",
+      "tl_flag_confirmed": 0,
+      "tl_flag_standin": 0,
+      "tl_time_created": 1655120365,
+      "tl_time_confirmed": 0
+    },
+    {
+      "team_id": 90935,
+      "user_id": 2002491,
+      "user_name": "SJ03",
+      "account_value": "404 S J",
+      "tl_flag_confirmed": 0,
+      "tl_flag_standin": 0,
+      "tl_time_created": 1655120365,
+      "tl_time_confirmed": 0
+    },
+    {
+      "team_id": 90935,
+      "user_id": 1015625,
+      "user_name": "TemptAzn",
+      "account_value": "404 TemptAzn",
+      "tl_flag_confirmed": 0,
+      "tl_flag_standin": 0,
+      "tl_time_created": 1655120365,
+      "tl_time_confirmed": 0
+    },
+    {
+      "team_id": 168138,
+      "user_id": 2032078,
+      "user_name": "a Huy",
+      "account_value": "a Huy",
+      "tl_flag_confirmed": 0,
+      "tl_flag_standin": 0,
+      "tl_time_created": 1655278153,
+      "tl_time_confirmed": 0
+    },
+    {
+      "team_id": 168138,
+      "user_id": 1977015,
+      "user_name": "Babydorie",
+      "account_value": "Baby Dorie",
+      "tl_flag_confirmed": 0,
+      "tl_flag_standin": 0,
+      "tl_time_created": 1655278153,
+      "tl_time_confirmed": 0
+    },
+    {
+      "team_id": 168138,
+      "user_id": 529769,
+      "user_name": "Brownboyy",
+      "account_value": "Brownb\u00f8y",
+      "tl_flag_confirmed": 0,
+      "tl_flag_standin": 0,
+      "tl_time_created": 1655278153,
+      "tl_time_confirmed": 0
+    },
+    {
+      "team_id": 168138,
+      "user_id": 1597675,
+      "user_name": "Demetora",
+      "account_value": "Ro\u0107k",
+      "tl_flag_confirmed": 0,
+      "tl_flag_standin": 0,
+      "tl_time_created": 1655278153,
+      "tl_time_confirmed": 0
+    },
+    {
+      "team_id": 168138,
+      "user_id": 1403099,
+      "user_name": "lLionl",
+      "account_value": "lLionl",
+      "tl_flag_confirmed": 0,
+      "tl_flag_standin": 0,
+      "tl_time_created": 1655278153,
+      "tl_time_confirmed": 0
+    }
+  ],
+  "logs": [
+    {
+      "log_time": 1655120365,
+      "log_side": 2,
+      "log_action": "lineup_submit",
+      "log_target_id": 0,
+      "log_details": "1650266:Chaaki, 1040897:keule183, 1531658:RedeemedAD, 2002491:SJ03, 1015625:TemptAzn",
+      "user_id": 1896547
+    },
+    {
+      "log_time": 1655278135,
+      "log_side": 1,
+      "log_action": "scheduling_suggest",
+      "log_target_id": 0,
+      "log_details": "0: Thu, 16 Jun 2022 18:00:00 +0200",
+      "user_id": 529769
+    },
+    {
+      "log_time": 1655278153,
+      "log_side": 1,
+      "log_action": "lineup_submit",
+      "log_target_id": 0,
+      "log_details": "2032078:a Huy, 1977015:Babydorie, 529769:Brownboyy, 1597675:Demetora, 1403099:lLionl",
+      "user_id": 529769
+    },
+    {
+      "log_time": 1655279136,
+      "log_side": 2,
+      "log_action": "scheduling_suggest",
+      "log_target_id": 0,
+      "log_details": "0: Sun, 19 Jun 2022 17:00:00 +0200<br>1: Sat, 18 Jun 2022 17:00:00 +0200",
+      "user_id": 1896547
+    },
+    {
+      "log_time": 1655317184,
+      "log_side": 1,
+      "log_action": "scheduling_suggest",
+      "log_target_id": 0,
+      "log_details": "0: Mon, 20 Jun 2022 19:00:00 +0200<br>1: Mon, 20 Jun 2022 18:00:00 +0200",
+      "user_id": 529769
+    },
+    {
+      "log_time": 1655485396,
+      "log_side": 0,
+      "log_action": "change_time",
+      "log_target_id": 0,
+      "log_details": "Manually adjusted time to 2022-06-29 15:00 +0200",
+      "user_id": 1330305
+    },
+    {
+      "log_time": 1655485466,
+      "log_side": 0,
+      "log_action": "change_time",
+      "log_target_id": 0,
+      "log_details": "Manually adjusted time to 2022-06-29 19:00 +0200",
+      "user_id": 1330305
+    },
+    {
+      "log_time": 1655486443,
+      "log_side": 2,
+      "log_action": "scheduling_suggest",
+      "log_target_id": 0,
+      "log_details": "0: Wed, 29 Jun 2022 19:00:00 +0200",
+      "user_id": 1896547
+    },
+    {
+      "log_time": 1655606779,
+      "log_side": 1,
+      "log_action": "scheduling_confirm",
+      "log_target_id": 0,
+      "log_details": "Wed, 29 Jun 2022 19:00:00 +0200",
+      "user_id": 529769
+    }
+  ],
+  "comments": [
+    {
+      "comment_id": 6588958,
+      "comment_parent_id": 0,
+      "comment_time": 1655413326,
+      "user_id": 1330305,
+      "comment_edit_user_id": 0,
+      "comment_flag_staff": 1,
+      "comment_flag_official": 1
+    },
+    {
+      "comment_id": 6588998,
+      "comment_parent_id": 0,
+      "comment_time": 1655451200,
+      "user_id": 1403099,
+      "comment_edit_user_id": 0,
+      "comment_flag_staff": 0,
+      "comment_flag_official": 0
+    },
+    {
+      "comment_id": 6589122,
+      "comment_parent_id": 0,
+      "comment_time": 1655475635,
+      "user_id": 1330305,
+      "comment_edit_user_id": 0,
+      "comment_flag_staff": 1,
+      "comment_flag_official": 1
+    },
+    {
+      "comment_id": 6589130,
+      "comment_parent_id": 0,
+      "comment_time": 1655476705,
+      "user_id": 1403099,
+      "comment_edit_user_id": 0,
+      "comment_flag_staff": 0,
+      "comment_flag_official": 0
+    },
+    {
+      "comment_id": 6589230,
+      "comment_parent_id": 0,
+      "comment_time": 1655484955,
+      "user_id": 1896547,
+      "comment_edit_user_id": 0,
+      "comment_flag_staff": 0,
+      "comment_flag_official": 0
+    },
+    {
+      "comment_id": 6589234,
+      "comment_parent_id": 0,
+      "comment_time": 1655485477,
+      "user_id": 1330305,
+      "comment_edit_user_id": 0,
+      "comment_flag_staff": 1,
+      "comment_flag_official": 1
+    }
+  ]
+}
