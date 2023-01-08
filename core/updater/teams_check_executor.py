@@ -8,11 +8,11 @@ from django.conf import settings
 
 from app_prime_league.models import Team, Player
 from app_prime_league.teams import create_matches
-from bots.message_dispatcher import MessageDispatcher
+from bots.message_dispatcher import MessageCollector
 from bots.messages import MatchesOverview
 from bots.telegram_interface.tg_singleton import send_message_to_devs
-from core.processors.team_processor import TeamDataProcessor
 from core.comparers.team_comparer import TeamComparer
+from core.processors.team_processor import TeamDataProcessor
 from utils.messages_logger import log_exception
 
 thread_local = threading.local()
@@ -55,11 +55,11 @@ def update_team(team: Team):
     try:
         cmp = TeamComparer(team, processor=processor)
         log_message = f"New notification for {team=}: "
-        dispatcher = MessageDispatcher(team)
+        collector = MessageCollector(team)
         if missing_ids := cmp.compare_new_matches():
             notifications_logger.info(f"{log_message}Neue Matches")
             create_matches(missing_ids, team=team)
-            dispatcher.dispatch(MatchesOverview, match_ids=missing_ids)
+            collector.dispatch(MatchesOverview, match_ids=missing_ids)
 
     except Exception as e:
         trace = "".join(traceback.format_tb(sys.exc_info()[2]))

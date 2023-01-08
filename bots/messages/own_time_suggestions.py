@@ -10,8 +10,8 @@ class OwnNewTimeSuggestionsNotificationMessage(MatchMessage):
     settings_key = "TEAM_SCHEDULING_SUGGESTION"
     mentionable = True
 
-    def __init__(self, team: Team, match: Match):
-        super().__init__(team, match)
+    def __init__(self, team: Team, match: Match,):
+        super().__init__(team=team, match=match)
 
     def _generate_title(self):
         return "📆 " + _("New date proposed by you")
@@ -24,7 +24,7 @@ class OwnNewTimeSuggestionsNotificationMessage(MatchMessage):
             "New dates proposed by you for [{match_day}]({match_url}):",
             len(details)
         ).format(
-            match_day=self.helper.display_match_day(self.match),
+            match_day=self.match_helper.display_match_day(self.match),
             match_url=self.match_url
         )
         return prefix + "\n" + '\n'.join(

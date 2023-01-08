@@ -12,7 +12,7 @@ class ScheduleConfirmationNotification(MatchMessage):
     mentionable = True
 
     def __init__(self, team: Team, match: Match, latest_confirmation_log):
-        super().__init__(team, match)
+        super().__init__(team=team, match=match)
         self.latest_confirmation_log = latest_confirmation_log
 
     def _generate_title(self):
@@ -44,5 +44,5 @@ class ScheduleConfirmationNotification(MatchMessage):
             enemy_team_tag=enemy_team_tag,
             match_url=f"{settings.MATCH_URI}{self.match.match_id}",
             enemy_team_url=f"{settings.TEAM_URI}{self.match.enemy_team.id}",
-            match_day=self.helper.display_match_day(self.match),
+            match_day=self.match_helper.display_match_day(self.match),
         )

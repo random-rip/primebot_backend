@@ -7,7 +7,7 @@ from bots.messages.base import BaseMessage
 class NotificationToTeamMessage(BaseMessage):
     mentionable = True
 
-    def __init__(self, team: Team, custom_message, **message_elements):
+    def __init__(self, team: Team, custom_message: str, **message_elements):
         super().__init__(team)
         self.custom_message = custom_message
         self._message_elements = message_elements
