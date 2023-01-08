@@ -10,7 +10,7 @@ Hallo {team.name},
 
 🔥 Version {version} ist draußen 🔥
 
-1️⃣ Es wurde eine eigene API für euch veröffentlicht. Aktuell sind Teams und Matches (inklusive Spieler) implementiert. Die API Dokumentation findet ihr unter https://github.com/random-rip/primebot_backend/blob/master/openapi.yml .
+1️⃣ Es wurde eine eigene API für euch veröffentlicht. Aktuell sind Teams und Matches (inklusive Spieler) implementiert. Die API Dokumentation findet ihr unter https://github.com/random-rip/primebot\_backend/blob/master/openapi.yml .
 Gebt uns gerne Feedback dazu, was ihr davon haltet und was für Daten ihr noch gerne möchtet.
 2️⃣ Benachrichtigungen werden nun mehrmals versucht zu senden, wenn diese aus Downtimegründen von Discord oder Telegram nicht bei euch ankommen.
 
