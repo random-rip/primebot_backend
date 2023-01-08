@@ -10,11 +10,11 @@ Hallo {team.name},
 
 🔥 Version {version} ist draußen 🔥
 
-1️⃣ Implementierung einer eigenen API für euch. Aktuell sind Teams und Matches (inklusive Spieler) implementiert. Die API Dokumentation findet ihr unter https://github.com/random-rip/primebot_backend/blob/master/openapi.yml .
+1️⃣ Es wurde eine eigene API für euch veröffentlicht. Aktuell sind Teams und Matches (inklusive Spieler) implementiert. Die API Dokumentation findet ihr unter https://github.com/random-rip/primebot_backend/blob/master/openapi.yml .
 Gebt uns gerne Feedback dazu, was ihr davon haltet und was für Daten ihr noch gerne möchtet.
-2️⃣ Einige kleine Fehler wurden behoben, wie beispielsweise dass nicht jeder `/match MATCH_DAY` funktioniert hat.
+2️⃣ Benachrichtigungen werden nun mehrmals versucht zu senden, wenn diese aus Downtimegründen von Discord oder Telegram nicht bei euch ankommen.
 
-Alle weiteren Änderungen findet ihr auf unserer Website: https://www.primebot.me/changelogs
+Alle weiteren Änderungen findet ihr auf unserer Website: https://www.primebot.me/information/changelog
 
 Sternige Grüße
 – PrimeBot devs
@@ -23,17 +23,16 @@ Sternige Grüße
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
+        version = GitHub.latest_version()["version"]
         teams = Team.objects.get_registered_teams().filter()
         for team in teams:
             try:
                 print(team)
-                dispatcher = MessageCollector(team)
-                dispatcher.dispatch(
-                    msg=NotificationToTeamMessage(
-                        team=team,
-                        custom_message=message,
-                        version=GitHub.latest_version()["version"],
-                    )
+                collector = MessageCollector(team)
+                collector.dispatch(
+                    msg_class=NotificationToTeamMessage,
+                    custom_message=message,
+                    version=version,
                 )
             except Exception as e:
                 print(e)

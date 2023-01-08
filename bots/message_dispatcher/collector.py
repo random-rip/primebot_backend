@@ -1,3 +1,5 @@
+from typing import Type
+
 from app_prime_league.models import Team
 from bots.discord_interface.discord_bot import DiscordBot
 from bots.messages.base import BaseMessage
@@ -20,15 +22,12 @@ class MessageCollector:
         if self.team.discord_channel_id is not None:
             self.bots.append(DiscordBot)
 
-    def dispatch(self, msg_class, **kwargs):
+    def dispatch(self, msg_class: Type[BaseMessage], **kwargs) -> None:
         """
         This method fires *message_sends* to all registered platforms via the `MessageDispatcherJob`.
         Args:
-            msg_class:
-            **kwargs:
-
-        Returns:
-
+            msg_class: MessageClass to generate the message. This Class must inherit from ``BaseMessage``.
+            **kwargs: Keyword arguments, that are passed to the constructor of the given `msg_class`.
         """
         assert issubclass(msg_class, BaseMessage)
         msg = msg_class(team=self.team, **kwargs)

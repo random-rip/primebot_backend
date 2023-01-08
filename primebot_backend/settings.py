@@ -231,6 +231,7 @@ Q_CLUSTER = {
         'host': env.str("MONGODB_URI", None),
         "serverSelectionTimeoutMS": 5_000,
     },
+    "time_zone": "Europe/Berlin",
 }
 
 REST_FRAMEWORK = {

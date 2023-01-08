@@ -49,9 +49,10 @@ class DiscordBot(BotInterface):
             webhook.send(**DiscordHelper.create_msg_arguments(discord_role_id=team.discord_role_id, msg=msg))
         except NotFound as e:
             team.set_discord_null()
-            notifications_logger.info(f"Could not send message to {team}: {e}. Soft deleted'")
+            notifications_logger.info(f"Soft deleted Discord {team}'")
         except Exception as e:
-            notifications_logger.exception(f"Could not send message to {team}: '{msg}. Error: {e}'")
+            notifications_logger.error(f"Could not send Discord Message {msg.__name__} to {team}. Error below...")
+            notifications_logger.exception(e)
             raise
 
 

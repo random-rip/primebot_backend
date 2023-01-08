@@ -1,10 +1,17 @@
+import logging
 from typing import Callable, Dict
 
 from core.cluster_job import Job
 
+cluster_job_logger = logging.getLogger("cluster_job")
+
 
 def dispatch(bot, msg, team):
-    bot.send_message(msg=msg, team=team)
+    try:
+        bot.send_message(msg=msg, team=team)
+    except Exception as e:
+        cluster_job_logger.exception(e)
+        raise e
 
 
 class MessageDispatcherJob(Job):
