@@ -76,6 +76,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10_000
+
 ROOT_URLCONF = 'primebot_backend.urls'
 
 TEMPLATES = [
