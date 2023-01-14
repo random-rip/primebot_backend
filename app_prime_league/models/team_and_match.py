@@ -1,11 +1,12 @@
-from django.conf import settings
 from django.db import models
 from django.db.models import F
-from django.template.defaultfilters import urlencode, truncatechars
+from django.template.defaultfilters import truncatechars
 from django.utils.translation import gettext_lazy as _
 
-from app_prime_league.model_manager import TeamManager, MatchManager, PlayerManager, ScoutingWebsiteManager, \
-    ChampionManager
+from app_prime_league.model_manager import MatchManager, PlayerManager
+from app_prime_league.model_manager import TeamManager
+from .scouting_website import ScoutingWebsite
+from .player import Player
 from utils.utils import current_match_day
 
 
@@ -128,28 +129,6 @@ class Team(models.Model):
         self.save()
 
 
-class Player(models.Model):
-    name = models.CharField(max_length=50)
-    team = models.ForeignKey(Team, on_delete=models.CASCADE, null=True)
-    summoner_name = models.CharField(max_length=30, null=True)
-    is_leader = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    objects = PlayerManager()
-
-    class Meta:
-        db_table = "players"
-        verbose_name = "Spieler"
-        verbose_name_plural = "Spieler"
-
-    def __repr__(self):
-        return f"{self.name}"
-
-    def __str__(self):
-        return f"Player {self.name}"
-
-
 class Match(models.Model):
     MATCH_TYPE_GROUP = "group"  # Pro Div und Kalibrierungsphase, Kein Divisionssystem
     MATCH_TYPE_LEAGUE = "league"  # Gruppenphase Divisionssystem
@@ -263,49 +242,6 @@ class Match(models.Model):
         )
 
 
-class ScoutingWebsite(models.Model):
-    name = models.CharField(max_length=20, unique=True)
-    base_url = models.CharField(max_length=200)
-    separator = models.CharField(max_length=5, blank=True)
-    multi = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    objects = ScoutingWebsiteManager()
-
-    class Meta:
-        db_table = "scouting_websites"
-        verbose_name = "Scouting Website"
-        verbose_name_plural = "Scouting Websites"
-
-    def generate_url(self, names):
-        """
-        Url encode given names and generate link.
-        Args:
-            names:  list of strings or string
-
-        Returns: String
-        """
-        if not isinstance(names, list):
-            names = [names]
-        names = [urlencode(x) for x in names]
-        if self.multi:
-            return self.base_url.format(self.separator.join(names))
-        return self.base_url.format("".join(names))
-
-    @staticmethod
-    def default() -> "ScoutingWebsite":
-        return ScoutingWebsite(
-            name=settings.DEFAULT_SCOUTING_NAME,
-            base_url=settings.DEFAULT_SCOUTING_URL,
-            separator=settings.DEFAULT_SCOUTING_SEP,
-            multi=True,
-        )
-
-    def __str__(self):
-        return self.name
-
-
 class Suggestion(models.Model):
     begin = models.DateTimeField()
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
@@ -315,32 +251,6 @@ class Suggestion(models.Model):
         db_table = "suggestions"
         verbose_name = "Terminvorschlag"
         verbose_name_plural = "Terminvorschläge"
-
-
-class Setting(models.Model):
-    team = models.ForeignKey(Team, on_delete=models.CASCADE)
-    attr_name = models.CharField(max_length=50)
-    attr_value = models.BooleanField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        db_table = "settings"
-        unique_together = [("team", "attr_name"), ]
-        verbose_name = "Teameinstellung"
-        verbose_name_plural = "Teameinstellungen"
-
-
-class SettingsExpiring(models.Model):
-    expires = models.DateTimeField()
-    team = models.OneToOneField(Team, on_delete=models.CASCADE, related_name="settings_expiring")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        db_table = "settings_expiring"
-        verbose_name = "Einstellungslink"
-        verbose_name_plural = "Einstellungslinks"
 
 
 class Comment(models.Model):
@@ -366,19 +276,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"{self.id = }, {self.match = }, {self.comment_id = }"
-
-
-class Champion(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    banned = models.BooleanField()
-    banned_until = models.DateField(null=True, blank=True)
-    banned_until_patch = models.CharField(max_length=10)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    objects = ChampionManager()
-
-    class Meta:
-        db_table = "champions"
-        verbose_name = "Champion"
-        verbose_name_plural = "Champions"
