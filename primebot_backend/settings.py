@@ -223,11 +223,12 @@ LOCALE_PATHS = [
 ]
 
 Q_CLUSTER = {
-    'timeout': 10,  # maximum seconds for a task
-    'retry': 30,  # Failed task will be queued after 30 seconds
-    'max_attempts': 5,  # Maximum retry attempts for failed tasks
+    'timeout': 60 * 2,  # maximum seconds for a task
+    'retry': 60 * 2 + 10,  # Seconds after a failed task will be queued again
+    'max_attempts': 3,  # Maximum retry attempts for failed tasks
     'save_limit': 0,  # Limits the amount of successful tasks save to Django
     "ack_failures": False,
+    "catch_up": False,
     "sync": DEBUG,
     'mongo': {
         'host': env.str("MONGODB_URI", None),

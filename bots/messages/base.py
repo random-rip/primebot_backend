@@ -72,6 +72,9 @@ class BaseMessage:
     def _get_number_as_emojis(self, number: int) -> str:
         return "".join([NUMBER_TO_EMOJI.get(int(d), EMOJI_RAUTE) for d in str(number)])
 
+    def __repr__(self):
+        return self.__class__.__name__
+
 
 class MatchMessage(BaseMessage, ABC):
     def __init__(self, team: Team, match: Match):
