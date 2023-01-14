@@ -40,7 +40,7 @@ class Job:
         """
         self.logger.info("Creating new task...")
         q_options = {
-            "task_name": self.__name__,
+            "group": self.__name__,
             **self.q_options()
         }
         try:
