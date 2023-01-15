@@ -19,3 +19,4 @@ Deprecated~=1.2.13
 django-admin-interface==0.19.1
 django-q2
 pymongo==4.3.3
+croniter

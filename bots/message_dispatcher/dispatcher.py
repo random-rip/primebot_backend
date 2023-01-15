@@ -44,4 +44,5 @@ class MessageDispatcherJob(Job):
     def q_options(self):
         return {
             "timeout": 10,
+            "group": str(self.msg),
         }
