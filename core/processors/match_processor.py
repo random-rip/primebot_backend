@@ -179,7 +179,8 @@ class MatchDataProcessor(__MatchDataMethods, ):
 
     def get_match_begin_confirmed(self):
         """
-        If this is 0, it means that an agreement was already made, so replying is not required anymore
+        If this is 0, it means that an agreement was already made, so replying is not required anymore.
+
         Returns: True, if match_scheduling_time is 0
 
         """
