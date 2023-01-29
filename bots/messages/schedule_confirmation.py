@@ -2,6 +2,7 @@ import logging
 
 from django.conf import settings
 from django.utils.translation import gettext as _
+from telegram import ParseMode
 
 from app_prime_league.models import Team, Match
 from bots.messages.base import MatchMessage
@@ -30,29 +31,27 @@ class ScheduleConfirmationNotification(MatchMessage):
                 "Automatic confirmation of the scheduled date against [{enemy_team_tag}]"
                 "({enemy_team_url}) for [{match_day}]({match_url}):"
             )
-        elif isinstance(self.latest_confirmation_log, LogSchedulingConfirmation):
-            message = _(
-                "Confirmation of the scheduled date against [{enemy_team_tag}]"
-                "({enemy_team_url}) for [{match_day}]({match_url}):"
-            )
-        else:
-            try:
-                assert isinstance(self.latest_confirmation_log, LogChangeTime)
-            except AssertionError as e:
-                msg = (
-                    f"AssertionError in ScheduleConfirmation Notification.\n"
-                    f"Latest Log Type: {type(self.latest_confirmation_log)}.\n"
-                    f"Log: {self.latest_confirmation_log}."
-                )
-                send_message_to_devs(msg)
-                logging.getLogger("notifications").error(
-                    f"AssertionError in ScheduleConfirmation Notification. "
-                    f"Latest Log Type: {type(self.latest_confirmation_log)}, {self.latest_confirmation_log}"
-                )
-                raise e
+        elif isinstance(self.latest_confirmation_log, LogChangeTime):
             message = _(
                 "An administrator has set a new date for [{match_day}]({match_url}) "
                 "against [{enemy_team_tag}]({enemy_team_url}):"
+            )
+        else:
+            if self.latest_confirmation_log is None:
+                msg = (
+                    f"WTF why is the latest_confirmation_log None? It should be LogSchedulingConfirmation.\n"
+                    f"This happened in Match {self.match}. May be some delayed logs from PLM side?"
+                )
+                logging.getLogger("notifications").error(msg)
+                send_message_to_devs(msg, parse_mode=ParseMode.MARKDOWN)
+
+            # assert isinstance(
+            #     self.latest_confirmation_log,
+            #     LogSchedulingConfirmation
+            # ) or self.latest_confirmation_log is None
+            message = _(
+                "Confirmation of the scheduled date against [{enemy_team_tag}]"
+                "({enemy_team_url}) for [{match_day}]({match_url}):"
             )
 
         return (message + "\n⚔{time}").format(
