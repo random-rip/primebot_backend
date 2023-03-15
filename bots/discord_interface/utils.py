@@ -10,7 +10,7 @@ from django.conf import settings
 from django.utils import translation
 
 from app_prime_league.models import Team
-from bots.messages.base import BaseMessage
+from bots.messages.base import BaseMessage, MessageNotImplementedError
 from utils.messages_logger import log_from_discord
 
 MENTION_PREFIX = "<@&"
@@ -40,7 +40,10 @@ class DiscordHelper:
     @staticmethod
     def create_msg_arguments(*, msg: BaseMessage, discord_role_id, color=COLOR_NOTIFICATION, **kwargs):
         arguments = kwargs
-        arguments["embed"] = Embed(description=msg.generate_message(), color=color)
+        try:
+            arguments["embed"] = msg.generate_discord_embed()
+        except MessageNotImplementedError:
+            arguments["embed"] = Embed(description=msg.generate_message(), color=color)
         arguments["content"] = DiscordHelper.mask_message_with_mention(
             discord_role_id=discord_role_id,
             message=msg.generate_title()

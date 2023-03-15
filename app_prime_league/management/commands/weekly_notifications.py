@@ -6,23 +6,20 @@ from app_prime_league.models import Team
 from bots.message_dispatcher import MessageCollector
 from bots.messages import WeeklyNotificationMessage
 from core.commands import ScheduleCommand
-from utils.utils import current_match_day
 
 
 class Command(ScheduleCommand):
     @staticmethod
     def func():
-        match_day = current_match_day()
-
         logger = logging.getLogger("notifications")
         logger.info(f"Start Sending Weekly Notifications...")
         teams = Team.objects.get_registered_teams()
         for team in teams:
+            if len(WeeklyNotificationMessage(team=team).matches) < 1:
+                continue
             try:
-                next_match = team.matches_against.filter(match_day=match_day).last()
-                if next_match is not None:
-                    logger.debug(f"Sending Weekly Notification to {team}...")
-                    MessageCollector(team=team).dispatch(WeeklyNotificationMessage, match=next_match)
+                logger.debug(f"Sending Weekly Notification to {team}...")
+                MessageCollector(team=team).dispatch(WeeklyNotificationMessage)
             except Exception as e:
                 logger.exception(f"Error sending weekly notification to team {team}: {e}")
 
