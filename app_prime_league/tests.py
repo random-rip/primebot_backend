@@ -2,6 +2,7 @@ from datetime import datetime
 from unittest import mock
 
 import pytz
+from django.conf import settings
 from django.test import TestCase
 
 from app_prime_league.models import Team, Match
@@ -11,7 +12,7 @@ class MatchesTest(TestCase):
 
     def setUp(self):
         self.team_a = Team.objects.create(id=1, name="Team A", team_tag="TA")
-        self.split_start = datetime(2022, 6, 6).astimezone(pytz.timezone("Europe/Berlin"))
+        self.split_start = datetime(2022, 6, 6).astimezone(pytz.timezone(settings.TIME_ZONE))
         # calibration
         Match.objects.create(match_id=1, match_day=1, match_type=Match.MATCH_TYPE_GROUP, team=self.team_a,
                              has_side_choice=True, )
@@ -107,4 +108,3 @@ class MatchesTest(TestCase):
 
         result = list(self.team_a.get_obvious_matches_based_on_stage(0).values_list("match_id", flat=True))
         self.assertListEqual([1000, 2000, 3000], result)
-

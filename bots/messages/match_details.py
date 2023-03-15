@@ -200,6 +200,6 @@ class MatchOverview(MatchMessage):
                 self._add_enemy_lineup()
             self._add_general_information()
         self.embed.set_footer(
-            text=_("Different scouting website? Use /settings to change it."))
+            text=_("If there are outdated scouting links just use /match again after 15 minutes."))
 
         return self.embed
