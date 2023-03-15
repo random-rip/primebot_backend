@@ -35,7 +35,7 @@ def timestamp_to_datetime(x):
 
 
 def current_match_day():
-    current_date = timezone.now().astimezone(pytz.timezone("Europe/Berlin"))
+    current_date = timezone.now().astimezone(pytz.timezone(settings.TIME_ZONE))
     return count_weeks(settings.CURRENT_SPLIT_START, current_date)
 
 
