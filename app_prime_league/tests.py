@@ -45,6 +45,7 @@ class MatchesTest(TestCase):
     @mock.patch('utils.utils.settings')
     def test_calibration(self, settings, timezone_mock):
         settings.CURRENT_SPLIT_START = self.split_start
+        settings.TIME_ZONE = "Europe/Berlin"
         timezone_mock.now = mock.Mock(return_value=datetime(2022, 5, 28))
         result = list(self.team_a.get_obvious_matches_based_on_stage(1).values_list("match_id", flat=True))
         self.assertListEqual([1], result)
@@ -53,6 +54,7 @@ class MatchesTest(TestCase):
     @mock.patch('utils.utils.settings')
     def test_week_between_calibration_and_group_stage(self, settings, timezone_mock):
         settings.CURRENT_SPLIT_START = self.split_start
+        settings.TIME_ZONE = "Europe/Berlin"
         timezone_mock.now = mock.Mock(return_value=datetime(2022, 5, 30))
         result = list(self.team_a.get_obvious_matches_based_on_stage(1).values_list("match_id", flat=True))
         self.assertListEqual([10], result)
@@ -81,6 +83,7 @@ class MatchesTest(TestCase):
     @mock.patch('utils.utils.settings')
     def test_group_stage(self, settings, timezone_mock):
         settings.CURRENT_SPLIT_START = self.split_start
+        settings.TIME_ZONE = "Europe/Berlin"
         timezone_mock.now = mock.Mock(return_value=datetime(2022, 7, 25))
         result = list(self.team_a.get_obvious_matches_based_on_stage(99).values_list("match_id", flat=True))
         self.assertListEqual([100, 200, 300], result)
@@ -89,6 +92,7 @@ class MatchesTest(TestCase):
     @mock.patch('utils.utils.settings')
     def test_no_playoffs(self, settings, timezone_mock):
         settings.CURRENT_SPLIT_START = self.split_start
+        settings.TIME_ZONE = "Europe/Berlin"
         timezone_mock.now = mock.Mock(return_value=datetime(2022, 8, 1))
         result = list(self.team_a.get_obvious_matches_based_on_stage(1).values_list("match_id", flat=True))
         self.assertListEqual([10], result)
@@ -97,6 +101,7 @@ class MatchesTest(TestCase):
     @mock.patch('utils.utils.settings')
     def test_playoffs(self, settings, timezone_mock):
         settings.CURRENT_SPLIT_START = self.split_start
+        settings.TIME_ZONE = "Europe/Berlin"
         timezone_mock.now = mock.Mock(return_value=datetime(2022, 8, 1))
         # Playoffs
         Match.objects.create(match_id=1000, match_day=Match.MATCH_DAY_PLAYOFF, match_type=Match.MATCH_TYPE_PLAYOFF,

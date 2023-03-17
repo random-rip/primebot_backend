@@ -14,6 +14,7 @@ class MatchDayTest(TestCase):
     @mock.patch('utils.utils.settings')
     def test_current(self, settings, timezone_mock):
         settings.CURRENT_SPLIT_START = datetime(2022, 6, 6).astimezone(pytz.timezone("Europe/Berlin"))
+        settings.TIME_ZONE = "Europe/Berlin"
         timezone_mock.now = mock.Mock(return_value=datetime(2022, 8, 2))
         match_day = current_match_day()
         self.assertEqual(9, match_day)
