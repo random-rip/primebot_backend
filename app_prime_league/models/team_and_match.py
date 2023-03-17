@@ -5,9 +5,9 @@ from django.utils.translation import gettext_lazy as _
 
 from app_prime_league.model_manager import MatchManager, PlayerManager
 from app_prime_league.model_manager import TeamManager
-from .scouting_website import ScoutingWebsite
-from .player import Player
 from utils.utils import current_match_day
+from .player import Player
+from .scouting_website import ScoutingWebsite
 
 
 class Team(models.Model):
@@ -150,6 +150,7 @@ class Match(models.Model):
     enemy_team = models.ForeignKey(Team, on_delete=models.SET_NULL, related_name="matches_as_enemy_team", null=True)
     team_made_latest_suggestion = models.BooleanField(null=True, blank=True)
     match_begin_confirmed = models.BooleanField(default=False, blank=True)
+    datetime_until_auto_confirmation = models.DateTimeField(null=True, blank=True)
     has_side_choice = models.BooleanField()  # Team has side choice in first game
     begin = models.DateTimeField(null=True)
     enemy_lineup = models.ManyToManyField(Player, related_name="matches_as_enemy")
@@ -186,15 +187,17 @@ class Match(models.Model):
         self.team = tmd.team
         self.begin = tmd.begin
         self.match_begin_confirmed = tmd.match_begin_confirmed
+        self.datetime_until_auto_confirmation = tmd.datetime_until_auto_confirmation
         self.closed = tmd.closed
         self.result = tmd.result
         self.has_side_choice = tmd.has_side_choice
         self.save()
 
-    def update_match_begin(self, gmd):
-        self.begin = gmd.begin
-        self.match_begin_confirmed = gmd.match_begin_confirmed
-        self.save()
+    def update_match_begin(self, tmd):
+        self.begin = tmd.begin
+        self.match_begin_confirmed = tmd.match_begin_confirmed
+        self.datetime_until_auto_confirmation = tmd.datetime_until_auto_confirmation
+        self.save(update_fields=["begin","match_begin_confirmed", "datetime_until_auto_confirmation"])
 
     def update_latest_suggestions(self, md):
         if md.latest_suggestions is not None:

@@ -34,10 +34,6 @@ class DiscordMessageTests(TestCase):
                     "123456789) für [Spieltag 1](https://www.primeleague.gg/de/leagues/"
                     "matches/1#comment:123456789) gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2).")
 
-        # print("Result:")
-        # print(result)
-        # print("Expected:")
-        # print(expected)
         self.assertEqual(result, expected, )
 
     def test_datetime_format(self):

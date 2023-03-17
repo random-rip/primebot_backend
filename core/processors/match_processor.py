@@ -1,4 +1,6 @@
 from abc import abstractmethod
+from datetime import datetime, timedelta
+from typing import Union
 
 from core.parsing.logs import BaseLog, LogSchedulingConfirmation, LogSchedulingAutoConfirmation, LogChangeTime
 from core.providers.prime_league import PrimeLeagueProvider
@@ -57,6 +59,14 @@ class __MatchDataMethods:
 
     @abstractmethod
     def has_side_choice(self):
+        pass
+
+    @abstractmethod
+    def get_match_begin_confirmed(self):
+        pass
+
+    @abstractmethod
+    def get_datetime_until_auto_confirmation(self):
         pass
 
 
@@ -177,7 +187,7 @@ class MatchDataProcessor(__MatchDataMethods, ):
             return None
         return timestamp_to_datetime(timestamp)
 
-    def get_match_begin_confirmed(self):
+    def get_match_begin_confirmed(self) -> bool:
         """
         If this is 0, it means that an agreement was already made, so replying is not required anymore.
 
@@ -185,6 +195,17 @@ class MatchDataProcessor(__MatchDataMethods, ):
 
         """
         return self.data_match.get("match_scheduling_time", None) == 0
+
+    def get_datetime_until_auto_confirmation(self) -> Union[None, datetime]:
+        """
+        Returns the time a team has until the suggestion is auto confirmed or None if suggestion is already confirmed.
+        """
+        hours_until_auto_confirm = self.data_match.get("match_scheduling_time", None)
+        if hours_until_auto_confirm in [0, None]:
+            return None
+        suggestion_made_at = self.data_match.get("match_scheduling_suggest_time")
+        dt = timestamp_to_datetime(suggestion_made_at) + timedelta(hours=hours_until_auto_confirm)
+        return dt
 
     def get_latest_match_begin_log(self):
         """
