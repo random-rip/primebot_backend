@@ -78,6 +78,7 @@ def create_match_and_enemy_team(team, match_id, ):
         "begin": tmd.begin,
         "team_made_latest_suggestion": tmd.team_made_latest_suggestion,
         "match_begin_confirmed": tmd.match_begin_confirmed,
+        "datetime_until_auto_confirmation": tmd.datetime_until_auto_confirmation,
         "closed": tmd.closed,
         "result": tmd.result,
         "has_side_choice": tmd.has_side_choice,

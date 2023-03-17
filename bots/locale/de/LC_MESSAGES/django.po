@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-15 17:46+0100\n"
+"POT-Creation-Date: 2023-03-17 17:16+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -315,38 +315,40 @@ msgstr[1] ""
 "Neue Terminvorschläge von [{enemy_team_tag}]({enemy_team_url}) für "
 "[{match_day}]({match_url}):"
 
-#: .\bots\messages\helpers.py:12
+#: .\bots\messages\helpers.py:13
 #, python-brace-format
 msgid "playoff match {match_day}"
 msgstr "Playoff Match {match_day}"
 
-#: .\bots\messages\helpers.py:14
+#: .\bots\messages\helpers.py:15
 #, python-brace-format
 msgid "tiebreaker match {match_day}"
 msgstr "Tiebreaker Match {match_day}"
 
-#: .\bots\messages\helpers.py:16
+#: .\bots\messages\helpers.py:17
 #, python-brace-format
 msgid "match {match_day}"
 msgstr "Match {match_day}"
 
-#: .\bots\messages\helpers.py:18
+#: .\bots\messages\helpers.py:19
 #, python-brace-format
 msgid "gameday {match_day}"
 msgstr "Spieltag {match_day}"
 
-#: .\bots\messages\helpers.py:28
+#: .\bots\messages\helpers.py:29
 #, python-brace-format
 msgid "No dates proposed. Alternative date: {time}"
 msgstr "Keine Terminvorschläge. Ausweichtermin: {time}"
 
-#: .\bots\messages\helpers.py:33
-msgid "Dates proposed by the opponent are open!"
-msgstr "Offene Terminvorschläge vom Gegner!"
-
 #: .\bots\messages\helpers.py:35
-msgid "Dates proposed by you are open."
-msgstr "Offene Terminvorschläge von euch."
+#, python-brace-format
+msgid "Dates proposed by you are open. Left time: {left_time}"
+msgstr "Offene Terminvorschläge von euch. Verbleibende Zeit: {left_time}"
+
+#: .\bots\messages\helpers.py:39
+#, python-brace-format
+msgid "Dates proposed by the opponent are open! Left time: {left_time}"
+msgstr "Offene Terminvorschläge vom Gegner! Verbleibende Zeit: {left_time}"
 
 #: .\bots\messages\match_details.py:16
 msgid "Match overview"
@@ -435,7 +437,9 @@ msgstr "[gegen {enemy_team_name}]({match_url})"
 #: .\bots\messages\match_details.py:203
 msgid ""
 "If there are outdated scouting links just use /match again after 15 minutes."
-msgstr "Wenn es veraltete Scouting-Links gibt, verwende einfach /match nochmal nach 15 Minuten."
+msgstr ""
+"Wenn es veraltete Scouting-Links gibt, verwende einfach /match nochmal nach "
+"15 Minuten."
 
 #: .\bots\messages\matches_overview.py:26
 msgid "New matches"
@@ -456,7 +460,9 @@ msgstr "[Aktuelles Lineup]({lineup_link})"
 
 #: .\bots\messages\matches_overview.py:74
 msgid "If there are outdated scouting links just use /matches again."
-msgstr "Wenn es veraltete Scouting-Links gibt, verwende einfach /matches nochmal nach 15 Minuten."
+msgstr ""
+"Wenn es veraltete Scouting-Links gibt, verwende einfach /matches nochmal "
+"nach 15 Minuten."
 
 #: .\bots\messages\new_match.py:20
 msgid "New match"
