@@ -226,7 +226,7 @@ Q_CLUSTER = {
     'timeout': 60 * 2,  # maximum seconds for a task
     'retry': 60 * 2 + 10,  # Seconds after a failed task will be queued again
     'max_attempts': 3,  # Maximum retry attempts for failed tasks
-    'save_limit': 0,  # Limits the amount of successful tasks save to Django
+    'save_limit': 10_000,  # Limits the amount of successful tasks save to Django
     "ack_failures": False,
     "catch_up": False,
     "sync": DEBUG,
