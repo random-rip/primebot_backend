@@ -44,7 +44,7 @@ async def set_role(ctx, role: typing.Optional[discord.Role], ):
 @check_channel_in_use()
 @translation_override
 async def team_settings(ctx, ):
-    async with ctx.typing():
+    async with ctx.typing(ephemeral=True):
         channel_id = ctx.message.channel.id
         team = await DiscordHelper.get_registered_team_by_channel_id(channel_id=channel_id)
         maker = await sync_to_async(SettingsMaker)(team=team)
