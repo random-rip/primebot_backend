@@ -200,11 +200,11 @@ class MatchDataProcessor(__MatchDataMethods, ):
         """
         Returns the time a team has until the suggestion is auto confirmed or None if suggestion is already confirmed.
         """
-        match_scheduling_mode = self.data_match.get("match_scheduling_mode", None)
+        match_scheduling_mode = self.data_match.get("match_scheduling_mode", None)  # fixed, free, regulated
         hours_until_auto_confirm = self.data_match.get("match_scheduling_time", None)
         suggestion_made_at = self.data_match.get("match_scheduling_suggest_time", None)
         if (
-                match_scheduling_mode in ["fixed", None] or
+                match_scheduling_mode in ["fixed", "free", None] or
                 hours_until_auto_confirm in [0, None] or
                 suggestion_made_at in [0, None]
         ):
