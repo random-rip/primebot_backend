@@ -42,16 +42,19 @@ class GitHub:
         ret = {
             "version": None,
             "released_at": None,
+            "body": None,
         }
         if cached:
             ret["version"] = cached[0].get("tag_name", None)
             ret["released_at"] = cached[0].get("published_at", None)
+            ret["body"] = cached[0].get("body", None)
             return ret
         try:
             data = cls.get_json(cls.RELEASES)
             cache.set(cls.RELEASES_CACHE_KEY, data, cls.CACHE_DURATION)
             ret["version"] = data[0].get("tag_name", None)
             ret["released_at"] = data[0].get("published_at", None)
+            ret["body"] = data[0].get("body", None)
             return ret
         except Exception:
             return ret

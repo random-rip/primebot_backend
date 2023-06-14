@@ -10,9 +10,7 @@ Hallo {team.name},
 
 🔥 Version {version} ist draußen 🔥
 
-1️⃣ Es wurde eine eigene API für euch veröffentlicht. Aktuell sind Teams und Matches (inklusive Spieler) implementiert. Die API Dokumentation findet ihr unter https://github.com/random-rip/primebot\_backend/blob/master/openapi.yml .
-Gebt uns gerne Feedback dazu, was ihr davon haltet und was für Daten ihr noch gerne möchtet.
-2️⃣ Benachrichtigungen werden nun mehrmals versucht zu senden, wenn diese aus Downtimegründen von Discord oder Telegram nicht bei euch ankommen.
+{body}
 
 Alle weiteren Änderungen findet ihr auf unserer Website: https://www.primebot.me/information/changelog
 
@@ -24,6 +22,7 @@ Sternige Grüße
 class Command(BaseCommand):
     def handle(self, *args, **options):
         version = GitHub.latest_version()["version"]
+        body = GitHub.latest_version()["body"]
         teams = Team.objects.get_registered_teams().filter()
         for team in teams:
             try:
@@ -33,6 +32,7 @@ class Command(BaseCommand):
                     msg_class=NotificationToTeamMessage,
                     custom_message=message,
                     version=version,
+                    body=body,
                 )
             except Exception as e:
                 print(e)
