@@ -392,10 +392,48 @@ class DatetimeUntilAutoConfirmationTest(TestCase):
             "match": {
                 "match_scheduling_time": 48,
                 "match_scheduling_suggest_time": 1643040000,
+                "match_scheduling_mode": "schedule",
+                "match_scheduling_start": 1643030000,
             }
         }
         processor = MatchDataProcessor(1, 1)
         self.assertEqual(datetime(2022, 1, 26, 16, tzinfo=pytz.utc), processor.get_datetime_until_auto_confirmation(), )
+
+    @patch.object(PrimeLeagueProvider, 'get_match')
+    def test_scheduling_mode_fixed(self, get_match):
+        get_match.return_value = {
+            "match": {
+                "match_scheduling_mode": "fixed",
+            }
+        }
+        processor = MatchDataProcessor(1, 1)
+        self.assertIsNone(processor.get_datetime_until_auto_confirmation())
+
+    @patch.object(PrimeLeagueProvider, 'get_match')
+    def test_scheduling_start_earlier(self, get_match):
+        get_match.return_value = {
+            "match": {
+                "match_scheduling_time": 48,
+                "match_scheduling_suggest_time": 1643040000,
+                "match_scheduling_mode": "regulated",
+                "match_scheduling_start": 1642863600,
+            }
+        }
+        processor = MatchDataProcessor(1, 1)
+        self.assertEqual(datetime(2022, 1, 26, 16, tzinfo=pytz.utc), processor.get_datetime_until_auto_confirmation(), )
+
+    @patch.object(PrimeLeagueProvider, 'get_match')
+    def test_scheduling_start_earlier(self, get_match):
+        get_match.return_value = {
+            "match": {
+                "match_scheduling_time": 48,
+                "match_scheduling_suggest_time": 1643040000,
+                "match_scheduling_mode": "regulated",
+                "match_scheduling_start": 1643209200,
+            }
+        }
+        processor = MatchDataProcessor(1, 1)
+        self.assertEqual(datetime(2022, 1, 28, 15, tzinfo=pytz.utc), processor.get_datetime_until_auto_confirmation(), )
 
 
 class EnemyTeamIDTest(TestCase):
