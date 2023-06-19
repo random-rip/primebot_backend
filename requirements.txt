@@ -20,3 +20,4 @@ pymongo==4.3.3
 croniter
 drf-spectacular==0.26
 django-filter==23.2
+django-debug-toolbar
