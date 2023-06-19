@@ -18,3 +18,4 @@ django-admin-interface==0.19.1
 django-q2==1.4.11
 pymongo==4.3.3
 croniter
+drf-spectacular==0.26

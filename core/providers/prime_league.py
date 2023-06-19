@@ -6,8 +6,12 @@ from rest_framework import status
 
 from core.api import PrimeLeagueAPI
 from utils.exceptions import (
-    TeamWebsite404Exception, PrimeLeagueConnectionException, PrimeLeagueParseException,
-    Match404Exception, UnauthorizedException)
+    Match404Exception,
+    PrimeLeagueConnectionException,
+    PrimeLeagueParseException,
+    TeamWebsite404Exception,
+    UnauthorizedException,
+)
 
 LOCAL = settings.FILES_FROM_STORAGE
 SAVE_REQUEST = settings.DEBUG and not LOCAL
@@ -15,7 +19,7 @@ if SAVE_REQUEST:
     print("Consider using the local file system in development to reduce the number of requests.")
 if LOCAL:
     print(
-        "\tYou are currently serving files over the local storage. Cool!"
+        "\tYou are currently serving prime league requests through the local file storage. Cool!"
         "\t(To change this behaviour set FILES_FROM_STORAGE='False' in your .env)"
     )
 
@@ -25,6 +29,7 @@ class PrimeLeagueProvider:
     Providing JSON Responses from api or file system.
     If settings.FILES_FROM_STORAGE is True, the crawler is using text documents from storage folder.
     """
+
     __TEAM_FILE_PATTERN = "team_%s.json"
     __MATCH_FILE_PATTERN = "match_%s.json"
     api = PrimeLeagueAPI
@@ -115,7 +120,7 @@ class PrimeLeagueProvider:
             with open(file_path, 'r', encoding='utf8') as f:
                 text = f.read()
         except FileNotFoundError:
-            raise TeamWebsite404Exception(msg=f"This team was not found on filesystem.")
+            raise TeamWebsite404Exception(msg="This team was not found on filesystem.")
         return json.loads(text)
 
     @classmethod

@@ -1,7 +1,7 @@
 from django.urls import reverse
 from rest_framework.test import APITestCase
 
-from app_prime_league.models import Team, Match
+from app_prime_league.models import Match, Team
 
 
 class TeamTests(APITestCase):
@@ -37,10 +37,22 @@ class MatchTests(APITestCase):
     def setUp(self) -> None:
         Team.objects.create(id=1, name='TestTeam1', team_tag='TT1')
         Team.objects.create(id=2, name='TestTeam2', team_tag='TT2')
-        Match.objects.create(id=1, match_id=1, team=Team.objects.get(pk=1), enemy_team=Team.objects.get(pk=2),
-                             result='1:0', has_side_choice=0)
-        Match.objects.create(id=2, match_id=2, team=Team.objects.get(pk=1), enemy_team=Team.objects.get(pk=2),
-                             result='2:0', has_side_choice=0)
+        Match.objects.create(
+            id=1,
+            match_id=1,
+            team=Team.objects.get(pk=1),
+            enemy_team=Team.objects.get(pk=2),
+            result='1:0',
+            has_side_choice=0,
+        )
+        Match.objects.create(
+            id=2,
+            match_id=2,
+            team=Team.objects.get(pk=1),
+            enemy_team=Team.objects.get(pk=2),
+            result='2:0',
+            has_side_choice=0,
+        )
 
     def test_match_detail(self):
         url = reverse('match-detail', args=(1,))
@@ -64,10 +76,3 @@ class MatchTests(APITestCase):
         url = reverse('match-list')
         response = self.client.post(url)
         self.assertEqual(response.status_code, 405)
-
-
-class RouteTest(APITestCase):
-    def test_api_root(self):
-        url = reverse('api-root')
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)

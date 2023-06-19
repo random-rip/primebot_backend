@@ -1,11 +1,12 @@
+from django.conf import settings
 from django.db import models
 from django.db.models import F
 from django.template.defaultfilters import truncatechars
 from django.utils.translation import gettext_lazy as _
 
-from app_prime_league.model_manager import MatchManager, PlayerManager
-from app_prime_league.model_manager import TeamManager
+from app_prime_league.model_manager import MatchManager, PlayerManager, TeamManager
 from utils.utils import current_match_day
+
 from .player import Player
 from .scouting_website import ScoutingWebsite
 
@@ -15,17 +16,60 @@ class Team(models.Model):
         GERMAN = "de", _("german")
         ENGLISH = "en", _("english")
 
-    name = models.CharField(max_length=100, null=True, blank=True, )
-    team_tag = models.CharField(max_length=100, null=True, blank=True, )
-    division = models.CharField(max_length=20, null=True, blank=True, )
-    telegram_id = models.CharField(max_length=50, null=True, unique=True, blank=True, )
-    discord_webhook_id = models.CharField(max_length=50, null=True, unique=True, blank=True, )
-    discord_webhook_token = models.CharField(max_length=100, null=True, blank=True, )
-    discord_channel_id = models.CharField(max_length=50, unique=True, null=True, blank=True, )
-    discord_role_id = models.CharField(max_length=50, null=True, blank=True, )
-    logo_url = models.URLField(max_length=1000, null=True, blank=True, )
-    scouting_website = models.ForeignKey("app_prime_league.ScoutingWebsite", on_delete=models.SET_NULL, null=True,
-                                         blank=True, )
+    name = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+    )
+    team_tag = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+    )
+    division = models.CharField(
+        max_length=20,
+        null=True,
+        blank=True,
+    )
+    telegram_id = models.CharField(
+        max_length=50,
+        null=True,
+        unique=True,
+        blank=True,
+    )
+    discord_webhook_id = models.CharField(
+        max_length=50,
+        null=True,
+        unique=True,
+        blank=True,
+    )
+    discord_webhook_token = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+    )
+    discord_channel_id = models.CharField(
+        max_length=50,
+        unique=True,
+        null=True,
+        blank=True,
+    )
+    discord_role_id = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+    )
+    logo_url = models.URLField(
+        max_length=1000,
+        null=True,
+        blank=True,
+    )
+    scouting_website = models.ForeignKey(
+        "app_prime_league.ScoutingWebsite",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
     language = models.CharField(max_length=2, choices=Languages.choices, default=Languages.GERMAN)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -67,7 +111,8 @@ class Team(models.Model):
         self.discord_webhook_token = None
         self.discord_role_id = None
         self.save(
-            update_fields=["discord_webhook_id", "discord_channel_id", "discord_webhook_token", "discord_role_id"])
+            update_fields=["discord_webhook_id", "discord_channel_id", "discord_webhook_token", "discord_role_id"]
+        )
         self.soft_delete()
 
     def soft_delete(self):
@@ -127,6 +172,10 @@ class Team(models.Model):
         for key, value in kwargs.items():
             setattr(self, key, value)
         self.save()
+
+    @property
+    def prime_league_link(self) -> str:
+        return f"{settings.TEAM_URI}{self.id}"
 
 
 class Match(models.Model):
@@ -197,7 +246,7 @@ class Match(models.Model):
         self.begin = tmd.begin
         self.match_begin_confirmed = tmd.match_begin_confirmed
         self.datetime_until_auto_confirmation = tmd.datetime_until_auto_confirmation
-        self.save(update_fields=["begin","match_begin_confirmed", "datetime_until_auto_confirmation"])
+        self.save(update_fields=["begin", "match_begin_confirmed", "datetime_until_auto_confirmation"])
 
     def update_latest_suggestions(self, md):
         if md.latest_suggestions is not None:
@@ -244,6 +293,10 @@ class Match(models.Model):
             team_tag=_("Deleted Team/TBD"),
         )
 
+    @property
+    def prime_league_link(self) -> str:
+        return f"{settings.MATCH_URI}{self.match_id}"
+
 
 class Suggestion(models.Model):
     begin = models.DateTimeField()
@@ -273,7 +326,9 @@ class Comment(models.Model):
 
     class Meta:
         db_table = "comments"
-        unique_together = [("id", "match"), ]
+        unique_together = [
+            ("id", "match"),
+        ]
         verbose_name = "Matchkommentar"
         verbose_name_plural = "Matchkommentare"
 
