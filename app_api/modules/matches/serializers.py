@@ -4,7 +4,7 @@ from app_api.common.serializers import PlayerSerializer
 from app_prime_league.models import Match, Team
 
 
-class MinimalTeamSerializer(serializers.ModelSerializer):
+class TeamForMatchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Team
         fields = [
@@ -17,8 +17,8 @@ class MinimalTeamSerializer(serializers.ModelSerializer):
 
 
 class MatchSerializer(serializers.ModelSerializer):
-    team = MinimalTeamSerializer()
-    enemy_team = MinimalTeamSerializer()
+    team = TeamForMatchSerializer()
+    enemy_team = TeamForMatchSerializer()
 
     class Meta:
         model = Match
@@ -33,8 +33,8 @@ class MatchSerializer(serializers.ModelSerializer):
 
 
 class MatchDetailSerializer(serializers.ModelSerializer):
-    team = MinimalTeamSerializer()
-    enemy_team = MinimalTeamSerializer()
+    team = TeamForMatchSerializer()
+    enemy_team = TeamForMatchSerializer()
     team_lineup = PlayerSerializer(many=True)
     enemy_lineup = PlayerSerializer(many=True)
 

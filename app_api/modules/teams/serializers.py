@@ -10,6 +10,7 @@ class EnemyTeamSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             "name",
+            "prime_league_link",
             'team_tag',
             "updated_at",
         ]
@@ -24,6 +25,7 @@ class TeamSerializer(serializers.ModelSerializer):
             'id',
             "name",
             'team_tag',
+            "prime_league_link",
             'matches_count',
             "updated_at",
         ]
