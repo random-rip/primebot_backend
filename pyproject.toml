@@ -1,0 +1,13 @@
+[tool.black]
+line-length = 120
+target-version = ['py39']
+skip-string-normalization = true
+exclude = 'migrations/'
+
+[tool.isort]
+line_length = 120
+forced_separate = 'tests'
+skip = '.venv'
+skip_glob = '**/migrations/*.py'
+profile = "black"
+multi_line_output=3

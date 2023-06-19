@@ -3,6 +3,7 @@ import subprocess
 
 import requests
 from django.core.cache import cache
+from drf_spectacular.utils import extend_schema
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -25,8 +26,7 @@ class GitHub:
 
     @classmethod
     def releases(cls):
-
-        cached = cache.get(cls.RELEASES_CACHE_KEY, )
+        cached = cache.get(cls.RELEASES_CACHE_KEY)
         if cached:
             return cached
         try:
@@ -38,7 +38,7 @@ class GitHub:
 
     @classmethod
     def latest_version(cls) -> dict:
-        cached = cache.get(cls.RELEASES_CACHE_KEY, )
+        cached = cache.get(cls.RELEASES_CACHE_KEY)
         ret = {
             "version": None,
             "released_at": None,
@@ -60,19 +60,15 @@ class GitHub:
             return ret
 
 
+@extend_schema(exclude=True)
 class ChangelogView(APIView):
     authentication_classes = []
     permission_classes = []
 
-    def get(self, request, ):
+    def get(self, request):
         github_data = GitHub.releases()
         changelogs = [
-            {
-                "version": x["tag_name"],
-                "released_at": x["published_at"],
-                "notes": x["body"]
-            }
-            for x in github_data
+            {"version": x["tag_name"], "released_at": x["published_at"], "notes": x["body"]} for x in github_data
         ]
         data = {
             "changelogs": changelogs,
@@ -80,11 +76,12 @@ class ChangelogView(APIView):
         return Response(data)
 
 
+@extend_schema(exclude=True)
 class StatusView(APIView):
     authentication_classes = []
     permission_classes = []
 
-    def get(self, request, ):
+    def get(self, request):
         logger.info("Request PrimeBot Website")
         data = {
             "latest": GitHub.latest_version(),
@@ -99,7 +96,7 @@ class StatusView(APIView):
     def _get_prime_league_status(self):
         cache_key = "prime_league_status"
         cache_duration = 60
-        cached = cache.get(cache_key, )
+        cached = cache.get(cache_key)
         if cached:
             return cached
         try:
@@ -113,7 +110,7 @@ class StatusView(APIView):
     def _get_discord_bot_status(self):
         cache_key = "discord_bot_status"
         cache_duration = 60
-        cached = cache.get(cache_key, )
+        cached = cache.get(cache_key)
         if cached:
             return cached
         try:
@@ -129,7 +126,7 @@ class StatusView(APIView):
     def _get_telegram_bot_status(self):
         cache_key = "telegram_bot_status"
         cache_duration = 60
-        cached = cache.get(cache_key, )
+        cached = cache.get(cache_key)
         if cached:
             return cached
         try:
