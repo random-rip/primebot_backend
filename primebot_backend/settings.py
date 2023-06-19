@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     "django_q",
     'drf_spectacular',
     "debug_toolbar",
+    'django_filters',
     # own
     'app_prime_league',
     'core',
@@ -253,6 +254,8 @@ REST_FRAMEWORK = {
         'matches': '1000/day',
     },
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    "PAGE_SIZE": 100,
 }
 
 # OPEN API SPECTACULAR

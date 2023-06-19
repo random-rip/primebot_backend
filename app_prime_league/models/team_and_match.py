@@ -16,54 +16,15 @@ class Team(models.Model):
         GERMAN = "de", _("german")
         ENGLISH = "en", _("english")
 
-    name = models.CharField(
-        max_length=100,
-        null=True,
-        blank=True,
-    )
-    team_tag = models.CharField(
-        max_length=100,
-        null=True,
-        blank=True,
-    )
-    division = models.CharField(
-        max_length=20,
-        null=True,
-        blank=True,
-    )
-    telegram_id = models.CharField(
-        max_length=50,
-        null=True,
-        unique=True,
-        blank=True,
-    )
-    discord_webhook_id = models.CharField(
-        max_length=50,
-        null=True,
-        unique=True,
-        blank=True,
-    )
-    discord_webhook_token = models.CharField(
-        max_length=100,
-        null=True,
-        blank=True,
-    )
-    discord_channel_id = models.CharField(
-        max_length=50,
-        unique=True,
-        null=True,
-        blank=True,
-    )
-    discord_role_id = models.CharField(
-        max_length=50,
-        null=True,
-        blank=True,
-    )
-    logo_url = models.URLField(
-        max_length=1000,
-        null=True,
-        blank=True,
-    )
+    name = models.CharField(max_length=100, null=True, blank=True)
+    team_tag = models.CharField(max_length=100, null=True, blank=True)
+    division = models.CharField(max_length=20, null=True, blank=True)
+    telegram_id = models.CharField(max_length=50, null=True, unique=True, blank=True)
+    discord_webhook_id = models.CharField(max_length=50, null=True, unique=True, blank=True)
+    discord_webhook_token = models.CharField(max_length=100, null=True, blank=True)
+    discord_channel_id = models.CharField(max_length=50, unique=True, null=True, blank=True)
+    discord_role_id = models.CharField(max_length=50, null=True, blank=True)
+    logo_url = models.URLField(max_length=1000, null=True, blank=True)
     scouting_website = models.ForeignKey(
         "app_prime_league.ScoutingWebsite",
         on_delete=models.SET_NULL,

@@ -29,7 +29,7 @@ class TeamSerializer(serializers.ModelSerializer):
         ]
 
 
-class MatchSerializer(serializers.ModelSerializer):
+class MatchForTeamDetailsSerializer(serializers.ModelSerializer):
     enemy_team = EnemyTeamSerializer()
     team_lineup = PlayerSerializer(many=True)
     enemy_lineup = PlayerSerializer(many=True)
@@ -52,7 +52,7 @@ class MatchSerializer(serializers.ModelSerializer):
 
 class TeamDetailSerializer(serializers.ModelSerializer):
     players = PlayerSerializer(many=True, source="player_set")
-    matches = MatchSerializer(many=True, source="matches_against")
+    matches = MatchForTeamDetailsSerializer(many=True, source="matches_against")
 
     class Meta:
         model = Team

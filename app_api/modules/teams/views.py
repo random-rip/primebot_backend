@@ -1,5 +1,7 @@
 from django.db.models import Count
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
+from rest_framework.filters import OrderingFilter, SearchFilter
 
 from app_prime_league.models import Team
 
@@ -10,7 +12,19 @@ class TeamViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Team.objects.all()
     serializer_class = TeamSerializer
     detail_serializer_class = TeamDetailSerializer
-
+    filter_backends = (
+        DjangoFilterBackend,
+        SearchFilter,
+        OrderingFilter,
+    )
+    filterset_fields = [
+        "division",
+        "name",
+        "team_tag",
+    ]
+    search_fields = ['name', 'team_tag', "division"]
+    ordering = ['id']
+    ordering_fields = ['id', 'name', "team_tag", "division", "updated_at"]
     throttle_scope = 'teams'
 
     def get_queryset(self):

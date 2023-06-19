@@ -19,8 +19,8 @@ class TeamTests(APITestCase):
         url = reverse('team-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data[0]['team_tag'], 'TT1')
-        self.assertEqual(response.data[1]['team_tag'], 'TT2')
+        self.assertEqual(response.data["results"][0]['team_tag'], 'TT1')
+        self.assertEqual(response.data["results"][1]['team_tag'], 'TT2')
 
     def test_team_detail_read_only(self):
         url = reverse('team-detail', args=(1,))
@@ -64,8 +64,8 @@ class MatchTests(APITestCase):
         url = reverse('match-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data[0]['result'], '1:0')
-        self.assertEqual(response.data[1]['result'], '2:0')
+        self.assertEqual(response.data["results"][0]['result'], '1:0')
+        self.assertEqual(response.data["results"][1]['result'], '2:0')
 
     def test_match_detail_read_only(self):
         url = reverse('match-detail', args=(1,))
