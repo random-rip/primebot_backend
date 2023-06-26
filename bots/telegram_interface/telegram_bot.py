@@ -3,9 +3,9 @@ import sys
 import traceback
 
 from django.conf import settings
+from telegram.error import BadRequest, Unauthorized
 from telegram.ext import CallbackQueryHandler, CommandHandler, ConversationHandler, MessageHandler, Updater
 from telegram.ext.filters import Filters
-from telepot.exception import BotWasBlockedError, BotWasKickedError, TelegramError
 
 from bots import send_message
 from bots.base.bot_interface import BotInterface
@@ -82,12 +82,21 @@ class TelegramBot(BotInterface):
         """
         try:
             send_message(msg=msg.generate_message(), chat_id=team.telegram_id, raise_again=True)
-        except (BotWasKickedError, BotWasBlockedError, TelegramError) as e:
-            if isinstance(e, TelegramError) and not e.description == 'Bad Request: chat not found':
-                notifications_logger.exception(e)
+        except (BadRequest, Unauthorized) as e:
+            if e.message in [
+                "Channel_private",  # Kicked from private Group
+                "Forbidden: bot was kicked from the supergroup chat",  # Unauthorized and Chat deleted
+            ]:
+                team.set_telegram_null()
+                notifications_logger.info(f"Soft deleted Telegram {team}'")
+                return
+            if e.message in [
+                "Not enough rights to send text messages to the chat",  # Missing permissions
+            ]:
+                notifications_logger.exception(f"Missing permissions in Telegram chat of {team}.", e)
                 raise e
-            team.set_telegram_null()
-            notifications_logger.info(f"Soft deleted Telegram {team}'")
+            notifications_logger.exception(f"Unknown error while sending message in Telegram chat of {team}.", e)
+
             return
         except Exception as e:
             notifications_logger.exception(f"Could not send Telegram Message {msg.__class__.__name__} to {team}.", e)
