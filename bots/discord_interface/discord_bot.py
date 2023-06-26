@@ -1,7 +1,7 @@
 import logging
 
-from discord import NotFound, Message, SyncWebhook, Intents, Object
-from discord.ext.commands import errors, NoPrivateMessage, Bot
+from discord import Intents, Message, NotFound, Object, SyncWebhook
+from discord.ext.commands import Bot, NoPrivateMessage, errors
 from django.conf import settings
 from django.utils.translation import gettext as _
 
@@ -26,7 +26,9 @@ class DiscordBot(BotInterface):
             raise VariableNotSetException("DISCORD_BOT_KEY")
         if not settings.DISCORD_APP_CLIENT_ID:
             raise VariableNotSetException("DISCORD_APP_CLIENT_ID")
-        super().__init__(bot=_DiscordBotV2, )
+        super().__init__(
+            bot=_DiscordBotV2,
+        )
 
     def _initialize(self):
         self.bot.remove_command("help")
@@ -47,12 +49,11 @@ class DiscordBot(BotInterface):
         )
         try:
             webhook.send(**DiscordHelper.create_msg_arguments(discord_role_id=team.discord_role_id, msg=msg))
-        except NotFound as e:
+        except NotFound:
             team.set_discord_null()
             notifications_logger.info(f"Soft deleted Discord {team}'")
         except Exception as e:
-            notifications_logger.error(
-                f"Could not send Discord Message {msg.__class__.__name__} to {team}")
+            notifications_logger.exception(f"Could not send Discord Message {msg.__class__.__name__} to {team}", e)
             raise e
 
 
@@ -61,17 +62,22 @@ class _DiscordBotV2(Bot):
     discord.py v2.0 bot class
     """
 
-    def __init__(self, ):
+    def __init__(
+        self,
+    ):
         ext_directory = "ext"
-        self.initial_extensions = [f".{ext_directory}.{x}" for x in [
-            "bop",
-            "start",
-            "fix",
-            "delete",
-            "team_settings",
-            "matches",
-            "help",
-        ]]
+        self.initial_extensions = [
+            f".{ext_directory}.{x}"
+            for x in [
+                "bop",
+                "start",
+                "fix",
+                "delete",
+                "team_settings",
+                "matches",
+                "help",
+            ]
+        ]
         super().__init__(
             command_prefix="!",
             intents=Intents.default(),
@@ -82,7 +88,6 @@ class _DiscordBotV2(Bot):
 
     @translation_override
     async def on_command_error(self, ctx, exception: errors.CommandError, /):
-
         # This prevents any commands with local handlers being handled here in on_command_error.
         if hasattr(ctx.command, 'on_error'):
             return
@@ -93,13 +98,17 @@ class _DiscordBotV2(Bot):
 
         if isinstance(exception, ChannelNotInUse):
             return await ctx.send(
-                _("There is currently no team registered in this channel. Use `/start` to register a team."))
+                _("There is currently no team registered in this channel. Use `/start` to register a team.")
+            )
         elif isinstance(exception, NoPrivateMessage):
             return await ctx.send(_("This is a channel command."))
         discord_logger.exception(exception, exc_info=True)
-        return await ctx.send(_(
-            "An unknown error has occurred. Please contact the developers on Discord at {discord_link}."
-        ).format(discord_link=settings.DISCORD_SERVER_LINK), suppress_embeds=True)
+        return await ctx.send(
+            _("An unknown error has occurred. Please contact the developers on Discord at {discord_link}.").format(
+                discord_link=settings.DISCORD_SERVER_LINK
+            ),
+            suppress_embeds=True,
+        )
 
     async def setup_hook(self):
         discord_logger.info("Hook setup...")
@@ -130,6 +139,6 @@ class _DiscordBotV2(Bot):
             self.tree.copy_global_to(guild=guild)
             synced_commands = self.tree.get_commands(guild=guild)
         else:
-            discord_logger.info(f"Debug is false, so commands will be synced globally. This can take up to an hour...")
+            discord_logger.info("Debug is false, so commands will be synced globally. This can take up to an hour...")
             synced_commands = await self.tree.sync()
         discord_logger.info(f"Synced commands: {[x.name for x in synced_commands]}")
