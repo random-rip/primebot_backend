@@ -2,7 +2,7 @@
   <a href="https://www.primebot.me/">
     <picture>
       <img width="200px" alt="PrimeBot Logo" src="./documents/primebot_logo.jpg">
-    </picture>    
+    </picture>
   </a>
 </p>
 <p align="center">
@@ -33,7 +33,7 @@ League.
       <source media="(prefers-color-scheme: dark)"  srcset="./documents/singular_it_dark.png">
       <source media="(prefers-color-scheme: light)" srcset="./documents/singular_it_light.png">
       <img width="500px" alt="singularIT Logo" src="./documents/singular_it_light.png">
-    </picture>    
+    </picture>
   </a>
 </p>
 <p align="center">
@@ -120,7 +120,7 @@ For further information have a look at **Contributing** section at the end of th
 
 - `python manage.py discord_bot` - start Discordbot
 - `python manage.py telegram_bot` - start Telegrambot
-- `python manage.py update_teams` - synchronize teams 
+- `python manage.py update_teams` - synchronize teams
 - `python manage.py update_matches` - synchronize matches
 - `python manage.py weekly_notifications` - start weekly notifications
 - `python manage.py runscript feedback` - start feedback
@@ -160,7 +160,7 @@ the API can be accessed for development. Under ``storage/`` there are sample tea
 the `.env` you have to add
 
 ```
-FILES_FROM_STORAGE="True"
+FILES_FROM_STORAGE=True
 ```
 
 After that the ``providers`` use the filesystem.

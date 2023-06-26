@@ -4,10 +4,10 @@ from django.conf import settings
 from django.utils.translation import gettext as _
 from telegram import ParseMode
 
-from app_prime_league.models import Team, Match
+from app_prime_league.models import Match, Team
 from bots.messages.base import MatchMessage
 from bots.telegram_interface.tg_singleton import send_message_to_devs
-from core.parsing.logs import LogSchedulingAutoConfirmation, LogSchedulingConfirmation, LogChangeTime
+from core.parsing.logs import LogChangeTime, LogSchedulingAutoConfirmation
 from utils.utils import format_datetime
 
 
@@ -45,10 +45,6 @@ class ScheduleConfirmationNotification(MatchMessage):
                 logging.getLogger("notifications").error(msg)
                 send_message_to_devs(msg, parse_mode=ParseMode.MARKDOWN)
 
-            # assert isinstance(
-            #     self.latest_confirmation_log,
-            #     LogSchedulingConfirmation
-            # ) or self.latest_confirmation_log is None
             message = _(
                 "Confirmation of the scheduled date against [{enemy_team_tag}]"
                 "({enemy_team_url}) for [{match_day}]({match_url}):"
