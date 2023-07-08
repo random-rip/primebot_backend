@@ -1,8 +1,10 @@
 import logging
 
 import django
+from discord.utils import escape_markdown as escape_discord_markdown
 from django import db
-from django.utils.translation import ngettext_lazy
+from django.utils.translation import ngettext
+from telegram.utils.helpers import escape_markdown as escape_telegram_markdown
 
 from app_prime_league.models import Team
 
@@ -33,6 +35,16 @@ def mysql_has_gone_away(*args):
 
 
 def format_time_left(hh, mm):
-    hours = ngettext_lazy("%d hr", "%d hrs", hh) % hh
-    minutes = ngettext_lazy("%d min", "%d min", mm) % mm
+    hours = ngettext("%d hr", "%d hrs", hh) % hh
+    minutes = ngettext("%d min", "%d min", mm) % mm
     return f"{hours} {minutes}"
+
+
+def esc_md_t(text: str):
+    """Escape MarkdownV2 for Telegram"""
+    return escape_telegram_markdown(text=text, version=2)
+
+
+def esc_md_d(text: str):
+    """Escape Markdown for Discord"""
+    return escape_discord_markdown(text=text)

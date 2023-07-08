@@ -23,10 +23,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret __key used in production secret!
 SECRET_KEY = env.str('DJANGO_SECRET_KEY', default="")
 FERNET_KEY = env.str("FERNET_SECRET_KEY", default="")
 

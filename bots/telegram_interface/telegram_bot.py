@@ -26,7 +26,7 @@ class TelegramBot(BotInterface):
     def __init__(self):
         if not settings.TELEGRAM_BOT_KEY:
             raise VariableNotSetException("TELEGRAM_BOT_KEY")
-        super().__init__(bot=Updater, bot_config={"token": settings.TELEGRAM_BOT_KEY, "use_context": True})
+        super().__init__(bot=Updater, bot_config={"token": settings.TELEGRAM_BOT_KEY})
 
     def _initialize(self):
         dp = self.bot.dispatcher

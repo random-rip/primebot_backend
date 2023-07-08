@@ -5,7 +5,7 @@ import urllib.request
 import telegram
 from django.conf import settings
 from django.core.files import File
-from telegram import Update, ReplyKeyboardRemove
+from telegram import ParseMode, ReplyKeyboardRemove, Update
 from telegram.ext import CallbackContext, ConversationHandler
 
 from app_api.modules.team_settings.maker import SettingsMaker
@@ -13,7 +13,7 @@ from app_prime_league.models import Team
 from bots.base.bop import GIFinator
 from bots.messages import MatchesOverview
 from bots.telegram_interface.validation_messages import channel_not_registered
-from bots.utils import mysql_has_gone_away_decorator
+from bots.utils import esc_md_t, mysql_has_gone_away_decorator
 from utils.messages_logger import log_command
 
 logger = logging.getLogger("commands")
@@ -35,7 +35,7 @@ def set_photo(chat_id, context: CallbackContext, url):
                 timeout=20,
             )
         os.remove(file_name)
-    except (FileNotFoundError, telegram.error.BadRequest) as e:
+    except (FileNotFoundError, telegram.error.BadRequest):
         return False
     except Exception as e:
         logger.exception(e)
@@ -53,12 +53,12 @@ def set_logo(update: Update, context: CallbackContext):
     url = Team.objects.get(telegram_id=chat_id).logo_url
     successful = set_photo(chat_id, context, url)
     if successful:
-        update.message.reply_markdown(
+        update.message.reply_markdown_v2(
             text="✅ Okay",
         )
     else:
-        update.message.reply_markdown(
-            text="Bild konnte nicht gesetzt werden.",
+        update.message.reply_markdown_v2(
+            text=esc_md_t("Bild konnte nicht gesetzt werden."),
         )
     return ConversationHandler.END
 
@@ -71,7 +71,11 @@ def bop(update: Update, context: CallbackContext):
     try:
         url = GIFinator.get_gif()
     except ConnectionError:
-        bot.send_message(chat_id=chat_id, text="It's not my fault but I can't give you your surprise. :(")
+        bot.send_message(
+            chat_id=chat_id,
+            text=esc_md_t("It's not my fault but I can't give you your surprise. :("),
+            parse_mode=ParseMode.MARKDOWN_V2,
+        )
         return
     try:
         bot.send_animation(chat_id=chat_id, animation=url)
@@ -82,11 +86,8 @@ def bop(update: Update, context: CallbackContext):
 # /cancel
 @log_command
 def cancel(update: Update, context: CallbackContext):
-    update.message.reply_markdown(
-        text=(
-            "Vorgang abgebrochen.\n"
-            "Wenn Du Hilfe brauchst, benutze /help. 🔍"
-        ),
+    update.message.reply_markdown_v2(
+        text=esc_md_t("Vorgang abgebrochen.\n" "Wenn Du Hilfe brauchst, benutze /help. 🔍"),
         reply_markup=ReplyKeyboardRemove(),
         disable_web_page_preview=True,
     )
@@ -96,8 +97,8 @@ def cancel(update: Update, context: CallbackContext):
 # /help
 @log_command
 def helpcommand(update: Update, context: CallbackContext):
-    update.message.reply_markdown(
-        text=(
+    update.message.reply_markdown_v2(
+        text=esc_md_t(
             "Überblick:\n"
             "/start - um euer Team zu registrieren\n"
             "/settings - um die Einstellungen fürs Team zu bearbeiten\n"
@@ -105,10 +106,9 @@ def helpcommand(update: Update, context: CallbackContext):
             "/delete - um euer registrierter Team aus der Gruppe zu entfernen\n"
             "/bop - What's boppin'?\n"
             "/cancel - um den aktuellen Vorgang abzubrechen\n"
-            "/set\\_logo - um das Gruppenbild zu aktualisieren (Logo von der Prime League)\n"
+            "/set_logo - um das Gruppenbild zu aktualisieren (Logo von der Prime League)\n"
         ),
         reply_markup=ReplyKeyboardRemove(),
-        disable_web_page_preview=True,
     )
     return ConversationHandler.END
 
@@ -139,13 +139,16 @@ def delete(update: Update, context: CallbackContext):
         return channel_not_registered(update)
     team = Team.objects.get(telegram_id=chat_id)
     team.set_telegram_null()
-    update.message.reply_markdown(
-        text=(
-            "Alles klar, ich habe alle Verknüpfungen zu dieser Gruppe und dem Team gelöscht. "
-            "Gebt uns gerne Feedback, falls euch Funktionalitäten fehlen oder nicht gefallen. Bye! ✌\n"
-            "_Das Team kann jetzt in einem anderen Channel registriert werden, "
-            "oder ein anderes Team kann in diesem Channel registriert werden._"
-        ),
+    bye_message = esc_md_t(
+        "Alles klar, ich habe alle Verknüpfungen zu dieser Gruppe und dem Team gelöscht. "
+        "Gebt uns gerne Feedback, falls euch Funktionalitäten fehlen oder nicht gefallen. Bye! ✌"
+    )
+    new_registration_message = esc_md_t(
+        "Das Team kann jetzt in einem anderen Channel registriert werden, "
+        "oder ein anderes Team kann in diesem Channel registriert werden."
+    )
+    update.message.reply_markdown_v2(
+        text=f"{bye_message}\n_{new_registration_message}_",
     )
     return ConversationHandler.END
 
@@ -162,13 +165,14 @@ def team_settings(update: Update, context: CallbackContext):
 
     maker = SettingsMaker(team=team)
     link = maker.generate_expiring_link(platform="telegram")
-    title = "Einstellungen für {team} ändern".format(team=team.name)
-    content = (
-        "Der Link ist nur {minutes} Minuten gültig. Danach muss ein neuer Link generiert werden."
-    ).format(minutes=settings.TEMP_LINK_TIMEOUT_MINUTES)
-
-    update.message.reply_markdown(
-        f"[{title}]({link})\n_{content}_",
+    title = esc_md_t("Einstellungen für {team} ändern".format(team=team.name))
+    content = esc_md_t(
+        ("Der Link ist nur {minutes} Minuten gültig. Danach muss ein neuer Link generiert werden.").format(
+            minutes=settings.TEMP_LINK_TIMEOUT_MINUTES
+        ),
+    )
+    update.message.reply_markdown_v2(
+        text=f"[{title}]({link})\n_{content}_",  # Using localhost will not display an URL in telegram
         disable_web_page_preview=True,
         quote=False,
     )
@@ -182,7 +186,7 @@ def migrate_chat(update: Update, context: CallbackContext):
     try:
         old_chat_id = update.message.chat.id
         team = Team.objects.get(telegram_id=old_chat_id)
-    except Team.DoesNotExist as e:
+    except Team.DoesNotExist:
         return
     new_chat_id = update.message.migrate_to_chat_id
     team.telegram_id = new_chat_id

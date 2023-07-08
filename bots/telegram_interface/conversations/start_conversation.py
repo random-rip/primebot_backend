@@ -1,26 +1,27 @@
 from django.conf import settings
-from telegram import Update, ParseMode
+from telegram import ParseMode, Update
 from telegram.error import BadRequest
 from telegram.ext import CallbackContext, ConversationHandler
 
-from app_prime_league.models import Team, ScoutingWebsite
+from app_prime_league.models import ScoutingWebsite, Team
 from app_prime_league.teams import register_team
 from bots.messages import MatchesOverview
 from bots.telegram_interface.commands.single_commands import set_photo
 from bots.telegram_interface.keyboards import boolean_keyboard
 from bots.utils import mysql_has_gone_away_decorator
-from utils.exceptions import CouldNotParseURLException, PrimeLeagueConnectionException, TeamWebsite404Exception, \
-    Div1orDiv2TeamException
-from utils.messages_logger import log_command, log_callbacks
+from utils.exceptions import (
+    CouldNotParseURLException,
+    Div1orDiv2TeamException,
+    PrimeLeagueConnectionException,
+    TeamWebsite404Exception,
+)
+from utils.messages_logger import log_callbacks, log_command
 from utils.utils import get_valid_team_id
 
 
 def just_wait_a_moment(chat_id, context: CallbackContext):
     context.bot.send_message(
-        text=(
-            "Alles klar, ich schaue, was ich dazu finden kann.\n"
-            "Das kann einen Moment dauern...⏳\n"
-        ),
+        text=("Alles klar, ich schaue, was ich dazu finden kann.\n" "Das kann einen Moment dauern...⏳\n"),
         chat_id=chat_id,
         parse_mode=ParseMode.MARKDOWN,
     )
@@ -65,7 +66,6 @@ def start(update: Update, context: CallbackContext):
                 "3️⃣ Personalisiere mit /settings deine Benachrichtigungen.\n\n"
                 "Viel Erfolg auf den Richtfeldern! 🍀"
             ).format(start_link=settings.TELEGRAM_START_LINK),
-            parse_mode=ParseMode.MARKDOWN,
             disable_web_page_preview=True,
         )
         return ConversationHandler.END
@@ -119,9 +119,7 @@ def team_registration(update: Update, context: CallbackContext):
         return 1
     except Div1orDiv2TeamException:
         update.message.reply_markdown(
-            text=(
-                "Es können keine Teams aus Division 1 oder 2 registriert werden."
-            ),
+            text=("Es können keine Teams aus Division 1 oder 2 registriert werden."),
             quote=False,
         )
         return 1
@@ -168,9 +166,8 @@ def team_registration(update: Update, context: CallbackContext):
             text=(
                 "Momentan kann keine Verbindung zu der Prime League Website hergestellt werden. "
                 "Probiere es in ein paar Stunden noch einmal.\n"
-                f"Wenn es später immer noch nicht funktioniert, schaue auf https://primebot.me/crew/ nach Hilfe."
-            )
-            ,
+                "Wenn es später immer noch nicht funktioniert, schaue auf https://primebot.me/crew/ nach Hilfe."
+            ),
             quote=False,
         )
         return 1
@@ -193,24 +190,23 @@ def team_registration(update: Update, context: CallbackContext):
                 "Die ID: *{id}* konnte *keinem* Team zugeordnet werden.\n\n"
                 "Bitte kopiere deine *TEAM_URL* oder deine *TEAM_ID* in den Chat. Benutze /cancel um abzubrechen."
             ).format(id=team_id),
-            disable_web_page_preview=True
+            disable_web_page_preview=True,
         )
         return 1
     else:
         if new_team_old_chat_id is not None:
-            update.message.reply_markdown(
-                msg=(
+            context.bot.send_message(
+                text=(
                     "Dein Team wurde in einem anderen Chat registriert!\n"
                     "Es werden in dieser Gruppe keine weiteren Updates zu *{team.name}* folgen.\n\n"
                     "Solltest Du Hilfe benötigen, benutze /help."
                 ).format(team=new_team),
                 chat_id=new_team_old_chat_id,
-                quote=False,
             )
         update.message.reply_markdown(
             text=(
-                f"Soll ich das Teambild aus der Prime League importieren?\n"
-                f"_Dazu werden Adminrechte hier in der Gruppe benötigt._"
+                "Soll ich das Teambild aus der Prime League importieren?\n"
+                "_Dazu werden Adminrechte hier in der Gruppe benötigt._"
             ),
             reply_markup=boolean_keyboard(0),
         )
@@ -255,7 +251,6 @@ def finish_registration(update: Update, context: CallbackContext):
         text="✅ Okay",
         reply_markup=None,
         parse_mode=ParseMode.MARKDOWN,
-
     )
 
     context.bot.send_message(
