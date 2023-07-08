@@ -1,4 +1,5 @@
 from abc import abstractmethod, ABC
+from typing import List
 
 import discord
 from django.conf import settings
@@ -34,7 +35,7 @@ class BaseMessage:
 
     def __init__(self, team: Team, **kwargs):
         self.team = team
-        self.helper = MatchDisplayHelper
+        self.match_helper = MatchDisplayHelper
 
     @abstractmethod
     def _generate_title(self) -> str:
@@ -72,25 +73,79 @@ class BaseMessage:
     def _get_number_as_emojis(self, number: int) -> str:
         return "".join([NUMBER_TO_EMOJI.get(int(d), EMOJI_RAUTE) for d in str(number)])
 
+    def __repr__(self):
+        return self.__class__.__name__
 
-class MatchMessage(BaseMessage, ABC):
 
+class MatchMixin:
+    def get_match_url(self, match: Match):
+        return f"{settings.MATCH_URI}{match.match_id}"
+
+    def get_enemy_team_url(self, match: Match):
+        return f"{settings.TEAM_URI}{match.enemy_team_id}"
+
+    def get_enemy_team_scouting_url(self, match: Match):
+        return self.team.get_scouting_url(match=match, lineup=False)
+
+    def get_enemy_lineup_scouting_url(self, match: Match):
+        return self.team.get_scouting_url(match=match, lineup=True)
+
+
+class MatchMessage(BaseMessage, ABC, MatchMixin):
     def __init__(self, team: Team, match: Match):
-        super().__init__(team)
+        super().__init__(team=team)
         self.match = match
 
     @property
     def match_url(self):
-        return f"{settings.MATCH_URI}{self.match.match_id}"
+        return self.get_match_url(match=self.match)
 
     @property
     def enemy_team_url(self):
-        return f"{settings.TEAM_URI}{self.match.enemy_team_id}"
+        return self.get_enemy_team_url(match=self.match)
 
     @property
     def enemy_team_scouting_url(self):
-        return self.team.get_scouting_url(match=self.match, lineup=False)
+        return self.get_enemy_team_scouting_url(self.match)
 
     @property
     def enemy_lineup_scouting_url(self):
-        return self.team.get_scouting_url(match=self.match, lineup=True)
+        return self.get_enemy_lineup_scouting_url(self.match)
+
+
+class MatchesMessage(BaseMessage, ABC, MatchMixin):
+    def __init__(self, team: Team, matches: List[Match]):
+        super().__init__(team=team)
+        self.matches = matches
+
+    @abstractmethod
+    def header(self) -> str:
+        """
+        Header of the message before the ``matches`` are listed:
+
+        **<Your header here>**
+            - <Match 1>
+            - ...
+        """
+
+    @abstractmethod
+    def no_matches_found(self) -> str:
+        """
+        Message if ``matches`` is an empty list.
+        """
+
+    @abstractmethod
+    def format_match(self, match) -> str:
+        """
+        Format the ``match``. This method will be called while iterating over ``matches``.
+
+        Returns: String formatted match
+
+        """
+
+    def _generate_message(self):
+        if len(self.matches) == 0:
+            return self.no_matches_found()
+        a = [f"{self.format_match(match)}\n" for match in self.matches]
+        matches_text = "\n".join(a)
+        return f"**" + self.header() + f"**\n\n{matches_text}"

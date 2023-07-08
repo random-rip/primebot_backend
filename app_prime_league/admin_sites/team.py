@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.contrib import admin
 from django.db.models import Q
 from django.utils.html import format_html
@@ -44,8 +43,9 @@ class RegisterFilter(admin.SimpleListFilter):
         if self.value() == "not_registered_and_no_division":
             return queryset.filter(telegram_id__isnull=True, discord_channel_id__isnull=True, division__isnull=True)
         if self.value() == "active_teams":
-            return queryset.filter(Q(telegram_id__isnull=False) | Q(discord_channel_id__isnull=False),
-                                   division__isnull=False)
+            return queryset.filter(
+                Q(telegram_id__isnull=False) | Q(discord_channel_id__isnull=False), division__isnull=False
+            )
         return queryset
 
 
@@ -54,8 +54,19 @@ class PlayerInline(admin.TabularInline):
     model = Player
     classes = ("collapse",)
     extra = 0
-    fields = ("id", "name", "summoner_name", "is_leader", "created_at", "updated_at",)
-    readonly_fields = ("id", "created_at", "updated_at",)
+    fields = (
+        "id",
+        "name",
+        "summoner_name",
+        "is_leader",
+        "created_at",
+        "updated_at",
+    )
+    readonly_fields = (
+        "id",
+        "created_at",
+        "updated_at",
+    )
 
     def has_change_permission(self, request, obj=None):
         return False
@@ -73,7 +84,15 @@ class MatchInline(admin.TabularInline):
     classes = ("collapse",)
     extra = 0
     fk_name = "team"
-    fields = ("match_id", "match_day", "match_type", "enemy_team", "begin", "closed", "result",)
+    fields = (
+        "match_id",
+        "match_day",
+        "match_type",
+        "enemy_team",
+        "begin",
+        "closed",
+        "result",
+    )
 
     def has_change_permission(self, request, obj=None):
         return False
@@ -106,50 +125,60 @@ class TeamAdmin(admin.ModelAdmin):
     )
 
     fieldsets = (
-        ("General", {
-            "fields": (
-                "name",
-                ("prime_league_link",),
-                ("team_tag",),
-                ("division",),
-                ("created_at",),
-                ("updated_at",),
-            ),
-        }),
-        ("Registered Infos", {
-            "fields": (
-                ("discord_registered",),
-                ("telegram_registered",),
-                ("logo_url",),
-                ("scouting_website",),
-                ("language",),
-            ),
-        }),
-        ("Discord", {
-            "fields": (
-                ("discord_webhook_id",),
-                ("discord_webhook_token",),
-                ("discord_channel_id",),
-                ("discord_role_id",),
-            ),
-            "classes": ("collapse",)
-        }),
-        ("Telegram", {
-            "fields": (
-                ("telegram_id",),
-            ),
-            "classes": ("collapse",)
-        }),
+        (
+            "General",
+            {
+                "fields": (
+                    "name",
+                    ("prime_league_link",),
+                    ("team_tag",),
+                    ("division",),
+                    ("created_at",),
+                    ("updated_at",),
+                ),
+            },
+        ),
+        (
+            "Registered Infos",
+            {
+                "fields": (
+                    ("discord_registered",),
+                    ("telegram_registered",),
+                    ("logo_url",),
+                    ("scouting_website",),
+                    ("language",),
+                ),
+            },
+        ),
+        (
+            "Discord",
+            {
+                "fields": (
+                    ("discord_webhook_id",),
+                    ("discord_webhook_token",),
+                    ("discord_channel_id",),
+                    ("discord_role_id",),
+                ),
+                "classes": ("collapse",),
+            },
+        ),
+        ("Telegram", {"fields": (("telegram_id",),), "classes": ("collapse",)}),
     )
 
-    list_filter = [PlatformFilter, RegisterFilter, 'language', 'created_at', 'updated_at', ]
+    list_filter = [
+        PlatformFilter,
+        RegisterFilter,
+        'language',
+        'created_at',
+        'updated_at',
+    ]
     readonly_fields = ("created_at", "updated_at", "discord_registered", "telegram_registered", "prime_league_link")
     search_fields = ['id', 'name', 'team_tag']
 
     def prime_league_link(self, obj):
         return format_html(
             '<a class="button" href="{}" target="_blank">Zur PL</a>&nbsp;',
-            f"{settings.TEAM_URI}{obj.id}",
+            obj.prime_league_link,
         )
 
     prime_league_link.allow_tags = True
@@ -159,6 +188,9 @@ class TeamAdmin(admin.ModelAdmin):
     def discord_registered(self, obj):
         return bool(obj.discord_webhook_token)
 
-    @admin.display(boolean=True, description='Telegram', )
+    @admin.display(
+        boolean=True,
+        description='Telegram',
+    )
     def telegram_registered(self, obj):
         return bool(obj.telegram_id)

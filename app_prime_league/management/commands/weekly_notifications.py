@@ -1,27 +1,34 @@
 import logging
 
-from django.core.management import BaseCommand
+from django_q.models import Schedule
 
 from app_prime_league.models import Team
-from bots.message_dispatcher import MessageDispatcher
+from bots.message_dispatcher import MessageCollector
 from bots.messages import WeeklyNotificationMessage
-from utils.utils import current_match_day
+from core.commands import ScheduleCommand
 
 
-class Command(BaseCommand):
-    def handle(self, *args, **options):
-        match_day = current_match_day()
-
+class Command(ScheduleCommand):
+    @staticmethod
+    def func():
         logger = logging.getLogger("notifications")
         logger.info(f"Start Sending Weekly Notifications...")
         teams = Team.objects.get_registered_teams()
         for team in teams:
-            self.stdout.write(self.style.SUCCESS(f"{team}"))
+            if len(WeeklyNotificationMessage(team=team).matches) < 1:
+                continue
             try:
-                next_match = team.matches_against.filter(match_day=match_day).last()
-                if next_match is not None:
-                    logger.debug(f"Sending Weekly Notification to {team}...")
-                    MessageDispatcher(team=team).dispatch(WeeklyNotificationMessage, match=next_match)
+                logger.debug(f"Sending Weekly Notification to {team}...")
+                MessageCollector(team=team).dispatch(WeeklyNotificationMessage)
             except Exception as e:
-                self.stdout.write(self.style.ERROR(f"{e}"))
-                logger.exception(f"Error {team}: {e}")
+                logger.exception(f"Error sending weekly notification to team {team}: {e}")
+
+    def _schedule(self):
+        s = Schedule(
+            name="Weekly Notifications",
+            func=self.func_path,
+            schedule_type=Schedule.CRON,
+            cron='0 9 * * mon',
+        )
+        s.next_run = s.calculate_next_run()
+        s.save()

@@ -17,7 +17,7 @@
 </p>
 <h4 align="center">
 The unofficial <i>Strauss Prime League</i> Bot for sending push notifications via Discord and
-Telegram.
+Telegram and API Provider of <i>Strauss Prime League</i> data.
 </h4>
 
 <p align="center">
@@ -100,7 +100,7 @@ For further information have a look at **Contributing** section at the end of th
     - Model ``Suggestion``: Suggestions of matches
     - Model ``Setting``: settings of teams for notifications, language, etc.
     - Model ``Comment``: comments on matches
-- ``bots`` contains all relevant Discord and Telegram scripts, Language files, and the MessageDispatcher
+- ``bots`` contains all relevant Discord and Telegram scripts, Language files, and the MessageCollector
 - ``core`` contains the Prime League communication, parsing, comparing and updating
     - Module ``comparers``: These classes take over the comparison between the database, `TeamDataProcessor`
       and `TemporaryMatchData`.

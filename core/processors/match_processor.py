@@ -1,4 +1,6 @@
 from abc import abstractmethod
+from datetime import datetime, timedelta
+from typing import Union
 
 from core.parsing.logs import BaseLog, LogSchedulingConfirmation, LogSchedulingAutoConfirmation, LogChangeTime
 from core.providers.prime_league import PrimeLeagueProvider
@@ -57,6 +59,14 @@ class __MatchDataMethods:
 
     @abstractmethod
     def has_side_choice(self):
+        pass
+
+    @abstractmethod
+    def get_match_begin_confirmed(self):
+        pass
+
+    @abstractmethod
+    def get_datetime_until_auto_confirmation(self):
         pass
 
 
@@ -177,13 +187,32 @@ class MatchDataProcessor(__MatchDataMethods, ):
             return None
         return timestamp_to_datetime(timestamp)
 
-    def get_match_begin_confirmed(self):
+    def get_match_begin_confirmed(self) -> bool:
         """
-        If this is 0, it means that an agreement was already made, so replying is not required anymore
+        If this is 0, it means that an agreement was already made, so replying is not required anymore.
+
         Returns: True, if match_scheduling_time is 0
 
         """
         return self.data_match.get("match_scheduling_time", None) == 0
+
+    def get_datetime_until_auto_confirmation(self) -> Union[None, datetime]:
+        """
+        Returns the time a team has until the suggestion is auto confirmed or None if suggestion is already confirmed.
+        """
+        match_scheduling_mode = self.data_match.get("match_scheduling_mode", None)  # fixed, free, regulated
+        hours_until_auto_confirm = self.data_match.get("match_scheduling_time", None)
+        suggestion_made_at = self.data_match.get("match_scheduling_suggest_time", None)
+        if (
+                match_scheduling_mode in ["fixed", "free", None] or
+                hours_until_auto_confirm in [0, None] or
+                suggestion_made_at in [0, None]
+        ):
+            return None
+        scheduling_start = self.data_match.get("match_scheduling_start")
+        dt = max(timestamp_to_datetime(suggestion_made_at), timestamp_to_datetime(scheduling_start)) + timedelta(
+            hours=hours_until_auto_confirm)
+        return dt
 
     def get_latest_match_begin_log(self):
         """

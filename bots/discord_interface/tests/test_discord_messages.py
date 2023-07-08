@@ -1,5 +1,8 @@
-from pprint import pprint
+from datetime import datetime
+from unittest import mock
 
+import pytz
+from django.conf import settings
 from django.test import TestCase
 
 from app_prime_league.models import Team, Match, Player, Suggestion
@@ -16,7 +19,9 @@ class DiscordMessageTests(TestCase):
         self.team_a = Team.objects.create(id=1, name="ABC", team_tag="abc", )
         self.team_b = Team.objects.create(id=2, name="XYZ", team_tag="xyz", )
         self.match = Match.objects.create(match_id=1, team=self.team_a, enemy_team=self.team_b, match_day=1,
-                                          has_side_choice=True)
+                                          has_side_choice=True,
+                                          begin=datetime(2023, 3, 15, 12, tzinfo=pytz.timezone(settings.TIME_ZONE)),
+                                          closed=False)
         line_up_players = [
             Player.objects.create(name="player 1", summoner_name="player1", team=self.team_b, ),
             Player.objects.create(name="player 2", summoner_name="player2", team=self.team_b),
@@ -27,18 +32,35 @@ class DiscordMessageTests(TestCase):
         Player.objects.create(name="player 6", summoner_name="player6", team=self.team_b),
         self.match.enemy_lineup.add(*line_up_players)
 
-    def test_weekly_notification(self):
-        msg = WeeklyNotificationMessage(match=self.match, team=self.team_a)
+    @mock.patch("bots.messages.weekly_notification.timezone")
+    def test_weekly_notification(self, timezone_mock):
+        timezone_mock.now = mock.Mock(return_value=datetime(2023, 3, 13, 9, tzinfo=pytz.timezone(settings.TIME_ZONE)))
+        msg = WeeklyNotificationMessage(team=self.team_a)
 
         self.assertEqual(msg.settings_key, "WEEKLY_MATCH_DAY", )
         self.assertEqual(msg.mentionable, True, )
 
-        expected = ("Der nächste Spieltag:\n[Spieltag 1](https://www.primeleague.gg/de/leagues/matches/1) gegen"
-                    " [xyz](https://www.primeleague.gg/de/leagues/teams/2):\n"
-                    "Hier ist der [op.gg Link](https://euw.op.gg/multisearch/euw?summoners=player1,player2,"
-                    "player3,player4,player5,player6) des Teams.")
+        expected = ("**Folgende Matches finden diese Woche statt:**\n\n[Spieltag 1]"
+                    "(https://www.primeleague.gg/de/leagues/matches/1) ⚔ "
+                    "XYZ ➡ [op.gg](https://euw.op.gg/multisearch/euw?summoners=player1,player2,"
+                    "player3,player4,player5,player6)\n")
 
-        self.assertEqual(msg.generate_message(), expected, )
+        self.assertEqual(expected, msg.generate_message(), )
+
+    @mock.patch("bots.messages.weekly_notification.timezone")
+    def test_weekly_notification_no_new_matches(self, timezone_mock):
+        timezone_mock.now = mock.Mock(return_value=datetime(2023, 3, 13, 9, tzinfo=pytz.timezone(settings.TIME_ZONE)))
+        msg = WeeklyNotificationMessage(team=self.team_a)
+
+        self.assertEqual(msg.settings_key, "WEEKLY_MATCH_DAY", )
+        self.assertEqual(msg.mentionable, True, )
+
+        expected = ("**Folgende Matches finden diese Woche statt:**\n\n[Spieltag 1]"
+                    "(https://www.primeleague.gg/de/leagues/matches/1) ⚔ "
+                    "XYZ ➡ [op.gg](https://euw.op.gg/multisearch/euw?summoners=player1,player2,"
+                    "player3,player4,player5,player6)\n")
+
+        self.assertEqual(expected, msg.generate_message(), )
 
     def test_new_lineup(self):
         msg = NewLineupNotificationMessage(match=self.match, team=self.team_a)
@@ -52,7 +74,7 @@ class DiscordMessageTests(TestCase):
             "2,player3,player4,player5) aufgestellt."
         )
 
-        self.assertEqual(msg.generate_message(), expected, )
+        self.assertEqual(expected, msg.generate_message(), )
 
     def test_own_time_suggestions(self):
         Suggestion.objects.create(begin=string_to_datetime("2022-01-01 17:30"), match=self.match)
@@ -71,7 +93,7 @@ class DiscordMessageTests(TestCase):
             "3️⃣Sonntag, 2. Januar 2022 17:00 Uhr"
         )
 
-        self.assertEqual(msg.generate_message(), expected, )
+        self.assertEqual(expected, msg.generate_message(), )
 
     def test_enemy_time_suggestions(self):
         Suggestion.objects.create(begin=string_to_datetime("2022-01-01 17:30"), match=self.match)
@@ -106,7 +128,7 @@ class DiscordMessageTests(TestCase):
             "www.primeleague.gg/de/leagues/matches/1):\n"
             "⚔Donnerstag, 17. Februar 2022 15:00 Uhr"
         )
-        self.assertEqual(msg.generate_message(), expected, )
+        self.assertEqual(expected, msg.generate_message(), )
 
     def test_schedule_auto_confirmation(self):
         self.match.begin = string_to_datetime("2022-02-17 15:00")
@@ -118,19 +140,19 @@ class DiscordMessageTests(TestCase):
             "(https://www.primeleague.gg/de/leagues/matches/1):\n"
             "⚔Donnerstag, 17. Februar 2022 15:00 Uhr"
         )
-        self.assertEqual(msg.generate_message(), expected, )
+        self.assertEqual(expected, msg.generate_message(), )
 
     def test_admin_changed_time(self):
         self.match.begin = string_to_datetime("2022-02-17 15:00")
         log = LogChangeTime(1645120288, "", "Manually adjusted time to 2022-02-17 15:00 +01:00")
         msg = ScheduleConfirmationNotification(match=self.match, team=self.team_a, latest_confirmation_log=log)
 
-        assertion_msg = (
+        expected = (
             "Ein Administrator hat eine neue Zeit für [Spieltag 1](https://www.primeleague.gg/de/leagues/matches/1) "
             "gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2) festgelegt:\n"
             "⚔Donnerstag, 17. Februar 2022 15:00 Uhr"
         )
-        self.assertEqual(msg.generate_message(), assertion_msg, )
+        self.assertEqual(expected, msg.generate_message(), )
 
     def test_new_match_notification(self):
         self.match.match_type = Match.MATCH_TYPE_GROUP
@@ -143,7 +165,7 @@ class DiscordMessageTests(TestCase):
                     "ue.gg/de/leagues/teams/2):\nHier ist der [op.gg Link](https://euw.op.gg/multisearch/euw?"
                     "summoners=player1,player2,player3,player4,player5,player6) des Teams.")
 
-        self.assertEqual(msg.generate_message(), expected, )
+        self.assertEqual(expected, msg.generate_message(), )
 
     def test_new_comments_notification(self):
         msg = NewCommentsNotificationMessage(match=self.match, team=self.team_a, new_comment_ids=[123456789])
@@ -155,11 +177,65 @@ class DiscordMessageTests(TestCase):
                     "123456789) für [Spieltag 1](https://www.primeleague.gg/de/leagues/"
                     "matches/1#comment:123456789) gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2).")
 
-        self.assertEqual(msg.generate_message(), expected, )
+        self.assertEqual(expected, msg.generate_message(), )
 
         msg = NewCommentsNotificationMessage(match=self.match, team=self.team_a, new_comment_ids=[123, 456, 789])
         expected = ("Es gibt [neue Kommentare](https://www.primeleague.gg/de/leagues/matches/1#comment:123) für "
                     "[Spieltag 1](https://www.primeleague.gg/de/leagues/matches"
                     "/1#comment:123) gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2).")
 
-        self.assertEqual(msg.generate_message(), expected, )
+        self.assertEqual(expected, msg.generate_message(), )
+
+
+class WeeklyNotificationTests(TestCase):
+
+    def setUp(self):
+        self.team_a = Team.objects.create(id=1, name="ABC", team_tag="abc", )
+        self.team_b = Team.objects.create(id=2, name="XYZ", team_tag="xyz", )
+
+    @mock.patch("bots.messages.weekly_notification.timezone")
+    def test_weekly_notification(self, timezone_mock):
+        timezone_mock.now = mock.Mock(return_value=datetime(2023, 3, 13, 9, tzinfo=pytz.timezone(settings.TIME_ZONE)))
+        self.match = Match.objects.create(match_id=1, team=self.team_a, enemy_team=self.team_b, match_day=1,
+                                          has_side_choice=True,
+                                          begin=datetime(2023, 3, 15, 12, tzinfo=pytz.timezone(settings.TIME_ZONE)),
+                                          closed=False)
+        msg = WeeklyNotificationMessage(team=self.team_a)
+        line_up_players = [
+            Player.objects.create(name="player 1", summoner_name="player1", team=self.team_b, ),
+            Player.objects.create(name="player 2", summoner_name="player2", team=self.team_b),
+            Player.objects.create(name="player 3", summoner_name="player3", team=self.team_b),
+            Player.objects.create(name="player 4", summoner_name="player4", team=self.team_b),
+            Player.objects.create(name="player 5", summoner_name="player5", team=self.team_b),
+        ]
+        Player.objects.create(name="player 6", summoner_name="player6", team=self.team_b),
+        self.match.enemy_lineup.add(*line_up_players)
+        self.assertEqual(msg.settings_key, "WEEKLY_MATCH_DAY", )
+        self.assertEqual(msg.mentionable, True, )
+
+        expected = ("**Folgende Matches finden diese Woche statt:**\n\n[Spieltag 1]"
+                    "(https://www.primeleague.gg/de/leagues/matches/1) ⚔ "
+                    "XYZ ➡ [op.gg](https://euw.op.gg/multisearch/euw?summoners=player1,player2,"
+                    "player3,player4,player5,player6)\n")
+
+        self.assertEqual(expected, msg.generate_message(), )
+
+    @mock.patch("bots.messages.weekly_notification.timezone")
+    def test_weekly_notification_no_new_matches(self, timezone_mock):
+        timezone_mock.now = mock.Mock(return_value=datetime(2023, 3, 13, 9, tzinfo=pytz.timezone(settings.TIME_ZONE)))
+        self.match = Match.objects.create(match_id=1, team=self.team_a, enemy_team=self.team_b, match_day=1,
+                                          has_side_choice=True,
+                                          begin=datetime(2023, 3, 8, 12, tzinfo=pytz.timezone(settings.TIME_ZONE)),
+                                          closed=False)
+        self.match = Match.objects.create(match_id=2, team=self.team_a, enemy_team=self.team_b, match_day=1,
+                                          has_side_choice=True,
+                                          begin=datetime(2023, 3, 25, 12, tzinfo=pytz.timezone(settings.TIME_ZONE)),
+                                          closed=False)
+        msg = WeeklyNotificationMessage(team=self.team_a)
+
+        self.assertEqual(msg.settings_key, "WEEKLY_MATCH_DAY", )
+        self.assertEqual(msg.mentionable, True, )
+
+        expected = "Ihr habt keine Matches diese Woche."
+
+        self.assertEqual(expected, msg.generate_message(), )

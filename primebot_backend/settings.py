@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 import errno
 import os
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from datetime import datetime
 from pathlib import Path
 
@@ -43,10 +42,13 @@ CORS_ALLOWED_ORIGINS = [
     # "http://192.168.189.78:8001",
 ]
 
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
 INSTALLED_APPS = [
     "admin_interface",
     "colorfield",
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -57,6 +59,10 @@ INSTALLED_APPS = [
     "rest_framework",
     'django_extensions',
     "corsheaders",
+    "django_q",
+    'drf_spectacular',
+    "debug_toolbar",
+    'django_filters',
     # own
     'app_prime_league',
     'core',
@@ -64,6 +70,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -75,14 +82,16 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10_000
+
 ROOT_URLCONF = 'primebot_backend.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'),
-                 ]
-        ,
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -116,7 +125,7 @@ DATABASES = {
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
             "charset": "utf8mb4",
-        }
+        },
     }
 }
 
@@ -173,9 +182,9 @@ MATCH_URI = "https://www.primeleague.gg/de/leagues/matches/"
 TEAM_URI = "https://www.primeleague.gg/de/leagues/teams/"
 SITE_ID = env.str("SITE_ID", None)
 
-CURRENT_SPLIT_START = datetime(2022, 10, 3).astimezone(pytz.timezone("Europe/Berlin"))
+CURRENT_SPLIT_START = datetime(2023, 6, 5).astimezone(pytz.timezone("Europe/Berlin"))
 
-STORAGE_DIR = os.path.join(BASE_DIR, "storage", )
+STORAGE_DIR = os.path.join(BASE_DIR, "storage")
 
 TELEGRAM_BOT_KEY = env.str("TELEGRAM_BOT_API_KEY", None)
 TG_DEVELOPER_GROUP = env.int("TG_DEVELOPER_GROUP", None)
@@ -208,7 +217,9 @@ FILES_FROM_STORAGE = env.bool("FILES_FROM_STORAGE", False)
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-    } if DEBUG else {
+    }
+    if DEBUG
+    else {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
         'LOCATION': 'unix:/var/run/memcached/memcached.sock',
     }
@@ -219,6 +230,44 @@ LOCALE_PATHS = [
     BASE_DIR / "app_prime_league" / "locale",
 ]
 
+Q_CLUSTER = {
+    'timeout': 60 * 2,  # maximum seconds for a task
+    'retry': 60 * 2 + 10,  # Seconds after a failed task will be queued again
+    'max_attempts': 3,  # Maximum retry attempts for failed tasks
+    'save_limit': 10_000,  # Limits the amount of successful tasks save to Django
+    "ack_failures": False,
+    "catch_up": False,
+    "sync": DEBUG,
+    'mongo': {
+        'host': env.str("MONGODB_URI", None),
+        "serverSelectionTimeoutMS": 5_000,
+    },
+    "time_zone": "Europe/Berlin",
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.ScopedRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'teams': '1000/day',
+        'matches': '1000/day',
+    },
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    "PAGE_SIZE": 100,
+}
+
+# OPEN API SPECTACULAR
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'PrimeBot API',
+    'DESCRIPTION': 'Provides information about teams, players and matches of the Strauss Prime League.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
+}
+
 if not DEBUG:
     LOGGING = {
         'version': 1,
@@ -226,11 +275,9 @@ if not DEBUG:
         'formatters': {
             'to_file': {
                 'format': "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-                'datefmt': "%d/%b/%Y %H:%M:%S"
+                'datefmt': "%d/%b/%Y %H:%M:%S",
             },
-            'to_console': {
-                'format': '[%(levelname)s] %(name)s: %(message)s'
-            },
+            'to_console': {'format': '[%(levelname)s] %(name)s: %(message)s'},
         },
         'handlers': {
             'console': {
@@ -283,7 +330,9 @@ if not DEBUG:
                 'propagate': False,
             },
             'commands': {
-                'handlers': ['commands', ],
+                'handlers': [
+                    'commands',
+                ],
                 'level': "INFO",
                 'propagate': False,
             },
@@ -296,16 +345,6 @@ if not DEBUG:
                 'handlers': ['discord'],
                 'level': "DEBUG",
                 'propagate': False,
-            }
-        }
+            },
+        },
     }
-
-REST_FRAMEWORK = {
-    'DEFAULT_THROTTLE_CLASSES': [
-        'rest_framework.throttling.ScopedRateThrottle',
-    ],
-    'DEFAULT_THROTTLE_RATES': {
-        'teams': '250/day',
-        'matches': '250/day',
-    }
-}

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-15 20:41+0100\n"
+"POT-Creation-Date: 2023-03-17 17:16+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\bots\discord_interface\discord_bot.py:89
+#: .\bots\discord_interface\discord_bot.py:96
 msgid ""
 "There is currently no team registered in this channel. Use `/start` to "
 "register a team."
@@ -26,11 +26,11 @@ msgstr ""
 "In diesem Channel wurde noch kein Team registriert. Benutzt `/start` um eins "
 "zu registrieren."
 
-#: .\bots\discord_interface\discord_bot.py:91
+#: .\bots\discord_interface\discord_bot.py:98
 msgid "This is a channel command."
 msgstr "Das ist ein Befehl, der nur in einem Channel ausgeführt werden kann."
 
-#: .\bots\discord_interface\discord_bot.py:94
+#: .\bots\discord_interface\discord_bot.py:101
 #: .\bots\discord_interface\ext\bop.py:31
 #: .\bots\discord_interface\ext\start.py:109
 #, python-brace-format
@@ -315,38 +315,40 @@ msgstr[1] ""
 "Neue Terminvorschläge von [{enemy_team_tag}]({enemy_team_url}) für "
 "[{match_day}]({match_url}):"
 
-#: .\bots\messages\helpers.py:12
+#: .\bots\messages\helpers.py:13
 #, python-brace-format
 msgid "playoff match {match_day}"
 msgstr "Playoff Match {match_day}"
 
-#: .\bots\messages\helpers.py:14
+#: .\bots\messages\helpers.py:15
 #, python-brace-format
 msgid "tiebreaker match {match_day}"
 msgstr "Tiebreaker Match {match_day}"
 
-#: .\bots\messages\helpers.py:16
+#: .\bots\messages\helpers.py:17
 #, python-brace-format
 msgid "match {match_day}"
 msgstr "Match {match_day}"
 
-#: .\bots\messages\helpers.py:18
+#: .\bots\messages\helpers.py:19
 #, python-brace-format
 msgid "gameday {match_day}"
 msgstr "Spieltag {match_day}"
 
-#: .\bots\messages\helpers.py:28
+#: .\bots\messages\helpers.py:29
 #, python-brace-format
 msgid "No dates proposed. Alternative date: {time}"
 msgstr "Keine Terminvorschläge. Ausweichtermin: {time}"
 
-#: .\bots\messages\helpers.py:33
-msgid "Dates proposed by the opponent are open!"
-msgstr "Offene Terminvorschläge vom Gegner!"
-
 #: .\bots\messages\helpers.py:35
-msgid "Dates proposed by you are open."
-msgstr "Offene Terminvorschläge von euch."
+#, python-brace-format
+msgid "Dates proposed by you are open. Left time: {left_time}"
+msgstr "Offene Terminvorschläge von euch. Verbleibende Zeit: {left_time}"
+
+#: .\bots\messages\helpers.py:39
+#, python-brace-format
+msgid "Dates proposed by the opponent are open! Left time: {left_time}"
+msgstr "Offene Terminvorschläge vom Gegner! Verbleibende Zeit: {left_time}"
 
 #: .\bots\messages\match_details.py:16
 msgid "Match overview"
@@ -378,7 +380,7 @@ msgstr "bis Patch"
 
 #: .\bots\messages\match_details.py:62
 msgid "The rulebook is available [here.]"
-msgstr "The rulebook is available [here.]"
+msgstr "Das Regelwerk gibt es [hier.]"
 
 #: .\bots\messages\match_details.py:67
 msgid "Opposing team"
@@ -427,33 +429,40 @@ msgstr ""
 "Welche Informationen fehlen euch noch?\n"
 "[Schreibt es uns auf Discord!](https://discord.gg/7NYgT2uFPm)"
 
-#: .\bots\messages\match_details.py:180 .\bots\messages\matches_overview.py:58
+#: .\bots\messages\match_details.py:180 .\bots\messages\matches_overview.py:57
 #, python-brace-format
 msgid "[against {enemy_team_name}]({match_url})"
 msgstr "[gegen {enemy_team_name}]({match_url})"
 
-#: .\bots\messages\match_details.py:203 .\bots\messages\matches_overview.py:75
-msgid "Different scouting website? Use /settings to change it."
-msgstr "Andere Scouting Website? mit /settings einfach anpassen."
+#: .\bots\messages\match_details.py:203
+msgid ""
+"If there are outdated scouting links just use /match again after 15 minutes."
+msgstr ""
+"Wenn es veraltete Scouting-Links gibt, verwende einfach /match nochmal nach "
+"15 Minuten."
 
-#: .\bots\messages\matches_overview.py:20
+#: .\bots\messages\matches_overview.py:26
 msgid "New matches"
 msgstr "Neue Matches"
 
-#: .\bots\messages\matches_overview.py:31
-#: .\bots\messages\matches_overview.py:49
-msgid "You currently have no open matches."
-msgstr "Ihr habt aktuell keine offenen Matches."
-
-#: .\bots\messages\matches_overview.py:44
-#: .\bots\messages\matches_overview.py:51
+#: .\bots\messages\matches_overview.py:29
 msgid "An overview of your open matches:"
 msgstr "Eine Übersicht eurer offenen Matches:"
 
-#: .\bots\messages\matches_overview.py:68
+#: .\bots\messages\matches_overview.py:32
+msgid "You currently have no open matches."
+msgstr "Ihr habt aktuell keine offenen Matches."
+
+#: .\bots\messages\matches_overview.py:67
 #, python-brace-format
 msgid "[Current lineup]({lineup_link})"
 msgstr "[Aktuelles Lineup]({lineup_link})"
+
+#: .\bots\messages\matches_overview.py:74
+msgid "If there are outdated scouting links just use /matches again."
+msgstr ""
+"Wenn es veraltete Scouting-Links gibt, verwende einfach /matches nochmal "
+"nach 15 Minuten."
 
 #: .\bots\messages\new_match.py:20
 msgid "New match"
@@ -481,11 +490,11 @@ msgid_plural "New dates proposed by you for [{match_day}]({match_url}):"
 msgstr[0] "Neuer Terminvorschlag von euch für [{match_day}]({match_url}):"
 msgstr[1] "Neue Terminvorschläge von euch für [{match_day}]({match_url}):"
 
-#: .\bots\messages\schedule_confirmation.py:19
+#: .\bots\messages\schedule_confirmation.py:23
 msgid "Confirmation of the scheduled date"
 msgstr "Terminbestätigung"
 
-#: .\bots\messages\schedule_confirmation.py:27
+#: .\bots\messages\schedule_confirmation.py:31
 #, python-brace-format
 msgid ""
 "Automatic confirmation of the scheduled date against [{enemy_team_tag}]"
@@ -494,16 +503,7 @@ msgstr ""
 "Automatische Spielbestätigung gegen [{enemy_team_tag}]({enemy_team_url}) für "
 "[{match_day}]({match_url}):"
 
-#: .\bots\messages\schedule_confirmation.py:32
-#, python-brace-format
-msgid ""
-"Confirmation of the scheduled date against [{enemy_team_tag}]"
-"({enemy_team_url}) for [{match_day}]({match_url}):"
-msgstr ""
-"Spielbestätigung gegen [{enemy_team_tag}]({enemy_team_url}) für [{match_day}]"
-"({match_url}):"
-
-#: .\bots\messages\schedule_confirmation.py:38
+#: .\bots\messages\schedule_confirmation.py:36
 #, python-brace-format
 msgid ""
 "An administrator has set a new date for [{match_day}]({match_url}) against "
@@ -512,20 +512,26 @@ msgstr ""
 "Ein Administrator hat eine neue Zeit für [{match_day}]({match_url}) gegen "
 "[{enemy_team_tag}]({enemy_team_url}) festgelegt:"
 
-#: .\bots\messages\weekly_notification.py:15
-msgid "Weekly overview"
-msgstr "Wochenübersicht"
-
-#: .\bots\messages\weekly_notification.py:23
+#: .\bots\messages\schedule_confirmation.py:53
 #, python-brace-format
 msgid ""
-"The next gameday:\n"
-"[{match_day}]({match_url}) against [{enemy_team_tag}]({enemy_team_url}):\n"
-"Here is your [{website} link]({scouting_url}) of the team."
+"Confirmation of the scheduled date against [{enemy_team_tag}]"
+"({enemy_team_url}) for [{match_day}]({match_url}):"
 msgstr ""
-"Der nächste Spieltag:\n"
-"[{match_day}]({match_url}) gegen [{enemy_team_tag}]({enemy_team_url}):\n"
-"Hier ist der [{website} Link]({scouting_url}) des Teams."
+"Spielbestätigung gegen [{enemy_team_tag}]({enemy_team_url}) für [{match_day}]"
+"({match_url}):"
+
+#: .\bots\messages\weekly_notification.py:23
+msgid "The following matches are scheduled this week:"
+msgstr "Folgende Matches finden diese Woche statt:"
+
+#: .\bots\messages\weekly_notification.py:26
+msgid "You have no matches this week."
+msgstr "Ihr habt keine Matches diese Woche."
+
+#: .\bots\messages\weekly_notification.py:29
+msgid "Weekly overview"
+msgstr "Wochenübersicht"
 
 #: .\bots\telegram_interface\keyboards.py:8
 msgid "Yes"

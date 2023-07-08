@@ -4,19 +4,23 @@ from discord import Embed, Colour
 from django.conf import settings
 from django.utils.translation import gettext as _
 
-from app_prime_league.models import Team, Match, Champion, ScoutingWebsite
-from bots.messages.base import MatchMessage
+from app_prime_league.models import Champion, ScoutingWebsite, Team, Match
+from bots.messages.base import MatchMessage, MessageNotImplementedError
+
 from utils.emojis import EMJOI_MAGN_GLASS
 from utils.utils import format_datetime
 
 
 class MatchOverview(MatchMessage):
-
     def _generate_title(self) -> str:
         return "🔥 " + _("Match overview")
 
-    def __init__(self, team: Team, match: Match):
-        super().__init__(team, match)
+    def __init__(
+        self,
+        team: Team,
+        match: Match,
+    ):
+        super().__init__(team=team, match=match)
         self.embed = Embed(color=Colour.gold())
 
     def _generate_message(self):
@@ -30,7 +34,7 @@ class MatchOverview(MatchMessage):
             result += f"{telegramized_field_value}\n"
 
         return result
-    
+
     def telegramize_from_discord(self, value: str) -> str:
         result = value.replace("!]", "]")
 
@@ -40,13 +44,13 @@ class MatchOverview(MatchMessage):
         result = result.replace("**", "*")
         return result
 
-    def _add_schedule(self, ):
+    def _add_schedule(
+        self,
+    ):
         name = _("Date")
 
-        value = (
-            "> {match_begin}\n"
-        ).format(
-            match_begin=self.helper.display_match_schedule(self.match),
+        value = ("> {match_begin}\n").format(
+            match_begin=self.match_helper.display_match_schedule(self.match),
         )
 
         if not self.match.match_begin_confirmed:
@@ -69,12 +73,8 @@ class MatchOverview(MatchMessage):
         if banned.exists():
             text += "> " + _("The following champions are expected to be locked at the scheduled date") + ":\n"
             for i in banned:
-                text += (
-                    "> ➕ ⛔️{name} ({until_patch_label} {until_patch})\n"
-                ).format(
-                    name=i.name,
-                    until_patch_label=_("until patch"),
-                    until_patch=i.banned_until_patch
+                text += ("> ➕ ⛔️{name} ({until_patch_label} {until_patch})\n").format(
+                    name=i.name, until_patch_label=_("until patch"), until_patch=i.banned_until_patch
                 )
 
         text += f"> " + _("The rulebook is available [here.]") + "(https://www.primeleague.gg/statics/rules_general)\n"
@@ -87,11 +87,10 @@ class MatchOverview(MatchMessage):
         multi = ScoutingWebsite.objects.get_multi_websites()
 
         names = list(
-            self.match.get_enemy_team().player_set.get_active_players().values_list("summoner_name", flat=True))
+            self.match.get_enemy_team().player_set.get_active_players().values_list("summoner_name", flat=True)
+        )
         for i in multi:
-            value += (
-                f"> {EMJOI_MAGN_GLASS} [{i.name}]({i.generate_url(names)})\n"
-            )
+            value += f"> {EMJOI_MAGN_GLASS} [{i.name}]({i.generate_url(names)})\n"
         self.embed.add_field(name=name, value=value, inline=False)
 
     def _add_enemy_players(self):
@@ -101,30 +100,25 @@ class MatchOverview(MatchMessage):
             return
 
         names = list(
-            self.match.get_enemy_team().player_set.get_active_players().order_by(
-                "summoner_name").values_list("summoner_name", flat=True))
+            self.match.get_enemy_team()
+            .player_set.get_active_players()
+            .order_by("summoner_name")
+            .values_list("summoner_name", flat=True)
+        )
 
         if len(names) < 9:
-            self.embed.add_field(
-                name=name,
-                value=self.__get_players_embed_value(names, single),
-                inline=False
-            )
+            self.embed.add_field(name=name, value=self.__get_players_embed_value(names, single), inline=False)
             return
 
         split_at = (len(names) // 2) + 1
         names_first_part = names[:split_at]
         names_second_part = names[split_at:]
 
-        self.embed.add_field(
-            name=name,
-            value=self.__get_players_embed_value(names_first_part, single),
-            inline=True
-        )
+        self.embed.add_field(name=name, value=self.__get_players_embed_value(names_first_part, single), inline=True)
         self.embed.add_field(
             name=name,
             value=self.__get_players_embed_value(names_second_part, single, start_at=split_at + 1),
-            inline=True
+            inline=True,
         )
 
     def __get_players_embed_value(self, names: List[str], scouting_website: ScoutingWebsite, start_at: int = 1) -> str:
@@ -182,21 +176,14 @@ class MatchOverview(MatchMessage):
             "[Write us on Discord!](https://discord.gg/7NYgT2uFPm)"
         )
         value = f"_{value}_"
-        self.embed.add_field(
-            name=name,
-            value=value,
-            inline=False
-        )
+        self.embed.add_field(name=name, value=value, inline=False)
 
     def _generate_discord_embed(self):
-
         self._add_disclaimer()
         name = "⚔ {match_day}".format(
-            match_day=self.helper.display_match_day(self.match).title(),
+            match_day=self.match_helper.display_match_day(self.match).title(),
         )
-        value = _(
-            "[against {enemy_team_name}]({match_url})"
-        ).format(
+        value = _("[against {enemy_team_name}]({match_url})").format(
             enemy_team_name=self.match.get_enemy_team().name,
             match_url=f"{settings.MATCH_URI}{self.match.match_id}",
         )
@@ -217,7 +204,6 @@ class MatchOverview(MatchMessage):
                 self._add_team_lineup()
                 self._add_enemy_lineup()
             self._add_general_information()
-        self.embed.set_footer(
-            text=_("Different scouting website? Use /settings to change it."))
+        self.embed.set_footer(text=_("If there are outdated scouting links just use /match again after 15 minutes."))
 
         return self.embed

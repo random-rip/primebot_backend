@@ -1,12 +1,14 @@
 from django.conf import settings
 from django.db import models
 from django.db.models import F
-from django.template.defaultfilters import urlencode, truncatechars
+from django.template.defaultfilters import truncatechars
 from django.utils.translation import gettext_lazy as _
 
-from app_prime_league.model_manager import TeamManager, MatchManager, PlayerManager, ScoutingWebsiteManager, \
-    ChampionManager
+from app_prime_league.model_manager import MatchManager, PlayerManager, TeamManager
 from utils.utils import current_match_day
+
+from .player import Player
+from .scouting_website import ScoutingWebsite
 
 
 class Team(models.Model):
@@ -14,17 +16,21 @@ class Team(models.Model):
         GERMAN = "de", _("german")
         ENGLISH = "en", _("english")
 
-    name = models.CharField(max_length=100, null=True, blank=True, )
-    team_tag = models.CharField(max_length=100, null=True, blank=True, )
-    division = models.CharField(max_length=20, null=True, blank=True, )
-    telegram_id = models.CharField(max_length=50, null=True, unique=True, blank=True, )
-    discord_webhook_id = models.CharField(max_length=50, null=True, unique=True, blank=True, )
-    discord_webhook_token = models.CharField(max_length=100, null=True, blank=True, )
-    discord_channel_id = models.CharField(max_length=50, unique=True, null=True, blank=True, )
-    discord_role_id = models.CharField(max_length=50, null=True, blank=True, )
-    logo_url = models.URLField(max_length=1000, null=True, blank=True, )
-    scouting_website = models.ForeignKey("app_prime_league.ScoutingWebsite", on_delete=models.SET_NULL, null=True,
-                                         blank=True, )
+    name = models.CharField(max_length=100, null=True, blank=True)
+    team_tag = models.CharField(max_length=100, null=True, blank=True)
+    division = models.CharField(max_length=20, null=True, blank=True)
+    telegram_id = models.CharField(max_length=50, null=True, unique=True, blank=True)
+    discord_webhook_id = models.CharField(max_length=50, null=True, unique=True, blank=True)
+    discord_webhook_token = models.CharField(max_length=100, null=True, blank=True)
+    discord_channel_id = models.CharField(max_length=50, unique=True, null=True, blank=True)
+    discord_role_id = models.CharField(max_length=50, null=True, blank=True)
+    logo_url = models.URLField(max_length=1000, null=True, blank=True)
+    scouting_website = models.ForeignKey(
+        "app_prime_league.ScoutingWebsite",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
     language = models.CharField(max_length=2, choices=Languages.choices, default=Languages.GERMAN)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -66,7 +72,8 @@ class Team(models.Model):
         self.discord_webhook_token = None
         self.discord_role_id = None
         self.save(
-            update_fields=["discord_webhook_id", "discord_channel_id", "discord_webhook_token", "discord_role_id"])
+            update_fields=["discord_webhook_id", "discord_channel_id", "discord_webhook_token", "discord_role_id"]
+        )
         self.soft_delete()
 
     def soft_delete(self):
@@ -127,27 +134,9 @@ class Team(models.Model):
             setattr(self, key, value)
         self.save()
 
-
-class Player(models.Model):
-    name = models.CharField(max_length=50)
-    team = models.ForeignKey(Team, on_delete=models.CASCADE, null=True)
-    summoner_name = models.CharField(max_length=30, null=True)
-    is_leader = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    objects = PlayerManager()
-
-    class Meta:
-        db_table = "players"
-        verbose_name = "Spieler"
-        verbose_name_plural = "Spieler"
-
-    def __repr__(self):
-        return f"{self.name}"
-
-    def __str__(self):
-        return f"Player {self.name}"
+    @property
+    def prime_league_link(self) -> str:
+        return f"{settings.TEAM_URI}{self.id}"
 
 
 class Match(models.Model):
@@ -171,6 +160,7 @@ class Match(models.Model):
     enemy_team = models.ForeignKey(Team, on_delete=models.SET_NULL, related_name="matches_as_enemy_team", null=True)
     team_made_latest_suggestion = models.BooleanField(null=True, blank=True)
     match_begin_confirmed = models.BooleanField(default=False, blank=True)
+    datetime_until_auto_confirmation = models.DateTimeField(null=True, blank=True)
     has_side_choice = models.BooleanField()  # Team has side choice in first game
     begin = models.DateTimeField(null=True)
     enemy_lineup = models.ManyToManyField(Player, related_name="matches_as_enemy")
@@ -207,15 +197,17 @@ class Match(models.Model):
         self.team = tmd.team
         self.begin = tmd.begin
         self.match_begin_confirmed = tmd.match_begin_confirmed
+        self.datetime_until_auto_confirmation = tmd.datetime_until_auto_confirmation
         self.closed = tmd.closed
         self.result = tmd.result
         self.has_side_choice = tmd.has_side_choice
         self.save()
 
-    def update_match_begin(self, gmd):
-        self.begin = gmd.begin
-        self.match_begin_confirmed = gmd.match_begin_confirmed
-        self.save()
+    def update_match_begin(self, tmd):
+        self.begin = tmd.begin
+        self.match_begin_confirmed = tmd.match_begin_confirmed
+        self.datetime_until_auto_confirmation = tmd.datetime_until_auto_confirmation
+        self.save(update_fields=["begin", "match_begin_confirmed", "datetime_until_auto_confirmation"])
 
     def update_latest_suggestions(self, md):
         if md.latest_suggestions is not None:
@@ -262,48 +254,9 @@ class Match(models.Model):
             team_tag=_("Deleted Team/TBD"),
         )
 
-
-class ScoutingWebsite(models.Model):
-    name = models.CharField(max_length=20, unique=True)
-    base_url = models.CharField(max_length=200)
-    separator = models.CharField(max_length=5, blank=True)
-    multi = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    objects = ScoutingWebsiteManager()
-
-    class Meta:
-        db_table = "scouting_websites"
-        verbose_name = "Scouting Website"
-        verbose_name_plural = "Scouting Websites"
-
-    def generate_url(self, names):
-        """
-        Url encode given names and generate link.
-        Args:
-            names:  list of strings or string
-
-        Returns: String
-        """
-        if not isinstance(names, list):
-            names = [names]
-        names = [urlencode(x) for x in names]
-        if self.multi:
-            return self.base_url.format(self.separator.join(names))
-        return self.base_url.format("".join(names))
-
-    @staticmethod
-    def default() -> "ScoutingWebsite":
-        return ScoutingWebsite(
-            name=settings.DEFAULT_SCOUTING_NAME,
-            base_url=settings.DEFAULT_SCOUTING_URL,
-            separator=settings.DEFAULT_SCOUTING_SEP,
-            multi=True,
-        )
-
-    def __str__(self):
-        return self.name
+    @property
+    def prime_league_link(self) -> str:
+        return f"{settings.MATCH_URI}{self.match_id}"
 
 
 class Suggestion(models.Model):
@@ -315,32 +268,6 @@ class Suggestion(models.Model):
         db_table = "suggestions"
         verbose_name = "Terminvorschlag"
         verbose_name_plural = "Terminvorschläge"
-
-
-class Setting(models.Model):
-    team = models.ForeignKey(Team, on_delete=models.CASCADE)
-    attr_name = models.CharField(max_length=50)
-    attr_value = models.BooleanField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        db_table = "settings"
-        unique_together = [("team", "attr_name"), ]
-        verbose_name = "Teameinstellung"
-        verbose_name_plural = "Teameinstellungen"
-
-
-class SettingsExpiring(models.Model):
-    expires = models.DateTimeField()
-    team = models.OneToOneField(Team, on_delete=models.CASCADE, related_name="settings_expiring")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        db_table = "settings_expiring"
-        verbose_name = "Einstellungslink"
-        verbose_name_plural = "Einstellungslinks"
 
 
 class Comment(models.Model):
@@ -360,25 +287,11 @@ class Comment(models.Model):
 
     class Meta:
         db_table = "comments"
-        unique_together = [("id", "match"), ]
+        unique_together = [
+            ("id", "match"),
+        ]
         verbose_name = "Matchkommentar"
         verbose_name_plural = "Matchkommentare"
 
     def __str__(self):
         return f"{self.id = }, {self.match = }, {self.comment_id = }"
-
-
-class Champion(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    banned = models.BooleanField()
-    banned_until = models.DateField(null=True, blank=True)
-    banned_until_patch = models.CharField(max_length=10)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    objects = ChampionManager()
-
-    class Meta:
-        db_table = "champions"
-        verbose_name = "Champion"
-        verbose_name_plural = "Champions"
