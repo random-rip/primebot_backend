@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-17 17:16+0100\n"
+"POT-Creation-Date: 2023-07-08 22:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,33 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\primebot_backend\settings.py:150
+#: .\primebot_backend\settings.py:156
 msgid "German"
 msgstr "Deutsch"
 
-#: .\primebot_backend\settings.py:151
+#: .\primebot_backend\settings.py:157
 msgid "English"
 msgstr "Englisch"
 
-#: .\utils\utils.py:32
-#, python-format
-msgid "%d hr"
-msgid_plural "%d hrs"
-msgstr[0] "%d Std"
-msgstr[1] "%d Std"
-
-#: .\utils\utils.py:33
-#, python-format
-msgid "%d min"
-msgid_plural "%d min"
-msgstr[0] "%d Min"
-msgstr[1] "%d Min"
-
-#: .\venv\Lib\site-packages\colorfield\validators.py:9
+#: .\venv\Lib\site-packages\colorfield\validators.py:14
 msgid "Enter a valid hex color, eg. #000000"
 msgstr ""
 
-#: .\venv\Lib\site-packages\colorfield\validators.py:17
+#: .\venv\Lib\site-packages\colorfield\validators.py:20
 msgid "Enter a valid hexa color, eg. #00000000"
 msgstr ""
 
@@ -654,29 +640,29 @@ msgid ""
 "may be ambiguous or it may not exist."
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\forms\widgets.py:403
+#: .\venv\Lib\site-packages\django\forms\widgets.py:427
 msgid "Clear"
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\forms\widgets.py:404
+#: .\venv\Lib\site-packages\django\forms\widgets.py:428
 msgid "Currently"
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\forms\widgets.py:405
+#: .\venv\Lib\site-packages\django\forms\widgets.py:429
 #: .\venv\Lib\site-packages\flat\templates\admin\edit_inline\tabular.html:31
 #: .\venv\Lib\site-packages\flat\templates\admin\related_widget_wrapper.html:9
 msgid "Change"
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\forms\widgets.py:714
+#: .\venv\Lib\site-packages\django\forms\widgets.py:738
 msgid "Unknown"
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\forms\widgets.py:715
+#: .\venv\Lib\site-packages\django\forms\widgets.py:739
 msgid "Yes"
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\forms\widgets.py:716
+#: .\venv\Lib\site-packages\django\forms\widgets.py:740
 msgid "No"
 msgstr ""
 
@@ -1260,6 +1246,34 @@ msgstr ""
 
 #: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:249
 msgid "Connect, get help, or contribute"
+msgstr ""
+
+#: .\venv\Lib\site-packages\drf_spectacular\openapi.py:1328
+#: .\venv\Lib\site-packages\drf_spectacular\openapi.py:1381
+#: .\venv\Lib\site-packages\drf_spectacular\openapi.py:1385
+#: .\venv\Lib\site-packages\drf_spectacular\openapi.py:1389
+msgid "No response body"
+msgstr ""
+
+#: .\venv\Lib\site-packages\drf_spectacular\openapi.py:1353
+#: .\venv\Lib\site-packages\drf_spectacular\openapi.py:1405
+msgid "Unspecified response body"
+msgstr ""
+
+#: .\venv\Lib\site-packages\drf_spectacular\plumbing.py:456
+#, python-format
+msgid "Token-based authentication with required prefix \"%s\""
+msgstr ""
+
+#: .\venv\Lib\site-packages\drf_spectacular\views.py:44
+msgid ""
+"\n"
+"    OpenApi3 schema for this API. Format can be selected via content "
+"negotiation.\n"
+"\n"
+"    - YAML: application/vnd.oai.openapi\n"
+"    - JSON: application/vnd.oai.openapi+json\n"
+"    "
 msgstr ""
 
 #: .\venv\Lib\site-packages\flat\templates\admin\base_site.html:3

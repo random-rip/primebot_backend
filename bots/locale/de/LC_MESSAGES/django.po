@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-17 17:16+0100\n"
+"POT-Creation-Date: 2023-07-08 22:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\bots\discord_interface\discord_bot.py:96
+#: .\bots\discord_interface\discord_bot.py:101
 msgid ""
 "There is currently no team registered in this channel. Use `/start` to "
 "register a team."
@@ -26,11 +26,11 @@ msgstr ""
 "In diesem Channel wurde noch kein Team registriert. Benutzt `/start` um eins "
 "zu registrieren."
 
-#: .\bots\discord_interface\discord_bot.py:98
+#: .\bots\discord_interface\discord_bot.py:104
 msgid "This is a channel command."
 msgstr "Das ist ein Befehl, der nur in einem Channel ausgeführt werden kann."
 
-#: .\bots\discord_interface\discord_bot.py:101
+#: .\bots\discord_interface\discord_bot.py:107
 #: .\bots\discord_interface\ext\bop.py:31
 #: .\bots\discord_interface\ext\start.py:109
 #, python-brace-format
@@ -315,37 +315,37 @@ msgstr[1] ""
 "Neue Terminvorschläge von [{enemy_team_tag}]({enemy_team_url}) für "
 "[{match_day}]({match_url}):"
 
-#: .\bots\messages\helpers.py:13
+#: .\bots\messages\helpers.py:14
 #, python-brace-format
 msgid "playoff match {match_day}"
 msgstr "Playoff Match {match_day}"
 
-#: .\bots\messages\helpers.py:15
+#: .\bots\messages\helpers.py:16
 #, python-brace-format
 msgid "tiebreaker match {match_day}"
 msgstr "Tiebreaker Match {match_day}"
 
-#: .\bots\messages\helpers.py:17
+#: .\bots\messages\helpers.py:18
 #, python-brace-format
 msgid "match {match_day}"
 msgstr "Match {match_day}"
 
-#: .\bots\messages\helpers.py:19
+#: .\bots\messages\helpers.py:20
 #, python-brace-format
 msgid "gameday {match_day}"
 msgstr "Spieltag {match_day}"
 
-#: .\bots\messages\helpers.py:29
+#: .\bots\messages\helpers.py:30
 #, python-brace-format
 msgid "No dates proposed. Alternative date: {time}"
 msgstr "Keine Terminvorschläge. Ausweichtermin: {time}"
 
-#: .\bots\messages\helpers.py:35
+#: .\bots\messages\helpers.py:36
 #, python-brace-format
 msgid "Dates proposed by you are open. Left time: {left_time}"
 msgstr "Offene Terminvorschläge von euch. Verbleibende Zeit: {left_time}"
 
-#: .\bots\messages\helpers.py:39
+#: .\bots\messages\helpers.py:40
 #, python-brace-format
 msgid "Dates proposed by the opponent are open! Left time: {left_time}"
 msgstr "Offene Terminvorschläge vom Gegner! Verbleibende Zeit: {left_time}"
@@ -512,7 +512,7 @@ msgstr ""
 "Ein Administrator hat eine neue Zeit für [{match_day}]({match_url}) gegen "
 "[{enemy_team_tag}]({enemy_team_url}) festgelegt:"
 
-#: .\bots\messages\schedule_confirmation.py:53
+#: .\bots\messages\schedule_confirmation.py:49
 #, python-brace-format
 msgid ""
 "Confirmation of the scheduled date against [{enemy_team_tag}]"
@@ -540,3 +540,17 @@ msgstr "Ja"
 #: .\bots\telegram_interface\keyboards.py:12
 msgid "No"
 msgstr "Nein"
+
+#: .\bots\utils.py:36
+#, python-format
+msgid "%d hr"
+msgid_plural "%d hrs"
+msgstr[0] "%d Std"
+msgstr[1] "%d Std"
+
+#: .\bots\utils.py:37
+#, python-format
+msgid "%d min"
+msgid_plural "%d min"
+msgstr[0] "%d Min"
+msgstr[1] "%d Min"
