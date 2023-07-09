@@ -5,6 +5,7 @@ import urllib.request
 import telegram
 from django.conf import settings
 from django.core.files import File
+from django.utils.translation import gettext as _
 from telegram import Update, ReplyKeyboardRemove
 from telegram.ext import CallbackContext, ConversationHandler
 
@@ -148,7 +149,7 @@ def call_match(update: Update, context: CallbackContext) -> int:
         match_day = get_match_day(user_command)
     except InvalidMatchDay:
         update.message.reply_markdown(
-            "Invalider Spieltag. Versuche es mit `/match 1`.",
+            _("Invalid match day. Try using /match 1."),
             reply_markup=ReplyKeyboardRemove(),
             disable_web_page_preview=True,
         )
@@ -165,7 +166,7 @@ def call_match(update: Update, context: CallbackContext) -> int:
 
     if not found_matches:
         update.message.reply_markdown(
-            "Leider existieren an dem von dir selektierten Tag keine Spiele.",
+            _("Sadly there is no planned game on your selected day"),
             reply_markup=ReplyKeyboardRemove(),
             disable_web_page_preview=True,
         )

@@ -2,11 +2,10 @@ from typing import List
 
 from discord import Embed, Colour
 from django.conf import settings
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext as _, get_language
 
 from app_prime_league.models import Champion, ScoutingWebsite, Team, Match
-from bots.messages.base import MatchMessage, MessageNotImplementedError
-
+from bots.messages.base import MatchMessage
 from utils.emojis import EMJOI_MAGN_GLASS
 from utils.utils import format_datetime
 
@@ -169,12 +168,16 @@ class MatchOverview(MatchMessage):
         self.embed.add_field(name=name, value=value, inline=False)
 
     def _add_disclaimer(self):
+        print("####################")
+        print(get_language())
         name = _("Disclaimer")
         value = _(
             "This command is in beta! We still collect feedback for this.\n"
             "What other information would you like to see?\n"
             "[Write us on Discord!](https://discord.gg/7NYgT2uFPm)"
         )
+        print(value)
+        print("##################")
         value = f"_{value}_"
         self.embed.add_field(name=name, value=value, inline=False)
 

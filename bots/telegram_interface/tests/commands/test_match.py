@@ -1,10 +1,11 @@
 from django.test import TestCase
 from django.utils.datetime_safe import datetime
 from django.utils.timezone import make_aware
+from django.utils.translation import gettext as _
 from telegram import Chat
 
-from app_prime_league.models import Match
-from bots.telegram_interface.tests.commands.utils import test_call_match, TestBot, create_team_with_player_names
+from app_prime_league.models import Team
+from bots.telegram_interface.tests.commands.utils import test_call_match, TestBot, TeamBuilder, MatchBuilder
 
 
 class TelegramMatchTestCase(TestCase):
@@ -13,24 +14,23 @@ class TelegramMatchTestCase(TestCase):
 
     def setUp(self) -> None:
         super().setUp()
-
         self.telegram_chat = Chat(self.TELEGRAM_ID, Chat.CHANNEL)
         self.bot = TestBot()
 
     def test_required_match_day_arg_is_missing(self):
         test_call_match("/match", self.telegram_chat, self.bot)
 
-        self.assertEqual("Invalider Spieltag. Versuche es mit `/match 1`.", self.bot.response_text)
+        self.assertEqual(_("Invalid match day. Try using /match 1."), self.bot.response_text)
 
     def test_match_day_arg_has_invalid_format(self):
         test_call_match("/zwei", self.telegram_chat, self.bot)
 
-        self.assertEqual("Invalider Spieltag. Versuche es mit `/match 1`.", self.bot.response_text)
+        self.assertEqual(_("Invalid match day. Try using /match 1."), self.bot.response_text)
 
     def test_match_day_arg_has_invalid_spacing(self):
         test_call_match("/match 2 2", self.telegram_chat, self.bot)
 
-        self.assertEqual("Invalider Spieltag. Versuche es mit `/match 1`.", self.bot.response_text)
+        self.assertEqual(_("Invalid match day. Try using /match 1."), self.bot.response_text)
 
     def test_no_registered_team_in_telegram_chat(self):
         test_call_match("/match 3", self.telegram_chat, self.bot)
@@ -38,20 +38,29 @@ class TelegramMatchTestCase(TestCase):
         self.assertEqual("In der Telegram-Gruppe wurde noch kein Team registriert (/start).", self.bot.response_text)
 
     def test_at_match_day_are_no_matches(self):
-        create_team_with_player_names("Team 1", [], telegram_id=self.TELEGRAM_ID)
+        TeamBuilder("Team 1") \
+            .set_telegram_id(self.TELEGRAM_ID) \
+            .build()
 
         test_call_match("/match 3", self.telegram_chat, self.bot)
 
-        self.assertEqual("Leider existieren an dem von dir selektierten Tag keine Spiele.", self.bot.response_text)
+        self.assertEqual(_("Sadly there is no planned game on your selected day"), self.bot.response_text)
 
     def test_existing_match_day_without_lineups(self):
-        team_1 = create_team_with_player_names("Team 1", ["player_1"], telegram_id=self.TELEGRAM_ID)
-        team_2 = create_team_with_player_names("Team 2", ["player_2", "player_3"])
+        team_1 = TeamBuilder("Team 1") \
+            .add_players_by_names("player_1") \
+            .set_telegram_id(self.TELEGRAM_ID) \
+            .set_language(Team.Languages.ENGLISH) \
+            .build()
 
-        Match.objects.create(
-            match_id=1, team=team_1, enemy_team=team_2, match_day=2, has_side_choice=False,
-            match_type=Match.MATCH_TYPE_LEAGUE, begin=make_aware(datetime(2022, 2, 2))
-        )
+        team_2 = TeamBuilder("Team 2") \
+            .add_players_by_names("player 2") \
+            .build()
+
+        MatchBuilder(1, team_1, team_2) \
+            .set_match_day(2) \
+            .begin_at(make_aware(datetime(2022, 2, 2))) \
+            .build()
 
         test_call_match("/match 2", self.telegram_chat, self.bot)
 
@@ -64,7 +73,7 @@ class TelegramMatchTestCase(TestCase):
             "[against Team 2](https://www.primeleague.gg/de/leagues/matches/1)\n\n"
 
             "*Date*\n"
-            "> 📆 No dates proposed. Alternative date: Mittwoch, 2. Februar 2022 0:00 Uhr\n\n"
+            "> 📆 No dates proposed. Alternative date: Wednesday, 2. February 2022 0:00 AM\n\n"
 
             "*Opposing team*\n"
             "> 🔍 [op.gg](https://euw.op.gg/multisearch/euw?summoners=)\n\n"
