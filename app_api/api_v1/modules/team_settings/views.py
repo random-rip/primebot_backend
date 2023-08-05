@@ -2,8 +2,8 @@ from drf_spectacular.utils import extend_schema
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from app_api.modules.team_settings.maker import SettingsMaker
-from app_api.modules.team_settings.serializers import team_to_serializer_data
+from app_api.api_v1.modules.team_settings.serializers import team_to_serializer_data
+from core.settings_maker import SettingsMaker
 
 
 @extend_schema(exclude=True)

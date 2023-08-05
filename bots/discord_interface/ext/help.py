@@ -3,13 +3,18 @@ from discord.ext import commands
 from django.conf import settings
 from django.utils.translation import gettext as _
 
-from app_api.modules.status.views import GitHub
 from bots.discord_interface.utils import COLOR_SETTINGS, translation_override
+from core.github import GitHub
 
 
-@commands.hybrid_command(name="help", help="Creates an overview of the bot and commands", )
+@commands.hybrid_command(
+    name="help",
+    help="Creates an overview of the bot and commands",
+)
 @translation_override
-async def bot_help(ctx: commands.Context, ) -> None:
+async def bot_help(
+    ctx: commands.Context,
+) -> None:
     async with ctx.typing():
         embed = Embed(title=_("Help"), color=COLOR_SETTINGS)
         project_version = GitHub.latest_version().get("version", None)
@@ -29,8 +34,12 @@ async def bot_help(ctx: commands.Context, ) -> None:
             "Discord Community Server for help and updates: {discord_url}\n"
             "Checkout our Github for contributions: {github_url}\n"
             "_Version: {version}_\n"
-        ).format(version=project_version, website=settings.SITE_ID, discord_url=settings.DISCORD_SERVER_LINK,
-                 github_url=settings.GITHUB_URL)
+        ).format(
+            version=project_version,
+            website=settings.SITE_ID,
+            discord_url=settings.DISCORD_SERVER_LINK,
+            github_url=settings.GITHUB_URL,
+        )
         embed.description = f"_{desc}_\n\n{general}"
     await ctx.send(embed=embed)
 

@@ -9,12 +9,12 @@ from django.utils.translation import gettext as _
 from telegram import ReplyKeyboardRemove, Update
 from telegram.ext import CallbackContext, ConversationHandler
 
-from app_api.modules.team_settings.maker import SettingsMaker
 from app_prime_league.models import Team
 from bots.base.bop import GIFinator
 from bots.messages import MatchesOverview, MatchOverview
 from bots.telegram_interface.validation_messages import channel_not_registered
 from bots.utils import mysql_has_gone_away_decorator
+from core.settings_maker import SettingsMaker
 from utils.messages_logger import log_command
 
 logger = logging.getLogger("commands")

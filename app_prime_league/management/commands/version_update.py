@@ -1,9 +1,9 @@
 from django.core.management import BaseCommand
 
-from app_api.modules.status.views import GitHub
 from app_prime_league.models import Team
 from bots.message_dispatcher import MessageCollector
 from bots.messages import NotificationToTeamMessage
+from core.github import GitHub
 
 message = """
 Hallo {team.name},
