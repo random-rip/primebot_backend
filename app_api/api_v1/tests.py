@@ -10,25 +10,25 @@ class TeamTests(APITestCase):
         Team.objects.create(id=2, name='TestTeam2', team_tag='TT2')
 
     def test_team_detail(self):
-        url = reverse('team-detail', args=(1,))
+        url = reverse('v1:team-detail', args=(1,))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['name'], 'TestTeam1')
 
     def test_team_list(self):
-        url = reverse('team-list')
+        url = reverse('v1:team-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data["results"][0]['team_tag'], 'TT1')
         self.assertEqual(response.data["results"][1]['team_tag'], 'TT2')
 
     def test_team_detail_read_only(self):
-        url = reverse('team-detail', args=(1,))
+        url = reverse('v1:team-detail', args=(1,))
         response = self.client.put(url)
         self.assertEqual(response.status_code, 405)
 
     def test_team_list_read_only(self):
-        url = reverse('team-list')
+        url = reverse('v1:team-list')
         response = self.client.post(url)
         self.assertEqual(response.status_code, 405)
 
@@ -55,24 +55,24 @@ class MatchTests(APITestCase):
         )
 
     def test_match_detail(self):
-        url = reverse('match-detail', args=(1,))
+        url = reverse('v1:match-detail', args=(1,))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['result'], '1:0')
 
     def test_match_list(self):
-        url = reverse('match-list')
+        url = reverse('v1:match-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data["results"][0]['result'], '1:0')
         self.assertEqual(response.data["results"][1]['result'], '2:0')
 
     def test_match_detail_read_only(self):
-        url = reverse('match-detail', args=(1,))
+        url = reverse('v1:match-detail', args=(1,))
         response = self.client.put(url)
         self.assertEqual(response.status_code, 405)
 
     def test_match_list_read_only(self):
-        url = reverse('match-list')
+        url = reverse('v1:match-list')
         response = self.client.post(url)
         self.assertEqual(response.status_code, 405)
