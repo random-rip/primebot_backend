@@ -5,13 +5,14 @@ import urllib.request
 import telegram
 from django.conf import settings
 from django.core.files import File
+from django.utils.translation import gettext as _
 from telegram import Update, ReplyKeyboardRemove
 from telegram.ext import CallbackContext, ConversationHandler
 
 from app_api.modules.team_settings.maker import SettingsMaker
 from app_prime_league.models import Team
 from bots.base.bop import GIFinator
-from bots.messages import MatchesOverview
+from bots.messages import MatchesOverview, MatchOverview
 from bots.telegram_interface.validation_messages import channel_not_registered
 from bots.utils import mysql_has_gone_away_decorator
 from utils.messages_logger import log_command
@@ -129,6 +130,74 @@ def matches(update: Update, context: CallbackContext):
         disable_web_page_preview=True,
     )
     return ConversationHandler.END
+
+
+class InvalidMatchDay(Exception):
+    ...
+
+
+@log_command
+@mysql_has_gone_away_decorator
+def match(update: Update, context: CallbackContext) -> int:
+    return call_match(update, context)
+
+
+def call_match(update: Update, context: CallbackContext) -> int:
+    user_command = update.message.text
+
+    try:
+        match_day = get_match_day(user_command)
+    except InvalidMatchDay:
+        update.message.reply_markdown(
+            _("Invalid match day. Try using /match 1."),
+            reply_markup=ReplyKeyboardRemove(),
+            disable_web_page_preview=True,
+        )
+        return ConversationHandler.END
+
+    chat_id = update.message.chat.id
+
+    try:
+        team = Team.objects.get(telegram_id=chat_id)
+    except Team.DoesNotExist:
+        return channel_not_registered(update)
+
+    found_matches = team.get_obvious_matches_based_on_stage(match_day=match_day)
+
+    if not found_matches:
+        update.message.reply_markdown(
+            _("Sadly there is no planned game on your selected day"),
+            reply_markup=ReplyKeyboardRemove(),
+            disable_web_page_preview=True,
+        )
+        return ConversationHandler.END
+
+    for i in found_matches:
+        msg = MatchOverview(team=team, match=i)
+        update.message.reply_markdown(
+            msg.generate_message(),
+            reply_markup=ReplyKeyboardRemove(),
+            disable_web_page_preview=True,
+        )
+
+    return ConversationHandler.END
+
+
+def get_match_day(user_command: str) -> int:
+    command_args = user_command.split()[1:]
+
+    if len(command_args) != 1:
+        raise InvalidMatchDay
+
+    possible_match_day = command_args[0]
+    return get_validated_match_day(possible_match_day)
+
+
+def get_validated_match_day(possible_match_day: str) -> int:
+    try:
+        return int(possible_match_day)
+    except ValueError:
+        raise InvalidMatchDay
 
 
 @log_command

@@ -2,32 +2,53 @@ from typing import List
 
 from discord import Embed, Colour
 from django.conf import settings
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext as _, get_language
 
 from app_prime_league.models import Champion, ScoutingWebsite, Team, Match
-from bots.messages.base import MatchMessage, MessageNotImplementedError
+from bots.messages.base import MatchMessage
 from utils.emojis import EMJOI_MAGN_GLASS
 from utils.utils import format_datetime
 
 
 class MatchOverview(MatchMessage):
-
     def _generate_title(self) -> str:
         return "🔥 " + _("Match overview")
 
-    def __init__(self, team: Team, match: Match,):
+    def __init__(
+        self,
+        team: Team,
+        match: Match,
+    ):
         super().__init__(team=team, match=match)
         self.embed = Embed(color=Colour.gold())
 
     def _generate_message(self):
-        raise MessageNotImplementedError()
+        self.generate_discord_embed()
+        result = ""
 
-    def _add_schedule(self, ):
+        for field in self.embed.fields:
+            telegramized_field_value = self.telegramize_from_discord(field.value)
+
+            result += f"*{field.name}*\n"
+            result += f"{telegramized_field_value}\n"
+
+        return result
+
+    def telegramize_from_discord(self, value: str) -> str:
+        result = value.replace("!]", "]")
+
+        if result[0] == '_' and result[-1] == '_':
+            result = result[1:-1]
+
+        result = result.replace("**", "*")
+        return result
+
+    def _add_schedule(
+        self,
+    ):
         name = _("Date")
 
-        value = (
-            "> {match_begin}\n"
-        ).format(
+        value = ("> {match_begin}\n").format(
             match_begin=self.match_helper.display_match_schedule(self.match),
         )
 
@@ -51,12 +72,8 @@ class MatchOverview(MatchMessage):
         if banned.exists():
             text += "> " + _("The following champions are expected to be locked at the scheduled date") + ":\n"
             for i in banned:
-                text += (
-                    "> ➕ ⛔️{name} ({until_patch_label} {until_patch})\n"
-                ).format(
-                    name=i.name,
-                    until_patch_label=_("until patch"),
-                    until_patch=i.banned_until_patch
+                text += ("> ➕ ⛔️{name} ({until_patch_label} {until_patch})\n").format(
+                    name=i.name, until_patch_label=_("until patch"), until_patch=i.banned_until_patch
                 )
 
         text += f"> " + _("The rulebook is available [here.]") + "(https://www.primeleague.gg/statics/rules_general)\n"
@@ -69,11 +86,10 @@ class MatchOverview(MatchMessage):
         multi = ScoutingWebsite.objects.get_multi_websites()
 
         names = list(
-            self.match.get_enemy_team().player_set.get_active_players().values_list("summoner_name", flat=True))
+            self.match.get_enemy_team().player_set.get_active_players().values_list("summoner_name", flat=True)
+        )
         for i in multi:
-            value += (
-                f"> {EMJOI_MAGN_GLASS} [{i.name}]({i.generate_url(names)})\n"
-            )
+            value += f"> {EMJOI_MAGN_GLASS} [{i.name}]({i.generate_url(names)})\n"
         self.embed.add_field(name=name, value=value, inline=False)
 
     def _add_enemy_players(self):
@@ -83,30 +99,25 @@ class MatchOverview(MatchMessage):
             return
 
         names = list(
-            self.match.get_enemy_team().player_set.get_active_players().order_by(
-                "summoner_name").values_list("summoner_name", flat=True))
+            self.match.get_enemy_team()
+            .player_set.get_active_players()
+            .order_by("summoner_name")
+            .values_list("summoner_name", flat=True)
+        )
 
         if len(names) < 9:
-            self.embed.add_field(
-                name=name,
-                value=self.__get_players_embed_value(names, single),
-                inline=False
-            )
+            self.embed.add_field(name=name, value=self.__get_players_embed_value(names, single), inline=False)
             return
 
         split_at = (len(names) // 2) + 1
         names_first_part = names[:split_at]
         names_second_part = names[split_at:]
 
-        self.embed.add_field(
-            name=name,
-            value=self.__get_players_embed_value(names_first_part, single),
-            inline=True
-        )
+        self.embed.add_field(name=name, value=self.__get_players_embed_value(names_first_part, single), inline=True)
         self.embed.add_field(
             name=name,
             value=self.__get_players_embed_value(names_second_part, single, start_at=split_at + 1),
-            inline=True
+            inline=True,
         )
 
     def __get_players_embed_value(self, names: List[str], scouting_website: ScoutingWebsite, start_at: int = 1) -> str:
@@ -157,28 +168,25 @@ class MatchOverview(MatchMessage):
         self.embed.add_field(name=name, value=value, inline=False)
 
     def _add_disclaimer(self):
+        print("####################")
+        print(get_language())
         name = _("Disclaimer")
         value = _(
             "This command is in beta! We still collect feedback for this.\n"
             "What other information would you like to see?\n"
             "[Write us on Discord!](https://discord.gg/7NYgT2uFPm)"
         )
+        print(value)
+        print("##################")
         value = f"_{value}_"
-        self.embed.add_field(
-            name=name,
-            value=value,
-            inline=False
-        )
+        self.embed.add_field(name=name, value=value, inline=False)
 
     def _generate_discord_embed(self):
-
         self._add_disclaimer()
         name = "⚔ {match_day}".format(
             match_day=self.match_helper.display_match_day(self.match).title(),
         )
-        value = _(
-            "[against {enemy_team_name}]({match_url})"
-        ).format(
+        value = _("[against {enemy_team_name}]({match_url})").format(
             enemy_team_name=self.match.get_enemy_team().name,
             match_url=f"{settings.MATCH_URI}{self.match.match_id}",
         )
@@ -199,7 +207,6 @@ class MatchOverview(MatchMessage):
                 self._add_team_lineup()
                 self._add_enemy_lineup()
             self._add_general_information()
-        self.embed.set_footer(
-            text=_("If there are outdated scouting links just use /match again after 15 minutes."))
+        self.embed.set_footer(text=_("If there are outdated scouting links just use /match again after 15 minutes."))
 
         return self.embed
