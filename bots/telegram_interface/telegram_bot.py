@@ -36,6 +36,7 @@ class TelegramBot(BotInterface):
             CommandHandler("help", single_commands.helpcommand),
             CommandHandler("bop", single_commands.bop),
             CommandHandler("setlogo", single_commands.set_logo),
+            CommandHandler("match", single_commands.match),
             CommandHandler("matches", single_commands.matches),
             CommandHandler("delete", single_commands.delete),
             CommandHandler("settings", single_commands.team_settings),
@@ -44,10 +45,7 @@ class TelegramBot(BotInterface):
 
         start_conv_handler = ConversationHandler(
             entry_points=[
-                CommandHandler(
-                    'start',
-                    start_conversation.start,
-                )
+                CommandHandler('start', start_conversation.start),
             ],
             states={
                 1: [

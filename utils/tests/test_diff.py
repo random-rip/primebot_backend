@@ -10,7 +10,13 @@ from utils.utils import convert_seconds_to_hh_mm, diff_to_hh_mm, format_time_lef
 class DatetimeDiffTest(TestCase):
     databases = []
 
-    def test_convert_seconds_to_hh_mm(self, ):
+    def test_none(self):
+        with self.assertRaises(TypeError):
+            diff_to_hh_mm(datetime(2022, 1, 1, 15, 17), None)
+
+    def test_convert_seconds_to_hh_mm(
+        self,
+    ):
         self.assertEqual((0, 1), convert_seconds_to_hh_mm(60))
         self.assertEqual((1, 0), convert_seconds_to_hh_mm(60 * 60))
         self.assertEqual((24, 0), convert_seconds_to_hh_mm(60 * 60 * 24))
