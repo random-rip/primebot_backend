@@ -60,10 +60,6 @@ class TelegramMatchTestCase(TestCase):
         test_call_match("/match 2", self.telegram_chat, self.bot)
 
         expected = (
-            "*Disclaimer*\n"
-            "This command is in beta! We still collect feedback for this.\n"
-            "What other information would you like to see?\n"
-            "[Write us on Discord](https://discord.gg/7NYgT2uFPm)\n"
             "*⚔ Gameday 2*\n"
             "[against Team 2](https://www.primeleague.gg/de/leagues/matches/1)\n\n"
             "*Date*\n"

@@ -167,18 +167,7 @@ class MatchOverview(MatchMessage):
             value += _("No lineup has been submitted yet.") + "\n"
         self.embed.add_field(name=name, value=value, inline=False)
 
-    def _add_disclaimer(self):
-        name = _("Disclaimer")
-        value = _(
-            "This command is in beta! We still collect feedback for this.\n"
-            "What other information would you like to see?\n"
-            "[Write us on Discord!](https://discord.gg/7NYgT2uFPm)"
-        )
-        value = f"_{value}_"
-        self.embed.add_field(name=name, value=value, inline=False)
-
     def _generate_discord_embed(self):
-        self._add_disclaimer()
         name = "⚔ {match_day}".format(
             match_day=self.match_helper.display_match_day(self.match).title(),
         )
