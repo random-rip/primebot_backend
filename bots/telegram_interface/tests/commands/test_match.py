@@ -5,7 +5,7 @@ from django.utils.translation import gettext as _
 from telegram import Chat
 
 from app_prime_league.models import Team
-from bots.telegram_interface.tests.commands.utils import test_call_match, TestBot, TeamBuilder, MatchBuilder
+from bots.telegram_interface.tests.commands.utils import MatchBuilder, TeamBuilder, TestBot, test_call_match
 
 
 class TelegramMatchTestCase(TestCase):
@@ -38,29 +38,24 @@ class TelegramMatchTestCase(TestCase):
         self.assertEqual("In der Telegram-Gruppe wurde noch kein Team registriert (/start).", self.bot.response_text)
 
     def test_at_match_day_are_no_matches(self):
-        TeamBuilder("Team 1") \
-            .set_telegram_id(self.TELEGRAM_ID) \
-            .build()
+        TeamBuilder("Team 1").set_telegram_id(self.TELEGRAM_ID).build()
 
         test_call_match("/match 3", self.telegram_chat, self.bot)
 
-        self.assertEqual(_("Sadly there is no planned game on your selected day"), self.bot.response_text)
+        self.assertEqual(_("Sadly there is no match on the given match day."), self.bot.response_text)
 
     def test_existing_match_day_without_lineups(self):
-        team_1 = TeamBuilder("Team 1") \
-            .add_players_by_names("player_1") \
-            .set_telegram_id(self.TELEGRAM_ID) \
-            .set_language(Team.Languages.ENGLISH) \
+        team_1 = (
+            TeamBuilder("Team 1")
+            .add_players_by_names("player_1")
+            .set_telegram_id(self.TELEGRAM_ID)
+            .set_language(Team.Languages.ENGLISH)
             .build()
+        )
 
-        team_2 = TeamBuilder("Team 2") \
-            .add_players_by_names("player 2") \
-            .build()
+        team_2 = TeamBuilder("Team 2").add_players_by_names("player 2").build()
 
-        MatchBuilder(1, team_1, team_2) \
-            .set_match_day(2) \
-            .begin_at(make_aware(datetime(2022, 2, 2))) \
-            .build()
+        MatchBuilder(1, team_1, team_2).set_match_day(2).begin_at(make_aware(datetime(2022, 2, 2))).build()
 
         test_call_match("/match 2", self.telegram_chat, self.bot)
 
@@ -71,19 +66,14 @@ class TelegramMatchTestCase(TestCase):
             "[Write us on Discord](https://discord.gg/7NYgT2uFPm)\n"
             "*⚔ Gameday 2*\n"
             "[against Team 2](https://www.primeleague.gg/de/leagues/matches/1)\n\n"
-
             "*Date*\n"
             "> 📆 No dates proposed. Alternative date: Wednesday, 2. February 2022 0:00 AM\n\n"
-
             "*Opposing team*\n"
             "> 🔍 [op.gg](https://euw.op.gg/multisearch/euw?summoners=)\n\n"
-
             "*Your lineup*\n"
             "⚠ No lineup has been submitted yet.\n\n"
-
             "*Lineup of opponent*\n"
             "No lineup has been submitted yet.\n\n"
-
             "*Other information*\n"
             "> You have a choice of sides in the *second* game.\n"
             "> The rulebook is available [here.](https://www.primeleague.gg/statics/rules_general)\n\n"

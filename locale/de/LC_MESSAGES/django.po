@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-09 13:57+0200\n"
+"POT-Creation-Date: 2023-08-05 13:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,6 +39,14 @@ msgid "%d min"
 msgid_plural "%d min"
 msgstr[0] "%d Min"
 msgstr[1] "%d Min"
+
+#: .\venv\Lib\site-packages\colorfield\validators.py:9
+msgid "Enter a valid hex color, eg. #000000"
+msgstr ""
+
+#: .\venv\Lib\site-packages\colorfield\validators.py:17
+msgid "Enter a valid hexa color, eg. #00000000"
+msgstr ""
 
 #: .\venv\Lib\site-packages\django\contrib\messages\apps.py:7
 msgid "Messages"
@@ -1438,14 +1446,14 @@ msgctxt "good"
 msgid "right"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\test\locale_test.py:70
-#: .\venv\Lib\site-packages\tornado\test\locale_test.py:72
+#: .\venv\Lib\site-packages\tornado\test\locale_test.py:71
+#: .\venv\Lib\site-packages\tornado\test\locale_test.py:74
 msgctxt "organization"
 msgid "club"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\test\locale_test.py:74
-#: .\venv\Lib\site-packages\tornado\test\locale_test.py:75
+#: .\venv\Lib\site-packages\tornado\test\locale_test.py:76
+#: .\venv\Lib\site-packages\tornado\test\locale_test.py:77
 msgctxt "stick"
 msgid "club"
 msgstr ""

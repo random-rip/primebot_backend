@@ -1,10 +1,10 @@
 from typing import List
 
-from discord import Embed, Colour
+from discord import Colour, Embed
 from django.conf import settings
-from django.utils.translation import gettext as _, get_language
+from django.utils.translation import gettext as _
 
-from app_prime_league.models import Champion, ScoutingWebsite, Team, Match
+from app_prime_league.models import Champion, Match, ScoutingWebsite, Team
 from bots.messages.base import MatchMessage
 from utils.emojis import EMJOI_MAGN_GLASS
 from utils.utils import format_datetime
@@ -76,7 +76,7 @@ class MatchOverview(MatchMessage):
                     name=i.name, until_patch_label=_("until patch"), until_patch=i.banned_until_patch
                 )
 
-        text += f"> " + _("The rulebook is available [here.]") + "(https://www.primeleague.gg/statics/rules_general)\n"
+        text += "> " + _("The rulebook is available [here.]") + "(https://www.primeleague.gg/statics/rules_general)\n"
 
         self.embed.add_field(name=name, value=text, inline=False)
 
@@ -132,8 +132,8 @@ class MatchOverview(MatchMessage):
     def _add_results(self):
         name = _("Match result")
         value = ""
-        value += f"ℹ️ " + _("Result") + f": {self.match.result}\n"
-        value += f"📆️ " + _("Date") + f": {format_datetime(self.match.begin)}\n"
+        value += "ℹ️ " + _("Result") + f": {self.match.result}\n"
+        value += "📆️ " + _("Date") + f": {format_datetime(self.match.begin)}\n"
         self.embed.add_field(name=name, value=value, inline=False)
 
     def _add_team_lineup(self, result=False):
@@ -145,7 +145,7 @@ class MatchOverview(MatchMessage):
             for i, x in enumerate(self.match.team_lineup.all(), start=1):
                 value += f" > {self._get_number_as_emojis(i)} {x.summoner_name}\n"
         else:
-            value += f"⚠ " + _("No lineup has been submitted yet.") + "\n"
+            value += "⚠ " + _("No lineup has been submitted yet.") + "\n"
         self.embed.add_field(name=name, value=value, inline=False)
 
     def _add_enemy_lineup(self, result=False):
@@ -168,16 +168,12 @@ class MatchOverview(MatchMessage):
         self.embed.add_field(name=name, value=value, inline=False)
 
     def _add_disclaimer(self):
-        print("####################")
-        print(get_language())
         name = _("Disclaimer")
         value = _(
             "This command is in beta! We still collect feedback for this.\n"
             "What other information would you like to see?\n"
             "[Write us on Discord!](https://discord.gg/7NYgT2uFPm)"
         )
-        print(value)
-        print("##################")
         value = f"_{value}_"
         self.embed.add_field(name=name, value=value, inline=False)
 

@@ -6,7 +6,7 @@ import telegram
 from django.conf import settings
 from django.core.files import File
 from django.utils.translation import gettext as _
-from telegram import Update, ReplyKeyboardRemove
+from telegram import ReplyKeyboardRemove, Update
 from telegram.ext import CallbackContext, ConversationHandler
 
 from app_api.modules.team_settings.maker import SettingsMaker
@@ -36,7 +36,7 @@ def set_photo(chat_id, context: CallbackContext, url):
                 timeout=20,
             )
         os.remove(file_name)
-    except (FileNotFoundError, telegram.error.BadRequest) as e:
+    except (FileNotFoundError, telegram.error.BadRequest):
         return False
     except Exception as e:
         logger.exception(e)
@@ -84,10 +84,7 @@ def bop(update: Update, context: CallbackContext):
 @log_command
 def cancel(update: Update, context: CallbackContext):
     update.message.reply_markdown(
-        text=(
-            "Vorgang abgebrochen.\n"
-            "Wenn Du Hilfe brauchst, benutze /help. 🔍"
-        ),
+        text=("Vorgang abgebrochen.\n" "Wenn Du Hilfe brauchst, benutze /help. 🔍"),
         reply_markup=ReplyKeyboardRemove(),
         disable_web_page_preview=True,
     )
@@ -166,7 +163,7 @@ def call_match(update: Update, context: CallbackContext) -> int:
 
     if not found_matches:
         update.message.reply_markdown(
-            _("Sadly there is no planned game on your selected day"),
+            _("Sadly there is no match on the given match day."),
             reply_markup=ReplyKeyboardRemove(),
             disable_web_page_preview=True,
         )
@@ -232,9 +229,9 @@ def team_settings(update: Update, context: CallbackContext):
     maker = SettingsMaker(team=team)
     link = maker.generate_expiring_link(platform="telegram")
     title = "Einstellungen für {team} ändern".format(team=team.name)
-    content = (
-        "Der Link ist nur {minutes} Minuten gültig. Danach muss ein neuer Link generiert werden."
-    ).format(minutes=settings.TEMP_LINK_TIMEOUT_MINUTES)
+    content = ("Der Link ist nur {minutes} Minuten gültig. Danach muss ein neuer Link generiert werden.").format(
+        minutes=settings.TEMP_LINK_TIMEOUT_MINUTES
+    )
 
     update.message.reply_markdown(
         f"[{title}]({link})\n_{content}_",
@@ -251,7 +248,7 @@ def migrate_chat(update: Update, context: CallbackContext):
     try:
         old_chat_id = update.message.chat.id
         team = Team.objects.get(telegram_id=old_chat_id)
-    except Team.DoesNotExist as e:
+    except Team.DoesNotExist:
         return
     new_chat_id = update.message.migrate_to_chat_id
     team.telegram_id = new_chat_id

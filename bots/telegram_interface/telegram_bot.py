@@ -45,10 +45,7 @@ class TelegramBot(BotInterface):
 
         start_conv_handler = ConversationHandler(
             entry_points=[
-                CommandHandler(
-                    'start',
-                    start_conversation.start,
-                )
+                CommandHandler('start', start_conversation.start),
             ],
             states={
                 1: [
