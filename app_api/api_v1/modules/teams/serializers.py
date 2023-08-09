@@ -39,6 +39,7 @@ class MatchForTeamDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Match
         fields = [
+            "id",
             "match_id",
             "prime_league_link",
             'begin',
