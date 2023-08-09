@@ -1,7 +1,7 @@
 from django.core.management import BaseCommand
 
-from app_api.modules.team_settings.maker import SettingsMaker
 from app_prime_league.models import Team
+from core.settings_maker import SettingsMaker
 
 
 class Command(BaseCommand):

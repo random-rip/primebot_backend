@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from app_api.common.serializers import PlayerSerializer
+from app_api.api_v1.common.serializers import PlayerSerializer
 from app_prime_league.models import Match, Team
 
 
@@ -39,6 +39,7 @@ class MatchForTeamDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Match
         fields = [
+            "id",
             "match_id",
             "prime_league_link",
             'begin',

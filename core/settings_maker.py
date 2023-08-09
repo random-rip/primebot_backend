@@ -1,6 +1,5 @@
 import urllib
 from datetime import timedelta
-from urllib.parse import urlparse
 
 import cryptography
 from cryptography.fernet import Fernet
@@ -9,7 +8,7 @@ from django.conf import settings
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
 
-from app_prime_league.models import Team, SettingsExpiring, ScoutingWebsite
+from app_prime_league.models import ScoutingWebsite, SettingsExpiring, Team
 from utils.utils import Encoder
 
 MALFORMED_REQUEST = "invalid_request"
@@ -115,20 +114,22 @@ class SettingsMaker(Encoder):
         try:
             content = self.data.get(self.key_content)
             self.settings = {x["key"]: x["value"] for x in content}
-            if not all(k in self.settings for k in [
-                "WEEKLY_MATCH_DAY",
-                "LINEUP_NOTIFICATION",
-                "TEAM_SCHEDULING_SUGGESTION",
-                "ENEMY_SCHEDULING_SUGGESTION",
-                "SCHEDULING_CONFIRMATION",
-                "SCOUTING_WEBSITE",
-                "LANGUAGE",
-                "NEW_COMMENTS_OF_UNKNOWN_USERS",
-            ]):
+            if not all(
+                k in self.settings
+                for k in [
+                    "WEEKLY_MATCH_DAY",
+                    "LINEUP_NOTIFICATION",
+                    "TEAM_SCHEDULING_SUGGESTION",
+                    "ENEMY_SCHEDULING_SUGGESTION",
+                    "SCHEDULING_CONFIRMATION",
+                    "SCOUTING_WEBSITE",
+                    "LANGUAGE",
+                    "NEW_COMMENTS_OF_UNKNOWN_USERS",
+                ]
+            ):
                 self.errors.append(MISSING_CONTENT)
             scouting_website_name = self.settings.pop("SCOUTING_WEBSITE", "").lower()
-            self.scouting_website = ScoutingWebsite.objects.get_multi_websites().get(
-                name=scouting_website_name)
+            self.scouting_website = ScoutingWebsite.objects.get_multi_websites().get(name=scouting_website_name)
             self.language = self.settings.pop("LANGUAGE")
         except (KeyError, ScoutingWebsite.DoesNotExist):
             self.errors.append(MALFORMED_CONTENT)
@@ -145,7 +146,11 @@ class SettingsMaker(Encoder):
         value = value.encode(cls._encoding)
         return Fernet(settings.FERNET_KEY).decrypt(value).decode(encoding=cls._encoding)
 
-    def generate_expiring_link(self, platform, expiring_at=None, ) -> str:
+    def generate_expiring_link(
+        self,
+        platform,
+        expiring_at=None,
+    ) -> str:
         if expiring_at is None:
             expiring_at = timezone.now() + timedelta(minutes=settings.TEMP_LINK_TIMEOUT_MINUTES)
 
@@ -155,18 +160,24 @@ class SettingsMaker(Encoder):
         qps = {
             self.key_team: self.encrypt(self.team.id),
             self.key_validation_hash: self.hash(self.team.id),
-            self.key_platform: platform
+            self.key_platform: platform,
         }
-        url += urllib.parse.urlencode(qps, doseq=False, )
+        url += urllib.parse.urlencode(
+            qps,
+            doseq=False,
+        )
         return url
 
     def save(self):
         if not self.__data_validated:
             raise Exception("call .validate_data first.")
         for key, value in self.settings.items():
-            setting, _ = self.team.setting_set.get_or_create(attr_name=key, defaults={
-                "attr_value": value,
-            })
+            setting, _ = self.team.setting_set.get_or_create(
+                attr_name=key,
+                defaults={
+                    "attr_value": value,
+                },
+            )
             setting.attr_value = value
             setting.save()
 

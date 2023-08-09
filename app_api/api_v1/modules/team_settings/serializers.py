@@ -72,14 +72,15 @@ def team_to_serializer_data(team: Team):
             "key": "LANGUAGE",
             "value": team.language,
         },
-
     ]
-    serializer = SettingsTeamSerializer({
-        "team_id": team.id,
-        "team_name": team.name,
-        "platforms": platforms,
-        "settings": team_settings,
-        "expiring_at": team.settings_expiring.expires,
-        "logo_url": team.logo_url,
-    })
+    serializer = SettingsTeamSerializer(
+        {
+            "team_id": team.id,
+            "team_name": team.name,
+            "platforms": platforms,
+            "settings": team_settings,
+            "expiring_at": team.settings_expiring.expires,
+            "logo_url": team.logo_url,
+        }
+    )
     return serializer.data
