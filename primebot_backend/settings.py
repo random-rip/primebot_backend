@@ -182,7 +182,7 @@ MATCH_URI = "https://www.primeleague.gg/de/leagues/matches/"
 TEAM_URI = "https://www.primeleague.gg/de/leagues/teams/"
 SITE_ID = env.str("SITE_ID", None)
 
-CURRENT_SPLIT_START = datetime(2023, 6, 5).astimezone(pytz.timezone("Europe/Berlin"))
+CURRENT_SPLIT_START = datetime(2023, 10, 9).astimezone(pytz.timezone("Europe/Berlin"))
 
 STORAGE_DIR = os.path.join(BASE_DIR, "storage")
 
