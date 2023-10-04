@@ -5,6 +5,8 @@ version: '3.4'
 
 services:
   app:
+    networks:
+      - proxy
     depends_on:
       - mariadb
       - mongodb
@@ -19,6 +21,9 @@ services:
   mongodb:
     image: mongo
     restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: $MONGODB_USERNAME
+      MONGO_INITDB_ROOT_PASSWORD: $MONGODB_PASSWORD
     volumes:
       - mongo-data:/data/db
 
@@ -45,12 +50,19 @@ services:
 
   mariadb:
     image: mariadb
-    env_file:
-      - .env
     restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+      MYSQL_DATABASE: $DB_NAME
+      MYSQL_USER: $DB_USER
+      MYSQL_PASSWORD: $DB_PASSWORD
     volumes:
       - database:/var/lib/mysql
 
 volumes:
   database:
   mongo-data:
+
+networks:
+  proxy:
+    external: true
