@@ -237,9 +237,10 @@ Q_CLUSTER = {
     'save_limit': 10_000,  # Limits the amount of successful tasks save to Django
     "ack_failures": False,
     "catch_up": False,
-    "sync": DEBUG,
+    "sync": env.bool("MONGODB_SYNC", DEBUG),
     'mongo': {
-        'host': env.str("MONGODB_URI", None),
+        # 'host': env.str("MONGODB_URI", None),
+        'host': f"mongodb://{env.str('MONGODB_USERNAME', '')}:{env.str('MONGODB_PASSWORD', 'localhost')}@{env.str('MONGODB_HOST', '')}:{env.str('MONGODB_PORT', 27017)}",
         "serverSelectionTimeoutMS": 5_000,
     },
     "time_zone": "Europe/Berlin",

@@ -1,0 +1,68 @@
+version: '3.4'
+
+# Development only
+# For production see https://github.com/random-rip/primebot-deployment/blob/main/docker-compose.yml
+
+services:
+  app:
+    networks:
+      - proxy
+    depends_on:
+      - mariadb
+      - mongodb
+    build:
+      target: app
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    restart: unless-stopped
+
+  mongodb:
+    image: mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: $MONGODB_USERNAME
+      MONGO_INITDB_ROOT_PASSWORD: $MONGODB_PASSWORD
+    volumes:
+      - mongo-data:/data/db
+
+  queue-cluster:
+    build:
+      target: queue-cluster
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+
+  discord-bot:
+    build:
+      target: discord-bot
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+
+  telegram-bot:
+    build:
+      target: telegram-bot
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+
+  mariadb:
+    image: mariadb
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+      MYSQL_DATABASE: $DB_NAME
+      MYSQL_USER: $DB_USER
+      MYSQL_PASSWORD: $DB_PASSWORD
+    volumes:
+      - database:/var/lib/mysql
+
+volumes:
+  database:
+  mongo-data:
+
+networks:
+  proxy:
+    external: true
