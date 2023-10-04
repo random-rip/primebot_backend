@@ -4,26 +4,25 @@ from app_prime_league.models import Team
 from bots.message_dispatcher import MessageCollector
 from bots.messages import NotificationToTeamMessage
 
+message = """
+Hallo {team.name},
+
+aufgrund von Wartungsarbeiten ist der PrimeBot vorübergehend nicht erreichbar. Er sendet währenddessen auch keine Benachrichtigungen. Wir bitten um euer Verständnis.
+
+PS: Der Wintersplit startet morgen. Ihr habt noch bis 23:59 Uhr Zeit euch zu registrieren.
+
+Sternige Grüße
+PrimeBot Devs
+"""
+
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
         teams = Team.objects.get_registered_teams()
-        pattern = """
-        Hallo {team.name}, 
-
-        der Split neigt sich dem Ende, und damit geht der PrimeBot in eine kurze Pause. Momentan sind noch Playoffs, dabei wünschen wir den teilnehmenden Teams viel Erfolg. 🏆
-
-        Außerdem freuen uns über euer Feedback!
-        Da wir bemüht sind den Primebot weiterhin zu verbessern, möchten wir in einem kurzen Feedback fragen, welche Features euch wirklich interessieren und welche Features euch noch fehlen.
-        🔥[Link zum Feedback](https://feedback.primebot.me/)🔥
-
-        Sternige Grüße
-        Grayknife und Orbis
-        """
         for team in teams:
             try:
                 print(team)
                 collector = MessageCollector(team)
-                collector.dispatch(msg_class=NotificationToTeamMessage, custom_message=pattern)
+                collector.dispatch(msg_class=NotificationToTeamMessage, custom_message=message)
             except Exception as e:
                 print(e)
