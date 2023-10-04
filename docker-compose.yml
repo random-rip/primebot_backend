@@ -1,103 +1,56 @@
 version: '3.4'
 
+# Development only
+# For production see https://github.com/random-rip/primebot-deployment/blob/main/docker-compose.yml
 
 services:
-  traefik:
-    image: traefik:v2.5
-    container_name: traefik
-    ports:
-      - 80:80
-      - 443:443
-      - 8080:8080
-    volumes:
-      - .docker/traefik:/etc/traefik
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    restart: unless-stopped
-
   app:
     depends_on:
-      - db
+      - mariadb
+      - mongodb
     build:
       target: app
       context: .
       dockerfile: Dockerfile
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.app.entrypoints=web"
-      - "traefik.http.routers.app.rule=Host(`app.localhost`)"
-      - "traefik.http.services.app.loadbalancer.server.port=8000"
     volumes:
       - .:/app
-    env_file:
-      - .env
-    links:
-      - db
-  mongo:
-    image: mongo
-    container_name: mongo
     restart: unless-stopped
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root
-      MONGO_INITDB_DATABASE: db
+
+  mongodb:
+    image: mongo
+    restart: unless-stopped
     volumes:
       - mongo-data:/data/db
+
   queue-cluster:
     build:
       target: queue-cluster
       context: .
       dockerfile: Dockerfile
     restart: unless-stopped
-    env_file:
-      - .env
+
   discord-bot:
     build:
       target: discord-bot
       context: .
       dockerfile: Dockerfile
     restart: unless-stopped
-    env_file:
-      - .env
+
   telegram-bot:
     build:
       target: telegram-bot
       context: .
       dockerfile: Dockerfile
     restart: unless-stopped
+
+  mariadb:
+    image: mariadb
     env_file:
       - .env
-  db:
-    image: mariadb
-    container_name: db
     restart: unless-stopped
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.db.entrypoints=database"
-    environment:
-      MARIADB_MYSQL_LOCALHOST_USER: true
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: $$password$$
     volumes:
       - database:/var/lib/mysql
-  portainer:
-    image: portainer/portainer-ce
-    container_name: portainer
-    restart: unless-stopped
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.portainer.entrypoints=web"
-      - "traefik.http.routers.portainer.rule=Host(`portainer.localhost`)"
-      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
-      - "traefik.http.routers.portainer.tls.certresolver=staging"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - portainer-data:/data
 
 volumes:
   database:
-  ssl-certs:
   mongo-data:
-  portainer-data:
-
