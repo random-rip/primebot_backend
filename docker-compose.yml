@@ -10,10 +10,32 @@ services:
     depends_on:
       - mariadb
       - mongodb
-    build:
-      target: app
-      context: .
-      dockerfile: Dockerfile
+    image: orbisk/primebot
+    environment:
+      - MONGODB_USERNAME
+      - MONGODB_PASSWORD
+      - MONGODB_HOST
+      - MONGODB_PORT
+      - DB_NAME
+      - DB_USER
+      - DB_PASSWORD
+      - DB_HOST
+      - DB_PORT
+      - TELEGRAM_BOT_API_KEY
+      - DISCORD_API_KEY
+      - DISCORD_APP_CLIENT_ID
+      - DJANGO_SECRET_KEY
+      - DJANGO_DEBUG
+      - DJANGO_ALLOWED_HOSTS
+      - SITE_ID
+      - STATIC_ROOT
+      - MEDIA_ROOT
+      - LOGGING_DIR
+      - FERNET_SECRET_KEY
+      - TG_DEVELOPER_GROUP
+      - FILES_FROM_STORAGE
+      - GIT_TOKEN
+      - GAME_SPORTS_BASE_URL
     volumes:
       - .:/app
     restart: unless-stopped
@@ -28,25 +50,94 @@ services:
       - mongo-data:/data/db
 
   queue-cluster:
-    build:
-      target: queue-cluster
-      context: .
-      dockerfile: Dockerfile
+    image: orbisk/primebot
     restart: unless-stopped
+    environment:
+      - MONGODB_USERNAME
+      - MONGODB_PASSWORD
+      - MONGODB_HOST
+      - MONGODB_PORT
+      - DB_NAME
+      - DB_USER
+      - DB_PASSWORD
+      - DB_HOST
+      - DB_PORT
+      - TELEGRAM_BOT_API_KEY
+      - DISCORD_API_KEY
+      - DISCORD_APP_CLIENT_ID
+      - DJANGO_SECRET_KEY
+      - DJANGO_DEBUG
+      - DJANGO_ALLOWED_HOSTS
+      - SITE_ID
+      - STATIC_ROOT
+      - MEDIA_ROOT
+      - LOGGING_DIR
+      - FERNET_SECRET_KEY
+      - TG_DEVELOPER_GROUP
+      - FILES_FROM_STORAGE
+      - GIT_TOKEN
+      - GAME_SPORTS_BASE_URL
+    command: ['python', 'manage.py', 'qcluster' ]
 
   discord-bot:
-    build:
-      target: discord-bot
-      context: .
-      dockerfile: Dockerfile
+    image: orbisk/primebot
     restart: unless-stopped
+    command: ['python', 'manage.py', 'discord_bot' ]
+    environment:
+      - MONGODB_USERNAME
+      - MONGODB_PASSWORD
+      - MONGODB_HOST
+      - MONGODB_PORT
+      - DB_NAME
+      - DB_USER
+      - DB_PASSWORD
+      - DB_HOST
+      - DB_PORT
+      - TELEGRAM_BOT_API_KEY
+      - DISCORD_API_KEY
+      - DISCORD_APP_CLIENT_ID
+      - DJANGO_SECRET_KEY
+      - DJANGO_DEBUG
+      - DJANGO_ALLOWED_HOSTS
+      - SITE_ID
+      - STATIC_ROOT
+      - MEDIA_ROOT
+      - LOGGING_DIR
+      - FERNET_SECRET_KEY
+      - TG_DEVELOPER_GROUP
+      - FILES_FROM_STORAGE
+      - GIT_TOKEN
+      - GAME_SPORTS_BASE_URL
 
   telegram-bot:
-    build:
-      target: telegram-bot
-      context: .
-      dockerfile: Dockerfile
+    image: orbisk/primebot
     restart: unless-stopped
+    command: ['python', 'manage.py', 'telegram_bot' ]
+    environment:
+      - MONGODB_USERNAME
+      - MONGODB_PASSWORD
+      - MONGODB_HOST
+      - MONGODB_PORT
+      - DB_NAME
+      - DB_USER
+      - DB_PASSWORD
+      - DB_HOST
+      - DB_PORT
+      - TELEGRAM_BOT_API_KEY
+      - DISCORD_API_KEY
+      - DISCORD_APP_CLIENT_ID
+      - DJANGO_SECRET_KEY
+      - DJANGO_DEBUG
+      - DJANGO_ALLOWED_HOSTS
+      - SITE_ID
+      - STATIC_ROOT
+      - MEDIA_ROOT
+      - LOGGING_DIR
+      - FERNET_SECRET_KEY
+      - TG_DEVELOPER_GROUP
+      - FILES_FROM_STORAGE
+      - GIT_TOKEN
+      - GAME_SPORTS_BASE_URL
 
   mariadb:
     image: mariadb

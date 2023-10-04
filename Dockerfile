@@ -35,27 +35,3 @@ CMD python manage.py migrate
 EXPOSE 8000
 
 CMD python manage.py runserver app:8000
-
-FROM base as queue-cluster
-
-WORKDIR /app
-
-COPY . .
-
-CMD python manage.py qcluster
-
-FROM base as telegram-bot
-
-WORKDIR /app
-
-COPY . .
-
-CMD python manage.py telegram_bot
-
-FROM base as discord-bot
-
-WORKDIR /app
-
-COPY . .
-
-CMD python manage.py discord_bot
