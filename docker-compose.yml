@@ -70,7 +70,7 @@ services:
     restart: unless-stopped
     volumes:
       - media:/var/opt/prime_bot_backend/media/
-
+    command: ["gunicorn", "--workers=3", "primebot_backend.wsgi:application"]
 
   mongodb:
     image: mongo
