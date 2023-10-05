@@ -7,9 +7,20 @@ from bots.messages import NotificationToTeamMessage
 message = """
 Hallo {team.name},
 
-aufgrund von Wartungsarbeiten ist der PrimeBot vorübergehend nicht erreichbar. Er sendet währenddessen auch keine Benachrichtigungen. Wir bitten um euer Verständnis.
+der PrimeBot ist wieder online. 🔥
 
-PS: Der Wintersplit startet morgen. Ihr habt noch bis 23:59 Uhr Zeit euch zu registrieren.
+In Anbetracht der Umstellung und der Komplexität des technischen Umfelds, in dem wir arbeiten, gab es leider einige unvorhergesehene Herausforderungen, die unser Team bewältigen musste.
+Wir haben hart daran gearbeitet, sicherzustellen, dass alle Daten sicher und intakt bleiben, aber trotz unserer besten Bemühungen ist es bedauerlicherweise zu diesem Verlust gekommen.
+Wir haben bereits umfangreiche interne Untersuchungen durchgeführt, um die genaue Ursache dieses Vorfalls zu ermitteln, und wir arbeiten mit Hochdruck daran, sicherzustellen, dass sich so etwas in Zukunft nicht wiederholt.
+Wir werden alle erforderlichen Maßnahmen ergreifen, um unsere Systeme und Prozesse zu verbessern und die Zuverlässigkeit unseres Dienstes zu erhöhen.
+
+TLDR: We fucked up, alle Botinteraktionen von gestern sind lost (/start, /settings, /delete).
+Aus diesem Grund müssen die Befehle von gestern nochmal erneut ausgeführt werden.
+
+PS: Der Befehl /settings und die Website sind gerade noch down, was aber bis morgen noch behoben wird.
+
+Falls es in den nächsten Tagen noch Probleme geben sollte, meldet euch bitte bei uns im Support-Channel.
+Wir wünschen euch viel Erfolg im Wintersplit. 🏆🧊
 
 Sternige Grüße
 PrimeBot Devs
