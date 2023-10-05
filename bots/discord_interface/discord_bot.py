@@ -1,6 +1,6 @@
 import logging
 
-from discord import Game, Intents, Message, NotFound, Object, SyncWebhook
+from discord import Intents, Message, NotFound, Object, SyncWebhook
 from discord.ext.commands import Bot, NoPrivateMessage, errors
 from django.conf import settings
 from django.utils.translation import gettext as _
@@ -85,7 +85,8 @@ class _DiscordBotV2(Bot):
 
     async def on_ready(self):
         discord_logger.info(f"{self.user} has connected to Discord!")
-        await self.change_presence(activity=Game(name='Maintenance Work'))
+        await self.change_presence(activity=None)
+        # await self.change_presence(activity=Game(name='Maintenance Work'))
 
     @translation_override
     async def on_command_error(self, ctx, exception: errors.CommandError, /):
