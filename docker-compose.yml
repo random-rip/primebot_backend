@@ -206,13 +206,13 @@ services:
     image: orbisk/primebot-fileserver
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.app.entrypoints=websecure,web"
-      - "traefik.http.routers.app.rule=(Host(`primebot.me`) && Path(`/static`))"
+      - "traefik.http.routers.caddy.entrypoints=websecure,web"
+      - "traefik.http.routers.caddy.rule=(Host(`primebot.me`) && Path(`/static`))"
       - "traefik.http.middlewares.caddy-stripprefix.stripprefix.prefixes=/static"
-      -  "traefik.http.routers.nginx.middlewares=caddy-stripprefix@docker"
-      - "traefik.http.services.app.loadbalancer.server.port=80"
-      - "traefik.http.routers.app.tls=true"
-      - "traefik.http.routers.app.tls.certResolver=production"
+      - "traefik.http.routers.caddy.middlewares=caddy-stripprefix@docker"
+      - "traefik.http.services.caddy.loadbalancer.server.port=80"
+      - "traefik.http.routers.caddy.tls=true"
+      - "traefik.http.routers.caddy.tls.certResolver=production"
     networks:
       - default
       - proxy
