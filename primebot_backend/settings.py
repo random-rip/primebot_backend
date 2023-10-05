@@ -241,7 +241,7 @@ Q_CLUSTER = {
     'mongo': {
         # 'host': env.str("MONGODB_URI", None),
         'host': f"mongodb://{env.str('MONGODB_USERNAME', '')}:{env.str('MONGODB_PASSWORD', 'localhost')}@{env.str('MONGODB_HOST', '')}:{env.str('MONGODB_PORT', 27017)}",
-        "serverSelectionTimeoutMS": 5_000,
+        "serverSelectionTimeoutMS": 5_000,  # FIXME providing the host this way returns into a broken development system
     },
     "time_zone": "Europe/Berlin",
 }
