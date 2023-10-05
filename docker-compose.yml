@@ -204,7 +204,7 @@ services:
 
   caddy:
     image: orbisk/primebot-fileserver
-    command: ["file-server", "--root", "/www/html", "--listen", "0.0.0.0:80"]
+    command: ["caddy","file-server", "--root", "/www/html", "--listen", "0.0.0.0:80"]
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.caddy.entrypoints=websecure,web"
