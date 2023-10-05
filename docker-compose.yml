@@ -42,6 +42,13 @@ services:
     depends_on:
       - migration
     image: orbisk/primebot
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.entrypoints=websecure,web"
+      - "traefik.http.routers.app.rule=Host(`api.primebot.me`)"
+      - "traefik.http.services.app.loadbalancer.server.port=8000"
+      - "traefik.http.routers.app.tls=true"
+      - "traefik.http.routers.app.tls.certResolver=production"
     environment:
       - MONGODB_USERNAME
       - MONGODB_PASSWORD
