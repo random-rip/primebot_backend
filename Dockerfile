@@ -36,7 +36,8 @@ RUN python manage.py collectstatic --no-input --settings=primebot_backend.static
 
 FROM caddy as fileserver
 
-COPY .docker/Caddyfile /etc/caddy/Caddyfile
 COPY --from=static_files /var/www/primebot.me/static/ /www/html
+
+CMD ["file-server", "--root", "/www/html", "--listen", "0.0.0.0:80"]
 
 
