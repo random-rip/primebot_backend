@@ -41,6 +41,8 @@ services:
       - default
     depends_on:
       - migration
+    expose:
+      - 8000
     image: orbisk/primebot
     labels:
       - "traefik.enable=true"
@@ -205,6 +207,10 @@ services:
     networks:
       - default
       - proxy
+
+  memcached:
+    image: memcached
+    restart: unless-stopped
 
 volumes:
   database:
