@@ -33,7 +33,7 @@ services:
       - FILES_FROM_STORAGE
       - GIT_TOKEN
       - GAME_SPORTS_BASE_URL
-    command: ['python', 'manage.py', 'migrate' ]
+    command: [ 'python', 'manage.py', 'migrate' ]
 
   app:
     networks:
@@ -79,7 +79,7 @@ services:
     restart: unless-stopped
     volumes:
       - media:/var/opt/prime_bot_backend/media/
-    command: ["gunicorn", "--workers=3", "primebot_backend.wsgi:application"]
+    command: [ "gunicorn", "-b", "0.0.0.0:8000", "--workers=3", "primebot_backend.wsgi:application" ]
 
   mongodb:
     image: mongo
@@ -90,7 +90,7 @@ services:
     volumes:
       - mongo-data:/data/db
     healthcheck:
-      test: ["CMD","mongosh", "--eval", "db.adminCommand('ping')"]
+      test: [ "CMD","mongosh", "--eval", "db.adminCommand('ping')" ]
 
   queue-cluster:
     image: orbisk/primebot
@@ -122,14 +122,14 @@ services:
       - FILES_FROM_STORAGE
       - GIT_TOKEN
       - GAME_SPORTS_BASE_URL
-    command: ['python', 'manage.py', 'qcluster' ]
+    command: [ 'python', 'manage.py', 'qcluster' ]
 
   discord-bot:
     depends_on:
       - migration
     image: orbisk/primebot
     restart: unless-stopped
-    command: ['python', 'manage.py', 'discord_bot' ]
+    command: [ 'python', 'manage.py', 'discord_bot' ]
     environment:
       - MONGODB_USERNAME
       - MONGODB_PASSWORD
@@ -161,7 +161,7 @@ services:
     depends_on:
       - migration
     restart: unless-stopped
-    command: ['python', 'manage.py', 'telegram_bot' ]
+    command: [ 'python', 'manage.py', 'telegram_bot' ]
     environment:
       - MONGODB_USERNAME
       - MONGODB_PASSWORD
@@ -200,7 +200,7 @@ services:
     volumes:
       - database:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "healthcheck.sh" ,"--su-mysql", "--connect", "--innodb_initialized"]
+      test: [ "CMD", "healthcheck.sh" ,"--su-mysql", "--connect", "--innodb_initialized" ]
 
   caddy:
     image: orbisk/primebot-fileserver
