@@ -14,7 +14,6 @@ from bots.base.bop import GIFinator
 from bots.messages import MatchesOverview, MatchOverview
 from bots.telegram_interface.validation_messages import channel_not_registered
 from bots.utils import mysql_has_gone_away_decorator
-from core.settings_maker import SettingsMaker
 from utils.messages_logger import log_command
 
 logger = logging.getLogger("commands")
@@ -221,23 +220,28 @@ def delete(update: Update, context: CallbackContext):
 def team_settings(update: Update, context: CallbackContext):
     chat_id = update.message.chat.id
     try:
-        team = Team.objects.get(telegram_id=chat_id)
+        team = Team.objects.get(telegram_id=chat_id)  # noqa
     except Team.DoesNotExist:
         channel_not_registered(update)
         return ConversationHandler.END
 
-    maker = SettingsMaker(team=team)
-    link = maker.generate_expiring_link(platform="telegram")
-    title = "Einstellungen für {team} ändern".format(team=team.name)
-    content = ("Der Link ist nur {minutes} Minuten gültig. Danach muss ein neuer Link generiert werden.").format(
-        minutes=settings.TEMP_LINK_TIMEOUT_MINUTES
-    )
-
     update.message.reply_markdown(
-        f"[{title}]({link})\n_{content}_",
+        "This command is temporarily not available.",
         disable_web_page_preview=True,
         quote=False,
     )
+    # maker = SettingsMaker(team=team)
+    # link = maker.generate_expiring_link(platform="telegram")
+    # title = "Einstellungen für {team} ändern".format(team=team.name)
+    # content = ("Der Link ist nur {minutes} Minuten gültig. Danach muss ein neuer Link generiert werden.").format(
+    #     minutes=settings.TEMP_LINK_TIMEOUT_MINUTES
+    # )
+    #
+    # update.message.reply_markdown(
+    #     f"[{title}]({link})\n_{content}_",
+    #     disable_web_page_preview=True,
+    #     quote=False,
+    # )
     return ConversationHandler.END
 
 
