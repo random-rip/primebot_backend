@@ -68,8 +68,6 @@ services:
       - GIT_TOKEN
       - GAME_SPORTS_BASE_URL
     restart: unless-stopped
-    ports:
-      - "8000:8000"
     volumes:
       - media:/var/opt/prime_bot_backend/media/
     command: ["gunicorn", "--workers=3", "primebot_backend.wsgi:application"]
@@ -197,8 +195,6 @@ services:
 
   caddy:
     image: orbisk/primebot-fileserver
-    ports:
-      - "80:80"
     networks:
       - default
       - proxy
