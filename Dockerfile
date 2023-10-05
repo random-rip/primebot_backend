@@ -20,18 +20,20 @@ RUN apt-get -y install libmariadb-dev libssl-dev
 RUN pip install --upgrade pip
 
 # copy whole project to your docker home directory.
-COPY requirements.txt requirements.txt
+COPY requirements.txt requirements.prod.txt ./
 # run this command to install all dependencies
-RUN pip install -r requirements.txt
-
-FROM base as app
-
-WORKDIR /app
+RUN pip install -r requirements.prod.txt
 
 COPY . .
 
-CMD python manage.py migrate
+RUN apt-get install gettext -y
 
-EXPOSE 8000
+RUN python manage.py compilemessages -l de --settings=primebot_backend.static # temp
 
-CMD python manage.py runserver app:8000
+FROM base as static_files
+
+RUN python manage.py collectstatic --no-input --settings=primebot_backend.static # temp
+
+FROM caddy as fileserver
+
+COPY --from=static_files /var/www/primebot.me/static/ /www/html
