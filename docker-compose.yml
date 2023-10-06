@@ -50,6 +50,7 @@ services:
       - "traefik.http.routers.app.rule=Host(`primebot.me`)"
       - "traefik.http.services.app.loadbalancer.server.port=8000"
       - "traefik.http.routers.app.tls=true"
+      - "traefik.docker.network=proxy"
       - "traefik.http.routers.app.tls.certResolver=production"
     environment:
       - MONGODB_USERNAME
@@ -210,12 +211,13 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.caddy.entrypoints=websecure,web"
-      - "traefik.http.routers.caddy.rule=(Host(`caddy.primebot.me`))"
+      - "traefik.http.routers.caddy.rule=(Host(`caddy.primebot.me`) && PathPrefix(`/static`))"
       - "traefik.http.routers.caddy.tls=true"
+      - "traefik.docker.network=proxy"
       - "traefik.http.routers.caddy.tls.certResolver=production"
     networks:
-      - default
       - proxy
+      - default
 
   memcached:
     image: memcached
