@@ -211,7 +211,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.caddy.entrypoints=websecure,web"
-      - "traefik.http.routers.caddy.rule=(Host(`caddy.primebot.me`) && PathPrefix(`/static`))"
+      - "traefik.http.routers.caddy.rule=(Host(`primebot.me`) && PathPrefix(`/static`))"
       - "traefik.http.routers.caddy.tls=true"
       - "traefik.docker.network=proxy"
       - "traefik.http.routers.caddy.tls.certResolver=production"
