@@ -39,8 +39,6 @@ services:
     networks:
       - proxy
       - default
-    depends_on:
-      - migration
     expose:
       - 8000
     image: orbisk/primebot
@@ -80,7 +78,7 @@ services:
     restart: unless-stopped
     volumes:
       - media:/var/opt/prime_bot_backend/media/
-    command: [ "gunicorn", "-b", ":8000", "--workers=3", "primebot_backend.wsgi:application" ]
+    command: [ "gunicorn", "-b", ":8000", "--workers=3", "--enable-stdio-inheritance", "primebot_backend.wsgi:application" ]
 
   mongodb:
     image: mongo
@@ -95,8 +93,6 @@ services:
 
   queue-cluster:
     image: orbisk/primebot
-    depends_on:
-      - migration
     restart: unless-stopped
     environment:
       - MONGODB_USERNAME
@@ -126,8 +122,6 @@ services:
     command: [ 'python', 'manage.py', 'qcluster' ]
 
   discord-bot:
-    depends_on:
-      - migration
     image: orbisk/primebot
     restart: unless-stopped
     command: [ 'python', 'manage.py', 'discord_bot' ]
@@ -159,8 +153,6 @@ services:
 
   telegram-bot:
     image: orbisk/primebot
-    depends_on:
-      - migration
     restart: unless-stopped
     command: [ 'python', 'manage.py', 'telegram_bot' ]
     environment:
@@ -205,7 +197,7 @@ services:
 
   caddy:
     image: orbisk/primebot-fileserver
-    command: ["caddy","file-server", "--listen", ":80", "--root", "/www/html","--browse"]
+    command: ["caddy","file-server", "--domain", "primebot.me", "--root", "/www/html", "-v","--browse", "--access-log"]
     expose:
       - 80
     labels:
