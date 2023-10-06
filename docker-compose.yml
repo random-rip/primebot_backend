@@ -204,14 +204,13 @@ services:
 
   caddy:
     image: orbisk/primebot-fileserver
-    command: ["caddy","file-server", "--root", "/www/html", "--listen", "0.0.0.0:80"]
+    command: ["caddy","respond", "--listen", ":80", "--access-log", "test"]
+    expose:
+      - 80
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.caddy.entrypoints=websecure,web"
-      - "traefik.http.routers.caddy.rule=(Host(`primebot.me`) && Path(`/static`))"
-      - "traefik.http.middlewares.caddy-stripprefix.stripprefix.prefixes=/static"
-      - "traefik.http.routers.caddy.middlewares=caddy-stripprefix@docker"
-      - "traefik.http.services.caddy.loadbalancer.server.port=80"
+      - "traefik.http.routers.caddy.rule=(Host(`caddy.primebot.me`))"
       - "traefik.http.routers.caddy.tls=true"
       - "traefik.http.routers.caddy.tls.certResolver=production"
     networks:
