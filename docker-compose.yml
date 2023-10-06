@@ -93,6 +93,9 @@ services:
 
   queue-cluster:
     image: orbisk/primebot
+    depends_on:
+      mongodb:
+        condition: service_healthy
     restart: unless-stopped
     environment:
       - MONGODB_USERNAME
