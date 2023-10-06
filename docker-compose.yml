@@ -47,7 +47,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.app.entrypoints=websecure,web"
-      - "traefik.http.routers.app.rule=Host(`primebot.me`)"
+      - "traefik.http.routers.app.rule=(Host(`primebot.me`) && PathPrefix(`/api`, `/admin`))"
       - "traefik.http.services.app.loadbalancer.server.port=8000"
       - "traefik.http.routers.app.tls=true"
       - "traefik.docker.network=proxy"
@@ -205,7 +205,7 @@ services:
 
   caddy:
     image: orbisk/primebot-fileserver
-    command: ["caddy","respond", "--listen", ":80", "--access-log", "test"]
+    command: ["caddy","file-server", "--listen", ":80", "--root", "/www/html","--browse"]
     expose:
       - 80
     labels:
