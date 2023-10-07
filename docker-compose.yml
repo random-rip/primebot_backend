@@ -33,6 +33,7 @@ services:
       - POSTGRES_DB
       - POSTGRES_PORT
       - POSTGRES_HOST
+      - CACHE_LOCATION
     command: [ 'python', 'manage.py', 'migrate' ]
 
   app:
@@ -80,6 +81,7 @@ services:
       - POSTGRES_DB
       - POSTGRES_PORT
       - POSTGRES_HOST
+      - CACHE_LOCATION
     restart: unless-stopped
     volumes:
       - media:/var/opt/prime_bot_backend/media/
@@ -129,6 +131,7 @@ services:
       - POSTGRES_DB
       - POSTGRES_PORT
       - POSTGRES_HOST
+      - CACHE_LOCATION
     command: [ 'python', 'manage.py', 'qcluster' ]
 
   discord-bot:
@@ -165,6 +168,7 @@ services:
       - POSTGRES_DB
       - POSTGRES_PORT
       - POSTGRES_HOST
+      - CACHE_LOCATION
 
   telegram-bot:
     image: orbisk/primebot
@@ -200,6 +204,7 @@ services:
       - POSTGRES_DB
       - POSTGRES_PORT
       - POSTGRES_HOST
+      - CACHE_LOCATION
 
   postgres:
     image: postgres
