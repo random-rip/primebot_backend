@@ -230,6 +230,22 @@ services:
     networks:
       - proxy
       - default
+  
+  frontend:
+    image: orbisk/primebot-frontend
+    expose:
+      - 80
+    command: ["caddy","file-server", "--listen", ":80", "--root", "/app",]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.entrypoints=websecure,web"
+      - "traefik.http.routers.frontend.rule=Host(`primebot.me`)"
+      - "traefik.http.routers.frontend.tls=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.frontend.tls.certResolver=production"
+    networks:
+      - proxy
+      - default
 
   memcached:
     image: memcached
