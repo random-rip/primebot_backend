@@ -225,9 +225,10 @@ LOCALE_PATHS = [
     BASE_DIR / "app_prime_league" / "locale",
 ]
 
+__MAXIMUM_TIMEOUT = 60 * 10  # maximum seconds for a task
 Q_CLUSTER = {
-    'timeout': 60 * 2,  # maximum seconds for a task
-    'retry': 60 * 2 + 10,  # Seconds after a failed task will be queued again
+    'timeout': __MAXIMUM_TIMEOUT,  # maximum seconds for a task
+    'retry': __MAXIMUM_TIMEOUT + 10,  # Seconds after a failed task will be queued again
     'max_attempts': 3,  # Maximum retry attempts for failed tasks
     'save_limit': 10_000,  # Limits the amount of successful tasks save to Django
     "ack_failures": False,
