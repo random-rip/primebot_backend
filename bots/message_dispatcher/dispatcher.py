@@ -20,10 +20,10 @@ class MessageDispatcherJob(Job):
     create an async_task.
     """
 
+    __name__ = 'MessageDispatcher'
+
     def function_to_execute(self) -> Callable:
         return dispatch
-
-    __name__ = 'MessageDispatcher'
 
     def __init__(self, bot, msg, team):
         self.bot = bot

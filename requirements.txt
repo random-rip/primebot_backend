@@ -21,3 +21,4 @@ croniter
 drf-spectacular==0.26
 django-filter==23.2
 django-debug-toolbar
+blessed==1.20
