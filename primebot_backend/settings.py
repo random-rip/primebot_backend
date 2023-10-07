@@ -319,18 +319,19 @@ if not DEBUG:
         },
         'loggers': {
             'django': {
-                'handlers': ['django'],
+                'handlers': ['django', 'console'],
                 'level': "DEBUG",
                 'propagate': False,
             },
             'notifications': {
-                'handlers': ['notifications'],
+                'handlers': ['notifications', 'console'],
                 'level': "DEBUG",
                 'propagate': False,
             },
             'commands': {
                 'handlers': [
                     'commands',
+                    'console',
                 ],
                 'level': "INFO",
                 'propagate': False,

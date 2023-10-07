@@ -1,3 +1,5 @@
+import logging
+
 import requests
 from django.core.cache import cache
 
@@ -17,8 +19,10 @@ class GitHub:
     def releases(cls):
         cached = cache.get(cls.RELEASES_CACHE_KEY)
         if cached:
+            logging.getLogger("django").warning("Using cached releases")
             return cached
         try:
+            logging.getLogger("django").warning("Fetching releases")
             data = cls.get_json(cls.RELEASES)
             cache.set(cls.RELEASES_CACHE_KEY, data, cls.CACHE_DURATION)
             return data
@@ -34,11 +38,13 @@ class GitHub:
             "body": None,
         }
         if cached:
+            logging.getLogger("django").warning("Using cached latest release")
             ret["version"] = cached[0].get("tag_name", None)
             ret["released_at"] = cached[0].get("published_at", None)
             ret["body"] = cached[0].get("body", None)
             return ret
         try:
+            logging.getLogger("django").warning("Fetching latest release")
             data = cls.get_json(cls.RELEASES)
             cache.set(cls.RELEASES_CACHE_KEY, data, cls.CACHE_DURATION)
             ret["version"] = data[0].get("tag_name", None)

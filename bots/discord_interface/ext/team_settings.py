@@ -53,7 +53,6 @@ async def team_settings(
     ctx,
 ):
     async with ctx.typing(ephemeral=True):
-        await ctx.send(_("This command is temporarily not available."))
         channel_id = ctx.message.channel.id
         team = await DiscordHelper.get_registered_team_by_channel_id(channel_id=channel_id)
         maker = await sync_to_async(SettingsMaker)(team=team)
