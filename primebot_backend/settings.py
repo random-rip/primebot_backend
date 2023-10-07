@@ -232,6 +232,7 @@ Q_CLUSTER = {
     'save_limit': 10_000,  # Limits the amount of successful tasks save to Django
     "ack_failures": False,
     "catch_up": False,
+    "log_level": "DEBUG",
     "sync": env.bool("MONGODB_SYNC", DEBUG),
     'mongo': {
         # 'host': env.str("MONGODB_URI", None),
