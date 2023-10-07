@@ -4,7 +4,7 @@ services:
   migration:
     image: orbisk/primebot
     depends_on:
-      mariadb:
+      postgres:
         condition: service_healthy
       mongodb:
         condition: service_healthy
@@ -13,11 +13,6 @@ services:
       - MONGODB_PASSWORD
       - MONGODB_HOST
       - MONGODB_PORT
-      - DB_NAME
-      - DB_USER
-      - DB_PASSWORD
-      - DB_HOST
-      - DB_PORT
       - TELEGRAM_BOT_API_KEY
       - DISCORD_API_KEY
       - DISCORD_APP_CLIENT_ID
@@ -33,6 +28,11 @@ services:
       - FILES_FROM_STORAGE
       - GIT_TOKEN
       - GAME_SPORTS_BASE_URL
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - POSTGRES_DB
+      - POSTGRES_PORT
+      - POSTGRES_HOST
     command: [ 'python', 'manage.py', 'migrate' ]
 
   app:
@@ -42,6 +42,11 @@ services:
     expose:
       - 8000
     image: orbisk/primebot
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.app.entrypoints=websecure,web"
@@ -55,11 +60,6 @@ services:
       - MONGODB_PASSWORD
       - MONGODB_HOST
       - MONGODB_PORT
-      - DB_NAME
-      - DB_USER
-      - DB_PASSWORD
-      - DB_HOST
-      - DB_PORT
       - TELEGRAM_BOT_API_KEY
       - DISCORD_API_KEY
       - DISCORD_APP_CLIENT_ID
@@ -75,6 +75,11 @@ services:
       - FILES_FROM_STORAGE
       - GIT_TOKEN
       - GAME_SPORTS_BASE_URL
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - POSTGRES_DB
+      - POSTGRES_PORT
+      - POSTGRES_HOST
     restart: unless-stopped
     volumes:
       - media:/var/opt/prime_bot_backend/media/
@@ -94,6 +99,8 @@ services:
   queue-cluster:
     image: orbisk/primebot
     depends_on:
+      postgres:
+        condition: service_healthy
       mongodb:
         condition: service_healthy
     restart: unless-stopped
@@ -102,11 +109,6 @@ services:
       - MONGODB_PASSWORD
       - MONGODB_HOST
       - MONGODB_PORT
-      - DB_NAME
-      - DB_USER
-      - DB_PASSWORD
-      - DB_HOST
-      - DB_PORT
       - TELEGRAM_BOT_API_KEY
       - DISCORD_API_KEY
       - DISCORD_APP_CLIENT_ID
@@ -122,22 +124,27 @@ services:
       - FILES_FROM_STORAGE
       - GIT_TOKEN
       - GAME_SPORTS_BASE_URL
-    command: [ 'python', 'manage.py', 'qcluster' ]
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - POSTGRES_DB
+      - POSTGRES_PORT
+      - POSTGRES_HOST
+#    command: [ 'python', 'manage.py', 'qcluster' ]
 
   discord-bot:
     image: orbisk/primebot
     restart: unless-stopped
     command: [ 'python', 'manage.py', 'discord_bot' ]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
     environment:
       - MONGODB_USERNAME
       - MONGODB_PASSWORD
       - MONGODB_HOST
       - MONGODB_PORT
-      - DB_NAME
-      - DB_USER
-      - DB_PASSWORD
-      - DB_HOST
-      - DB_PORT
       - TELEGRAM_BOT_API_KEY
       - DISCORD_API_KEY
       - DISCORD_APP_CLIENT_ID
@@ -153,21 +160,26 @@ services:
       - FILES_FROM_STORAGE
       - GIT_TOKEN
       - GAME_SPORTS_BASE_URL
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - POSTGRES_DB
+      - POSTGRES_PORT
+      - POSTGRES_HOST
 
   telegram-bot:
     image: orbisk/primebot
     restart: unless-stopped
     command: [ 'python', 'manage.py', 'telegram_bot' ]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
     environment:
       - MONGODB_USERNAME
       - MONGODB_PASSWORD
       - MONGODB_HOST
       - MONGODB_PORT
-      - DB_NAME
-      - DB_USER
-      - DB_PASSWORD
-      - DB_HOST
-      - DB_PORT
       - TELEGRAM_BOT_API_KEY
       - DISCORD_API_KEY
       - DISCORD_APP_CLIENT_ID
@@ -183,20 +195,22 @@ services:
       - FILES_FROM_STORAGE
       - GIT_TOKEN
       - GAME_SPORTS_BASE_URL
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - POSTGRES_DB
+      - POSTGRES_PORT
+      - POSTGRES_HOST
 
-  mariadb:
-    image: mariadb
+  postgres:
+    image: postgres
     restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
-      MYSQL_DATABASE: $DB_NAME
-      MYSQL_USER: $DB_USER
-      MYSQL_PASSWORD: $DB_PASSWORD
-      MARIADB_MYSQL_LOCALHOST_USER: true
+    environment: 
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - POSTGRES_DB
+    test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
     volumes:
-      - database:/var/lib/mysql
-    healthcheck:
-      test: [ "CMD", "healthcheck.sh" ,"--su-mysql", "--connect", "--innodb_initialized" ]
+      - pg-database:/var/lib/postgresql/data
 
   caddy:
     image: orbisk/primebot-fileserver
@@ -221,7 +235,7 @@ services:
     restart: unless-stopped
 
 volumes:
-  database:
+  pg-database:
   mongo-data:
   media:
 
