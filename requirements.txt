@@ -6,7 +6,6 @@ django-cors-headers==3.14
 django-environ==0.10.0
 django-extensions==3.2.1
 djangorestframework==3.14
-mysqlclient==2.2.0
 python-dateutil==2.8.2
 python-telegram-bot==12.8
 requests==2.31.0
@@ -22,3 +21,4 @@ drf-spectacular==0.26
 django-filter==23.2
 django-debug-toolbar
 blessed==1.20
+psycopg2==2.9.9
