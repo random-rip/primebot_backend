@@ -62,8 +62,10 @@ class SettingsMaker(Encoder):
         self.errors = []
         try:
             self.__parse_team()
-        except Exception:
+        except Exception as e:
+            logging.getLogger("django").exception(e)
             self.errors.append(MALFORMED_REQUEST)
+        logging.getLogger("django").info(self.errors)
         if raise_exception and len(self.errors) > 0:
             raise ValidationError({"errors": self.errors})
         return len(self.errors) == 0
