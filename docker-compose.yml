@@ -129,7 +129,7 @@ services:
       - POSTGRES_DB
       - POSTGRES_PORT
       - POSTGRES_HOST
-#    command: [ 'python', 'manage.py', 'qcluster' ]
+    command: [ 'python', 'manage.py', 'qinfo' ]
 
   discord-bot:
     image: orbisk/primebot
