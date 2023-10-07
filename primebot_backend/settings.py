@@ -216,7 +216,7 @@ CACHES = {
     if DEBUG
     else {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': 'unix:/var/run/memcached/memcached.sock',
+        'LOCATION': env.str('CACHE_LOCATION', "127.0.0.1:11211"),
     }
 }
 
@@ -225,7 +225,7 @@ LOCALE_PATHS = [
     BASE_DIR / "app_prime_league" / "locale",
 ]
 
-__MAXIMUM_TIMEOUT = 60 * 10  # maximum seconds for a task
+__MAXIMUM_TIMEOUT = 60 * 5  # maximum seconds for a task
 Q_CLUSTER = {
     'timeout': __MAXIMUM_TIMEOUT,  # maximum seconds for a task
     'retry': __MAXIMUM_TIMEOUT + 10,  # Seconds after a failed task will be queued again
