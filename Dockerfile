@@ -6,9 +6,7 @@ WORKDIR /app
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-
 ENV DEBIAN_FRONTEND noninteractive
-ENV PYTHONUNBUFFERED=0
 
 RUN apt-get update
 RUN apt-get install lsb-release -y
