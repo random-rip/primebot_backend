@@ -46,9 +46,7 @@ class Job:
             return True, self._after_enqueue()
         except (Exception,) as e:
             self.logger.exception(e)
-            self.logger.error(
-                ("Could not connect to broker. Is the service running? " "Synchronous process started...")
-            )
+            self.logger.error("Could not connect to broker. Is the service running? Synchronous process started...")
             async_task(self.function_to_execute(), **self.kwargs(), q_options={**q_options, "sync": True})
             return False, self._after_enqueue()
 
