@@ -101,14 +101,14 @@ SILENCED_SYSTEM_CHECKS = ["security.W019"]
 WSGI_APPLICATION = 'primebot_backend.wsgi.application'
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env.str("POSTGRES_DB"),
-        'USER': env.str("POSTGRES_USER"),
-        'PASSWORD': env.str("POSTGRES_PASSWORD"),
-        'HOST': env.str("POSTGRES_HOST"),
-        'PORT': env.str("POSTGRES_PORT"),
-    },
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env.str("POSTGRES_DB"),
+        "USER": env.str("POSTGRES_USER"),
+        "PASSWORD": env.str("POSTGRES_PASSWORD"),
+        "HOST": env.str("POSTGRES_HOST"),
+        "PORT": env.str("POSTGRES_PORT"),
+    }
 }
 
 # Password validation
@@ -203,7 +203,7 @@ CACHES = {
     if DEBUG
     else {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': 'unix:/var/run/memcached/memcached.sock',
+        'LOCATION': env.str('CACHE_LOCATION', "127.0.0.1:11211"),
     }
 }
 
@@ -212,17 +212,20 @@ LOCALE_PATHS = [
     BASE_DIR / "app_prime_league" / "locale",
 ]
 
+__MAXIMUM_TIMEOUT = 60 * 5  # maximum seconds for a task
 Q_CLUSTER = {
-    'timeout': 60 * 2,  # maximum seconds for a task
-    'retry': 60 * 2 + 10,  # Seconds after a failed task will be queued again
+    'timeout': __MAXIMUM_TIMEOUT,  # maximum seconds for a task
+    'retry': __MAXIMUM_TIMEOUT + 10,  # Seconds after a failed task will be queued again
     'max_attempts': 3,  # Maximum retry attempts for failed tasks
     'save_limit': 10_000,  # Limits the amount of successful tasks save to Django
     "ack_failures": False,
     "catch_up": False,
-    "sync": DEBUG,
+    "log_level": "DEBUG",
+    "sync": env.bool("MONGODB_SYNC", DEBUG),
     'mongo': {
-        'host': env.str("MONGODB_URI", None),
-        "serverSelectionTimeoutMS": 5_000,
+        # 'host': env.str("MONGODB_URI", None),
+        'host': f"mongodb://{env.str('MONGODB_USERNAME', '')}:{env.str('MONGODB_PASSWORD', 'localhost')}@{env.str('MONGODB_HOST', '')}:{env.str('MONGODB_PORT', 27017)}",
+        "serverSelectionTimeoutMS": 5_000,  # FIXME providing the host this way returns into a broken development system
     },
     "time_zone": "Europe/Berlin",
 }
@@ -303,18 +306,19 @@ if not DEBUG:
         },
         'loggers': {
             'django': {
-                'handlers': ['django'],
+                'handlers': ['django', 'console'],
                 'level': "DEBUG",
                 'propagate': False,
             },
             'notifications': {
-                'handlers': ['notifications'],
+                'handlers': ['notifications', 'console'],
                 'level': "DEBUG",
                 'propagate': False,
             },
             'commands': {
                 'handlers': [
                     'commands',
+                    'console',
                 ],
                 'level': "INFO",
                 'propagate': False,
