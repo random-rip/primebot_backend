@@ -2,6 +2,7 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 
 from app_prime_league.models import Match
+from core.cluster_job import SendMessageToDevsJob
 from utils.utils import diff_to_hh_mm, format_datetime, format_time_left
 
 
@@ -25,7 +26,11 @@ class MatchDisplayHelper:
 
         if match.team_made_latest_suggestion is None:
             return "📆 " + _("No dates proposed. Alternative date: {time}").format(time=format_datetime(match.begin))
-        # FIXME in theory match.datetime_until_auto_confirmation cannot be None, but it sometimes it is
+
+        if match.datetime_until_auto_confirmation is None:
+            SendMessageToDevsJob(f"Match {match.id} has no datetime_until_auto_confirmation").enqueue()
+            return "📆 " + _("No dates proposed. Alternative date: {time}").format(time=format_datetime(match.begin))
+
         hours, minutes = diff_to_hh_mm(timezone.now(), match.datetime_until_auto_confirmation)
         if match.team_made_latest_suggestion:
             return "📆 ✅ " + _("Dates proposed by you are open. Left time: {left_time}").format(
