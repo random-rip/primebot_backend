@@ -12,9 +12,6 @@ RUN apt-get update
 RUN apt-get install lsb-release -y
 RUN apt-get -y install apt-utils
 
-# MariaDB
-RUN apt-get -y install libmariadb-dev libssl-dev
-
 RUN pip install --upgrade pip
 
 # copy whole project to your docker home directory.

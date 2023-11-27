@@ -49,7 +49,7 @@ League.
 ### Techstack
 
 - Python
-- MariaDB/MySQL
+- PostgreSQL
 - Django (+ DRF) (python package)
 - discord.py (python package)
 - Telepot (python package)
@@ -60,7 +60,7 @@ League.
 Requirements:
 
 - Python 3.8+
-- MariaDB/MySQL
+- PostgreSQL
 - virtualenv (pip package):  `pip install virtualenv`
 
 

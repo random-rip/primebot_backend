@@ -23,23 +23,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret __key used in production secret!
 SECRET_KEY = env.str('DJANGO_SECRET_KEY', default="")
 FERNET_KEY = env.str("FERNET_SECRET_KEY", default="")
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DJANGO_DEBUG', default=False)
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", cast=str, default=[])
 
-# Application definition
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    # "http://127.0.0.1:8000",
-    # "http://192.168.189.78:8001",
-    # "http://192.168.189.78:8001",
 ]
 
 INTERNAL_IPS = [
@@ -108,10 +99,6 @@ X_FRAME_OPTIONS = "SAMEORIGIN"
 SILENCED_SYSTEM_CHECKS = ["security.W019"]
 
 WSGI_APPLICATION = 'primebot_backend.wsgi.application'
-
-# Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
 
 DATABASES = {
     "default": {

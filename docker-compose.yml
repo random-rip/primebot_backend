@@ -209,7 +209,7 @@ services:
   postgres:
     image: postgres
     restart: unless-stopped
-    environment: 
+    environment:
       - POSTGRES_PASSWORD
       - POSTGRES_USER
       - POSTGRES_DB
@@ -235,7 +235,7 @@ services:
     networks:
       - proxy
       - default
-  
+
   frontend:
     image: orbisk/primebot-frontend
     expose:
