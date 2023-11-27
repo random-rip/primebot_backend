@@ -1,0 +1,266 @@
+version: '3.4'
+
+services:
+  migration:
+    image: orbisk/primebot
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    environment:
+      - MONGODB_USERNAME
+      - MONGODB_PASSWORD
+      - MONGODB_HOST
+      - MONGODB_PORT
+      - TELEGRAM_BOT_API_KEY
+      - DISCORD_API_KEY
+      - DISCORD_APP_CLIENT_ID
+      - DJANGO_SECRET_KEY
+      - DJANGO_DEBUG
+      - DJANGO_ALLOWED_HOSTS
+      - SITE_ID
+      - STATIC_ROOT
+      - MEDIA_ROOT
+      - LOGGING_DIR
+      - FERNET_SECRET_KEY
+      - TG_DEVELOPER_GROUP
+      - FILES_FROM_STORAGE
+      - GIT_TOKEN
+      - GAME_SPORTS_BASE_URL
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - POSTGRES_DB
+      - POSTGRES_PORT
+      - POSTGRES_HOST
+      - CACHE_LOCATION
+    command: [ 'python', 'manage.py', 'migrate' ]
+
+  app:
+    networks:
+      - proxy
+      - default
+    expose:
+      - 8000
+    image: orbisk/primebot
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.entrypoints=websecure,web"
+      - "traefik.http.routers.app.rule=(Host(`primebot.me`) && PathPrefix(`/api`, `/admin`))"
+      - "traefik.http.services.app.loadbalancer.server.port=8000"
+      - "traefik.http.routers.app.tls=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.app.tls.certResolver=production"
+    environment:
+      - MONGODB_USERNAME
+      - MONGODB_PASSWORD
+      - MONGODB_HOST
+      - MONGODB_PORT
+      - TELEGRAM_BOT_API_KEY
+      - DISCORD_API_KEY
+      - DISCORD_APP_CLIENT_ID
+      - DJANGO_SECRET_KEY
+      - DJANGO_DEBUG
+      - DJANGO_ALLOWED_HOSTS
+      - SITE_ID
+      - STATIC_ROOT
+      - MEDIA_ROOT
+      - LOGGING_DIR
+      - FERNET_SECRET_KEY
+      - TG_DEVELOPER_GROUP
+      - FILES_FROM_STORAGE
+      - GIT_TOKEN
+      - GAME_SPORTS_BASE_URL
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - POSTGRES_DB
+      - POSTGRES_PORT
+      - POSTGRES_HOST
+      - CACHE_LOCATION
+    restart: unless-stopped
+    volumes:
+      - media:/var/opt/prime_bot_backend/media/
+    command: [ "gunicorn", "-b", ":8000", "--workers=3", "--enable-stdio-inheritance", "primebot_backend.wsgi:application" ]
+
+  mongodb:
+    image: mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: $MONGODB_USERNAME
+      MONGO_INITDB_ROOT_PASSWORD: $MONGODB_PASSWORD
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: [ "CMD","mongosh", "--eval", "db.adminCommand('ping')" ]
+
+  queue-cluster:
+    image: orbisk/primebot
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    restart: unless-stopped
+    environment:
+      - MONGODB_USERNAME
+      - MONGODB_PASSWORD
+      - MONGODB_HOST
+      - MONGODB_PORT
+      - TELEGRAM_BOT_API_KEY
+      - DISCORD_API_KEY
+      - DISCORD_APP_CLIENT_ID
+      - DJANGO_SECRET_KEY
+      - DJANGO_DEBUG
+      - DJANGO_ALLOWED_HOSTS
+      - SITE_ID
+      - STATIC_ROOT
+      - MEDIA_ROOT
+      - LOGGING_DIR
+      - FERNET_SECRET_KEY
+      - TG_DEVELOPER_GROUP
+      - FILES_FROM_STORAGE
+      - GIT_TOKEN
+      - GAME_SPORTS_BASE_URL
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - POSTGRES_DB
+      - POSTGRES_PORT
+      - POSTGRES_HOST
+      - CACHE_LOCATION
+    command: [ 'python', 'manage.py', 'qcluster' ]
+
+  discord-bot:
+    image: orbisk/primebot
+    restart: unless-stopped
+    command: [ 'python', 'manage.py', 'discord_bot' ]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    environment:
+      - MONGODB_USERNAME
+      - MONGODB_PASSWORD
+      - MONGODB_HOST
+      - MONGODB_PORT
+      - TELEGRAM_BOT_API_KEY
+      - DISCORD_API_KEY
+      - DISCORD_APP_CLIENT_ID
+      - DJANGO_SECRET_KEY
+      - DJANGO_DEBUG
+      - DJANGO_ALLOWED_HOSTS
+      - SITE_ID
+      - STATIC_ROOT
+      - MEDIA_ROOT
+      - LOGGING_DIR
+      - FERNET_SECRET_KEY
+      - TG_DEVELOPER_GROUP
+      - FILES_FROM_STORAGE
+      - GIT_TOKEN
+      - GAME_SPORTS_BASE_URL
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - POSTGRES_DB
+      - POSTGRES_PORT
+      - POSTGRES_HOST
+      - CACHE_LOCATION
+
+  telegram-bot:
+    image: orbisk/primebot
+    restart: unless-stopped
+    command: [ 'python', 'manage.py', 'telegram_bot' ]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    environment:
+      - MONGODB_USERNAME
+      - MONGODB_PASSWORD
+      - MONGODB_HOST
+      - MONGODB_PORT
+      - TELEGRAM_BOT_API_KEY
+      - DISCORD_API_KEY
+      - DISCORD_APP_CLIENT_ID
+      - DJANGO_SECRET_KEY
+      - DJANGO_DEBUG
+      - DJANGO_ALLOWED_HOSTS
+      - SITE_ID
+      - STATIC_ROOT
+      - MEDIA_ROOT
+      - LOGGING_DIR
+      - FERNET_SECRET_KEY
+      - TG_DEVELOPER_GROUP
+      - FILES_FROM_STORAGE
+      - GIT_TOKEN
+      - GAME_SPORTS_BASE_URL
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - POSTGRES_DB
+      - POSTGRES_PORT
+      - POSTGRES_HOST
+      - CACHE_LOCATION
+
+  postgres:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - POSTGRES_DB
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
+    volumes:
+      - pg-database:/var/lib/postgresql/data
+
+  caddy:
+    image: orbisk/primebot-fileserver
+    command: ["caddy","file-server", "--listen", ":80", "--root", "/www/html",]
+    expose:
+      - 80
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.caddy.entrypoints=websecure,web"
+      - "traefik.http.routers.caddy.rule=(Host(`primebot.me`) && PathPrefix(`/static`))"
+      - "traefik.http.routers.caddy.middlewares=strip-static"
+      - "traefik.http.middlewares.strip-static.stripprefix.prefixes=/static"
+      - "traefik.http.routers.caddy.tls=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.caddy.tls.certResolver=production"
+    networks:
+      - proxy
+      - default
+
+  frontend:
+    image: orbisk/primebot-frontend
+    expose:
+      - 80
+    command: ["caddy","file-server", "--listen", ":80", "--root", "/app",]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.entrypoints=websecure,web"
+      - "traefik.http.routers.frontend.rule=Host(`primebot.me`)"
+      - "traefik.http.routers.frontend.tls=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.frontend.tls.certResolver=production"
+    networks:
+      - proxy
+      - default
+
+  memcached:
+    image: memcached
+    restart: unless-stopped
+
+volumes:
+  pg-database:
+  mongo-data:
+  media:
+
+networks:
+  proxy:
+    external: true

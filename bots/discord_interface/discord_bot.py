@@ -85,6 +85,8 @@ class _DiscordBotV2(Bot):
 
     async def on_ready(self):
         discord_logger.info(f"{self.user} has connected to Discord!")
+        await self.change_presence(activity=None)
+        # await self.change_presence(activity=Game(name='Maintenance Work'))
 
     @translation_override
     async def on_command_error(self, ctx, exception: errors.CommandError, /):
@@ -113,8 +115,8 @@ class _DiscordBotV2(Bot):
     async def setup_hook(self):
         discord_logger.info("Hook setup...")
         await self.load_extensions()
-        # await self.sync_commands()
         discord_logger.info("Hooked setup.")
+        # await self.sync_commands()
 
     async def on_message(self, message: Message, /):
         pass

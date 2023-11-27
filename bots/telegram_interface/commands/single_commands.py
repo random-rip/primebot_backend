@@ -221,7 +221,7 @@ def delete(update: Update, context: CallbackContext):
 def team_settings(update: Update, context: CallbackContext):
     chat_id = update.message.chat.id
     try:
-        team = Team.objects.get(telegram_id=chat_id)
+        team = Team.objects.get(telegram_id=chat_id)  # noqa
     except Team.DoesNotExist:
         channel_not_registered(update)
         return ConversationHandler.END

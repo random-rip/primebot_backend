@@ -8,7 +8,7 @@
 <p align="center">
   <img src="https://img.shields.io/github/v/release/random-rip/primebot_backend?label=Latest%20release" alt="idk"/>
   <a href="https://www.primebot.me">
-    <img src="https://img.shields.io/website?down_message=offline&label=primebot.me&up_message=online&url=https%3A%2F%2Fwww.primebot.me" alt="npm"/>
+    <img src="https://img.shields.io/website?down_message=offline&label=primebot.me&up_message=online&url=https%3A%2F%2Fprimebot.me" alt="npm"/>
   </a>
   <a href="https://discord.gg/K8bYxJMDzu">
     <img src="https://img.shields.io/discord/945020028238053456?label=Discord" alt="npm"/>

@@ -3,6 +3,8 @@ from abc import abstractmethod
 
 import requests
 
+from bots.telegram_interface.tg_singleton import send_message_to_devs
+
 
 class AnimalAPI:
     @classmethod
@@ -15,7 +17,7 @@ class CatAPI(AnimalAPI):
     @classmethod
     def get_url(cls):
         contents = requests.get('https://cataas.com/c/gif?json=true').json()
-        url = 'https://cataas.com'+contents['url']
+        url = 'https://cataas.com' + contents['url']
         return url
 
 
@@ -32,9 +34,9 @@ class GIFinator:
 
     @staticmethod
     def get_gif(team=None):
-        # Todo implement personalisiertes GIF über team
         animal = random.choice(GIFinator.apis)
         try:
             return animal.get_url()
-        except Exception:
+        except Exception as e:
+            send_message_to_devs(f"bop raised an exception: {e}")
             raise ConnectionError("Not accessible")

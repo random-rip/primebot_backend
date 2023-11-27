@@ -1,3 +1,4 @@
+import logging
 import urllib
 from datetime import timedelta
 
@@ -61,7 +62,8 @@ class SettingsMaker(Encoder):
         self.errors = []
         try:
             self.__parse_team()
-        except Exception:
+        except Exception as e:
+            logging.getLogger("django").exception(e)
             self.errors.append(MALFORMED_REQUEST)
         if raise_exception and len(self.errors) > 0:
             raise ValidationError({"errors": self.errors})
@@ -74,7 +76,8 @@ class SettingsMaker(Encoder):
             self.__parse_expiring_at()
             # self.__parse_platform()
             self.__parse_content()
-        except Exception:
+        except Exception as e:
+            logging.getLogger("django").exception(e)
             self.errors.append(MALFORMED_REQUEST)
         if raise_exception and len(self.errors) > 0:
             raise ValidationError({"errors": self.errors})
