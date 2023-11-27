@@ -16,8 +16,7 @@ class AnimalAPI:
 class CatAPI(AnimalAPI):
     @classmethod
     def get_url(cls):
-        contents = requests.get('https://cataas.com/c/gif?json=true').json()
-        url = 'https://cataas.com' + contents['url']
+        url = 'https://cataas.com/cat/gif'
         return url
 
 
