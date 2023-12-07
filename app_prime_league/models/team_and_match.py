@@ -20,6 +20,7 @@ class Team(models.Model):
     team_tag = models.CharField(max_length=100, null=True, blank=True)
     division = models.CharField(max_length=20, null=True, blank=True)
     telegram_id = models.CharField(max_length=50, null=True, unique=True, blank=True)
+    discord_guild_id = models.CharField(max_length=50, null=True, blank=True)
     discord_webhook_id = models.CharField(max_length=50, null=True, unique=True, blank=True)
     discord_webhook_token = models.CharField(max_length=100, null=True, blank=True)
     discord_channel_id = models.CharField(max_length=50, unique=True, null=True, blank=True)
@@ -68,11 +69,18 @@ class Team(models.Model):
 
     def set_discord_null(self):
         self.discord_webhook_id = None
-        self.discord_channel_id = None
         self.discord_webhook_token = None
+        self.discord_guild_id = None
+        self.discord_channel_id = None
         self.discord_role_id = None
         self.save(
-            update_fields=["discord_webhook_id", "discord_channel_id", "discord_webhook_token", "discord_role_id"]
+            update_fields=[
+                "discord_webhook_id",
+                "discord_guild_id",
+                "discord_channel_id",
+                "discord_webhook_token",
+                "discord_role_id",
+            ]
         )
         self.soft_delete()
 
