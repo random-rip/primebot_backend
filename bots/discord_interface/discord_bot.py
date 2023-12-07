@@ -1,5 +1,6 @@
 import logging
 
+from asgiref.sync import sync_to_async
 from discord import Intents, Message, NotFound, Object, SyncWebhook
 from discord.ext.commands import Bot, NoPrivateMessage, errors
 from django.conf import settings
@@ -126,6 +127,13 @@ class _DiscordBotV2(Bot):
 
     async def on_app_command_completion(self, interaction, command):
         pass
+
+    async def on_guild_channel_delete(self, channel):
+        team = await DiscordHelper.get_registered_team_by_channel_id(channel_id=channel.id)
+        if team is None:
+            return
+        await sync_to_async(team.set_discord_null)()
+        discord_logger.info(f"Set Discord to null for team {team} for channel {channel.name}.")
 
     async def load_extensions(self):
         discord_logger.info("Loading commands...")
