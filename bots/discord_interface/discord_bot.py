@@ -183,8 +183,8 @@ class _DiscordBotV2(Bot):
             try:
                 webhook = await self.fetch_webhook(team.discord_webhook_id)
             except discord.NotFound:
-                print(f"Webhook of Team {team} not found. Consider cleaning up database entry.")
+                discord_logger.info(f"Webhook of Team {team} not found. Consider cleaning up database entry.")
             else:
                 team.discord_guild_id = webhook.guild_id
                 await sync_to_async(team.save)(update_fields=["discord_guild_id"])
-                print(f"Updated team {team} with guild ID {webhook.guild_id}")
+                discord_logger.info(f"Updated team {team} with guild ID {webhook.guild_id}")
