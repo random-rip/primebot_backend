@@ -156,6 +156,7 @@ class TeamAdmin(admin.ModelAdmin):
                 "fields": (
                     ("discord_webhook_id",),
                     ("discord_webhook_token",),
+                    ("discord_guild_id",),
                     ("discord_channel_id",),
                     ("discord_role_id",),
                 ),

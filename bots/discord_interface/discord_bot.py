@@ -1,14 +1,17 @@
 import logging
 
+import discord
 from asgiref.sync import sync_to_async
 from discord import Intents, Message, NotFound, Object, SyncWebhook
 from discord.ext.commands import Bot, NoPrivateMessage, errors
 from django.conf import settings
 from django.utils.translation import gettext as _
 
+from app_prime_league.models import Team
 from bots.base.bot_interface import BotInterface
 from bots.discord_interface.utils import ChannelNotInUse, DiscordHelper, translation_override
 from bots.messages.base import BaseMessage
+from bots.telegram_interface.tg_singleton import asend_message_to_devs
 from utils.exceptions import VariableNotSetException
 from utils.messages_logger import log_from_discord
 
@@ -86,7 +89,8 @@ class _DiscordBotV2(Bot):
 
     async def on_ready(self):
         discord_logger.info(f"{self.user} has connected to Discord!")
-        await self.change_presence(activity=None)
+        await self.__update_guild_ids_for_webhooks()
+        # await self.change_presence(activity=None)
         # await self.change_presence(activity=Game(name='Maintenance Work'))
 
     @translation_override
@@ -133,7 +137,19 @@ class _DiscordBotV2(Bot):
         if team is None:
             return
         await sync_to_async(team.set_discord_null)()
-        discord_logger.info(f"Set Discord to null for team {team} for channel {channel.name}.")
+        message = f"Discord channel {channel.name} deleted. Set Discord to null for team {team}."
+        discord_logger.info(message)
+        await asend_message_to_devs(message)
+
+    async def on_guild_remove(self, guild):
+        teams = await sync_to_async(list)(Team.objects.filter(discord_guild_id=guild.id))
+        for team in teams:
+            await sync_to_async(team.set_discord_null)()
+        message = "Discord guild {guild_name.name} deleted. Set Discord to null of {team_count} teams.".format(
+            guild_name=guild, team_count=len(teams)
+        )
+        discord_logger.info(message)
+        await asend_message_to_devs(message + " Teams:\n " + '\n'.join([str(x) for x in teams]))
 
     async def load_extensions(self):
         discord_logger.info("Loading commands...")
@@ -152,3 +168,23 @@ class _DiscordBotV2(Bot):
             discord_logger.info("Debug is false, so commands will be synced globally. This can take up to an hour...")
             synced_commands = await self.tree.sync()
         discord_logger.info(f"Synced commands: {[x.name for x in synced_commands]}")
+
+    async def __update_guild_ids_for_webhooks(self):
+        """
+        This method is used to update the guild IDs for all webhooks in the database, which are not set yet.
+        """
+        teams = await sync_to_async(list)(
+            Team.objects.filter(
+                discord_channel_id__isnull=False,
+                discord_guild_id__isnull=True,
+            )
+        )
+        for team in teams:
+            try:
+                webhook = await self.fetch_webhook(team.discord_webhook_id)
+            except discord.NotFound:
+                print(f"Webhook of Team {team} not found. Consider cleaning up database entry.")
+            else:
+                team.discord_guild_id = webhook.guild_id
+                await sync_to_async(team.save)(update_fields=["discord_guild_id"])
+                print(f"Updated team {team} with guild ID {webhook.guild_id}")
