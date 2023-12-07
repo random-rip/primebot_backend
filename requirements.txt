@@ -11,7 +11,7 @@ python-telegram-bot==12.8
 requests==2.31.0
 telepot==12.7
 pytz~=2022.7.1
-cryptography==41.0.4
+cryptography==41.0.6
 Deprecated~=1.2.13
 django-admin-interface==0.19.1
 django-q2==1.4.11
