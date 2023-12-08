@@ -1,3 +1,4 @@
+import re
 from typing import List
 
 from discord import Colour, Embed
@@ -7,7 +8,7 @@ from django.utils.translation import gettext as _
 from app_prime_league.models import Champion, Match, ScoutingWebsite, Team
 from bots.messages.base import MatchMessage
 from utils.emojis import EMJOI_MAGN_GLASS
-from utils.utils import format_datetime
+from utils.utils import format_datetime, timestamp_to_datetime
 
 
 class MatchOverview(MatchMessage):
@@ -41,6 +42,14 @@ class MatchOverview(MatchMessage):
             result = result[1:-1]
 
         result = result.replace("**", "*")
+
+        # timestamp conversion
+        def replace_with_datetime(regex_match):
+            dt = timestamp_to_datetime(regex_match.group("timestamp"))
+            formatted = format_datetime(dt)
+            return formatted
+
+        result = re.sub(r"<t:(?P<timestamp>\d+):F>", replace_with_datetime, result)
         return result
 
     def _add_schedule(
