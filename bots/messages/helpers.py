@@ -1,9 +1,12 @@
-from django.utils import timezone
 from django.utils.translation import gettext as _
 
 from app_prime_league.models import Match
 from core.cluster_job import SendMessageToDevsJob
-from utils.utils import diff_to_hh_mm, format_datetime, format_time_left
+
+
+def fmt_dt(dt):
+    timestamp = dt.timestamp()
+    return f"<t:{timestamp}:F>"
 
 
 class MatchDisplayHelper:
@@ -22,21 +25,20 @@ class MatchDisplayHelper:
     @staticmethod
     def display_match_schedule(match: Match) -> str:
         if match.match_begin_confirmed:
-            return f"📆 {format_datetime(match.begin)}"
+            return f"📆 {fmt_dt(match.begin)}"
 
         if match.team_made_latest_suggestion is None:
-            return "📆 " + _("No dates proposed. Alternative date: {time}").format(time=format_datetime(match.begin))
+            return "📆 " + _("No dates proposed. Alternative date: {time}").format(time=fmt_dt(match.begin))
 
         if match.datetime_until_auto_confirmation is None:
             SendMessageToDevsJob(f"Match {match.id} has no datetime_until_auto_confirmation").enqueue()
-            return "📆 " + _("No dates proposed. Alternative date: {time}").format(time=format_datetime(match.begin))
+            return "📆 " + _("No dates proposed. Alternative date: {time}").format(time=fmt_dt(match.begin))
 
-        hours, minutes = diff_to_hh_mm(timezone.now(), match.datetime_until_auto_confirmation)
         if match.team_made_latest_suggestion:
             return "📆 ✅ " + _("Dates proposed by you are open. Left time: {left_time}").format(
-                left_time=format_time_left(hours, minutes),
+                left_time=fmt_dt(match.datetime_until_auto_confirmation),
             )
         else:
             return "📆 ⚠ " + _("Dates proposed by the opponent are open! Left time: {left_time}").format(
-                left_time=format_time_left(hours, minutes),
+                left_time=fmt_dt(match.datetime_until_auto_confirmation),
             )
