@@ -13,7 +13,6 @@ from app_prime_league.models import Team
 from bots.base.bop import GIFinator
 from bots.messages import MatchesOverview, MatchOverview
 from bots.telegram_interface.validation_messages import channel_not_registered
-from bots.utils import mysql_has_gone_away_decorator
 from core.settings_maker import SettingsMaker
 from utils.messages_logger import log_command
 
@@ -46,7 +45,6 @@ def set_photo(chat_id, context: CallbackContext, url):
 
 # /set_logo
 @log_command
-@mysql_has_gone_away_decorator
 def set_logo(update: Update, context: CallbackContext):
     chat_id = update.message.chat.id
     if not Team.objects.filter(telegram_id=chat_id).exists():
@@ -112,7 +110,6 @@ def helpcommand(update: Update, context: CallbackContext):
 
 
 @log_command
-@mysql_has_gone_away_decorator
 def matches(update: Update, context: CallbackContext):
     chat_id = update.message.chat.id
     try:
@@ -130,11 +127,10 @@ def matches(update: Update, context: CallbackContext):
 
 
 class InvalidMatchDay(Exception):
-    ...
+    pass
 
 
 @log_command
-@mysql_has_gone_away_decorator
 def match(update: Update, context: CallbackContext) -> int:
     return call_match(update, context)
 
@@ -198,7 +194,6 @@ def get_validated_match_day(possible_match_day: str) -> int:
 
 
 @log_command
-@mysql_has_gone_away_decorator
 def delete(update: Update, context: CallbackContext):
     chat_id = update.message.chat.id
     if not Team.objects.filter(telegram_id=chat_id).exists():
@@ -217,7 +212,6 @@ def delete(update: Update, context: CallbackContext):
 
 
 @log_command
-@mysql_has_gone_away_decorator
 def team_settings(update: Update, context: CallbackContext):
     chat_id = update.message.chat.id
     try:
@@ -241,7 +235,6 @@ def team_settings(update: Update, context: CallbackContext):
     return ConversationHandler.END
 
 
-@mysql_has_gone_away_decorator
 def migrate_chat(update: Update, context: CallbackContext):
     if update.message.chat.type == "supergroup":
         return
