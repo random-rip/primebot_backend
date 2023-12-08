@@ -1,11 +1,18 @@
+import datetime
+
 from django.utils.translation import gettext as _
 
 from app_prime_league.models import Match
 from core.cluster_job import SendMessageToDevsJob
 
 
-def fmt_dt(dt):
-    timestamp = dt.timestamp()
+def fmt_dt(dt: datetime.datetime) -> str:
+    """
+    Formats a datetime object to a discord timestamp string.
+    :param dt: datetime object
+    :return: discord formatted timestamp string
+    """
+    timestamp = int(dt.timestamp())
     return f"<t:{timestamp}:F>"
 
 
