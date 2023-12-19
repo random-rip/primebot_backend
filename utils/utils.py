@@ -105,6 +105,7 @@ class Encoder:
 
 
 def format_datetime(x: datetime):
+    """This Method is outdated for discord. Use fmt_dt instead."""
     clock_label = "'Uhr'" if translation.get_language() == "de" else "a"
     return babel.format_datetime(x, format=f"EEEE, d. MMMM y H:mm {clock_label}", locale=translation.get_language(),
                                  tzinfo=babel.get_timezone(settings.TIME_ZONE))

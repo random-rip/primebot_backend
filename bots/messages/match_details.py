@@ -7,8 +7,9 @@ from django.utils.translation import gettext as _
 
 from app_prime_league.models import Champion, Match, ScoutingWebsite, Team
 from bots.messages.base import MatchMessage
+from bots.messages.helpers import fmt_dt
 from utils.emojis import EMJOI_MAGN_GLASS
-from utils.utils import format_datetime, timestamp_to_datetime
+from utils.utils import timestamp_to_datetime, format_datetime
 
 
 class MatchOverview(MatchMessage):
@@ -63,7 +64,7 @@ class MatchOverview(MatchMessage):
 
         if not self.match.match_begin_confirmed:
             for i, x in enumerate(self.match.suggestion_set.all(), start=1):
-                value += f"> ➕ {self._get_number_as_emojis(i)} {format_datetime(x.begin)}\n"
+                value += f"> ➕ {self._get_number_as_emojis(i)} {fmt_dt(x.begin)}\n"
 
         self.embed.add_field(name=name, value=value, inline=False)
 
@@ -142,7 +143,7 @@ class MatchOverview(MatchMessage):
         name = _("Match result")
         value = ""
         value += "ℹ️ " + _("Result") + f": {self.match.result}\n"
-        value += "📆️ " + _("Date") + f": {format_datetime(self.match.begin)}\n"
+        value += "📆️ " + _("Date") + f": {fmt_dt(self.match.begin)}\n"
         self.embed.add_field(name=name, value=value, inline=False)
 
     def _add_team_lineup(self, result=False):
