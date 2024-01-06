@@ -1,0 +1,19 @@
+{% extends "admin/index.html" %}
+{% load static %}
+{% block nav-sidebar %}
+    {% load i18n %}
+    <button class="sticky toggle-nav-sidebar" id="toggle-nav-sidebar"
+            aria-label="{% translate 'Toggle navigation' %}"></button>
+    <nav class="sticky" id="nav-sidebar">
+        <div style="display:flex;flex-direction: column">
+            <h2 style="font-weight: normal">Quicklinks</h2>
+            {% for quicklink in quicklinks %}
+                <a href="{{ quicklink.url }}" style="display: flex; align-items: center;column-gap: 5px; padding: 3px 0;">
+                    <img src="{% static "quicklinks_admin/img/external-link.svg" %}" alt="external link"
+                         style="display: block;aspect-ratio: 1;width: 15px;object-fit: contain;">
+                    <span>{{ quicklink.title }}</span>
+                </a>
+            {% endfor %}
+        </div>
+    </nav>
+{% endblock %}

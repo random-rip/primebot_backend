@@ -38,6 +38,7 @@ INTERNAL_IPS = [
 ]
 
 INSTALLED_APPS = [
+    'quicklinks_admin',
     "admin_interface",
     "colorfield",
     'django.contrib.admin',
@@ -81,7 +82,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'templates'),
+            os.path.join(BASE_DIR, 'quicklinks_admin/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
