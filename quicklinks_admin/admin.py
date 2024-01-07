@@ -1,8 +1,8 @@
 from django.contrib import admin
+from django.urls import path
 
 from .models import Quicklink
-
-# Register your models here.
+from .views import TeamsMessageView
 
 
 class QuicklinkAdminSite(admin.AdminSite):
@@ -13,7 +13,10 @@ class QuicklinkAdminSite(admin.AdminSite):
 
     def get_urls(self):
         urls = super().get_urls()
-        return urls
+        custom_urls = [
+            path('teams-message/', self.admin_view(TeamsMessageView.as_view()), name='teams-message'),
+        ]
+        return custom_urls + urls
 
 
 admin.site = QuicklinkAdminSite(name='admin')
