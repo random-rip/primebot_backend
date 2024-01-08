@@ -83,7 +83,9 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(BASE_DIR, 'quicklinks_admin/templates'),
-            os.path.join(BASE_DIR, 'quicklinks_admin/send_teams_message/templates'),
+            os.path.join(
+                BASE_DIR, 'quicklinks_admin/send_teams_message/../quicklinks_admin/templates/send_teams_message'
+            ),
         ],
         'APP_DIRS': True,
         'OPTIONS': {

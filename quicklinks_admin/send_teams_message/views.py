@@ -23,7 +23,7 @@ class MessageForm(forms.Form):
 
 @method_decorator(staff_member_required, name='dispatch')
 class TeamsMessageView(FormView):
-    template_name = "send_teams_message.html"
+    template_name = "send_teams_message/send_teams_message.html"
     form_class = MessageForm
     success_url = reverse_lazy("admin:send-teams-message:confirm-teams-message")
 
@@ -49,7 +49,7 @@ class TeamsMessageView(FormView):
 
 @method_decorator(staff_member_required, name='dispatch')
 class ConfirmTeamsMessageView(TemplateView):
-    template_name = "send_teams_message.html"
+    template_name = "send_teams_message/send_teams_message.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

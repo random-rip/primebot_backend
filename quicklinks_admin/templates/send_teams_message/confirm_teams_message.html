@@ -2,7 +2,7 @@
 
 {% load i18n static %}
 
-{% block title %}{% trans 'Confirm Developer Notification' %}{% endblock %}
+{% block title %}{% trans 'Confirm Version Update Message' %}{% endblock %}
 
 {% block extrastyle %}
     {{ block.super }}
@@ -11,18 +11,18 @@
 {% block breadcrumbs %}
     <div class="breadcrumbs">
         <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
-        &rsaquo; {% trans 'Confirm Developer Notification' %}
+        &rsaquo; {% trans 'Confirm Version Update Message' %}
     </div>
 {% endblock %}
 
 {% block content %}
-    <h1>{% trans 'Confirm Developer Notification' %}</h1>
+    <h1>{% trans 'Confirm Version Update Message' %}</h1>
     <a href="{% url 'admin:send-teams-message:send-teams-message' %}" class="button" style="padding: 10px; font-size: 13px;">Back to Edit</a>
     <div style="border: 1px black solid; margin-top: 20px; border-radius: 5px; padding: 0 5px; background-color: #C9F0DD; width: fit-content">{{ rendered_message|linebreaks }}</div>
     <p>{% trans 'Number of characters' %}: {{ rendered_message|length }}</p>
     <form method="post">
         {% csrf_token %}
-        <input type="submit" value="Send" style="margin-top: 10px">
+        <input type="submit" value="{% trans "Confirm" %}" style="margin-top: 10px">
     </form>
 
 {% endblock %}

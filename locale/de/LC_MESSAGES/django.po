@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-05 13:43+0200\n"
+"POT-Creation-Date: 2024-01-08 16:17+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,13 +18,54 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\primebot_backend\settings.py:156
+#: .\primebot_backend\settings.py:141
 msgid "German"
 msgstr "Deutsch"
 
-#: .\primebot_backend\settings.py:157
+#: .\primebot_backend\settings.py:142
 msgid "English"
 msgstr "Englisch"
+
+#: .\quicklinks_admin\templates\admin\index.html:6
+msgid "Toggle navigation"
+msgstr "Navigation Ein-/Ausblenden"
+
+#: .\quicklinks_admin\templates\send_teams_message\confirm_teams_message.html:5
+#: .\quicklinks_admin\templates\send_teams_message\confirm_teams_message.html:14
+#: .\quicklinks_admin\templates\send_teams_message\confirm_teams_message.html:19
+msgid "Confirm Version Update Message"
+msgstr "Nachricht bestätigen"
+
+#: .\quicklinks_admin\templates\send_teams_message\confirm_teams_message.html:13
+#: .\quicklinks_admin\templates\send_teams_message\send_teams_message.html:13
+msgid "Home"
+msgstr "Start"
+
+#: .\quicklinks_admin\templates\send_teams_message\confirm_teams_message.html:22
+msgid "Number of characters"
+msgstr "Zeichenanzahl"
+
+#: .\quicklinks_admin\templates\send_teams_message\confirm_teams_message.html:25
+msgid "Confirm"
+msgstr "Bestätigen"
+
+#: .\quicklinks_admin\templates\send_teams_message\send_teams_message.html:5
+#: .\quicklinks_admin\templates\send_teams_message\send_teams_message.html:14
+#: .\quicklinks_admin\templates\send_teams_message\send_teams_message.html:19
+msgid "Send Version Update Message"
+msgstr "Versionsupdate senden"
+
+#: .\quicklinks_admin\templates\send_teams_message\send_teams_message.html:24
+msgid "The following attributes can be used:"
+msgstr "Die folgenden Attribute können verwendet werden:"
+
+#: .\quicklinks_admin\templates\send_teams_message\send_teams_message.html:27
+msgid "All team attributes, for example:"
+msgstr "Alle Teamattribute, zum Beispiel:"
+
+#: .\quicklinks_admin\templates\send_teams_message\send_teams_message.html:40
+msgid "Next"
+msgstr "Weiter"
 
 #: .\utils\utils.py:32
 #, python-format
@@ -39,14 +80,6 @@ msgid "%d min"
 msgid_plural "%d min"
 msgstr[0] "%d Min"
 msgstr[1] "%d Min"
-
-#: .\venv\Lib\site-packages\colorfield\validators.py:9
-msgid "Enter a valid hex color, eg. #000000"
-msgstr ""
-
-#: .\venv\Lib\site-packages\colorfield\validators.py:17
-msgid "Enter a valid hexa color, eg. #00000000"
-msgstr ""
 
 #: .\venv\Lib\site-packages\django\contrib\messages\apps.py:7
 msgid "Messages"
@@ -87,66 +120,66 @@ msgid "Enter a valid value."
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\core\validators.py:93
-#: .\venv\Lib\site-packages\django\forms\fields.py:675
+#: .\venv\Lib\site-packages\django\forms\fields.py:678
 msgid "Enter a valid URL."
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\core\validators.py:150
+#: .\venv\Lib\site-packages\django\core\validators.py:151
 msgid "Enter a valid integer."
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\core\validators.py:161
+#: .\venv\Lib\site-packages\django\core\validators.py:162
 msgid "Enter a valid email address."
 msgstr ""
 
 #. Translators: "letters" means latin letters: a-z and A-Z.
-#: .\venv\Lib\site-packages\django\core\validators.py:262
+#: .\venv\Lib\site-packages\django\core\validators.py:265
 msgid ""
 "Enter a valid “slug” consisting of letters, numbers, underscores or hyphens."
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\core\validators.py:269
+#: .\venv\Lib\site-packages\django\core\validators.py:272
 msgid ""
 "Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or "
 "hyphens."
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\core\validators.py:278
-#: .\venv\Lib\site-packages\django\core\validators.py:288
-#: .\venv\Lib\site-packages\django\core\validators.py:311
+#: .\venv\Lib\site-packages\django\core\validators.py:281
+#: .\venv\Lib\site-packages\django\core\validators.py:291
+#: .\venv\Lib\site-packages\django\core\validators.py:314
 msgid "Enter a valid IPv4 address."
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\core\validators.py:296
-#: .\venv\Lib\site-packages\django\core\validators.py:312
+#: .\venv\Lib\site-packages\django\core\validators.py:299
+#: .\venv\Lib\site-packages\django\core\validators.py:315
 msgid "Enter a valid IPv6 address."
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\core\validators.py:306
-#: .\venv\Lib\site-packages\django\core\validators.py:310
+#: .\venv\Lib\site-packages\django\core\validators.py:309
+#: .\venv\Lib\site-packages\django\core\validators.py:313
 msgid "Enter a valid IPv4 or IPv6 address."
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\core\validators.py:340
+#: .\venv\Lib\site-packages\django\core\validators.py:343
 msgid "Enter only digits separated by commas."
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\core\validators.py:346
+#: .\venv\Lib\site-packages\django\core\validators.py:349
 #, python-format
 msgid "Ensure this value is %(limit_value)s (it is %(show_value)s)."
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\core\validators.py:379
+#: .\venv\Lib\site-packages\django\core\validators.py:382
 #, python-format
 msgid "Ensure this value is less than or equal to %(limit_value)s."
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\core\validators.py:388
+#: .\venv\Lib\site-packages\django\core\validators.py:391
 #, python-format
 msgid "Ensure this value is greater than or equal to %(limit_value)s."
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\core\validators.py:398
+#: .\venv\Lib\site-packages\django\core\validators.py:401
 #, python-format
 msgid ""
 "Ensure this value has at least %(limit_value)d character (it has "
@@ -157,7 +190,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: .\venv\Lib\site-packages\django\core\validators.py:413
+#: .\venv\Lib\site-packages\django\core\validators.py:416
 #, python-format
 msgid ""
 "Ensure this value has at most %(limit_value)d character (it has "
@@ -168,27 +201,27 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: .\venv\Lib\site-packages\django\core\validators.py:432
+#: .\venv\Lib\site-packages\django\core\validators.py:435
 #: .\venv\Lib\site-packages\django\forms\fields.py:292
 #: .\venv\Lib\site-packages\django\forms\fields.py:327
 msgid "Enter a number."
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\core\validators.py:434
+#: .\venv\Lib\site-packages\django\core\validators.py:437
 #, python-format
 msgid "Ensure that there are no more than %(max)s digit in total."
 msgid_plural "Ensure that there are no more than %(max)s digits in total."
 msgstr[0] ""
 msgstr[1] ""
 
-#: .\venv\Lib\site-packages\django\core\validators.py:439
+#: .\venv\Lib\site-packages\django\core\validators.py:442
 #, python-format
 msgid "Ensure that there are no more than %(max)s decimal place."
 msgid_plural "Ensure that there are no more than %(max)s decimal places."
 msgstr[0] ""
 msgstr[1] ""
 
-#: .\venv\Lib\site-packages\django\core\validators.py:444
+#: .\venv\Lib\site-packages\django\core\validators.py:447
 #, python-format
 msgid ""
 "Ensure that there are no more than %(max)s digit before the decimal point."
@@ -197,14 +230,14 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: .\venv\Lib\site-packages\django\core\validators.py:506
+#: .\venv\Lib\site-packages\django\core\validators.py:509
 #, python-format
 msgid ""
 "File extension “%(extension)s” is not allowed. Allowed extensions are: "
 "%(allowed_extensions)s."
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\core\validators.py:559
+#: .\venv\Lib\site-packages\django\core\validators.py:562
 msgid "Null characters are not allowed."
 msgstr ""
 
@@ -495,12 +528,12 @@ msgid "Enter a whole number."
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\forms\fields.py:402
-#: .\venv\Lib\site-packages\django\forms\fields.py:1143
+#: .\venv\Lib\site-packages\django\forms\fields.py:1146
 msgid "Enter a valid date."
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\forms\fields.py:426
-#: .\venv\Lib\site-packages\django\forms\fields.py:1144
+#: .\venv\Lib\site-packages\django\forms\fields.py:1147
 msgid "Enter a valid time."
 msgstr ""
 
@@ -517,19 +550,19 @@ msgstr ""
 msgid "The number of days must be between {min_days} and {max_days}."
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\forms\fields.py:549
+#: .\venv\Lib\site-packages\django\forms\fields.py:552
 msgid "No file was submitted. Check the encoding type on the form."
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\forms\fields.py:550
+#: .\venv\Lib\site-packages\django\forms\fields.py:553
 msgid "No file was submitted."
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\forms\fields.py:551
+#: .\venv\Lib\site-packages\django\forms\fields.py:554
 msgid "The submitted file is empty."
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\forms\fields.py:553
+#: .\venv\Lib\site-packages\django\forms\fields.py:556
 #, python-format
 msgid "Ensure this filename has at most %(max)d character (it has %(length)d)."
 msgid_plural ""
@@ -537,38 +570,38 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: .\venv\Lib\site-packages\django\forms\fields.py:556
+#: .\venv\Lib\site-packages\django\forms\fields.py:559
 msgid "Please either submit a file or check the clear checkbox, not both."
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\forms\fields.py:617
+#: .\venv\Lib\site-packages\django\forms\fields.py:620
 msgid ""
 "Upload a valid image. The file you uploaded was either not an image or a "
 "corrupted image."
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\forms\fields.py:779
-#: .\venv\Lib\site-packages\django\forms\fields.py:869
+#: .\venv\Lib\site-packages\django\forms\fields.py:782
+#: .\venv\Lib\site-packages\django\forms\fields.py:872
 #: .\venv\Lib\site-packages\django\forms\models.py:1309
 #, python-format
 msgid "Select a valid choice. %(value)s is not one of the available choices."
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\forms\fields.py:870
-#: .\venv\Lib\site-packages\django\forms\fields.py:985
+#: .\venv\Lib\site-packages\django\forms\fields.py:873
+#: .\venv\Lib\site-packages\django\forms\fields.py:988
 #: .\venv\Lib\site-packages\django\forms\models.py:1308
 msgid "Enter a list of values."
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\forms\fields.py:986
+#: .\venv\Lib\site-packages\django\forms\fields.py:989
 msgid "Enter a complete value."
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\forms\fields.py:1202
+#: .\venv\Lib\site-packages\django\forms\fields.py:1205
 msgid "Enter a valid UUID."
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\forms\fields.py:1232
+#: .\venv\Lib\site-packages\django\forms\fields.py:1235
 msgid "Enter a valid JSON."
 msgstr ""
 
@@ -1037,18 +1070,18 @@ msgstr ""
 msgid "This is not a valid IPv6 address."
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\utils\text.py:71
+#: .\venv\Lib\site-packages\django\utils\text.py:78
 #, python-format
 msgctxt "String to return when truncating text"
 msgid "%(truncated_text)s…"
 msgstr ""
 
-#: .\venv\Lib\site-packages\django\utils\text.py:240
+#: .\venv\Lib\site-packages\django\utils\text.py:256
 msgid "or"
 msgstr ""
 
 #. Translators: This string is used as a separator between list elements
-#: .\venv\Lib\site-packages\django\utils\text.py:259
+#: .\venv\Lib\site-packages\django\utils\text.py:275
 #: .\venv\Lib\site-packages\django\utils\timesince.py:94
 msgid ", "
 msgstr ""
@@ -1369,69 +1402,69 @@ msgstr ""
 msgid "Debugging window (serialized value)"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:371
+#: .\venv\Lib\site-packages\tornado\locale.py:377
 msgid "1 second ago"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:377
+#: .\venv\Lib\site-packages\tornado\locale.py:383
 msgid "1 minute ago"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:382
+#: .\venv\Lib\site-packages\tornado\locale.py:388
 msgid "1 hour ago"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:385
+#: .\venv\Lib\site-packages\tornado\locale.py:391
 #, python-format
 msgid "%(time)s"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:387
+#: .\venv\Lib\site-packages\tornado\locale.py:393
 msgid "yesterday"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:387
+#: .\venv\Lib\site-packages\tornado\locale.py:393
 #, python-format
 msgid "yesterday at %(time)s"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:389
+#: .\venv\Lib\site-packages\tornado\locale.py:395
 #, python-format
 msgid "%(weekday)s"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:389
+#: .\venv\Lib\site-packages\tornado\locale.py:395
 #, python-format
 msgid "%(weekday)s at %(time)s"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:392
-#: .\venv\Lib\site-packages\tornado\locale.py:445
+#: .\venv\Lib\site-packages\tornado\locale.py:398
+#: .\venv\Lib\site-packages\tornado\locale.py:451
 #, python-format
 msgid "%(month_name)s %(day)s"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:394
+#: .\venv\Lib\site-packages\tornado\locale.py:400
 #, python-format
 msgid "%(month_name)s %(day)s at %(time)s"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:399
+#: .\venv\Lib\site-packages\tornado\locale.py:405
 #, python-format
 msgid "%(month_name)s %(day)s, %(year)s"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:401
+#: .\venv\Lib\site-packages\tornado\locale.py:407
 #, python-format
 msgid "%(month_name)s %(day)s, %(year)s at %(time)s"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:439
+#: .\venv\Lib\site-packages\tornado\locale.py:445
 #, python-format
 msgid "%(weekday)s, %(month_name)s %(day)s"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\locale.py:462
+#: .\venv\Lib\site-packages\tornado\locale.py:468
 #, python-format
 msgid "%(commas)s and %(last)s"
 msgstr ""
@@ -1446,14 +1479,14 @@ msgctxt "good"
 msgid "right"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\test\locale_test.py:71
-#: .\venv\Lib\site-packages\tornado\test\locale_test.py:74
+#: .\venv\Lib\site-packages\tornado\test\locale_test.py:70
+#: .\venv\Lib\site-packages\tornado\test\locale_test.py:72
 msgctxt "organization"
 msgid "club"
 msgstr ""
 
-#: .\venv\Lib\site-packages\tornado\test\locale_test.py:76
-#: .\venv\Lib\site-packages\tornado\test\locale_test.py:77
+#: .\venv\Lib\site-packages\tornado\test\locale_test.py:74
+#: .\venv\Lib\site-packages\tornado\test\locale_test.py:75
 msgctxt "stick"
 msgid "club"
 msgstr ""
