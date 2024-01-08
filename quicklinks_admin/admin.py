@@ -10,8 +10,13 @@ from .models import Quicklink
 class QuicklinkAdminSite(admin.AdminSite):
     def index(self, request, extra_context=None):
         extra_context = extra_context or {}
-        extra_context['quicklinks'] = Quicklink.objects.filter(is_active=True).order_by('order', 'title')
+        extra_context['quicklinks'] = self.get_quicklinks(request)
         return super().index(request, extra_context=extra_context)
+
+    def get_quicklinks(self, request):
+        if request.user.is_superuser:
+            return Quicklink.objects.filter(is_active=True).order_by('order', 'title')
+        return Quicklink.objects.filter(is_active=True, groups__in=request.user.groups.all()).order_by('order', 'title')
 
     def get_urls(self):
         urls = super().get_urls()
@@ -27,8 +32,17 @@ class QuicklinkAdminSite(admin.AdminSite):
 
 
 admin.site = QuicklinkAdminSite(name='admin')
-admin.site.register(Quicklink)
 
 User = get_user_model()
 admin.site.register(User, UserAdmin)
 admin.site.register(Group, GroupAdmin)
+
+
+class QuicklinkAdmin(admin.ModelAdmin):
+    list_display = ('title', 'url', 'is_active', 'order')
+    list_filter = ('is_active', 'groups')
+    search_fields = ('title', 'url')
+    filter_horizontal = ('groups',)
+
+
+admin.site.register(Quicklink, QuicklinkAdmin)
