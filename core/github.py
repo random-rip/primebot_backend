@@ -1,4 +1,5 @@
 import logging
+from dataclasses import dataclass
 
 import requests
 from django.core.cache import cache
@@ -12,6 +13,20 @@ class GitHubException(Exception):
 
 class RateLimitedException(GitHubException):
     pass
+
+
+@dataclass
+class GitHubData:
+    version: str = None
+    released_at: str = None
+    body: str = None
+
+    def to_dict(self):
+        return {
+            "version": self.version,
+            "released_at": self.released_at,
+            "body": self.body,
+        }
 
 
 class GitHub:
@@ -48,27 +63,22 @@ class GitHub:
             return []
 
     @classmethod
-    def latest_version(cls) -> dict:
+    def latest_version(cls) -> GitHubData:
         cached = cache.get(cls.RELEASES_CACHE_KEY)
-        ret = {
-            "version": None,
-            "released_at": None,
-            "body": None,
-        }
-        if cached:
-            logger.debug("Using cached latest release")
-            ret["version"] = cached[0].get("tag_name", None)
-            ret["released_at"] = cached[0].get("published_at", None)
-            ret["body"] = cached[0].get("body", None)
-            return ret
-        try:
+        data = None
+        if not cached:
             logger.debug("Fetching latest release")
-            data = cls.get_json(cls.RELEASES)
-            cache.set(cls.RELEASES_CACHE_KEY, data, cls.CACHE_DURATION)
-            ret["version"] = data[0].get("tag_name", None)
-            ret["released_at"] = data[0].get("published_at", None)
-            ret["body"] = data[0].get("body", None)
-            return ret
-        except Exception as e:
-            logger.error(e)
-            return ret
+            all_releases = cls.get_json(cls.RELEASES)
+            cache.set(cls.RELEASES_CACHE_KEY, all_releases, cls.CACHE_DURATION)
+            if len(all_releases) > 0:
+                data = all_releases[0]
+        if cached and len(cached) > 0:
+            data = cached[0]
+        if data is None:
+            return GitHubData()
+        else:
+            return GitHubData(
+                version=data["tag_name"],
+                released_at=data["published_at"],
+                body=data["body"],
+            )

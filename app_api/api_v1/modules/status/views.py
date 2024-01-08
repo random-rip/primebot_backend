@@ -37,7 +37,7 @@ class StatusView(APIView):
     def get(self, request):
         logger.info("Request PrimeBot Website")
         data = {
-            "latest": GitHub.latest_version(),
+            "latest": GitHub.latest_version().to_dict(),
             "prime_league_status": self._get_prime_league_status(),
             "discord_status": self._get_discord_bot_status(),
             "telegram_status": self._get_telegram_bot_status(),

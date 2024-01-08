@@ -1,0 +1,36 @@
+{% extends "admin/base_site.html" %}
+
+{% load i18n static %}
+
+{% block title %}{% trans 'Send Developer Notification' %}{% endblock %}
+
+{% block extrastyle %}
+    {{ block.super }}
+{% endblock %}
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+        &rsaquo; {% trans 'Send Developer Notification' %}
+    </div>
+{% endblock %}
+
+{% block content %}
+    <h1>{% trans 'Send Developer Notification' %}</h1>
+    <form method="post" action="{% url 'admin:send-teams-message:clear-teams-message' %}">
+        {% csrf_token %}
+        <input type="submit" value="Restore default template">
+    </form>
+    <p>Hinweis: team-Attribute (wie beispielsweise <span style="font-style: italic">team.name</span> sowie <span
+            style="font-style: italic">github.version</span> und <span style="font-style: italic">github.body</span>
+        sind
+        benutzbar.</p>
+    <form method="post">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+        <input type="submit" value="Confirm">
+    </form>
+
+{% endblock %}
