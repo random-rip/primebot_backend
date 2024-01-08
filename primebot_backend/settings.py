@@ -39,6 +39,7 @@ INTERNAL_IPS = [
 
 INSTALLED_APPS = [
     "admin_interface",
+    'quicklinks_admin',
     "colorfield",
     'django.contrib.admin',
     'django.contrib.auth',
@@ -81,7 +82,10 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'templates'),
+            os.path.join(BASE_DIR, 'quicklinks_admin/templates'),
+            os.path.join(
+                BASE_DIR, 'quicklinks_admin/send_teams_message/../quicklinks_admin/templates/send_teams_message'
+            ),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -223,9 +227,15 @@ Q_CLUSTER = {
     "log_level": "DEBUG",
     "sync": env.bool("MONGODB_SYNC", DEBUG),
     'mongo': {
-        # 'host': env.str("MONGODB_URI", None),
-        'host': f"mongodb://{env.str('MONGODB_USERNAME', '')}:{env.str('MONGODB_PASSWORD', 'localhost')}@{env.str('MONGODB_HOST', '')}:{env.str('MONGODB_PORT', 27017)}",
-        "serverSelectionTimeoutMS": 5_000,  # FIXME providing the host this way returns into a broken development system
+        'host': (
+            f"mongodb://{env.str('MONGODB_USERNAME', '')}:{env.str('MONGODB_PASSWORD', 'localhost')}"
+            f"@{env.str('MONGODB_HOST', '')}:{env.str('MONGODB_PORT', 27017)}"
+        ),
+        "serverSelectionTimeoutMS": 5_000,
+    }
+    if not DEBUG
+    else {
+        'host': env.str("MONGODB_URI", None),
     },
     "time_zone": "Europe/Berlin",
 }

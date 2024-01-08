@@ -17,7 +17,7 @@ async def bot_help(
 ) -> None:
     async with ctx.typing():
         embed = Embed(title=_("Help"), color=COLOR_SETTINGS)
-        project_version = GitHub.latest_version().get("version", None)
+        project_version = GitHub.latest_version().version
         desc = _(
             "Disclaimer: This bot was not created in cooperation with Prime League or Freaks4u Gaming GmbH. "
             "This bot was designed and programmed due to missed matches. "

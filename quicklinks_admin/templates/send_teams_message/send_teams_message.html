@@ -1,0 +1,39 @@
+{% extends "admin/base_site.html" %}
+
+{% load i18n static %}
+
+{% block title %}{% trans 'Send Version Update Message' %}{% endblock %}
+
+{% block extrastyle %}
+    {{ block.super }}
+{% endblock %}
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+        &rsaquo; {% trans 'Send Version Update Message' %}
+    </div>
+{% endblock %}
+
+{% block content %}
+    <h1>{% trans 'Send Version Update Message' %}</h1>
+    <form method="post" action="{% url 'admin:send-teams-message:clear-teams-message' %}">
+        {% csrf_token %}
+        <input type="submit" value="Restore">
+    </form>
+    <p>{% trans "The following attributes can be used:" %}</p>
+    <ul style="font-size: 14px">
+        <li style="font-style: italic;font-size: 14px">github.version, github.released_at, github.body</li>
+        <li style="font-size: 14px">{% trans "All team attributes, for example:" %}
+            <span style="font-style: italic"> team.name, team.team_tag</span>
+        </li>
+    </ul>
+    <form method="post">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+        <input type="submit" value="{% trans "Next" %}">
+    </form>
+
+{% endblock %}
