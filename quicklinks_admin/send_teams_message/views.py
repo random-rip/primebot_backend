@@ -49,7 +49,7 @@ class TeamsMessageView(FormView):
 
 @method_decorator(staff_member_required, name='dispatch')
 class ConfirmTeamsMessageView(TemplateView):
-    template_name = "send_teams_message/send_teams_message.html"
+    template_name = "send_teams_message/confirm_teams_message.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -75,6 +75,6 @@ class ConfirmTeamsMessageView(TemplateView):
 @method_decorator(staff_member_required, name='dispatch')
 class ClearTeamsMessageView(View):
     def post(self, request, *args, **kwargs):
-        del request.session['message_template']
-        del request.session['rendered_message']
+        request.session.pop('message_template', None)
+        request.session.pop('rendered_message', None)
         return redirect(reverse('admin:send-teams-message:send-teams-message'))

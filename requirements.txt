@@ -13,7 +13,7 @@ telepot==12.7
 pytz~=2022.7.1
 cryptography==41.0.6
 Deprecated~=1.2.13
-django-admin-interface==0.19.1
+django-admin-interface==0.28.2
 django-q2==1.4.11
 pymongo==4.3.3
 croniter

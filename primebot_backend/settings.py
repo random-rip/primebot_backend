@@ -38,8 +38,8 @@ INTERNAL_IPS = [
 ]
 
 INSTALLED_APPS = [
-    'quicklinks_admin',
     "admin_interface",
+    'quicklinks_admin',
     "colorfield",
     'django.contrib.admin',
     'django.contrib.auth',
