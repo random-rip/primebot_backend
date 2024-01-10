@@ -51,7 +51,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.app.entrypoints=websecure,web"
-      - "traefik.http.routers.app.rule=(Host(`primebot.me`) && PathPrefix(`/api`, `/admin`))"
+      - "traefik.http.routers.app.rule=(Host(`primebot.me`) && PathPrefix(`/api`, `/admin`, `/.admin`))"
       - "traefik.http.services.app.loadbalancer.server.port=8000"
       - "traefik.http.routers.app.tls=true"
       - "traefik.docker.network=proxy"
