@@ -232,6 +232,7 @@ services:
       - "traefik.http.routers.caddy.tls=true"
       - "traefik.docker.network=proxy"
       - "traefik.http.routers.caddy.tls.certResolver=production"
+    restart: unless-stopped
     networks:
       - proxy
       - default
@@ -248,6 +249,7 @@ services:
       - "traefik.http.routers.frontend.tls=true"
       - "traefik.docker.network=proxy"
       - "traefik.http.routers.frontend.tls.certResolver=production"
+    restart: unless-stopped
     networks:
       - proxy
       - default
