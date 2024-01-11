@@ -1,4 +1,6 @@
-from django.test import TestCase
+import pytz
+from django.conf import settings
+from django.test import TestCase, override_settings
 from django.utils.datetime_safe import datetime
 from django.utils.timezone import make_aware
 from django.utils.translation import gettext as _
@@ -8,6 +10,7 @@ from app_prime_league.models import Team
 from bots.telegram_interface.tests.commands.utils import MatchBuilder, TeamBuilder, TestBot, test_call_match
 
 
+@override_settings(CURRENT_SPLIT_START=datetime(2022, 1, 1).astimezone(pytz.timezone(settings.TIME_ZONE)))
 class TelegramMatchTestCase(TestCase):
     databases = ["default"]
     TELEGRAM_ID = 1
