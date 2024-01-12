@@ -9,6 +9,7 @@ from utils.utils import current_match_day
 
 from .player import Player
 from .scouting_website import ScoutingWebsite
+from .split import Split
 
 
 class Team(models.Model):
@@ -177,6 +178,7 @@ class Match(models.Model):
     result = models.CharField(max_length=5, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    split = models.ForeignKey(Split, on_delete=models.CASCADE, null=True)
 
     objects = MatchManager()
 

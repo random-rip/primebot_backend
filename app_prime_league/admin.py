@@ -5,10 +5,21 @@ from app_prime_league.admin_sites.comment import CommentAdmin
 from app_prime_league.admin_sites.match import MatchAdmin, SuggestionAdmin
 from app_prime_league.admin_sites.player import PlayerAdmin
 from app_prime_league.admin_sites.scouting_website import ScoutingWebsiteAdmin
+from app_prime_league.admin_sites.split import SplitAdmin
 from app_prime_league.admin_sites.team import TeamAdmin
-from app_prime_league.admin_sites.team_settings import SettingsExpiringAdmin, SettingAdmin
-from app_prime_league.models import Player, Match, ScoutingWebsite, Suggestion, Comment, Team, Setting, \
-    SettingsExpiring, Champion
+from app_prime_league.admin_sites.team_settings import SettingAdmin, SettingsExpiringAdmin
+from app_prime_league.models import (
+    Champion,
+    Comment,
+    Match,
+    Player,
+    ScoutingWebsite,
+    Setting,
+    SettingsExpiring,
+    Suggestion,
+    Team,
+)
+from app_prime_league.models.split import Split
 
 admin.site.register(Player, PlayerAdmin)
 admin.site.register(Match, MatchAdmin)
@@ -19,3 +30,4 @@ admin.site.register(Team, TeamAdmin)
 admin.site.register(Setting, SettingAdmin)
 admin.site.register(SettingsExpiring, SettingsExpiringAdmin)
 admin.site.register(Champion, ChampionAdmin)
+admin.site.register(Split, SplitAdmin)
