@@ -42,7 +42,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: install gettext
-        run: apt-get install gettext
+        run: apt-get install gettext -y
 
       - name: Install deps
         run: python -m pip install -r requirements.txt
