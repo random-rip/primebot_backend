@@ -15,7 +15,7 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
-    container: orbisk/django-test:3:10
+    container: orbisk/django-test:3.10
     env:
       POSTGRES_DB: primebot
       POSTGRES_USER: primebot
