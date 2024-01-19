@@ -9,7 +9,7 @@ from app_prime_league.models import Champion, Match, ScoutingWebsite, Team
 from bots.messages.base import MatchMessage
 from bots.messages.helpers import fmt_dt
 from utils.emojis import EMJOI_MAGN_GLASS
-from utils.utils import timestamp_to_datetime, format_datetime
+from utils.utils import format_datetime, timestamp_to_datetime
 
 
 class MatchOverview(MatchMessage):

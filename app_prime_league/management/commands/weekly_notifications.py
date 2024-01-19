@@ -12,7 +12,7 @@ class Command(ScheduleCommand):
     @staticmethod
     def func():
         logger = logging.getLogger("notifications")
-        logger.info(f"Start Sending Weekly Notifications...")
+        logger.info("Start Sending Weekly Notifications...")
         teams = Team.objects.get_registered_teams()
         for team in teams:
             if len(WeeklyNotificationMessage(team=team).matches) < 1:

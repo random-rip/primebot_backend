@@ -1,5 +1,5 @@
 import discord
-from discord import Embed, Colour
+from discord import Colour, Embed
 from django.db.models import F
 from django.utils.translation import gettext as _
 
@@ -19,8 +19,7 @@ class MatchesOverview(MatchesMessage):
         if match_ids is None:
             return team.get_open_matches_ordered()
         else:
-            return team.matches_against.filter(match_id__in=match_ids).order_by(
-                F('match_day').asc(nulls_last=True))
+            return team.matches_against.filter(match_id__in=match_ids).order_by(F('match_day').asc(nulls_last=True))
 
     def _generate_title(self):
         return "🔥 " + _("New matches")
@@ -32,9 +31,7 @@ class MatchesOverview(MatchesMessage):
         return _("You currently have no open matches.")
 
     def format_match(self, match) -> str:
-        return (
-            "[{match_day}]({match_url}) ⚔ {enemy_team_name} ➡ [{website}]({scouting_url})"
-        ).format(
+        return ("[{match_day}]({match_url}) ⚔ {enemy_team_name} ➡ [{website}]({scouting_url})").format(
             match_day=self.match_helper.display_match_day(match).title(),
             match_url=self.get_match_url(match),
             enemy_team_name=match.get_enemy_team().name,
@@ -53,9 +50,7 @@ class MatchesOverview(MatchesMessage):
             name = "⚔ {match_day}".format(
                 match_day=self.match_helper.display_match_day(match).title(),
             )
-            value = _(
-                "[against {enemy_team_name}]({match_url})"
-            ).format(
+            value = _("[against {enemy_team_name}]({match_url})").format(
                 enemy_team_name=match.get_enemy_team().name,
                 match_url=self.get_match_url(match),
             )
@@ -63,13 +58,10 @@ class MatchesOverview(MatchesMessage):
             value += f"\n> {self.match_helper.display_match_schedule(match)}"
 
             if match.enemy_lineup_available:
-                value += (
-                        "\n> 📑 " + _("[Current lineup]({lineup_link})")
-                ).format(
+                value += ("\n> 📑 " + _("[Current lineup]({lineup_link})")).format(
                     lineup_link=self.get_enemy_lineup_scouting_url(match)
                 )
 
             embed.add_field(name=name, value=value, inline=False)
-        embed.set_footer(
-            text=_("If there are outdated scouting links just use /matches again."))
+        embed.set_footer(text=_("If there are outdated scouting links just use /matches again."))
         return embed

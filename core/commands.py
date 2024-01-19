@@ -15,9 +15,7 @@ class ScheduleCommand(BaseCommand, ABC):
         self.func_path = self._validated_func()
 
     def add_arguments(self, parser):
-        parser.add_argument(
-            '--schedule', action='store_true', help='Schedule the job to the Q cluster'
-        )
+        parser.add_argument('--schedule', action='store_true', help='Schedule the job to the Q cluster')
         self._add_arguments(parser)
 
     def _add_arguments(self, parser):

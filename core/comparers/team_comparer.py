@@ -3,8 +3,7 @@ from core.processors.team_processor import TeamDataProcessor
 
 
 class TeamComparer:
-
-    def __init__(self, team: Team, processor: TeamDataProcessor, ):
+    def __init__(self, team: Team, processor: TeamDataProcessor):
         self.team = team
         self.processor = processor
 

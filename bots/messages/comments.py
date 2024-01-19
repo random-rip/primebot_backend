@@ -1,6 +1,6 @@
 from django.utils.translation import gettext, ngettext
 
-from app_prime_league.models import Team, Match
+from app_prime_league.models import Match, Team
 from bots.messages.base import MatchMessage
 
 
@@ -22,7 +22,7 @@ class NewCommentsNotificationMessage(MatchMessage):
             "against [{enemy_team_tag}]({enemy_team_url}).",
             "There are [new comments]({match_url}) for [{match_day}]({match_url}) "
             "against [{enemy_team_tag}]({enemy_team_url}).",
-            len(self.new_comment_ids)
+            len(self.new_comment_ids),
         )
 
         return gettext(message).format(

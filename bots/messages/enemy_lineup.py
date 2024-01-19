@@ -8,7 +8,7 @@ class NewLineupNotificationMessage(MatchMessage):
     settings_key = "LINEUP_NOTIFICATION"
     mentionable = True
 
-    def __init__(self, team: Team, match: Match,):
+    def __init__(self, team: Team, match: Match):
         super().__init__(team=team, match=match)
 
     def _generate_title(self):

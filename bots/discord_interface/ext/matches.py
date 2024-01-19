@@ -7,11 +7,11 @@ from bots.discord_interface.utils import DiscordHelper, check_channel_in_use, tr
 from bots.messages import MatchesOverview, MatchOverview
 
 
-@commands.hybrid_command(help="Creates an overview for open matches", )
+@commands.hybrid_command(help="Creates an overview for open matches")
 @commands.guild_only()
 @check_channel_in_use()
 @translation_override
-async def matches(ctx, ):
+async def matches(ctx):
     async with ctx.typing():
         channel_id = ctx.message.channel.id
         team = await DiscordHelper.get_registered_team_by_channel_id(channel_id=channel_id)
@@ -20,16 +20,17 @@ async def matches(ctx, ):
     await ctx.send(embed=embed)
 
 
-@commands.hybrid_command(name="match", help="Creates an overview for a given match day", )
+@commands.hybrid_command(name="match", help="Creates an overview for a given match day")
 @commands.guild_only()
 @check_channel_in_use()
 @translation_override
-async def match_information(ctx, match_day: int, ):
+async def match_information(ctx, match_day: int):
     async with ctx.typing():
         try:
             team = await DiscordHelper.get_registered_team_by_channel_id(channel_id=ctx.message.channel.id)
             found_matches = await sync_to_async(list)(
-                await sync_to_async(team.get_obvious_matches_based_on_stage)(match_day=match_day))
+                await sync_to_async(team.get_obvious_matches_based_on_stage)(match_day=match_day)
+            )
             if not found_matches:
                 return await ctx.send(_("This match day was not found. Try `/match 1`."))
             for i in found_matches:
