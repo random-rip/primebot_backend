@@ -23,6 +23,7 @@ jobs:
       POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
       DJANGO_SECRET_KEY: secret123
+      DJANGO_DEBUG: 'True'
     services:
       postgres:
         image: postgres
