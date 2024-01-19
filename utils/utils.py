@@ -1,20 +1,21 @@
 import hashlib
 import re
-from datetime import datetime
-from typing import Union, Tuple
+from datetime import date, datetime
+from typing import Tuple, Union
 
 import pytz
 from babel import dates as babel
 from django.conf import settings
-from django.utils import translation, timezone
+from django.utils import translation
 from django.utils.translation import ngettext
 
 from utils.exceptions import CouldNotParseURLException, Div1orDiv2TeamException
 
 
 def string_to_datetime(x, timestamp_format='%a, %d %b %Y %H:%M:%S %z'):
-    return datetime.strptime(x, timestamp_format).astimezone(pytz.utc) \
-        if isinstance(x, str) else timestamp_to_datetime(x)
+    return (
+        datetime.strptime(x, timestamp_format).astimezone(pytz.utc) if isinstance(x, str) else timestamp_to_datetime(x)
+    )
 
 
 def timestamp_to_datetime(x):
@@ -40,12 +41,7 @@ def convert_seconds_to_hh_mm(seconds) -> Tuple[int, int]:
     return int(hh), int(mm)
 
 
-def current_match_day():
-    current_date = timezone.now().astimezone(pytz.timezone(settings.TIME_ZONE))
-    return count_weeks(settings.CURRENT_SPLIT_START, current_date)
-
-
-def count_weeks(split_start: datetime, another: datetime):
+def count_weeks(split_start: date, another: date):
     match_day = ((another - split_start) / 7).days + 1
     return match_day
 
@@ -80,7 +76,9 @@ def is_url(value):
         r'localhost|'  # localhost...
         r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
         r'(?::\d+)?'  # optional port
-        r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+        r'(?:/?|[/?]\S+)$',
+        re.IGNORECASE,
+    )
     return re.match(regex, value) is not None
 
 
@@ -97,7 +95,10 @@ class Encoder:
         return cls.__hash_func(value).hexdigest()
 
     @classmethod
-    def blake2b(cls, value, ) -> str:
+    def blake2b(
+        cls,
+        value,
+    ) -> str:
         if not isinstance(value, str):
             value = str(value)
         value = value.encode(cls._encoding)
@@ -107,5 +108,9 @@ class Encoder:
 def format_datetime(x: datetime):
     """This Method is outdated for discord. Use fmt_dt instead."""
     clock_label = "'Uhr'" if translation.get_language() == "de" else "a"
-    return babel.format_datetime(x, format=f"EEEE, d. MMMM y H:mm {clock_label}", locale=translation.get_language(),
-                                 tzinfo=babel.get_timezone(settings.TIME_ZONE))
+    return babel.format_datetime(
+        x,
+        format=f"EEEE, d. MMMM y H:mm {clock_label}",
+        locale=translation.get_language(),
+        tzinfo=babel.get_timezone(settings.TIME_ZONE),
+    )

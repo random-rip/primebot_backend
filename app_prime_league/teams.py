@@ -2,87 +2,94 @@ import concurrent.futures
 import logging
 import sys
 import traceback
+from typing import Union
 
 from django.conf import settings
 
-from app_prime_league.models import Team, Player, Match, Suggestion
+from app_prime_league.models import Match, Player, Suggestion, Team
 from bots.telegram_interface.tg_singleton import send_message_to_devs
 from core.processors.team_processor import TeamDataProcessor
 from core.temporary_match_data import TemporaryMatchData
 from utils.messages_logger import log_exception
 
 
-def register_team(*, team_id, **kwargs):
+def register_team(*, team_id: int, **kwargs) -> Union[Team, None]:
     """
     This Function should be used in Bot commands!
     Add or Update a Team, Add or Update Matches.
-    **kwargs will be directly parsed to the Team model. Usually telegram ID or discord IDs
-    :raises PrimeLeagueConnectionException, TeamWebsite404Exception
+    **kwargs will be directly parsed to the Team model, usually the telegram ID or discord IDs.
+    :raises PrimeLeagueConnectionException, TeamWebsite404Exception:
     """
-    team, provider = create_or_update_team(team_id=team_id, **kwargs)
+    processor = TeamDataProcessor(team_id=team_id)
+    team = create_or_update_team(processor=processor, **kwargs)
     if team is None:
         return None
     try:
-        create_matches(provider.get_matches(), team)
-
+        create_matches(processor.get_matches(), team)
     except Exception as e:
         trace = "".join(traceback.format_tb(sys.exc_info()[2]))
         send_message_to_devs(
-            f"Ein Fehler ist beim Registrieren von Team {team.id} {team.name} aufgetreten:\n<code>{trace}\n{e}</code>")
+            msg=f"Ein Fehler ist beim Registrieren von Team {team_id} aufgetreten:\n<code>{trace}\n{e}</code>",
+            code=f"{trace}\n{e}",
+        )
         logging.getLogger("commands").exception(e)
     return team
 
 
-def create_or_update_team(*, team_id, **kwargs):
+def create_or_update_team(*, processor, **kwargs) -> Union[Team, None]:
     """
-
-    Args:
-        team_id:
-        **kwargs:
-
-    Returns:
-    Exceptions: PrimeLeagueConnectionException, TeamWebsite404Exception
+    Create or Update a Team. If team has matches and there is a current split the split will be set, else None.
+    :param processor: processor object
+    :param kwargs: kwargs for team model
+    :return: team or None
+    :raises: PrimeLeagueConnectionException, TeamWebsite404Exception
     """
-    processor = TeamDataProcessor(team_id=team_id)
-
     defaults = {
         "name": processor.get_team_name(),
         "team_tag": processor.get_team_tag(),
         "division": processor.get_current_division(),
         "logo_url": processor.get_logo(),
+        "split": processor.get_split(),
     }
     defaults = {**defaults, **kwargs}
 
-    team, created = Team.objects.update_or_create(id=team_id, defaults=defaults)
-    return team, processor
+    team, created = Team.objects.update_or_create(id=processor.team_id, defaults=defaults)
+    return team
 
 
 @log_exception
-def create_match_and_enemy_team(team, match_id, ):
+def create_match_and_enemy_team(
+    team: Team,
+    match_id: int,
+):
     """
-    Create Match, Enemy Team, Enemy Players, Enemy Lineup, Suggestions
-    Args:
-        team:
-        match_id:
-
-    Returns:
-
+    Create Match, Enemy Team, Enemy Players, Enemy Lineup, Suggestions and Comments.
+    :param team:
+    :param match_id: Match ID
     """
     # Create Match
-    tmd = TemporaryMatchData.create_from_website(team=team, match_id=match_id, )
-    match, created = Match.objects.update_or_create(match_id=match_id, team=team, defaults={
-        "match_id": tmd.match_id,
-        "match_day": tmd.match_day,
-        "match_type": tmd.match_type,
-        "team": tmd.team,
-        "begin": tmd.begin,
-        "team_made_latest_suggestion": tmd.team_made_latest_suggestion,
-        "match_begin_confirmed": tmd.match_begin_confirmed,
-        "datetime_until_auto_confirmation": tmd.datetime_until_auto_confirmation,
-        "closed": tmd.closed,
-        "result": tmd.result,
-        "has_side_choice": tmd.has_side_choice,
-    })
+    tmd = TemporaryMatchData.create_from_website(
+        team=team,
+        match_id=match_id,
+    )
+    match, created = Match.objects.update_or_create(
+        match_id=match_id,
+        team=team,
+        defaults={
+            "match_id": tmd.match_id,
+            "match_day": tmd.match_day,
+            "match_type": tmd.match_type,
+            "team": tmd.team,
+            "begin": tmd.begin,
+            "team_made_latest_suggestion": tmd.team_made_latest_suggestion,
+            "match_begin_confirmed": tmd.match_begin_confirmed,
+            "datetime_until_auto_confirmation": tmd.datetime_until_auto_confirmation,
+            "closed": tmd.closed,
+            "result": tmd.result,
+            "has_side_choice": tmd.has_side_choice,
+            "split": tmd.split,
+        },
+    )
 
     # Create Team Lineup
     if tmd.team_lineup is not None:
@@ -91,12 +98,16 @@ def create_match_and_enemy_team(team, match_id, ):
 
     # Create Enemy Team
     if tmd.enemy_team_id is not None:
-        processor = TeamDataProcessor(team_id=tmd.enemy_team_id) # TODO duplicate code
-        enemy_team, created = Team.objects.update_or_create(id=tmd.enemy_team_id, defaults={
-            "name": processor.get_team_name(),
-            "team_tag": processor.get_team_tag(),
-            "division": processor.get_current_division(),
-        })
+        processor = TeamDataProcessor(team_id=tmd.enemy_team_id)  # TODO duplicate code
+        enemy_team, created = Team.objects.update_or_create(
+            id=tmd.enemy_team_id,
+            defaults={
+                "name": processor.get_team_name(),
+                "team_tag": processor.get_team_tag(),
+                "division": processor.get_current_division(),
+                "split": processor.get_split(),
+            },
+        )
         match.enemy_team = enemy_team
 
         # Create Enemy Players
@@ -125,16 +136,12 @@ def create_match_and_enemy_team(team, match_id, ):
     match.save()
 
 
-def create_matches(match_ids, team: Team, use_concurrency=not settings.DEBUG):
+def create_matches(match_ids: list[int], team: Team, use_concurrency=not settings.DEBUG):
     """
     Used for registering new teams.
-    Args:
-        match_ids:
-        team:
-        use_concurrency:
-
-    Returns: None
-
+    :param match_ids:
+    :param team:
+    :param use_concurrency:
     """
     if use_concurrency:
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:

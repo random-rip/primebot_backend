@@ -16,10 +16,10 @@ from app_prime_league.models import (
     ScoutingWebsite,
     Setting,
     SettingsExpiring,
+    Split,
     Suggestion,
     Team,
 )
-from app_prime_league.models.split import Split
 
 admin.site.register(Player, PlayerAdmin)
 admin.site.register(Match, MatchAdmin)

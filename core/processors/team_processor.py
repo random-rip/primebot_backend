@@ -1,10 +1,10 @@
 from abc import abstractmethod
 
+from app_prime_league.models import Split
 from core.providers.prime_league import PrimeLeagueProvider
 
 
 class __TeamDataMethods:
-
     @abstractmethod
     def get_members(self):
         pass
@@ -30,10 +30,13 @@ class __TeamDataMethods:
         pass
 
 
-class TeamDataProcessor(__TeamDataMethods, ):
+class TeamDataProcessor(
+    __TeamDataMethods,
+):
     """
     Converting json data to functions and providing these.
     """
+
     ROLE_PLAYER = 10
     ROLE_CAPTAIN = 20
     ROLE_LEADER = 30
@@ -44,6 +47,7 @@ class TeamDataProcessor(__TeamDataMethods, ):
         :param team_id:
         """
         self.data = PrimeLeagueProvider.get_team(team_id=team_id)
+        self.team_id = team_id
 
     @property
     def data_team(self):
@@ -65,8 +69,12 @@ class TeamDataProcessor(__TeamDataMethods, ):
 
     def get_members(self):
         def _parse_member(x):
-            return x["user_id"], x["user_name"], x["account_value"], x["tu_status"] in [self.ROLE_LEADER,
-                                                                                        self.ROLE_CAPTAIN]
+            return (
+                x["user_id"],
+                x["user_name"],
+                x["account_value"],
+                x["tu_status"] in [self.ROLE_LEADER, self.ROLE_CAPTAIN],
+            )
 
         members = [_parse_member(x) for x in self.data.get("members", [])]
         return members
@@ -74,7 +82,7 @@ class TeamDataProcessor(__TeamDataMethods, ):
     def get_matches(self):
         """
 
-        Returns: List: [1,2,3]
+        :return: List: [1,2,3]
 
         """
         return self.data.get("matches", [])
@@ -87,3 +95,9 @@ class TeamDataProcessor(__TeamDataMethods, ):
 
     def get_logo(self):
         return self.data_team.get("team_logo_img_url")
+
+    def get_split(self):
+        """Currently we don't get the split from the API, so we have to get it from our own database."""
+        if len(self.get_matches()) > 0:
+            return Split.objects.get_current_split()
+        return

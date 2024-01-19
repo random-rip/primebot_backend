@@ -1,47 +1,9 @@
 import logging
-from datetime import timedelta
 from typing import List
 
 from django.db import IntegrityError, models
-from django.db.models import Q
-from django.utils import timezone
 
 update_logger = logging.getLogger("updates")
-
-
-class TeamManager(models.Manager):
-    def get_registered_teams(self):
-        """
-        Gibt alle Teams zurück, die entweder in einer Telegram-Gruppe oder in einem Discord-Channel registriert wurden.
-        :return: Queryset of Team Model
-        """
-        return self.model.objects.filter(Q(telegram_id__isnull=False) | Q(discord_channel_id__isnull=False))
-
-    def get_registered_team_of_current_split(self):
-        """
-        Gibt alle Teams zurück, die entweder in einer Telegram-Gruppe oder in einem Discord-Channel registriert wurden
-        und wo die Division gesetzt wurde!
-        :return: Queryset of Team Model
-        """
-        return self.model.objects.filter(
-            Q(telegram_id__isnull=False) | Q(discord_channel_id__isnull=False), division__isnull=False
-        )
-
-    def get_team(self, team_id):
-        return self.model.objects.filter(id=team_id).first()
-
-
-class MatchManager(models.Manager):
-    def get_matches_to_update(self):
-        """
-        Gibt alle Matches zurück die nicht `closed` oder `NULL` sind oder deren Spielbeginn weniger als 2 Tage her ist.
-        Returns: queryset
-
-        """
-        qs = self.model.objects.filter(
-            Q(closed=False) | Q(closed__isnull=True) | Q(closed=True, begin__gte=timezone.now() - timedelta(days=2))
-        )
-        return qs
 
 
 class PlayerManager(models.Manager):

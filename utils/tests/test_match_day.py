@@ -1,22 +1,19 @@
 from datetime import datetime
 from unittest import mock
 
-import pytz
 from django.test import TestCase
+from django.utils.timezone import make_aware
 
-from utils.utils import current_match_day, count_weeks
+from core.test_utils import SplitBuilder
+from utils.utils import count_weeks
 
 
 class MatchDayTest(TestCase):
-    databases = []
-
-    @mock.patch('utils.utils.timezone')
-    @mock.patch('utils.utils.settings')
-    def test_current(self, settings, timezone_mock):
-        settings.CURRENT_SPLIT_START = datetime(2022, 6, 6).astimezone(pytz.timezone("Europe/Berlin"))
-        settings.TIME_ZONE = "Europe/Berlin"
-        timezone_mock.now = mock.Mock(return_value=datetime(2022, 8, 2))
-        match_day = current_match_day()
+    @mock.patch('django.utils.timezone.now')
+    def test_current(self, timezone_mock):
+        timezone_mock.return_value = make_aware(datetime(2024, 3, 25))  # Monday Week 9
+        split = SplitBuilder(group_stage_start=datetime(2024, 1, 25)).build()
+        match_day = split.get_current_match_day()
         self.assertEqual(9, match_day)
 
     def test_calibration(self):

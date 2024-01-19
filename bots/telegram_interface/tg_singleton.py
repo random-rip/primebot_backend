@@ -10,7 +10,9 @@ bot = telepot.Bot(token=settings.TELEGRAM_BOT_KEY)
 notifications_logger = logging.getLogger("notifications")
 
 
-def send_message_to_devs(msg, parse_mode=ParseMode.HTML):
+def send_message_to_devs(msg: str, code: str = None, parse_mode=ParseMode.HTML):
+    if code:
+        msg = f"{msg}\n<code>{code}</code>"
     try:
         send_message(msg=msg, chat_id=settings.TG_DEVELOPER_GROUP, parse_mode=parse_mode)
     except Exception as e:
