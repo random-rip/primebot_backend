@@ -26,7 +26,7 @@ def activate_updates_between_splits(task):
         return
 
     playoffs_end = Split.objects.get_current_split().playoffs_end
-    if playoffs_end > timezone.now().date():
+    if playoffs_end >= timezone.now().date():
         return
 
     next_command = "updates_between_splits"

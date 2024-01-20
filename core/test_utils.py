@@ -236,9 +236,10 @@ class SplitBuilder:
         * 6. match day is 10.03.2024
         * 7. match day is 17.03.2024
         * 8. match day is 24.03.2024
-    * Group stage ends 9 weeks after group stage start: 28.03.2024
-    * Playoffs start 1 week after group stage ends: 04.04.2024
-    * Playoffs end 2 weeks after playoffs start: 18.04.2024
+    * Tiebreaker match week is until 31.03.2024
+    * Group stage ends 9 weeks after group stage start: 31.03.2024
+    * Playoffs start 1 week after group stage ends: 14.04.2024
+    * Playoffs end 2 weeks after playoffs start: 29.04.2024
     """
 
     def __init__(self, group_stage_start: datetime.date = None):
@@ -260,6 +261,10 @@ class SplitBuilder:
 
     def set_name(self, name: str):
         self.name = name
+        return self
+
+    def set_split_id(self, split_id: int):
+        self.split_id = split_id
         return self
 
     def set_calibration_stage_start(self, calibration_stage_start: datetime.date):
@@ -293,7 +298,7 @@ class SplitBuilder:
         )
         return Split.objects.create(
             id=self.split_id,
-            name=self.name or f"Split {self.group_stage_start.year}",
+            name=self.name or f"Split {self.group_stage_start.strftime('%m %Y')}",
             registration_start=self.registration_start or split_data['registration_start'],
             registration_end=self.registration_end or split_data['registration_end'],
             calibration_stage_start=self.calibration_stage_start or split_data['calibration_stage_start'],

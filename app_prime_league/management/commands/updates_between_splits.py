@@ -6,7 +6,7 @@ from django.core.management import call_command
 from django.utils import timezone
 from django_q.models import Schedule
 
-from app_prime_league.models import Match, Split, Team
+from app_prime_league.models import Split, Team
 from core.commands import ScheduleCommand
 from core.updater.teams_check_executor import update_teams
 
@@ -16,7 +16,7 @@ logger = logging.getLogger("updates")
 name = "Updates between splits"
 
 
-def check_updates_in_calibration_stage(task):
+def activate_updates_in_calibration_stage(task):
     """
     Checks if the calibration stage started and if so, deletes this schedule and
     creates the calibration stage schedule.
@@ -27,10 +27,7 @@ def check_updates_in_calibration_stage(task):
         return
 
     calibration_start = Split.objects.get_current_split().calibration_stage_start
-    if calibration_start >= timezone.now().date():
-        return
-
-    if not Match.current_split_objects.exists():
+    if calibration_start < timezone.now().date():
         return
 
     next_command = "updates_in_calibration_stage"
