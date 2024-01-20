@@ -45,10 +45,10 @@ class Command(ScheduleCommand):
         start_time = time.time()
         teams = Team.objects.get_teams_to_update()
         logger.info(f"Updating {len(teams)} teams...")
-        update_teams(
-            teams=teams,
-        )
+        update_teams(teams=teams)
         logger.info(f"Updated {len(teams)} teams in {time.time() - start_time:.2f} seconds")
+
+        start_time = time.time()
         uncompleted_matches = Match.current_split_objects.get_matches_to_update()
         logger.info(f"Checking {len(uncompleted_matches)} uncompleted matches...")
         update_uncompleted_matches(matches=uncompleted_matches)
@@ -60,7 +60,10 @@ class Command(ScheduleCommand):
             func=self.func_path,
             schedule_type=Schedule.CRON,
             cron='*/2 * * * *',
-            hook='app_prime_league.management.commands.updates_between_calibration_and_group_stage.activate_updates_between_calibration_and_group_stage',
+            hook=(
+                'app_prime_league.management.commands.updates_between_calibration_and_group_stage.'
+                'activate_updates_between_calibration_and_group_stage'
+            ),
         )
         s.next_run = s.calculate_next_run()
         s.save()

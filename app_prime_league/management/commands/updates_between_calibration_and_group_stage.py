@@ -45,10 +45,10 @@ class Command(ScheduleCommand):
         start_time = time.time()
         teams = Team.objects.get_teams_to_update()
         logger.info(f"Updating {len(teams)} teams...")
-        update_teams(
-            teams=teams,
-        )
+        update_teams(teams=teams)
         logger.info(f"Updated {len(teams)} teams in {time.time() - start_time:.2f} seconds")
+
+        start_time = time.time()
         uncompleted_matches = Match.current_split_objects.get_matches_to_update()
         logger.info(f"Checking {len(uncompleted_matches)} uncompleted matches...")
         update_uncompleted_matches(matches=uncompleted_matches)
