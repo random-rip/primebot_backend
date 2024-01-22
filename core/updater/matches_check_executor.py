@@ -33,6 +33,20 @@ def get_session():
 
 @log_exception
 def check_match(match: Match):
+    """
+    Checks if a match has new data on the website, updates the match accordingly and sends notifications.
+
+    Checks if there
+
+    - is a new enemy team. If so, the enemy team is updated or created and the players are updated.
+    - are new suggestions (either own or enemy team). If so, a notification is sent.
+    - is a new scheduling confirmation. If so, a notification is sent.
+    - is a new lineup (either own or enemy team). If so, a notification is sent.
+    - are new comments. If so, a notification is sent.
+
+    :param match:
+    :return:
+    """
     match_id = match.match_id
     team = match.team
     try:
@@ -58,6 +72,7 @@ def check_match(match: Match):
                 "name": processor.get_team_name(),
                 "team_tag": processor.get_team_tag(),
                 "division": processor.get_current_division(),
+                "split": processor.get_split(),
             },
         )
         match.enemy_team = enemy_team
