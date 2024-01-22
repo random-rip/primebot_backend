@@ -1,7 +1,9 @@
 from django.contrib import admin
+from django_q.models import Failure, Schedule, Success
 
 from app_prime_league.admin_sites.champions import ChampionAdmin
 from app_prime_league.admin_sites.comment import CommentAdmin
+from app_prime_league.admin_sites.djangoq2 import FailAdmin, ScheduleAdmin, TaskAdmin
 from app_prime_league.admin_sites.match import MatchAdmin, SuggestionAdmin
 from app_prime_league.admin_sites.player import PlayerAdmin
 from app_prime_league.admin_sites.scouting_website import ScoutingWebsiteAdmin
@@ -31,3 +33,6 @@ admin.site.register(Setting, SettingAdmin)
 admin.site.register(SettingsExpiring, SettingsExpiringAdmin)
 admin.site.register(Champion, ChampionAdmin)
 admin.site.register(Split, SplitAdmin)
+admin.site.register(Schedule, ScheduleAdmin)
+admin.site.register(Success, TaskAdmin)
+admin.site.register(Failure, FailAdmin)

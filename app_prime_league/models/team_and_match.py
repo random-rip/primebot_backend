@@ -68,7 +68,9 @@ class Team(models.Model):
         blank=True,
     )
     language = models.CharField(max_length=2, choices=Languages.choices, default=Languages.GERMAN)
-    split = models.ForeignKey("app_prime_league.Split", on_delete=models.SET_NULL, null=True, blank=True)
+    split = models.ForeignKey(
+        "app_prime_league.Split", on_delete=models.SET_NULL, null=True, blank=True, related_name="teams"
+    )
     """This is the last split the team was registered in, which can be the current split."""
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -243,7 +245,9 @@ class Match(models.Model):
     result = models.CharField(max_length=5, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    split = models.ForeignKey("app_prime_league.Split", on_delete=models.CASCADE, null=True)
+    split = models.ForeignKey(
+        "app_prime_league.Split", on_delete=models.CASCADE, null=True, blank=True, related_name="matches"
+    )
 
     objects = MatchManager()
     current_split_objects = CurrentSplitMatchManager()

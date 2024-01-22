@@ -1,20 +1,14 @@
 from django import forms
 from django.contrib import admin
+from django.db.models import Count
 
 from app_prime_league.models import Split
 
 
 class SplitForm(forms.ModelForm):
-    id = forms.IntegerField(
-        label="ID",
-        required=False,
-        help_text="ID of the Prime League Split",
-    )
-
     class Meta:
         model = Split
         fields = (
-            "id",
             "name",
             "registration_start",
             "registration_end",
@@ -26,13 +20,6 @@ class SplitForm(forms.ModelForm):
             "playoffs_start",
             "playoffs_end",
         )
-
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     if self.instance and self.instance.pk:
-    #         self.fields["pk"].disabled = True
-    #     else:
-    #         self.fields["pk"].disabled = False
 
     def clean(self):
         cleaned_data = super().clean()
@@ -71,10 +58,10 @@ class SplitAdmin(admin.ModelAdmin):
         'group_stage_end',
         'playoffs_start',
         'playoffs_end',
+        "matches_count",
+        "teams_count",
         'created_at',
         "updated_at",
-        # "matches_count", TODO
-        # "teams_count", TODO
     ]
     list_filter = ['created_at', 'updated_at']
     readonly_fields = (
@@ -84,3 +71,20 @@ class SplitAdmin(admin.ModelAdmin):
     search_fields = [
         'name',
     ]
+    list_display_links = ("id", "name")
+
+    @admin.display(description='#teams', ordering="_teams_count")
+    def teams_count(self, obj: Split) -> int:
+        return obj._teams_count
+
+    @admin.display(description='#Matches', ordering="_matches_count")
+    def matches_count(self, obj: Split) -> int:
+        return obj._matches_count
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        queryset = queryset.annotate(
+            _matches_count=Count("matches", distinct=True),
+            _teams_count=Count("teams", distinct=True),
+        )
+        return queryset
