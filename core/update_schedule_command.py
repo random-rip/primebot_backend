@@ -18,16 +18,12 @@ def activate_correct_update_schedule(task: Task):
 
     klass_path: str = task.func.rpartition('.')[0]
     klass: Type[UpdateScheduleCommand] = pydoc.locate(klass_path)
-    print("klass", klass)
     if not klass.is_time_exceeded():
-        print(f"Time of Schedule {klass.__name__} not exceeded yet.")
+        logger.info(f"Time of Schedule {klass.name} not exceeded yet.")
         return
     next_command = klass.next_command
     name = klass.name
-    print("next_command", next_command)
-    print("name", name)
     logger.info(f"Creating schedule '{next_command}' and deleting schedule '{name}'...")
-    print(f"Creating schedule '{next_command}' and deleting schedule '{name}'...")
     call_command(next_command, "--schedule")
     Schedule.objects.get(name=name).delete()
     logger.info(f"Created schedule '{next_command}' and deleted schedule '{name}'.")

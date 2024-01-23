@@ -147,7 +147,7 @@ class TemporaryMatchData:
 
         split = Split.objects.get_current_split()
         if split is not None and tmd.begin is not None:
-            if split.match_in_range(tmd.begin):
+            if split.in_range(tmd.begin):
                 tmd.split = split
             else:
                 logging.getLogger("updates").warning(f"Match {match_id=} is not in current split {split=}")

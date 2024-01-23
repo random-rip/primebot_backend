@@ -1,4 +1,4 @@
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from typing import Union
 
 from django.conf import settings
@@ -433,8 +433,13 @@ class Split(models.Model):
     def __str__(self):
         return f"{self.name} ({self.id})"
 
-    def match_in_range(self, match):
-        return self.registration_start <= match.begin.date() <= self.playoffs_end
+    def in_range(self, d: datetime) -> bool:
+        """
+        Checks if the given datetime object is between the registration start and the playoffs end.
+        :param d: datetime object
+        :return: Returns True if the given datetime object is in the range of the split, False otherwise.
+        """
+        return self.registration_start <= d.date() <= self.playoffs_end
 
     def get_current_stage(self) -> Union[str, None]:
         current_date = timezone.now().date()
