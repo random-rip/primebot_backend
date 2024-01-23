@@ -58,16 +58,12 @@ def create_or_update_team(*, processor, **kwargs) -> Union[Team, None]:
 
 
 @log_exception
-def create_match_and_enemy_team(
-    team: Team,
-    match_id: int,
-):
+def create_match_and_enemy_team(team: Team, match_id: int):
     """
     Create Match, Enemy Team, Enemy Players, Enemy Lineup, Suggestions and Comments.
-    :param team:
+    :param team: Primary Team of the match
     :param match_id: Match ID
     """
-    # Create Match
     tmd = TemporaryMatchData.create_from_website(
         team=team,
         match_id=match_id,
@@ -138,10 +134,10 @@ def create_match_and_enemy_team(
 
 def create_matches(match_ids: list[int], team: Team, use_concurrency=not settings.DEBUG):
     """
-    Used for registering new teams.
-    :param match_ids:
-    :param team:
-    :param use_concurrency:
+    Used for registering new teams. Can be parallelized with threads if ``use_concurrency`` is True.
+    :param match_ids: List of match ids
+    :param team: Primary Team of the matches
+    :param use_concurrency: if True use threads to parallelize every match
     """
     if use_concurrency:
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
