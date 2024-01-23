@@ -11,3 +11,8 @@ skip = '.venv'
 skip_glob = '**/migrations/*.py'
 profile = "black"
 multi_line_output=3
+
+# ==== Coverage ====
+[tool.coverage.run]
+omit = ["*/migrations/*", "*/tests/*", "venv/*", "*/wsgi.py", "*/asgi.py", "*.html"]
+plugins = ["django_coverage_plugin"]

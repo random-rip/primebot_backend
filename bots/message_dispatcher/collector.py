@@ -4,6 +4,7 @@ from app_prime_league.models import Team
 from bots.discord_interface.discord_bot import DiscordBot
 from bots.messages.base import BaseMessage
 from bots.telegram_interface.telegram_bot import TelegramBot
+
 from .dispatcher import MessageDispatcherJob
 
 
@@ -11,6 +12,7 @@ class MessageCollector:
     """
     This class is used to fire *message_sends* to different platforms.
     """
+
     def __init__(self, team: Team):
         self.team = team
         self.bots = []

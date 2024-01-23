@@ -2,13 +2,12 @@ from abc import abstractmethod
 from datetime import datetime, timedelta
 from typing import Union
 
-from core.parsing.logs import BaseLog, LogSchedulingConfirmation, LogSchedulingAutoConfirmation, LogChangeTime
+from core.parsing.logs import BaseLog, LogChangeTime, LogSchedulingAutoConfirmation, LogSchedulingConfirmation
 from core.providers.prime_league import PrimeLeagueProvider
 from utils.utils import timestamp_to_datetime
 
 
 class __MatchDataMethods:
-
     @abstractmethod
     def get_team_lineup(self):
         pass
@@ -70,7 +69,7 @@ class __MatchDataMethods:
         pass
 
 
-class MatchDataProcessor(__MatchDataMethods, ):
+class MatchDataProcessor(__MatchDataMethods):
     """
     Converting json data to functions and providing these.
     """
@@ -126,8 +125,9 @@ class MatchDataProcessor(__MatchDataMethods, ):
 
         """
         lineup = self.data.get("lineups", [])
-        return [(x["user_id"], x["user_name"], x["account_value"], None) for x in lineup if
-                x["team_id"] != self.team_id]
+        return [
+            (x["user_id"], x["user_name"], x["account_value"], None) for x in lineup if x["team_id"] != self.team_id
+        ]
 
     def get_team_lineup(self):
         """
@@ -136,8 +136,9 @@ class MatchDataProcessor(__MatchDataMethods, ):
 
         """
         lineup = self.data.get("lineups", [])
-        return [(x["user_id"], x["user_name"], x["account_value"], None) for x in lineup if
-                x["team_id"] == self.team_id]
+        return [
+            (x["user_id"], x["user_name"], x["account_value"], None) for x in lineup if x["team_id"] == self.team_id
+        ]
 
     def get_match_closed(self):
         """
@@ -175,7 +176,7 @@ class MatchDataProcessor(__MatchDataMethods, ):
         status = self.data_match.get("match_scheduling_status")
         if status == 0:
             return None
-        status = True if status == 1 else False
+        status = True if status == 1 else False  # status can be 1 or 2
         return status == self.team_is_team_1
 
     def get_match_begin(self):
@@ -204,14 +205,15 @@ class MatchDataProcessor(__MatchDataMethods, ):
         hours_until_auto_confirm = self.data_match.get("match_scheduling_time", None)
         suggestion_made_at = self.data_match.get("match_scheduling_suggest_time", None)
         if (
-                match_scheduling_mode in ["fixed", "free", None] or
-                hours_until_auto_confirm in [0, None] or
-                suggestion_made_at in [0, None]
+            match_scheduling_mode in ["fixed", "free", None]
+            or hours_until_auto_confirm in [0, None]
+            or suggestion_made_at in [0, None]
         ):
             return None
         scheduling_start = self.data_match.get("match_scheduling_start")
         dt = max(timestamp_to_datetime(suggestion_made_at), timestamp_to_datetime(scheduling_start)) + timedelta(
-            hours=hours_until_auto_confirm)
+            hours=hours_until_auto_confirm
+        )
         return dt
 
     def get_latest_match_begin_log(self):
@@ -219,11 +221,14 @@ class MatchDataProcessor(__MatchDataMethods, ):
         Returns: Return latest log if begin is set and a log exists, else None
         """
         for log in self.logs:
-            if isinstance(log, (
+            if isinstance(
+                log,
+                (
                     LogSchedulingConfirmation,
                     LogSchedulingAutoConfirmation,
                     LogChangeTime,
-            )):
+                ),
+            ):
                 return log
         return None
 

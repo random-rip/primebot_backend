@@ -95,13 +95,10 @@ class TelegramBot(BotInterface):
 def error(update, context):
     try:
         trace = "".join(traceback.format_tb(sys.exc_info()[2]))
-
-        text = (
-            f"The error <code>{context.error}</code> happened in one of the telegram chats.\n"
-            f"Full trace: <code>{trace}</code>"
-        )
         notifications_logger.exception(trace)
-        send_message_to_devs(text)
+        send_message_to_devs(
+            msg=f"The error <code>{context.error}</code> happened in one of the telegram chats.", code=trace
+        )
 
         if update and update.effective_message:
             text = (
@@ -110,8 +107,8 @@ def error(update, context):
             )
             update.effective_message.reply_text(text)
     except Exception as e:
-        text = f"Ein gravierender Fehler ist aufgetreten.\n{e}"
-        send_message_to_devs(text)
+        text = "Ein gravierender Fehler ist aufgetreten."
+        send_message_to_devs(text, code=str(e))
     try:
         raise
     except RuntimeError:

@@ -83,9 +83,6 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(BASE_DIR, 'quicklinks_admin/templates'),
-            os.path.join(
-                BASE_DIR, 'quicklinks_admin/send_teams_message/../quicklinks_admin/templates/send_teams_message'
-            ),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -164,8 +161,11 @@ MEDIA_ROOT = env.str("MEDIA_ROOT", None)
 
 GAME_SPORTS_BASE_URL = env.str("GAME_SPORTS_BASE_URL", None)
 
-MATCH_URI = "https://www.primeleague.gg/de/leagues/matches/"
-TEAM_URI = "https://www.primeleague.gg/de/leagues/teams/"
+PRM_BASE_URI = "https://www.primeleague.gg/de/leagues/"
+MATCH_URI = PRM_BASE_URI + "matches/"
+TEAM_URI = PRM_BASE_URI + "teams/"
+SPLIT_URI = "splits/"
+
 SITE_ID = env.str("SITE_ID", None)
 
 CURRENT_SPLIT_START = datetime(2024, 1, 29).astimezone(pytz.timezone("Europe/Berlin"))
@@ -236,6 +236,7 @@ Q_CLUSTER = {
     if not DEBUG
     else {
         'host': env.str("MONGODB_URI", None),
+        "serverSelectionTimeoutMS": 5_000,
     },
     "time_zone": "Europe/Berlin",
 }
@@ -258,7 +259,7 @@ REST_FRAMEWORK = {
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'PrimeBot API',
-    'DESCRIPTION': 'Provides information about teams, players and matches of the Strauss Prime League.',
+    'DESCRIPTION': 'Provides information about teams, players and matches of the Techniker Prime League.',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     # OTHER SETTINGS

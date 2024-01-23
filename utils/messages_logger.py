@@ -10,7 +10,7 @@ from utils.utils import Encoder
 logger = logging.getLogger("commands")
 
 
-def create_log_message(prefix=None, separator="\n", **kwargs, ):
+def create_log_message(prefix=None, separator="\n", **kwargs):
     """
     Anonymisiere ``user``, `channel` und ``chat_id`` und erstelle dann eine message.
     Args:
@@ -93,9 +93,7 @@ async def log_from_discord(interaction: Interaction, optional=None):
         "channel_type": html.escape(str(interaction.channel.type.name)),
     }
     if "options" in interaction.data:
-        readable_parameters = [
-            f"{x['name']}: {html.escape(str(x['value']))}"
-            for x in interaction.data["options"]]
+        readable_parameters = [f"{x['name']}: {html.escape(str(x['value']))}" for x in interaction.data["options"]]
         params["parameters"] = str(readable_parameters)
 
     if hasattr(author, "guild"):
@@ -117,12 +115,12 @@ def log_exception(fn):
             return result
         except Exception as e:
             logging.getLogger("updates").exception(e)
-            text = f"Error in Updates: <code>{e}</code>\n. See <code>update.log</code> for more information."
+            # text = f"Error in Updates: <code>{e}</code>\n. See <code>update.log</code> for more information."
             # send_message_to_devs(text) # TODO Nur einen Log senden und nicht 1000 alle 15 Minuten"
 
     return wrapper
 
 
-def spread_message(log_text: str, ):
+def spread_message(log_text: str):
     logger.info(log_text.replace("\n", ";"))
     send_message_to_devs(log_text)

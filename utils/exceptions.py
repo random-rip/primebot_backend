@@ -3,7 +3,7 @@ class CouldNotParseURLException(Exception):
 
 
 class PrimeLeagueConnectionException(Exception):
-    def __init__(self, msg=None, status_code=None, ):
+    def __init__(self, msg=None, status_code=None):
         msg = msg or ""
         if status_code:
             msg += f"(Statuscode: {status_code})"
@@ -38,7 +38,5 @@ class UnauthorizedException(PrimeLeagueConnectionException):
 
 class VariableNotSetException(Exception):
     def __init__(self, variable_name):
-        msg = (
-            f"Environment variable '{variable_name}' not set. Did you setup the .env correctly?"
-        )
+        msg = f"Environment variable '{variable_name}' not set. Did you setup the .env correctly?"
         super().__init__(msg)

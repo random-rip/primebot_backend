@@ -6,7 +6,7 @@ import traceback
 
 from django.conf import settings
 
-from app_prime_league.models import Team, Player
+from app_prime_league.models import Player, Team
 from app_prime_league.teams import create_matches
 from bots.message_dispatcher import MessageCollector
 from bots.messages import MatchesOverview
@@ -33,6 +33,7 @@ def update_team(team: Team):
         "team_tag": processor.get_team_tag(),
         "division": processor.get_current_division(),
         "logo_url": processor.get_logo(),
+        "split": processor.get_split(),
     }
 
     if not Team.objects.filter(id=team.id, **to_update).exists():
@@ -64,8 +65,9 @@ def update_team(team: Team):
     except Exception as e:
         trace = "".join(traceback.format_tb(sys.exc_info()[2]))
         send_message_to_devs(
-            msg=f"Ein Fehler ist beim Updaten der Matches von  Team {team.id} {team.name} aufgetreten:"
-                f"\n<code>{trace}\n{e}</code>", )
+            msg=f"Ein Fehler ist beim Updaten der Matches von  Team {team.id} {team.name} aufgetreten.",
+            code=f"{trace}\n{e}",
+        )
         update_logger.exception(e)
     return team
 

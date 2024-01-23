@@ -20,7 +20,6 @@ class NotificationToTeamMessage(BaseMessage):
         return "🛠️ " + _("Developer notification")
 
     def _generate_message(self):
-        # TODO i18n ?! Oder eher dann ins adminpanel auslagern
         return self.custom_message.format(team=self.team, **self._message_elements)
 
 

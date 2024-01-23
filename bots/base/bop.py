@@ -37,5 +37,5 @@ class GIFinator:
         try:
             return animal.get_url()
         except Exception as e:
-            send_message_to_devs(f"bop raised an exception: {e}")
+            send_message_to_devs("bop raised an exception:", code=str(e))
             raise ConnectionError("Not accessible")

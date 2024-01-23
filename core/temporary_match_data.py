@@ -1,8 +1,9 @@
+import logging
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Union
 
-from app_prime_league.models import Team
+from app_prime_league.models import Split, Team
 from core.processors.match_processor import MatchDataProcessor
 from core.processors.team_processor import TeamDataProcessor
 from utils.exceptions import TeamWebsite404Exception
@@ -37,11 +38,29 @@ class TemporaryComment:
 
 
 class TemporaryMatchData:
-
-    def __init__(self, match_id=None, match_day=None, match_type=None, team=None, enemy_team_id=None, enemy_team=None,
-                 enemy_team_members=None, enemy_lineup=None, closed=None, result=None, team_made_latest_suggestion=None,
-                 latest_suggestions=None, begin=None, latest_confirmation_log=None, match_begin_confirmed=None,
-                 team_lineup=None, has_side_choice=None, comments=None, datetime_until_auto_confirmation=None):
+    def __init__(
+        self,
+        match_id=None,
+        match_day=None,
+        match_type=None,
+        team=None,
+        enemy_team_id=None,
+        enemy_team=None,
+        enemy_team_members=None,
+        enemy_lineup=None,
+        closed=None,
+        result=None,
+        team_made_latest_suggestion=None,
+        latest_suggestions=None,
+        begin=None,
+        latest_confirmation_log=None,
+        match_begin_confirmed=None,
+        team_lineup=None,
+        has_side_choice=None,
+        comments=None,
+        datetime_until_auto_confirmation=None,
+        split=None,
+    ):
         self.match_id = match_id
         self.match_day = match_day
         self.match_type = match_type
@@ -61,12 +80,14 @@ class TemporaryMatchData:
         self.datetime_until_auto_confirmation: Union[datetime, None] = datetime_until_auto_confirmation
         self.has_side_choice = has_side_choice
         self.comments: list = comments or []
+        self.split: Union[None, Split] = split
 
     def __repr__(self):
         return (
             f"MatchID: {self.match_id}"
             f"\nMatch day: {self.match_day},"
             f"\nMatch type: {self.match_type},"
+            f"\nSplit: {self.split},"
             f"\nTeam: {self.team},"
             f"\nEnemy team: {self.enemy_team},"
             f"\nEnemy lineup: {self.enemy_lineup},"
@@ -91,7 +112,7 @@ class TemporaryMatchData:
         return comments
 
     @staticmethod
-    def create_from_website(team: Team, match_id: int, ) -> "TemporaryMatchData":
+    def create_from_website(team: Team, match_id: int) -> "TemporaryMatchData":
         """
         Method to initialize a TMD object from a MatchDataProcessor
         Args:
@@ -123,6 +144,13 @@ class TemporaryMatchData:
         tmd.result = processor.get_match_result()
         tmd.has_side_choice = processor.has_side_choice()
         tmd.comments = TemporaryMatchData.create_temporary_comments(processor.get_comments())
+
+        split = Split.objects.get_current_split()
+        if split is not None and tmd.begin is not None:
+            if split.match_in_range(tmd.begin):
+                tmd.split = split
+            else:
+                logging.getLogger("updates").warning(f"Match {match_id=} is not in current split {split=}")
 
         if not Team.objects.filter(id=tmd.enemy_team_id).exists():
             tmd.create_enemy_team_data_from_website()

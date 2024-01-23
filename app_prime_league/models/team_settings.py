@@ -12,7 +12,9 @@ class Setting(models.Model):
 
     class Meta:
         db_table = "settings"
-        unique_together = [("team", "attr_name"), ]
+        unique_together = [
+            ("team", "attr_name"),
+        ]
         verbose_name = "Teameinstellung"
         verbose_name_plural = "Teameinstellungen"
 

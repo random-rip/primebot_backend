@@ -13,6 +13,8 @@ repos:
       - id: debug-statements
       - id: check-added-large-files
       - id: check-toml
+      - id: requirements-txt-fixer
+        args: [ "requirements.txt","requirements.prod.txt" ]
   - repo: https://github.com/PyCQA/isort
     rev: 5.12.0
     hooks:
@@ -25,4 +27,4 @@ repos:
     rev: 6.0.0
     hooks:
       - id: flake8
-        args: ["--config=.flake8"]
+        args: [ "--config=.flake8" ]

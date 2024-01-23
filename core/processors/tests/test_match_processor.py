@@ -14,11 +14,7 @@ class MatchBeginTest(TestCase):
 
     @patch.object(PrimeLeagueProvider, 'get_match')
     def test_empty(self, get_match):
-        get_match.return_value = {
-            "match": {
-                "match_time": None
-            }
-        }
+        get_match.return_value = {"match": {"match_time": None}}
         processor = MatchDataProcessor(1, 1)
         self.assertIsNone(processor.get_match_begin())
 
@@ -28,11 +24,7 @@ class MatchBeginTest(TestCase):
 
     @patch.object(PrimeLeagueProvider, 'get_match')
     def test_timestamp(self, get_match):
-        get_match.return_value = {
-            "match": {
-                "match_time": 1633266000
-            }
-        }
+        get_match.return_value = {"match": {"match_time": 1633266000}}
 
         processor = MatchDataProcessor(1, 1)
         self.assertEqual(processor.get_match_begin(), string_to_datetime("2021-10-03 15:00"))
@@ -79,45 +71,35 @@ class MatchClosedTest(TestCase):
 
     @patch.object(PrimeLeagueProvider, 'get_match')
     def test_get_valid_values(self, get_match):
-        get_match.return_value = {
-            "match": {
-                "match_status": "upcoming"
-            }
-        }
+        get_match.return_value = {"match": {"match_status": "upcoming"}}
         processor = MatchDataProcessor(1, 1)
-        self.assertFalse(processor.get_match_closed(), )
-        get_match.return_value = {
-            "match": {
-                "match_status": "pending"
-            }
-        }
+        self.assertFalse(
+            processor.get_match_closed(),
+        )
+        get_match.return_value = {"match": {"match_status": "pending"}}
         processor = MatchDataProcessor(1, 1)
-        self.assertFalse(processor.get_match_closed(), )
-        get_match.return_value = {
-            "match": {
-                "match_status": "finished"
-            }
-        }
+        self.assertFalse(
+            processor.get_match_closed(),
+        )
+        get_match.return_value = {"match": {"match_status": "finished"}}
         processor = MatchDataProcessor(1, 1)
-        self.assertTrue(processor.get_match_closed(), )
+        self.assertTrue(
+            processor.get_match_closed(),
+        )
 
     @patch.object(PrimeLeagueProvider, 'get_match')
     def test_get_unknown_values(self, get_match):
-        get_match.return_value = {
-            "match": {
-                "match_status": "an unknown string"
-            }
-        }
+        get_match.return_value = {"match": {"match_status": "an unknown string"}}
         processor = MatchDataProcessor(1, 1)
-        self.assertFalse(processor.get_match_closed(), )
+        self.assertFalse(
+            processor.get_match_closed(),
+        )
 
-        get_match.return_value = {
-            "match": {
-                "match_status": None
-            }
-        }
+        get_match.return_value = {"match": {"match_status": None}}
         processor = MatchDataProcessor(1, 1)
-        self.assertFalse(processor.get_match_closed(), )
+        self.assertFalse(
+            processor.get_match_closed(),
+        )
 
 
 class MatchResultTest(TestCase):
@@ -125,69 +107,33 @@ class MatchResultTest(TestCase):
 
     @patch.object(PrimeLeagueProvider, 'get_match')
     def test_get_empty(self, get_match):
-        get_match.return_value = {
-            "match": {
-                "team_id_1": 1,
-                "match_score_1": None,
-                "match_score_2": None
-            }
-        }
+        get_match.return_value = {"match": {"team_id_1": 1, "match_score_1": None, "match_score_2": None}}
         processor = MatchDataProcessor(1, 1)
         self.assertIsNone(processor.get_match_result())
 
     @patch.object(PrimeLeagueProvider, 'get_match')
     def test_get_win(self, get_match):
-        get_match.return_value = {
-            "match": {
-                "team_id_1": 1,
-                "match_score_1": 2,
-                "match_score_2": 0
-            }
-        }
+        get_match.return_value = {"match": {"team_id_1": 1, "match_score_1": 2, "match_score_2": 0}}
         processor = MatchDataProcessor(1, 1)
         self.assertEqual(processor.get_match_result(), "2:0")
 
-        get_match.return_value = {
-            "match": {
-                "team_id_1": 2,
-                "match_score_1": 0,
-                "match_score_2": 2
-            }
-        }
+        get_match.return_value = {"match": {"team_id_1": 2, "match_score_1": 0, "match_score_2": 2}}
         processor = MatchDataProcessor(1, 1)
         self.assertEqual(processor.get_match_result(), "2:0")
 
     @patch.object(PrimeLeagueProvider, 'get_match')
     def test_get_lose(self, get_match):
-        get_match.return_value = {
-            "match": {
-                "team_id_1": 2,
-                "match_score_1": 2,
-                "match_score_2": 0
-            }
-        }
+        get_match.return_value = {"match": {"team_id_1": 2, "match_score_1": 2, "match_score_2": 0}}
         processor = MatchDataProcessor(1, 1)
         self.assertEqual(processor.get_match_result(), "0:2")
 
-        get_match.return_value = {
-            "match": {
-                "team_id_1": 1,
-                "match_score_1": 0,
-                "match_score_2": 2
-            }
-        }
+        get_match.return_value = {"match": {"team_id_1": 1, "match_score_1": 0, "match_score_2": 2}}
         processor = MatchDataProcessor(1, 1)
         self.assertEqual(processor.get_match_result(), "0:2")
 
     @patch.object(PrimeLeagueProvider, 'get_match')
     def test_get_draw(self, get_match):
-        get_match.return_value = {
-            "match": {
-                "team_id_1": 1,
-                "match_score_1": 1,
-                "match_score_2": 1
-            }
-        }
+        get_match.return_value = {"match": {"team_id_1": 1, "match_score_1": 1, "match_score_2": 1}}
         processor = MatchDataProcessor(1, 1)
         self.assertEqual(processor.get_match_result(), "1:1")
 
@@ -207,10 +153,7 @@ class LatestSuggestionsTest(TestCase):
         processor = MatchDataProcessor(1, 1)
         self.assertListEqual(processor.get_latest_suggestions(), [])
 
-        get_match.return_value = {
-            "match": {
-            }
-        }
+        get_match.return_value = {"match": {}}
         processor = MatchDataProcessor(1, 1)
         self.assertListEqual(processor.get_latest_suggestions(), [])
 
@@ -224,9 +167,7 @@ class LatestSuggestionsTest(TestCase):
             }
         }
         processor = MatchDataProcessor(1, 1)
-        self.assertListEqual(processor.get_latest_suggestions(), [
-            string_to_datetime("2022-01-24 17:00")
-        ])
+        self.assertListEqual(processor.get_latest_suggestions(), [string_to_datetime("2022-01-24 17:00")])
 
         get_match.return_value = {
             "match": {
@@ -234,9 +175,7 @@ class LatestSuggestionsTest(TestCase):
             }
         }
         processor = MatchDataProcessor(1, 1)
-        self.assertListEqual(processor.get_latest_suggestions(), [
-            string_to_datetime("2022-01-24 17:00")
-        ])
+        self.assertListEqual(processor.get_latest_suggestions(), [string_to_datetime("2022-01-24 17:00")])
 
     @patch.object(PrimeLeagueProvider, 'get_match')
     def test_get_multiple_suggestions(self, get_match):
@@ -247,10 +186,13 @@ class LatestSuggestionsTest(TestCase):
             }
         }
         processor = MatchDataProcessor(1, 1)
-        self.assertListEqual(processor.get_latest_suggestions(), [
-            string_to_datetime("2022-01-24 17:00"),
-            string_to_datetime("2022-01-24 15:00"),
-        ])
+        self.assertListEqual(
+            processor.get_latest_suggestions(),
+            [
+                string_to_datetime("2022-01-24 17:00"),
+                string_to_datetime("2022-01-24 15:00"),
+            ],
+        )
 
     @patch.object(PrimeLeagueProvider, 'get_match')
     def test_get_multiple_suggestions_but_first_empty(self, get_match):
@@ -262,10 +204,13 @@ class LatestSuggestionsTest(TestCase):
             }
         }
         processor = MatchDataProcessor(1, 1)
-        self.assertListEqual(processor.get_latest_suggestions(), [
-            string_to_datetime("2022-01-24 17:00"),
-            string_to_datetime("2022-01-24 15:00"),
-        ])
+        self.assertListEqual(
+            processor.get_latest_suggestions(),
+            [
+                string_to_datetime("2022-01-24 17:00"),
+                string_to_datetime("2022-01-24 15:00"),
+            ],
+        )
 
 
 class TeamMadeLatestSuggestionTest(TestCase):
@@ -280,7 +225,9 @@ class TeamMadeLatestSuggestionTest(TestCase):
             }
         }
         processor = MatchDataProcessor(1, 1)
-        self.assertIsNone(processor.get_team_made_latest_suggestion(), )
+        self.assertIsNone(
+            processor.get_team_made_latest_suggestion(),
+        )
 
     @patch.object(PrimeLeagueProvider, 'get_match')
     def test_get_team_made_suggestion(self, get_match):
@@ -291,19 +238,19 @@ class TeamMadeLatestSuggestionTest(TestCase):
             }
         }
         processor = MatchDataProcessor(1, 1)
-        self.assertTrue(processor.get_team_made_latest_suggestion(), )
+        self.assertTrue(processor.get_team_made_latest_suggestion())
 
         get_match.return_value = {
             "match": {
-                "team_id_1": 2,
+                "team_id_2": 2,
                 "match_scheduling_status": 2,
             }
         }
         processor = MatchDataProcessor(1, 2)
-        self.assertTrue(processor.get_team_made_latest_suggestion(), )
+        self.assertTrue(processor.get_team_made_latest_suggestion())
 
     @patch.object(PrimeLeagueProvider, 'get_match')
-    def test_get_team_made_suggestion(self, get_match):
+    def test_get_team_made_suggestion_false(self, get_match):
         get_match.return_value = {
             "match": {
                 "team_id_1": 1,
@@ -311,7 +258,7 @@ class TeamMadeLatestSuggestionTest(TestCase):
             }
         }
         processor = MatchDataProcessor(1, 1)
-        self.assertFalse(processor.get_team_made_latest_suggestion(), )
+        self.assertFalse(processor.get_team_made_latest_suggestion())
 
         get_match.return_value = {
             "match": {
@@ -320,7 +267,9 @@ class TeamMadeLatestSuggestionTest(TestCase):
             }
         }
         processor = MatchDataProcessor(1, 1)
-        self.assertFalse(processor.get_team_made_latest_suggestion(), )
+        self.assertFalse(
+            processor.get_team_made_latest_suggestion(),
+        )
 
 
 class MatchBeginConfirmedTest(TestCase):
@@ -330,14 +279,16 @@ class MatchBeginConfirmedTest(TestCase):
     def test_empty(self, get_match):
         get_match.return_value = {}
         processor = MatchDataProcessor(1, 1)
-        self.assertFalse(processor.get_match_begin_confirmed(), )
+        self.assertFalse(processor.get_match_begin_confirmed())
         get_match.return_value = {
             "match": {
                 "match_scheduling_time": None,
             }
         }
         processor = MatchDataProcessor(1, 1)
-        self.assertFalse(processor.get_match_begin_confirmed(), )
+        self.assertFalse(
+            processor.get_match_begin_confirmed(),
+        )
 
     @patch.object(PrimeLeagueProvider, 'get_match')
     def test_0(self, get_match):
@@ -347,7 +298,7 @@ class MatchBeginConfirmedTest(TestCase):
             }
         }
         processor = MatchDataProcessor(1, 1)
-        self.assertTrue(processor.get_match_begin_confirmed(), )
+        self.assertTrue(processor.get_match_begin_confirmed())
 
     @patch.object(PrimeLeagueProvider, 'get_match')
     def test_timestamp(self, get_match):
@@ -357,7 +308,9 @@ class MatchBeginConfirmedTest(TestCase):
             }
         }
         processor = MatchDataProcessor(1, 1)
-        self.assertFalse(processor.get_match_begin_confirmed(), )
+        self.assertFalse(
+            processor.get_match_begin_confirmed(),
+        )
 
 
 class DatetimeUntilAutoConfirmationTest(TestCase):
@@ -367,14 +320,16 @@ class DatetimeUntilAutoConfirmationTest(TestCase):
     def test_empty(self, get_match):
         get_match.return_value = {}
         processor = MatchDataProcessor(1, 1)
-        self.assertIsNone(processor.get_datetime_until_auto_confirmation(), )
+        self.assertIsNone(processor.get_datetime_until_auto_confirmation())
         get_match.return_value = {
             "match": {
                 "match_scheduling_time": None,
             }
         }
         processor = MatchDataProcessor(1, 1)
-        self.assertIsNone(processor.get_datetime_until_auto_confirmation(), )
+        self.assertIsNone(
+            processor.get_datetime_until_auto_confirmation(),
+        )
 
     @patch.object(PrimeLeagueProvider, 'get_match')
     def test_0(self, get_match):
@@ -384,7 +339,7 @@ class DatetimeUntilAutoConfirmationTest(TestCase):
             }
         }
         processor = MatchDataProcessor(1, 1)
-        self.assertIsNone(processor.get_datetime_until_auto_confirmation(), )
+        self.assertIsNone(processor.get_datetime_until_auto_confirmation())
 
     @patch.object(PrimeLeagueProvider, 'get_match')
     def test_timestamp(self, get_match):
@@ -397,7 +352,10 @@ class DatetimeUntilAutoConfirmationTest(TestCase):
             }
         }
         processor = MatchDataProcessor(1, 1)
-        self.assertEqual(datetime(2022, 1, 26, 16, tzinfo=pytz.utc), processor.get_datetime_until_auto_confirmation(), )
+        self.assertEqual(
+            datetime(2022, 1, 26, 16, tzinfo=pytz.utc),
+            processor.get_datetime_until_auto_confirmation(),
+        )
 
     @patch.object(PrimeLeagueProvider, 'get_match')
     def test_scheduling_mode_fixed(self, get_match):
@@ -420,7 +378,10 @@ class DatetimeUntilAutoConfirmationTest(TestCase):
             }
         }
         processor = MatchDataProcessor(1, 1)
-        self.assertEqual(datetime(2022, 1, 26, 16, tzinfo=pytz.utc), processor.get_datetime_until_auto_confirmation(), )
+        self.assertEqual(
+            datetime(2022, 1, 26, 16, tzinfo=pytz.utc),
+            processor.get_datetime_until_auto_confirmation(),
+        )
 
     @patch.object(PrimeLeagueProvider, 'get_match')
     def test_scheduling_start_later(self, get_match):
@@ -433,7 +394,10 @@ class DatetimeUntilAutoConfirmationTest(TestCase):
             }
         }
         processor = MatchDataProcessor(1, 1)
-        self.assertEqual(datetime(2022, 1, 28, 15, tzinfo=pytz.utc), processor.get_datetime_until_auto_confirmation(), )
+        self.assertEqual(
+            datetime(2022, 1, 28, 15, tzinfo=pytz.utc),
+            processor.get_datetime_until_auto_confirmation(),
+        )
 
     @patch.object(PrimeLeagueProvider, 'get_match')
     def test_no_suggestion(self, get_match):
@@ -448,6 +412,8 @@ class DatetimeUntilAutoConfirmationTest(TestCase):
         processor = MatchDataProcessor(1, 1)
         self.assertIsNone(processor.get_datetime_until_auto_confirmation())
         # self.assertEqual(datetime(2022, 1, 26, 16, tzinfo=pytz.utc), processor.get_datetime_until_auto_confirmation(), )
+
+
 class EnemyTeamIDTest(TestCase):
     databases = []
 
@@ -527,9 +493,7 @@ class MatchDayTest(TestCase):
         processor = MatchDataProcessor(1, 100)
         self.assertIsNone(processor.get_match_day())
 
-        get_match.return_value = {
-            "match": {}
-        }
+        get_match.return_value = {"match": {}}
         processor = MatchDataProcessor(1, 100)
         self.assertIsNone(processor.get_match_day())
 
@@ -557,9 +521,7 @@ class LatestMatchBeginLogTest(TestCase):
         processor = MatchDataProcessor(1, 100)
         self.assertIsNone(processor.get_match_day())
 
-        get_match.return_value = {
-            "match": {}
-        }
+        get_match.return_value = {"match": {}}
         processor = MatchDataProcessor(1, 100)
         self.assertIsNone(processor.get_match_day())
 

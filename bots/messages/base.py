@@ -1,11 +1,11 @@
-from abc import abstractmethod, ABC
+from abc import ABC, abstractmethod
 from typing import List
 
 import discord
 from django.conf import settings
 from django.utils import translation
 
-from app_prime_league.models import Team, Match
+from app_prime_league.models import Match, Team
 from bots.messages.helpers import MatchDisplayHelper
 from utils import emojis
 from utils.emojis import EMOJI_RAUTE
@@ -148,4 +148,4 @@ class MatchesMessage(BaseMessage, ABC, MatchMixin):
             return self.no_matches_found()
         a = [f"{self.format_match(match)}\n" for match in self.matches]
         matches_text = "\n".join(a)
-        return f"**" + self.header() + f"**\n\n{matches_text}"
+        return f"**{self.header()}**\n\n{matches_text}"

@@ -3,7 +3,7 @@ import os
 from typing import Callable, Union
 
 from asgiref.sync import sync_to_async
-from discord import Colour, Embed, Webhook, Forbidden, Interaction
+from discord import Colour, Embed, Forbidden, Interaction, Webhook
 from discord.ext import commands
 from discord.ext.commands import Context
 from django.conf import settings
@@ -45,8 +45,7 @@ class DiscordHelper:
         except MessageNotImplementedError:
             arguments["embed"] = Embed(description=msg.generate_message(), color=color)
         arguments["content"] = DiscordHelper.mask_message_with_mention(
-            discord_role_id=discord_role_id,
-            message=msg.generate_title()
+            discord_role_id=discord_role_id, message=msg.generate_title()
         )
         return arguments
 
@@ -78,7 +77,7 @@ class DiscordHelper:
             new_webhook = await channel.create_webhook(name="PrimeBot", avatar=avatar)
             for webhook in webhooks:
                 await webhook.delete()
-        except (Forbidden, Exception,) as e:
+        except (Forbidden, Exception) as e:
             await log_from_discord(ctx.interaction, optional=f"{e}")
             raise NoWebhookPermissions
         return new_webhook

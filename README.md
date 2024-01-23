@@ -16,8 +16,8 @@
 
 </p>
 <h4 align="center">
-The unofficial <i>Strauss Prime League</i> Bot for sending push notifications via Discord and
-Telegram and API Provider of <i>Strauss Prime League</i> data.
+The unofficial <i>Techniker Prime League</i> Bot for sending push notifications via Discord and
+Telegram and API Provider of <i>Techniker Prime League</i> data.
 </h4>
 
 <p align="center">
@@ -54,6 +54,9 @@ League.
 - discord.py (python package)
 - Telepot (python package)
 - python-telegram-bot (python package)
+- DjangoQ2 (python package)
+- MongoDB as Message-Broker
+- Memcached as Cache
 
 ### Setup
 
