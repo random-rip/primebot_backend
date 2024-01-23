@@ -9,16 +9,8 @@ from utils.utils import format_datetime
 
 class DiscordMessageTests(TestCase):
     def setUp(self):
-        self.team_a = Team.objects.create(
-            id=1,
-            name="ABC",
-            team_tag="abc",
-        )
-        self.team_b = Team.objects.create(
-            id=2,
-            name="XYZ",
-            team_tag="xyz",
-        )
+        self.team_a = Team.objects.create(id=1, name="ABC", team_tag="abc")
+        self.team_b = Team.objects.create(id=2, name="XYZ", team_tag="xyz")
         self.match = Match.objects.create(
             match_id=1, team=self.team_a, enemy_team=self.team_b, match_day=1, has_side_choice=True
         )

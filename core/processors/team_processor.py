@@ -30,9 +30,7 @@ class __TeamDataMethods:
         pass
 
 
-class TeamDataProcessor(
-    __TeamDataMethods,
-):
+class TeamDataProcessor(__TeamDataMethods):
     """
     Converting json data to functions and providing these.
     """

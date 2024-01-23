@@ -69,5 +69,11 @@ class UpdateDependencyTest(TestCase, CompareModelObjectsMixin):
             mock_now.return_value = datetime(2024, 4, 29)
             self.assertFalse(UpdatesInGroupStageAndPlayoffs.is_time_exceeded())
         with mock.patch("django.utils.timezone.now") as mock_now:
-            mock_now.return_value = datetime(2024, 4, 30)
+            mock_now.return_value = datetime(2024, 4, 30)  # first day puffer
+            self.assertFalse(UpdatesInGroupStageAndPlayoffs.is_time_exceeded())
+        with mock.patch("django.utils.timezone.now") as mock_now:
+            mock_now.return_value = datetime(2024, 5, 1)  # second day puffer
+            self.assertFalse(UpdatesInGroupStageAndPlayoffs.is_time_exceeded())
+        with mock.patch("django.utils.timezone.now") as mock_now:
+            mock_now.return_value = datetime(2024, 5, 2)
             self.assertTrue(UpdatesInGroupStageAndPlayoffs.is_time_exceeded())

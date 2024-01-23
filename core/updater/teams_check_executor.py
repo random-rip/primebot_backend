@@ -65,8 +65,8 @@ def update_team(team: Team):
     except Exception as e:
         trace = "".join(traceback.format_tb(sys.exc_info()[2]))
         send_message_to_devs(
-            msg=f"Ein Fehler ist beim Updaten der Matches von  Team {team.id} {team.name} aufgetreten:"
-            f"\n<code>{trace}\n{e}</code>",
+            msg=f"Ein Fehler ist beim Updaten der Matches von  Team {team.id} {team.name} aufgetreten.",
+            code=f"{trace}\n{e}",
         )
         update_logger.exception(e)
     return team

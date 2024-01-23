@@ -10,6 +10,8 @@ admin.site.unregister(Success)
 
 
 class ScheduleAdmin(DjangoQ2ScheduleAdmin):
+    """Removed the 'func' field from the list_display."""
+
     list_display = (
         "id",
         "name",
@@ -23,6 +25,8 @@ class ScheduleAdmin(DjangoQ2ScheduleAdmin):
 
 
 class TaskAdmin(DjangoQ2TaskAdmin):
+    """Removed the 'func' field from the list_display."""
+
     list_display = (
         "name",
         "group",
@@ -34,6 +38,8 @@ class TaskAdmin(DjangoQ2TaskAdmin):
 
 
 class FailAdmin(DjangoQ2FailAdmin):
+    """Removed the 'func' field from the list_display."""
+
     list_display = (
         "name",
         "group",

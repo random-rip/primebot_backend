@@ -10,7 +10,8 @@ thread_local = threading.local()
 logger = logging.getLogger("updates")
 
 
-def update():
+def update_teams_and_matches():
+    """Updates teams and matches."""
     start_time = time.time()
     teams = Team.objects.get_teams_to_update()
     logger.info(f"Updating {len(teams)} teams...")

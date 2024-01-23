@@ -10,7 +10,7 @@ class Command(UpdateScheduleCommand):
     name = "Update Teams and Matches in Calibration Stage"
 
     def _func_path(self) -> str:
-        return "core.updater.update.update"
+        return "core.updater.call_executors.update_teams_and_matches"
 
     @staticmethod
     def is_time_exceeded() -> bool:

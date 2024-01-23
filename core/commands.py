@@ -15,7 +15,11 @@ class ScheduleCommand(BaseCommand, ABC):
         self.func_path = self._validate_func_path(self._func_path())
 
     def add_arguments(self, parser):
-        parser.add_argument('--schedule', action='store_true', help='Schedule the job to the Q cluster')
+        parser.add_argument(
+            '--schedule',
+            action='store_true',
+            help='Schedule the job to the Q cluster',
+        )
         self._add_arguments(parser)
 
     def _add_arguments(self, parser):
@@ -49,6 +53,6 @@ class ScheduleCommand(BaseCommand, ABC):
             self._schedule()
             self.stdout.write("Created a schedule")
             return
-
-        func = pydoc.locate(self._func_path())
-        func()
+        else:
+            func = pydoc.locate(self._func_path())
+            func()

@@ -44,8 +44,7 @@ def check_match(match: Match):
     - is a new lineup (either own or enemy team). If so, a notification is sent.
     - are new comments. If so, a notification is sent.
 
-    :param match:
-    :return:
+    :param match: Match that will be updated
     """
     match_id = match.match_id
     team = match.team

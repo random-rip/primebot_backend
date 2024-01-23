@@ -54,6 +54,9 @@ League.
 - discord.py (python package)
 - Telepot (python package)
 - python-telegram-bot (python package)
+- DjangoQ2 (python package)
+- MongoDB as Message-Broker
+- Memcached as Cache
 
 ### Setup
 

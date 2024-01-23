@@ -112,10 +112,7 @@ class TemporaryMatchData:
         return comments
 
     @staticmethod
-    def create_from_website(
-        team: Team,
-        match_id: int,
-    ) -> "TemporaryMatchData":
+    def create_from_website(team: Team, match_id: int) -> "TemporaryMatchData":
         """
         Method to initialize a TMD object from a MatchDataProcessor
         Args:

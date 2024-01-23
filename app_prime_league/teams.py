@@ -29,7 +29,7 @@ def register_team(*, team_id: int, **kwargs) -> Union[Team, None]:
     except Exception as e:
         trace = "".join(traceback.format_tb(sys.exc_info()[2]))
         send_message_to_devs(
-            msg=f"Ein Fehler ist beim Registrieren von Team {team_id} aufgetreten:\n<code>{trace}\n{e}</code>",
+            msg=f"Ein Fehler ist beim Registrieren von Team {team_id} aufgetreten.",
             code=f"{trace}\n{e}",
         )
         logging.getLogger("commands").exception(e)
