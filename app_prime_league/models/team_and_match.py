@@ -281,6 +281,7 @@ class Match(models.Model):
         self.closed = tmd.closed
         self.result = tmd.result
         self.has_side_choice = tmd.has_side_choice
+        self.split = tmd.split
         self.save()
 
     def update_match_begin(self, tmd):

@@ -118,6 +118,7 @@ class TeamAdmin(admin.ModelAdmin):
         'discord_registered',
         'telegram_registered',
         "prime_league_link",
+        "split",
         'scouting_website',
         'language',
         'created_at',
@@ -133,6 +134,7 @@ class TeamAdmin(admin.ModelAdmin):
                     ("prime_league_link",),
                     ("team_tag",),
                     ("division",),
+                    ("split",),
                     ("created_at",),
                     ("updated_at",),
                 ),
@@ -172,6 +174,7 @@ class TeamAdmin(admin.ModelAdmin):
         'language',
         'created_at',
         'updated_at',
+        "split",
     ]
     readonly_fields = ("created_at", "updated_at", "discord_registered", "telegram_registered", "prime_league_link")
     search_fields = ['id', 'name', 'team_tag']

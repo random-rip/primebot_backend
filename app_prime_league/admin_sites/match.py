@@ -12,11 +12,12 @@ class MatchAdmin(admin.ModelAdmin):
         'begin',
         'closed',
         "prime_league_link",
+        "split",
         'result',
         'created_at',
         'updated_at',
     ]
-    list_filter = ['match_day', 'match_type', 'created_at', 'updated_at', 'begin']
+    list_filter = ['match_day', 'match_type', 'created_at', 'updated_at', 'begin', "split"]
     readonly_fields = (
         "created_at",
         "updated_at",
