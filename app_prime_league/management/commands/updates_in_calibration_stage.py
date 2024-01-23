@@ -19,8 +19,11 @@ class Command(UpdateScheduleCommand):
     def is_time_exceeded() -> bool:
         """
         Returns True if the calibration stage ended (two days after calibration stage start)
-        :return:
+        :return: True if the calibration stage ended
         """
+        # We use a different calibration end here because the calibration stage ends 2 days after the calibration
+        # stage start. The default one from the Split model is the same as the registration end
+        # (and one day before group stage start).
         calibration_end_with_puffer = Split.objects.get_current_split().calibration_stage_start + timezone.timedelta(
             days=2
         )
