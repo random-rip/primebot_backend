@@ -2,8 +2,8 @@ name: Test
 
 on:
   push:
-    tags:
-      - v*
+    branches:
+      - main
   pull_request:
     branches: [ main ]
     types: [ opened, synchronize, reopened ]
