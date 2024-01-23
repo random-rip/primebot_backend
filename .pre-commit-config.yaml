@@ -14,6 +14,7 @@ repos:
       - id: check-added-large-files
       - id: check-toml
       - id: requirements-txt-fixer
+        args: [ "requirements.txt","requirements.prod.txt" ]
   - repo: https://github.com/PyCQA/isort
     rev: 5.12.0
     hooks:
