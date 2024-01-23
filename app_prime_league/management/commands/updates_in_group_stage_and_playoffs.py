@@ -9,8 +9,11 @@ class Command(UpdateScheduleCommand):
     next_command = "updates_between_splits"
     name = "Update Teams and Matches in Group Stage and Playoffs"
 
-    def _func_path(self) -> str:
-        return "core.updater.call_executors.update_teams_and_matches"
+    @staticmethod
+    def func():
+        from core.updater.call_executors import update_teams_and_matches
+
+        update_teams_and_matches()
 
     @staticmethod
     def is_time_exceeded() -> bool:
