@@ -2,7 +2,7 @@ import logging
 
 import discord
 from asgiref.sync import sync_to_async
-from discord import Intents, Message, NotFound, Object, SyncWebhook
+from discord import Forbidden, Intents, Message, NotFound, Object, SyncWebhook
 from discord.ext.commands import Bot, NoPrivateMessage, errors
 from django.conf import settings
 from django.utils.translation import gettext as _
@@ -183,7 +183,11 @@ class _DiscordBotV2(Bot):
             try:
                 webhook = await self.fetch_webhook(team.discord_webhook_id)
             except discord.NotFound:
-                discord_logger.info(f"Webhook of Team {team} not found. Consider cleaning up database entry.")
+                discord_logger.warning(f"Webhook of Team {team} not found. Consider cleaning up database entry.")
+            except Forbidden:
+                discord_logger.warning(f"Webhook of Team {team} is Forbidden. Consider cleaning up database entry.")
+            except Exception as e:
+                discord_logger.exception(f"Error while fetching webhook of Team {team}", e)
             else:
                 team.discord_guild_id = webhook.guild_id
                 await sync_to_async(team.save)(update_fields=["discord_guild_id"])

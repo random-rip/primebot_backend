@@ -190,7 +190,7 @@ class TeamAdmin(admin.ModelAdmin):
 
     @admin.display(boolean=True, description='Discord')
     def discord_registered(self, obj):
-        return bool(obj.discord_webhook_token)
+        return bool(obj.discord_channel_id)
 
     @admin.display(
         boolean=True,
