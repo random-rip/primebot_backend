@@ -1,10 +1,13 @@
+from datetime import timedelta
+
 from django.db.models import Count
+from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from django_ical.views import ICalFeed
 from rest_framework import viewsets
 from rest_framework.filters import OrderingFilter, SearchFilter
 
-from app_prime_league.models import Team
+from app_prime_league.models import Match, Team
 
 from .serializers import TeamDetailSerializer, TeamSerializer
 
@@ -45,22 +48,29 @@ class TeamViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class TeamMatchesFeed(ICalFeed):
-    """
-    A simple event calender
-    """
-
     product_id = '-//primebot.me//team-matches//EN'
     timezone = 'UTC'
-    file_name = "event.ics"
+    file_name = ".ics"
 
-    def items(self):
-        return self.team.matches_against.objects.all().order_by('-start_datetime')
+    def get_object(self, request, *args, **kwargs):
+        return get_object_or_404(Team, pk=kwargs["pk"])
 
-    def item_title(self, item):
-        return item.title
+    def items(self, obj):
+        return obj.matches_against.all().order_by('begin')
+
+    def item_title(self, item: Match):
+        if item.enemy_team is None:
+            return f"{item.team.name} vs TBD"
+        return f"{item.team.name} vs {item.enemy_team.name}"
 
     def item_description(self, item):
-        return item.description
+        return "desc"
 
     def item_start_datetime(self, item):
-        return item.start_datetime
+        return item.begin
+
+    def item_end_datetime(self, item):
+        return item.begin + timedelta(hours=2)
+
+    def item_link(self, item):
+        return "www.primebot.me"
