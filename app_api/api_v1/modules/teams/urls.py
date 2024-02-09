@@ -7,5 +7,5 @@ router = SimpleRouter()
 router.register('teams', TeamViewSet, basename='team')
 
 urlpatterns = [
-    path('teams/<int:pk>/ics', TeamMatchesFeed(), name='team-matches-feed'),
+    path('teams/<int:pk>/feed', TeamMatchesFeed(), name='team-matches-feed'),
 ] + router.urls

@@ -79,7 +79,7 @@ class BaseMessage:
 
 class MatchMixin:
     def get_match_url(self, match: Match):
-        return f"{settings.MATCH_URI}{match.match_id}"
+        return match.prime_league_link
 
     def get_enemy_team_url(self, match: Match):
         return f"{settings.TEAM_URI}{match.enemy_team_id}"

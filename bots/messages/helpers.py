@@ -49,3 +49,16 @@ class MatchDisplayHelper:
             return "📆 ⚠ " + _("Dates proposed by the opponent are open! Left time: {left_time}").format(
                 left_time=fmt_dt(match.datetime_until_auto_confirmation),
             )
+
+    @staticmethod
+    def display_match_schedule_simple(match: Match) -> str:
+        if match.match_begin_confirmed:
+            return _("⚔ Match begin confirmed")
+
+        if match.team_made_latest_suggestion is None or match.datetime_until_auto_confirmation is None:
+            return _("📆 No dates proposed")
+
+        if match.team_made_latest_suggestion:
+            return _("✅ Dates proposed by you are open")
+        else:
+            return _("⚠ Dates proposed by the opponent are open!")
