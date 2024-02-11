@@ -56,7 +56,8 @@ class MatchEvent(MatchMixin):
         self.match = match
         self.team = self.match.team
 
-    def _begin_status(self):
+    def _schedule_status(self) -> str:
+        """Returns an emoji based on the match status."""
         if self.match.match_begin_confirmed:
             return "⚔"
         if self.match.team_made_latest_suggestion is None or self.match.datetime_until_auto_confirmation is None:
@@ -66,10 +67,10 @@ class MatchEvent(MatchMixin):
         return "⚠"
 
     def get_title(self):
-        title = "[Prime League] {begin_status} {match_day}: {team_tag} vs {enemy_team_name}"
+        title = "[Prime League] {schedule_status} {match_day}: {team_tag} vs {enemy_team_name}"
         return escape(
             title.format(
-                begin_status=self._begin_status(),
+                schedule_status=self._schedule_status(),
                 match_day=MatchDisplayHelper.display_match_day(self.match).title(),
                 team_tag=self.team.team_tag,
                 enemy_team_name=self.match.get_enemy_team().name,
@@ -104,7 +105,7 @@ class MatchEvent(MatchMixin):
         return self.match.prime_league_link
 
     def get_guid(self):
-        return f"{self.team.id}{self.match.id}global_name"
+        return f"{self.team.id}_{self.match.id}@primebot.me"
 
 
 class TeamMatchesFeed(ICalFeed):
