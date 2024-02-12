@@ -1,8 +1,11 @@
+from django.urls import path
 from rest_framework.routers import SimpleRouter
 
-from .views import TeamViewSet
+from .views import TeamMatchesFeed, TeamViewSet
 
 router = SimpleRouter()
 router.register('teams', TeamViewSet, basename='team')
 
-urlpatterns = router.urls
+urlpatterns = [
+    path('teams/<int:pk>/feed', TeamMatchesFeed(), name='team-matches-feed'),
+] + router.urls

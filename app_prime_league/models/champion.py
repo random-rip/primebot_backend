@@ -17,3 +17,6 @@ class Champion(models.Model):
         db_table = "champions"
         verbose_name = "Champion"
         verbose_name_plural = "Champions"
+
+    def __str__(self):
+        return self.name

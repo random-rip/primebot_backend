@@ -83,6 +83,7 @@ class MatchInline(admin.TabularInline):
     model = Match
     classes = ("collapse",)
     extra = 0
+    show_change_link = True
     fk_name = "team"
     fields = (
         "match_id",
@@ -104,12 +105,28 @@ class MatchInline(admin.TabularInline):
         return False
 
 
+class MatchAsEnemyInline(MatchInline):
+    fk_name = "enemy_team"
+    verbose_name = "Matches as Enemy"
+    verbose_name_plural = "Matches as Enemy"
+    fields = (
+        "match_id",
+        "match_day",
+        "match_type",
+        "team",
+        "begin",
+        "closed",
+        "result",
+    )
+
+
 class TeamAdmin(admin.ModelAdmin):
     inlines = [
         PlayerInline,
         MatchInline,
+        MatchAsEnemyInline,
     ]
-
+    list_display_links = ("id", "name")
     list_display = (
         'id',
         'name',
