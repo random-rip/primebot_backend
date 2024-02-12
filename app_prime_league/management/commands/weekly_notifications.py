@@ -18,7 +18,7 @@ class Command(ScheduleCommand):
             if len(WeeklyNotificationMessage(team=team).matches) < 1:
                 continue
             try:
-                logger.debug(f"Sending Weekly Notification to {team}...")
+                logger.info(f"Sending Weekly Notification to {team}...")
                 MessageCollector(team=team).dispatch(WeeklyNotificationMessage)
             except Exception as e:
                 logger.exception(f"Error sending weekly notification to team {team}: {e}")

@@ -318,12 +318,12 @@ if not DEBUG:
         'loggers': {
             'django': {
                 'handlers': ['django', 'console'],
-                'level': "DEBUG",
+                'level': "WARNING",
                 'propagate': False,
             },
             'notifications': {
                 'handlers': ['notifications', 'console'],
-                'level': "DEBUG",
+                'level': "INFO",
                 'propagate': False,
             },
             'commands': {
@@ -336,12 +336,12 @@ if not DEBUG:
             },
             'updates': {
                 'handlers': ['updates'],
-                'level': "DEBUG",
+                'level': "INFO",
                 'propagate': False,
             },
             'discord': {
                 'handlers': ['discord'],
-                'level': "DEBUG",
+                'level': "INFO",
                 'propagate': False,
             },
         },

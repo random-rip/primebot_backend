@@ -123,23 +123,23 @@ For further information have a look at **Contributing** section at the end of th
 
 - `python manage.py discord_bot` - start Discordbot
 - `python manage.py telegram_bot` - start Telegrambot
-- `python manage.py update_teams` - synchronize teams
-- `python manage.py update_matches` - synchronize matches
+- `python manage.py create_link` - Generates a settings link for the first team of the database
+- `python manage.py seed_scouting` - Seed Scouting Websites: op.gg, u.gg and xdx.gg
 - `python manage.py weekly_notifications` - start weekly notifications
-- `python manage.py runscript feedback` - start feedback
-- `python manage.py runscript season_messages` - start season notification
-- `python manage.py runscript debug` - start debug
 
-### Shell Commands
+#### Update Commands
 
-- `./restart_bots.sh`
-- `./run_bots.sh`
-- `./update_matches.sh`
-- `./update_teams.sh`
-- `./weekly_notifications.sh`
-- `./feedback.sh`
+Depending on the phase of the split, the update commands update in some cases only teams, only registered teams or only
+the matches. See each command for more detailed information.
 
-All shell scripts can be found under `shell_scripts`.
+**When the commands are executed in the cluster (`--schedule`):**
+
+Each update command tests for itself whether it has expired and should be replaced by the following update command.
+
+1. `python manage.py updates_between_splits`
+2. `python manage.py updates_in_calibration_stage`
+3. `python manage.py updates_between_calibration_and_group_stage`
+4. `python manage.py updates_in_group_stage_and_playoffs` - (After Expiring: the first update command replaces this one)
 
 ### Testing
 

@@ -207,7 +207,7 @@ class MatchDataProcessor(__MatchDataMethods):
         if (
             match_scheduling_mode in ["fixed", "free", None]
             or hours_until_auto_confirm in [0, None]
-            or suggestion_made_at in [0, None]
+            or suggestion_made_at in [0, None]  # 0 happens, when suggested time is in the past
         ):
             return None
         scheduling_start = self.data_match.get("match_scheduling_start")

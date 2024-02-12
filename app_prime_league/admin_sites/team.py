@@ -79,7 +79,7 @@ class PlayerInline(admin.TabularInline):
 
 
 class MatchInline(admin.TabularInline):
-    ordering = ("match_day", "closed")
+    ordering = ("match_type", "match_day", "closed")
     model = Match
     classes = ("collapse",)
     extra = 0

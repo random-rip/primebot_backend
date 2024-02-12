@@ -38,6 +38,8 @@ class MatchDisplayHelper:
             return "📆 " + _("No dates proposed. Alternative date: {time}").format(time=fmt_dt(match.begin))
 
         if match.datetime_until_auto_confirmation is None:
+            # Happens when a suggested time is in the past, so the suggestion_made_at is 0
+            # https://www.primeleague.gg/leagues/matches/1100090-debakel-mit-tentakel-vs-team-fireblade-ragnarok
             SendMessageToDevsJob(f"Match {match.id} has no datetime_until_auto_confirmation").enqueue()
             return "📆 " + _("No dates proposed. Alternative date: {time}").format(time=fmt_dt(match.begin))
 
