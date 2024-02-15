@@ -70,7 +70,7 @@ class DiscordMessageTests(TestCase):
         expected = (
             "**Folgende Matches finden diese Woche statt:**\n\n[Spieltag 1]"
             "(https://www.primeleague.gg/de/leagues/matches/1) ⚔ "
-            "XYZ ➡ [op.gg](https://euw.op.gg/multisearch/euw?summoners=player1,player2,"
+            "XYZ ➡ [op.gg](https://www.op.gg/multisearch/euw?summoners=player1,player2,"
             "player3,player4,player5,player6)\n"
         )
 
@@ -96,7 +96,7 @@ class DiscordMessageTests(TestCase):
         expected = (
             "**Folgende Matches finden diese Woche statt:**\n\n[Spieltag 1]"
             "(https://www.primeleague.gg/de/leagues/matches/1) ⚔ "
-            "XYZ ➡ [op.gg](https://euw.op.gg/multisearch/euw?summoners=player1,player2,"
+            "XYZ ➡ [op.gg](https://www.op.gg/multisearch/euw?summoners=player1,player2,"
             "player3,player4,player5,player6)\n"
         )
 
@@ -119,7 +119,7 @@ class DiscordMessageTests(TestCase):
 
         expected = (
             "[xyz](https://www.primeleague.gg/de/leagues/teams/2) ([Spieltag 1](https://www.primeleague.gg/de/"
-            "leagues/matches/1)) hat ein neues [Lineup](https://euw.op.gg/multisearch/euw?summoners=player1,player"
+            "leagues/matches/1)) hat ein neues [Lineup](https://www.op.gg/multisearch/euw?summoners=player1,player"
             "2,player3,player4,player5) aufgestellt."
         )
 
@@ -325,7 +325,7 @@ class WeeklyNotificationTests(TestCase):
         expected = (
             "**Folgende Matches finden diese Woche statt:**\n\n[Spieltag 1]"
             "(https://www.primeleague.gg/de/leagues/matches/1) ⚔ "
-            "XYZ ➡ [op.gg](https://euw.op.gg/multisearch/euw?summoners=player1,player2,"
+            "XYZ ➡ [op.gg](https://www.op.gg/multisearch/euw?summoners=player1,player2,"
             "player3,player4,player5,player6)\n"
         )
 

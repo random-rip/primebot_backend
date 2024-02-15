@@ -68,7 +68,7 @@ class TelegramMatchTestCase(TestCase):
             "*Date*\n"
             "> 📆 No dates proposed. Alternative date: Sunday, 16. January 2022 20:00 PM\n\n"
             "*Opposing team*\n"
-            "> 🔍 [op.gg](https://euw.op.gg/multisearch/euw?summoners=)\n\n"
+            "> 🔍 [op.gg](https://www.op.gg/multisearch/euw?summoners=)\n\n"
             "*Your lineup*\n"
             "⚠ No lineup has been submitted yet.\n\n"
             "*Lineup of opponent*\n"

@@ -1,3 +1,4 @@
+from discord import Color, Embed
 from django.utils.translation import gettext as _
 
 from app_prime_league.models import Match, Team
@@ -25,3 +26,10 @@ class NewLineupNotificationMessage(MatchMessage):
             match_url=self.match_url,
             scouting_url=self.enemy_lineup_scouting_url,
         )
+
+    def _generate_discord_embed(self):
+        embed = Embed(color=Color.gold())
+        embed.add_field(name="", value=self._generate_message(), inline=False)
+        match_day = self.match.match_day
+        embed.set_footer(text=_(f"To get more information about the match, use /match {match_day}."))
+        return embed

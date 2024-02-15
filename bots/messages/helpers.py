@@ -16,6 +16,16 @@ def fmt_dt(dt: datetime.datetime) -> str:
     return f"<t:{timestamp}:F>"
 
 
+def fmt_rel_dt(dt: datetime.datetime) -> str:
+    """
+    Formats a datetime object to a discord relative timestamp string.
+    :param dt: datetime object
+    :return: discord formatted relative timestamp string
+    """
+    timestamp = int(dt.timestamp())
+    return f"<t:{timestamp}:R>"
+
+
 class MatchDisplayHelper:
     @staticmethod
     def display_match_day(match: Match) -> str:
@@ -45,11 +55,11 @@ class MatchDisplayHelper:
 
         if match.team_made_latest_suggestion:
             return "📆 ✅ " + _("Dates proposed by you are open. Left time: {left_time}").format(
-                left_time=fmt_dt(match.datetime_until_auto_confirmation),
+                left_time=fmt_rel_dt(match.datetime_until_auto_confirmation),
             )
         else:
             return "📆 ⚠ " + _("Dates proposed by the opponent are open! Left time: {left_time}").format(
-                left_time=fmt_dt(match.datetime_until_auto_confirmation),
+                left_time=fmt_rel_dt(match.datetime_until_auto_confirmation),
             )
 
     @staticmethod

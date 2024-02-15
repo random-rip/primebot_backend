@@ -193,7 +193,7 @@ except OSError as exc:
     pass
 
 DEFAULT_SCOUTING_NAME = "op.gg"
-DEFAULT_SCOUTING_URL = "https://euw.op.gg/multisearch/euw?summoners={}"
+DEFAULT_SCOUTING_URL = "https://www.op.gg/multisearch/euw?summoners={}"
 DEFAULT_SCOUTING_SEP = ","
 
 TEMP_LINK_TIMEOUT_MINUTES = 60
