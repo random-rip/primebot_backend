@@ -56,6 +56,15 @@ class MatchEvent(MatchMixin):
         self.match = match
         self.team = self.match.team
 
+    @property
+    def legend(self):
+        return (
+            "📆: No dates proposed\n"
+            "⚔: Match begin confirmed\n"
+            "✅: Dates proposed by you are open\n"
+            "⚠: Dates proposed by the opponent are open!\n"
+        )
+
     def _schedule_status(self) -> str:
         """Returns an emoji based on the match status."""
         if self.match.match_begin_confirmed:
@@ -67,12 +76,12 @@ class MatchEvent(MatchMixin):
         return "⚠"
 
     def get_title(self):
-        title = "[Prime League] {schedule_status} {match_day}: {team_tag} vs {enemy_team_name}"
+        title = "[Prime League] {schedule_status} {match_day}: {team_name} vs {enemy_team_name}"
         return escape(
             title.format(
                 schedule_status=self._schedule_status(),
                 match_day=MatchDisplayHelper.display_match_day(self.match).title(),
-                team_tag=self.team.team_tag,
+                team_name=self.team.name,
                 enemy_team_name=self.match.get_enemy_team().name,
             )
         )
@@ -81,17 +90,19 @@ class MatchEvent(MatchMixin):
         scouting_website = (
             settings.DEFAULT_SCOUTING_NAME if not self.team.scouting_website else self.team.scouting_website.name
         )
-        enemy_scouting_url = self.team.get_scouting_url(match=self.match, lineup=False)
-        description = (
-            f"**{MatchDisplayHelper.display_match_day(self.match)}**\n"
-            f"{MatchDisplayHelper.display_match_schedule_simple(self.match)}\n"
-            f"🔍 {scouting_website}: {self.get_enemy_team_scouting_url(self.match)}\n"
-            "Match URL: {prime_league_link}\n"
-        )
+        description = "{match_day}\n" "{match_schedule}\n" "🔍 {scouting_website}: {enemy_scouting_url}\n"
+        if self.match.enemy_lineup_available:
+            description += "📋 Enemy lineup available: {enemy_lineup_url}\n"
+        description += "Match URL: {prime_league_link}\n\n____________________\nLegend:\n{legend}"
         return escape(
             description.format(
+                match_day=MatchDisplayHelper.display_match_day(self.match),
+                match_schedule=MatchDisplayHelper.display_match_schedule_simple(self.match),
+                scouting_website=scouting_website,
+                enemy_scouting_url=self.get_enemy_team_scouting_url(self.match),
+                enemy_lineup_url=self.get_enemy_lineup_scouting_url(self.match),
                 prime_league_link=self.match.prime_league_link,
-                scouting_link=enemy_scouting_url,
+                legend=self.legend,
             )
         )
 
@@ -114,6 +125,9 @@ class TeamMatchesFeed(ICalFeed):
 
     def file_name(self, obj) -> str:
         return f"{obj.id}_matches.ics"
+
+    def item_categories(self, item: MatchEvent):
+        return ['E-Sport', 'Prime League']
 
     def item_guid(self, item: MatchEvent) -> str:
         return item.get_guid()
