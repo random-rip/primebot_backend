@@ -220,7 +220,7 @@ services:
 
   caddy:
     image: orbisk/primebot-fileserver
-    command: ["caddy","file-server", "--listen", ":80", "--root", "/www/html",]
+    command: ["caddy","file-server", "--access-log", "--listen", ":80", "--root", "/www/html",]
     expose:
       - 80
     labels:
@@ -241,7 +241,7 @@ services:
     image: orbisk/primebot-frontend
     expose:
       - 80
-    command: ["caddy","file-server", "--listen", ":80", "--root", "/app",]
+    command: ["caddy","file-server", "--access-log", "--listen", ":80", "--root", "/app"]
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.entrypoints=websecure,web"
