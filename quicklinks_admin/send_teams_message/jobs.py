@@ -30,8 +30,10 @@ Sternige Grüße
         )
 
 
-def enqueue_messages(message_template):
+def enqueue_messages(message_template, team_ids: list[int] = None):
     teams = Team.objects.get_registered_teams()
+    if team_ids:
+        teams = teams.filter(id__in=team_ids)
     for team in teams:
         try:
             collector = MessageCollector(team)
@@ -51,10 +53,12 @@ class EnqueueMessagesJob(Job):
     def function_to_execute(self) -> Callable:
         return enqueue_messages
 
-    def __init__(self, message_template):
+    def __init__(self, message_template, team_ids: list[int] = None):
         self.message_template = message_template
+        self.team_ids = team_ids
 
     def kwargs(self) -> dict:
         return {
             "message_template": self.message_template,
+            "team_ids": self.team_ids,
         }

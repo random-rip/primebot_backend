@@ -7,6 +7,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import FormView, TemplateView
 
+from app_prime_league.models import Team
 from bots.messages.custom_notification import validate_template
 from quicklinks_admin.send_teams_message.jobs import EnqueueMessagesJob, VersionUpdateMessage
 
@@ -61,9 +62,23 @@ class ConfirmTeamsMessageView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         if 'message_template' not in request.session:
-            return redirect("admin:send-teams-message")
-        message_template = request.session.pop('message_template')
+            return redirect("admin:send-teams-message:send-teams-message")
+        is_test_message = 'team_id' in request.POST
+        if is_test_message:
+            try:
+                team_id = request.POST['team_id']
+                team = Team.objects.get_registered_teams().get(id=int(team_id))
+            except (Team.DoesNotExist, ValueError):
+                messages.add_message(self.request, messages.ERROR, 'Invalid team_id')
+                return redirect("admin:send-teams-message:confirm-teams-message")
+            else:
+                message_template = request.session.get('message_template')
+                EnqueueMessagesJob(message_template=message_template, team_ids=[team.id]).execute()
+                messages.add_message(self.request, messages.SUCCESS, 'Test message has been sent')
+                return redirect("admin:send-teams-message:confirm-teams-message")
+
         del request.session['rendered_message']
+        message_template = request.session.pop('message_template')
         is_async, _ = EnqueueMessagesJob(message_template=message_template).enqueue()
         if not is_async:
             messages.add_message(self.request, messages.SUCCESS, 'Messages have been sent synchronously')

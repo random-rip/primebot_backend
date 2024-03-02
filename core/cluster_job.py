@@ -1,14 +1,15 @@
 import logging
 from abc import abstractmethod
-from typing import Any, Callable, Dict, Tuple, Union
+from typing import Any, Callable, Dict, Optional, Tuple, Union
 
+from django_q.conf import Conf
 from django_q.tasks import async_task
 
 
 class Job:
     """
     Job class to inherit from for creating a job to be executed in a cluster.
-    Call `.enqueue()` to push the job to the broker.
+    Call `.enqueue()` to push the job to the broker. Call `.execute()` to execute the job synchronously.
     """
 
     __name__ = 'Job'
@@ -35,11 +36,15 @@ class Job:
         Returns (True, None) if the cluster is used else (False, None).
         Overwrite `_after_enqueue()` to return a custom return value as second value.
 
-        Returns: A ``Tuple`` ( ``cluster_used``, ``object``).
+        Returns: A ``Tuple`` ( ``cluster_used``, ``Any|None``).
 
         """
         self.logger.info("Creating new task...")
         q_options = {"group": self.__name__, **self.q_options()}
+        sync = Conf.SYNC
+        if sync:
+            return self._send_sync()
+
         try:
             task_id = async_task(self.function_to_execute(), **self.kwargs(), q_options=q_options)
             self.logger.info(f"Created task {task_id}...")
@@ -47,10 +52,19 @@ class Job:
         except (Exception,) as e:
             self.logger.exception(e)
             self.logger.error("Could not connect to broker. Is the service running? Synchronous process started...")
-            async_task(self.function_to_execute(), **self.kwargs(), q_options={**q_options, "sync": True})
-            return False, self._after_enqueue()
+            return self._send_sync()
 
-    def _after_enqueue(self) -> Any:
+    def _send_sync(self) -> Any:
+        self.function_to_execute()(**self.kwargs())
+        return False, self._after_enqueue()
+
+    def execute(self) -> Any:
+        """
+        Execute the job synchronously.
+        """
+        return self._send_sync()
+
+    def _after_enqueue(self) -> Optional[Any]:
         return None
 
 
