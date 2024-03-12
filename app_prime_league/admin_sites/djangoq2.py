@@ -27,6 +27,7 @@ class ScheduleAdmin(DjangoQ2ScheduleAdmin):
 class TaskAdmin(DjangoQ2TaskAdmin):
     """Removed the 'func' field from the list_display."""
 
+    search_fields = ("name", "group")
     list_display = (
         "name",
         "group",

@@ -128,6 +128,7 @@ class SettingsMaker(Encoder):
                     "SCOUTING_WEBSITE",
                     "LANGUAGE",
                     "NEW_COMMENTS_OF_UNKNOWN_USERS",
+                    "NEW_MATCHES_NOTIFICATION",
                 ]
             ):
                 self.errors.append(MISSING_CONTENT)
