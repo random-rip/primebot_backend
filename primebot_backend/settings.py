@@ -181,9 +181,11 @@ DISCORD_APP_CLIENT_ID = env.int("DISCORD_APP_CLIENT_ID", None)
 DISCORD_SERVER_LINK = "https://discord.gg/K8bYxJMDzu"
 DISCORD_GUILD_ID = env.int("DISCORD_GUILD_ID", None)  # Only used for development
 
-LOGIN_URL = "/admin/login/"
+LOGIN_URL = "/.admin/login/"
 
 GITHUB_URL = "https://github.com/random-rip/primebot_backend"
+GITHUB_API_TOKEN = env.str("GITHUB_API_TOKEN", None)
+
 LOGGING_DIR = env.str("LOGGING_DIR", "logs")
 try:
     os.mkdir(LOGGING_DIR)
