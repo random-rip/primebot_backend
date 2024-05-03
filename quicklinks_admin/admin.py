@@ -52,10 +52,10 @@ class QuicklinkAdmin(admin.ModelAdmin):
 
     def to_url(self, obj: Quicklink):
         disabled_attr = 'disabled' if not obj.is_active else ''
-        return format_html('<a class="button" href="{}" target="_blank" {}>Zur PL</a>&nbsp;', obj.url, disabled_attr)
+        return format_html('<a class="button" href="{}" {}>To Page</a>&nbsp;', obj.url, disabled_attr)
 
     to_url.allow_tags = True
-    to_url.short_description = _("To Page")
+    to_url.short_description = _("Links")
 
 
 admin.site.register(Quicklink, QuicklinkAdmin)

@@ -63,18 +63,19 @@ class ConfirmTeamsMessageView(TemplateView):
     def post(self, request, *args, **kwargs):
         if 'message_template' not in request.session:
             return redirect("admin:send-teams-message:send-teams-message")
-        is_test_message = 'team_id' in request.POST
+        is_test_message = 'team_ids' in request.POST
         if is_test_message:
             try:
-                team_id = request.POST['team_id']
-                team = Team.objects.get_registered_teams().get(id=int(team_id))
+                team_ids = request.POST['team_ids']
+                team_ids = [int(x) for x in team_ids.split(',')]
+                teams = Team.objects.get_registered_teams().filter(id__in=team_ids).values_list('id', flat=True)
             except (Team.DoesNotExist, ValueError):
-                messages.add_message(self.request, messages.ERROR, 'Invalid team_id')
+                messages.add_message(self.request, messages.ERROR, 'Invalid team_ids')
                 return redirect("admin:send-teams-message:confirm-teams-message")
             else:
                 message_template = request.session.get('message_template')
-                EnqueueMessagesJob(message_template=message_template, team_ids=[team.id]).execute()
-                messages.add_message(self.request, messages.SUCCESS, 'Test message has been sent')
+                EnqueueMessagesJob(message_template=message_template, team_ids=teams).enqueue()
+                messages.add_message(self.request, messages.SUCCESS, 'Test messages have been queued')
                 return redirect("admin:send-teams-message:confirm-teams-message")
 
         del request.session['rendered_message']

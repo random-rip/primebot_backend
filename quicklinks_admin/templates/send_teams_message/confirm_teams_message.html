@@ -24,8 +24,8 @@
 
     <form method="post">
         {% csrf_token %}
-        <label for="team_id">{% translate "Team-ID for Test Message:" %}
-            <input type="number" name="team_id" value="105959">
+        <label for="team_ids">{% translate "Team-IDs for Test Message (comma separated):" %}
+            <input type="text" name="team_ids" value="105959">
         </label>
         <input type="submit" value="{% trans "Send Test Message" %}">
     </form>
