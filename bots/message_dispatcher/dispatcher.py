@@ -1,14 +1,16 @@
 import logging
 from typing import Callable, Dict
 
+from bots.base.bot_interface import BotInterface
+from bots.messages.base import BaseMessage
 from core.cluster_job import Job
 
 cluster_job_logger = logging.getLogger("cluster_job")
 
 
-def dispatch(bot, msg, team):
+def send_message(bot: BotInterface, msg: BaseMessage):
     try:
-        bot.send_message(msg=msg, team=team)
+        bot.send_message(msg=msg)
     except Exception as e:
         cluster_job_logger.exception(e)
         raise e
@@ -23,12 +25,11 @@ class MessageDispatcherJob(Job):
     __name__ = 'MessageDispatcher'
 
     def function_to_execute(self) -> Callable:
-        return dispatch
+        return send_message
 
-    def __init__(self, bot, msg, team):
+    def __init__(self, bot, msg):
         self.bot = bot
         self.msg = msg
-        self.team = team
 
     def kwargs(self) -> Dict:
         """
@@ -38,7 +39,6 @@ class MessageDispatcherJob(Job):
         return {
             "bot": self.bot,
             "msg": self.msg,
-            "team": self.team,
         }
 
     def q_options(self):
