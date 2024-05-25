@@ -41,23 +41,23 @@ class DiscordBot(BotInterface):
         self.bot.run(settings.DISCORD_BOT_KEY)
 
     @staticmethod
-    def send_message(*, msg: BaseMessage, team):
+    def send_message(*, msg: BaseMessage):
         """
         This method is designed to send non-interactive messages. This is usually triggered by prime league updates.
         To send a message from a user triggered action (f.e. a reply message), use context based messages
         directly. This is different for each of the communication platforms.
         """
         webhook = SyncWebhook.partial(
-            id=team.discord_webhook_id,
-            token=team.discord_webhook_token,
+            id=msg.team.discord_webhook_id,
+            token=msg.team.discord_webhook_token,
         )
         try:
-            webhook.send(**DiscordHelper.create_msg_arguments(discord_role_id=team.discord_role_id, msg=msg))
+            webhook.send(**DiscordHelper.create_msg_arguments(discord_role_id=msg.team.discord_role_id, msg=msg))
         except NotFound:
-            team.set_discord_null()
-            notifications_logger.info(f"Soft deleted Discord {team}'")
+            msg.team.set_discord_null()
+            notifications_logger.info(f"Soft deleted Discord {msg.team}'")
         except Exception as e:
-            notifications_logger.exception(f"Could not send Discord Message {msg.__class__.__name__} to {team}", e)
+            notifications_logger.exception(f"Could not send Discord Message {msg.__class__.__name__} to {msg.team}", e)
             raise e
 
 

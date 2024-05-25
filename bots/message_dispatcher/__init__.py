@@ -1,2 +1,2 @@
-from .collector import MessageCollector
+from .creator import MessageCreatorJob
 from .dispatcher import MessageDispatcherJob

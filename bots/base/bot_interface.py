@@ -19,7 +19,7 @@ class BotInterface:
 
     @staticmethod
     @abstractmethod
-    def send_message(*, msg: BaseMessage, team):
+    def send_message(*, msg: BaseMessage):
         """
         This method is designed to send non-interactive messages. This is usually triggered by prime league updates.
         To send a message from a user triggered action (f.e. a reply message), use context based messages
