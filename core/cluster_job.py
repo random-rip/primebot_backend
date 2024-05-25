@@ -20,7 +20,7 @@ class Job:
     def function_to_execute(self) -> Callable:
         pass
 
-    def kwargs(self) -> Dict:
+    def get_kwargs(self) -> Dict:
         """
         `q_options` and `task_name` are reserved keywords from `async_task`, so these keys cannot be used!
         Returns: Keyword arguments for the `function_to_execute`
@@ -46,7 +46,7 @@ class Job:
             return self._send_sync()
 
         try:
-            task_id = async_task(self.function_to_execute(), **self.kwargs(), q_options=q_options)
+            task_id = async_task(self.function_to_execute(), **self.get_kwargs(), q_options=q_options)
             self.logger.info(f"Created task {task_id}...")
             return True, self._after_enqueue()
         except (Exception,) as e:
@@ -55,7 +55,7 @@ class Job:
             return self._send_sync()
 
     def _send_sync(self) -> Any:
-        self.function_to_execute()(**self.kwargs())
+        self.function_to_execute()(**self.get_kwargs())
         return False, self._after_enqueue()
 
     def execute(self) -> Any:
@@ -84,7 +84,7 @@ class SendMessageToDevsJob(Job):
     def __init__(self, msg):
         self.msg = msg
 
-    def kwargs(self) -> Dict:
+    def get_kwargs(self) -> Dict:
         """
         `q_options` and `task_name` are reserved keywords from `async_task`, so these keys cannot be used!
         Returns: Keyword arguments for the `function_to_execute`

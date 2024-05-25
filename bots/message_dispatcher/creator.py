@@ -34,7 +34,7 @@ class MessageCreatorJob(Job):
     def function_to_execute(self) -> Callable:
         return create_and_dispatch_message
 
-    def kwargs(self) -> Dict:
+    def get_kwargs(self) -> Dict:
         return {
             "msg_class": self.msg_class,
             "team": self.team,

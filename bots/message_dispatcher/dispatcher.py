@@ -31,7 +31,7 @@ class MessageDispatcherJob(Job):
         self.bot = bot
         self.msg = msg
 
-    def kwargs(self) -> Dict:
+    def get_kwargs(self) -> Dict:
         """
         `q_options` and `task_name` are reserved keywords from `async_task`, so these keys cannot be used!
         Returns: Keyword arguments for the `function_to_execute`

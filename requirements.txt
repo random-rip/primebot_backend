@@ -20,7 +20,7 @@ django-q2==1.6.1
 djangorestframework==3.14
 drf-spectacular==0.27
 psycopg2==2.9.9
-pymongo>=4.6.3
+pymongo==4.3.3
 python-dateutil==2.8.2
 python-telegram-bot==12.8
 pytz~=2022.7.1

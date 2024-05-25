@@ -69,7 +69,7 @@ class EnqueueMessagesJob(Job):
         self.message_template = message_template
         self.team_ids = team_ids
 
-    def kwargs(self) -> dict:
+    def get_kwargs(self) -> dict:
         return {
             "message_template": self.message_template,
             "team_ids": self.team_ids,
