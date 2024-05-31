@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-08 16:17+0100\n"
+"POT-Creation-Date: 2024-05-31 11:30+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,7 +51,7 @@ msgstr ""
 msgid "Alright, I will delete all links to this channel and the team."
 msgstr "In Ordnung, ich werde alle Links zu diesem Kanal und dem Team löschen."
 
-#: .\bots\discord_interface\ext\delete.py:23
+#: .\bots\discord_interface\ext\delete.py:24
 #, python-brace-format
 msgid ""
 "All deleted. Feel free to give us feedback on {discord_link} if you are "
@@ -64,7 +64,7 @@ msgstr ""
 "_Das Team kann nun in einem anderen Channel registriert werden, oder ein "
 "anderes Team kann in diesem Channel registriert werden._"
 
-#: .\bots\discord_interface\ext\fix.py:22
+#: .\bots\discord_interface\ext\fix.py:23
 #, python-brace-format
 msgid ""
 "The webhook has been recreated. If you still experience problems, check our "
@@ -107,7 +107,7 @@ msgstr ""
 "Helft uns den PrimeBot zu verbessern: {github_url}\n"
 "_Version: {version}_\n"
 
-#: .\bots\discord_interface\ext\matches.py:34
+#: .\bots\discord_interface\ext\matches.py:35
 msgid "This match day was not found. Try `/match 1`."
 msgstr "Dieser Spieltag wurde nicht gefunden. Probiere `/match 1`. "
 
@@ -284,11 +284,11 @@ msgstr[1] ""
 msgid "Developer notification"
 msgstr "Entwicklerbenachrichtigung"
 
-#: .\bots\messages\enemy_lineup.py:15
+#: .\bots\messages\enemy_lineup.py:16
 msgid "New lineup"
 msgstr "Neues Lineup"
 
-#: .\bots\messages\enemy_lineup.py:19
+#: .\bots\messages\enemy_lineup.py:20
 #, python-brace-format
 msgid ""
 "[{enemy_team_tag}]({enemy_team_url}) ([{match_day}]({match_url})) submitted "
@@ -296,6 +296,15 @@ msgid ""
 msgstr ""
 "[{enemy_team_tag}]({enemy_team_url}) ([{match_day}]({match_url})) hat ein "
 "neues [Lineup]({scouting_url}) aufgestellt."
+
+#: .\bots\messages\enemy_lineup.py:34 .\bots\messages\match_details.py:205
+#: .\bots\messages\matches_overview.py:66
+msgid ""
+"The bot is currently deactivated as it no longer receives updates from the "
+"Prime League."
+msgstr ""
+"Der Bot ist zurzeit deaktiviert, da er keine Updates mehr von der Prime "
+"League erhält."
 
 #: .\bots\messages\enemy_time_suggestions.py:16
 msgid "New date proposed by an opponent"
@@ -316,37 +325,37 @@ msgstr[1] ""
 "Neue Terminvorschläge von [{enemy_team_tag}]({enemy_team_url}) für "
 "[{match_day}]({match_url}):"
 
-#: .\bots\messages\helpers.py:23
+#: .\bots\messages\helpers.py:33
 #, python-brace-format
 msgid "playoff match {match_day}"
 msgstr "Playoff Match {match_day}"
 
-#: .\bots\messages\helpers.py:25
+#: .\bots\messages\helpers.py:35
 #, python-brace-format
 msgid "tiebreaker match {match_day}"
 msgstr "Tiebreaker Match {match_day}"
 
-#: .\bots\messages\helpers.py:27
+#: .\bots\messages\helpers.py:37
 #, python-brace-format
 msgid "match {match_day}"
 msgstr "Match {match_day}"
 
-#: .\bots\messages\helpers.py:29
+#: .\bots\messages\helpers.py:39
 #, python-brace-format
 msgid "gameday {match_day}"
 msgstr "Spieltag {match_day}"
 
-#: .\bots\messages\helpers.py:38 .\bots\messages\helpers.py:42
+#: .\bots\messages\helpers.py:48 .\bots\messages\helpers.py:54
 #, python-brace-format
 msgid "No dates proposed. Alternative date: {time}"
 msgstr "Keine Terminvorschläge. Ausweichtermin: {time}"
 
-#: .\bots\messages\helpers.py:45
+#: .\bots\messages\helpers.py:57
 #, python-brace-format
 msgid "Dates proposed by you are open. Left time: {left_time}"
 msgstr "Offene Terminvorschläge von euch. Verbleibende Zeit: {left_time}"
 
-#: .\bots\messages\helpers.py:49
+#: .\bots\messages\helpers.py:61
 #, python-brace-format
 msgid "Dates proposed by the opponent are open! Left time: {left_time}"
 msgstr "Offene Terminvorschläge vom Gegner! Verbleibende Zeit: {left_time}"
@@ -415,55 +424,27 @@ msgstr "Es wurde noch kein Lineup aufgestellt."
 msgid "Lineup of opponent"
 msgstr "Gegnerische Aufstellung"
 
-#: .\bots\messages\match_details.py:184 .\bots\messages\matches_overview.py:57
+#: .\bots\messages\match_details.py:184 .\bots\messages\matches_overview.py:53
 #, python-brace-format
 msgid "[against {enemy_team_name}]({match_url})"
 msgstr "[gegen {enemy_team_name}]({match_url})"
 
-#: .\bots\messages\match_details.py:205
-msgid ""
-"If there are outdated scouting links just use /match again after 15 minutes."
-msgstr ""
-"Wenn es veraltete Scouting-Links gibt, verwende einfach /match nochmal nach "
-"15 Minuten."
-
-#: .\bots\messages\matches_overview.py:26
+#: .\bots\messages\matches_overview.py:25
 msgid "New matches"
 msgstr "Neue Matches"
 
-#: .\bots\messages\matches_overview.py:29
+#: .\bots\messages\matches_overview.py:28
 msgid "An overview of your open matches:"
 msgstr "Eine Übersicht eurer offenen Matches:"
 
-#: .\bots\messages\matches_overview.py:32
+#: .\bots\messages\matches_overview.py:31
 msgid "You currently have no open matches."
 msgstr "Ihr habt aktuell keine offenen Matches."
 
-#: .\bots\messages\matches_overview.py:67
+#: .\bots\messages\matches_overview.py:61
 #, python-brace-format
 msgid "[Current lineup]({lineup_link})"
 msgstr "[Aktuelles Lineup]({lineup_link})"
-
-#: .\bots\messages\matches_overview.py:74
-msgid "If there are outdated scouting links just use /matches again."
-msgstr ""
-"Wenn es veraltete Scouting-Links gibt, verwende einfach /matches nochmal "
-"nach 15 Minuten."
-
-#: .\bots\messages\new_match.py:20
-msgid "New match"
-msgstr "Neues Match"
-
-#: .\bots\messages\new_match.py:24
-#, python-brace-format
-msgid ""
-"Your next match in the calibration stage:\n"
-"[{match_day}]({match_url}) against [{enemy_team_tag}]({enemy_team_url}):\n"
-"Here is your [{website} link]({scouting_url}) of the team."
-msgstr ""
-"Euer nächstes Match in der Kalibrierungsphase:\n"
-"[{match_day}]({match_url}) gegen [{enemy_team_tag}]({enemy_team_url}):\n"
-"Hier ist der [{website} Link]({scouting_url}) des Teams."
 
 #: .\bots\messages\own_time_suggestions.py:17
 msgid "New date proposed by you"
@@ -520,14 +501,14 @@ msgid "Weekly overview"
 msgstr "Wochenübersicht"
 
 #: .\bots\telegram_interface\commands\single_commands.py:145
-#: .\bots\telegram_interface\tests\commands\test_match.py:23
-#: .\bots\telegram_interface\tests\commands\test_match.py:28
-#: .\bots\telegram_interface\tests\commands\test_match.py:33
+#: .\bots\telegram_interface\tests\commands\test_match.py:24
+#: .\bots\telegram_interface\tests\commands\test_match.py:29
+#: .\bots\telegram_interface\tests\commands\test_match.py:34
 msgid "Invalid match day. Try using /match 1."
 msgstr "Invalider Spieltag. Versuche es mit `/match 1`."
 
 #: .\bots\telegram_interface\commands\single_commands.py:162
-#: .\bots\telegram_interface\tests\commands\test_match.py:45
+#: .\bots\telegram_interface\tests\commands\test_match.py:46
 msgid "Sadly there is no match on the given match day."
 msgstr "Leider existieren für diesen Spieltag keine Matches."
 
@@ -535,6 +516,31 @@ msgstr "Leider existieren für diesen Spieltag keine Matches."
 msgid "Yes"
 msgstr "Ja"
 
-#: .\bots\telegram_interface\keyboards.py:12
+#: .\bots\telegram_interface\keyboards.py:9
 msgid "No"
 msgstr "Nein"
+
+#~ msgid ""
+#~ "If there are outdated scouting links just use /match again after 15 "
+#~ "minutes."
+#~ msgstr ""
+#~ "Wenn es veraltete Scouting-Links gibt, verwende einfach /match nochmal "
+#~ "nach 15 Minuten."
+
+#~ msgid "If there are outdated scouting links just use /matches again."
+#~ msgstr ""
+#~ "Wenn es veraltete Scouting-Links gibt, verwende einfach /matches nochmal "
+#~ "nach 15 Minuten."
+
+#~ msgid "New match"
+#~ msgstr "Neues Match"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Your next match in the calibration stage:\n"
+#~ "[{match_day}]({match_url}) against [{enemy_team_tag}]({enemy_team_url}):\n"
+#~ "Here is your [{website} link]({scouting_url}) of the team."
+#~ msgstr ""
+#~ "Euer nächstes Match in der Kalibrierungsphase:\n"
+#~ "[{match_day}]({match_url}) gegen [{enemy_team_tag}]({enemy_team_url}):\n"
+#~ "Hier ist der [{website} Link]({scouting_url}) des Teams."

@@ -63,5 +63,7 @@ class MatchesOverview(MatchesMessage):
                 )
 
             embed.add_field(name=name, value=value, inline=False)
-        embed.set_footer(text=_("If there are outdated scouting links just use /matches again."))
+        embed.set_footer(
+            text=_("The bot is currently deactivated as it no longer receives updates from the Prime League.")
+        )
         return embed
