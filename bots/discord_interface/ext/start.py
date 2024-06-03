@@ -83,6 +83,7 @@ async def start(ctx: commands.Context, team_id_or_url: TeamIDConverter):
         ).format(team_name=team.name, website=settings.SITE_ID, scouting_website=ScoutingWebsite.default().name)
         msg = await sync_to_async(MatchesOverview)(team=team)
         embed = await sync_to_async(msg.generate_discord_embed)()
+    await ctx.send(_("The bot is currently deactivated as it no longer receives updates from the Prime League."))
     return await ctx.send(response, embed=embed)
 
 

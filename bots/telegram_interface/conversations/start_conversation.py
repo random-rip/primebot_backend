@@ -24,6 +24,11 @@ def just_wait_a_moment(chat_id, context: CallbackContext):
         chat_id=chat_id,
         parse_mode=ParseMode.MARKDOWN,
     )
+    context.bot.send_message(
+        text=("Der Bot ist zurzeit deaktiviert, da er keine Updates mehr von der Prime League erhält."),
+        chat_id=chat_id,
+        parse_mode=ParseMode.MARKDOWN,
+    )
 
 
 def get_existing_chat_id(update: Update):
