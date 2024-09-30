@@ -9,6 +9,7 @@ from django.conf import settings
 from app_prime_league.models import Match, Player, Suggestion, Team
 from bots.telegram_interface.tg_singleton import send_message_to_devs
 from core.processors.team_processor import TeamDataProcessor
+from core.providers.request_queue_processor import RequestQueueProvider
 from core.temporary_match_data import TemporaryMatchData
 from utils.messages_logger import log_exception
 
@@ -20,12 +21,12 @@ def register_team(*, team_id: int, **kwargs) -> Union[Team, None]:
     **kwargs will be directly parsed to the Team model, usually the telegram ID or discord IDs.
     :raises PrimeLeagueConnectionException, TeamWebsite404Exception:
     """
-    processor = TeamDataProcessor(team_id=team_id)
+    processor = TeamDataProcessor(team_id=team_id, provider=RequestQueueProvider(priority=0, force=True))
     team = create_or_update_team(processor=processor, **kwargs)
     if team is None:
         return None
     try:
-        create_matches(processor.get_matches(), team)
+        create_matches(processor.get_matches(), team, use_concurrency=False)
     except Exception as e:
         trace = "".join(traceback.format_tb(sys.exc_info()[2]))
         send_message_to_devs(
@@ -65,8 +66,7 @@ def create_match_and_enemy_team(team: Team, match_id: int):
     :param match_id: Match ID
     """
     tmd = TemporaryMatchData.create_from_website(
-        team=team,
-        match_id=match_id,
+        team=team, match_id=match_id, provider=RequestQueueProvider(priority=0)
     )
     match, created = Match.objects.update_or_create(
         match_id=match_id,
@@ -94,7 +94,10 @@ def create_match_and_enemy_team(team: Team, match_id: int):
 
     # Create Enemy Team
     if tmd.enemy_team_id is not None:
-        processor = TeamDataProcessor(team_id=tmd.enemy_team_id)  # TODO duplicate code
+        processor = TeamDataProcessor(
+            team_id=tmd.enemy_team_id,
+            provider=RequestQueueProvider(priority=0),
+        )  # TODO duplicate code
         enemy_team, created = Team.objects.update_or_create(
             id=tmd.enemy_team_id,
             defaults={

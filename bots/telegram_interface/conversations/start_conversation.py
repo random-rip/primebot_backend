@@ -20,15 +20,15 @@ from utils.utils import get_valid_team_id
 
 def just_wait_a_moment(chat_id, context: CallbackContext):
     context.bot.send_message(
-        text=("Alles klar, ich schaue, was ich dazu finden kann.\n" "Das kann einen Moment dauern...⏳\n"),
+        text="Alles klar, ich schaue, was ich dazu finden kann.\nDas kann einen Moment dauern...⏳\n",
         chat_id=chat_id,
         parse_mode=ParseMode.MARKDOWN,
     )
-    context.bot.send_message(
-        text=("Der Bot ist zurzeit deaktiviert, da er keine Updates mehr von der Prime League erhält."),
-        chat_id=chat_id,
-        parse_mode=ParseMode.MARKDOWN,
-    )
+    # context.bot.send_message(
+    #     text="Der Bot ist zurzeit deaktiviert, da er keine Updates mehr von der Prime League erhält.",
+    #     chat_id=chat_id,
+    #     parse_mode=ParseMode.MARKDOWN,
+    # )
 
 
 def get_existing_chat_id(update: Update):
@@ -122,7 +122,7 @@ def team_registration(update: Update, context: CallbackContext):
         return 1
     except Div1orDiv2TeamException:
         update.message.reply_markdown(
-            text=("Es können keine Teams aus Division 1 oder 2 registriert werden."),
+            text="Es können keine Teams aus Division 1 oder 2 registriert werden.",
             quote=False,
         )
         return 1

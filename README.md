@@ -48,7 +48,7 @@ League.
 
 ### Techstack
 
-- Python
+- Python 3.10
 - PostgreSQL
 - Django (+ DRF) (python package)
 - discord.py (python package)
@@ -62,7 +62,7 @@ League.
 
 Requirements:
 
-- Python 3.8+
+- Python
 - PostgreSQL
 - virtualenv (pip package):  `pip install virtualenv`
 

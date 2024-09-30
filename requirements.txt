@@ -6,7 +6,7 @@ coverage[toml]
 croniter
 cryptography==42.0.5
 Deprecated~=1.2.13
-discord.py>=2
+discord.py==2.4
 django==3.2.25
 django-admin-interface==0.28.2
 django-cors-headers==3.14

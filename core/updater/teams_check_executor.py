@@ -13,6 +13,7 @@ from bots.messages import MatchesOverview
 from bots.telegram_interface.tg_singleton import send_message_to_devs
 from core.comparers.team_comparer import TeamComparer
 from core.processors.team_processor import TeamDataProcessor
+from core.providers.request_queue_processor import RequestQueueProvider
 from utils.messages_logger import log_exception
 
 thread_local = threading.local()
@@ -23,7 +24,7 @@ notifications_logger = logging.getLogger("notifications")
 @log_exception
 def update_team(team: Team):
     try:
-        processor = TeamDataProcessor(team.id)
+        processor = TeamDataProcessor(team.id, provider=RequestQueueProvider(priority=2))
     except Exception as e:
         update_logger.exception(e)
         return
@@ -64,7 +65,7 @@ def update_team(team: Team):
     except Exception as e:
         trace = "".join(traceback.format_tb(sys.exc_info()[2]))
         send_message_to_devs(
-            msg=f"Ein Fehler ist beim Updaten der Matches von  Team {team.id} {team.name} aufgetreten.",
+            msg=f"Ein Fehler ist beim Updaten der Matches von Team {team.id} {team.name} aufgetreten.",
             code=f"{trace}\n{e}",
         )
         update_logger.exception(e)
