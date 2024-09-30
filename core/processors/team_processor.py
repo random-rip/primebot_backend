@@ -1,6 +1,7 @@
 from abc import abstractmethod
 
 from app_prime_league.models import Split
+from core.providers.base import Provider
 from core.providers.prime_league import PrimeLeagueProvider
 
 
@@ -32,19 +33,21 @@ class __TeamDataMethods:
 
 class TeamDataProcessor(__TeamDataMethods):
     """
-    Converting json data to functions and providing these.
+    Converting json data to methods and providing these.
     """
 
     ROLE_PLAYER = 10
     ROLE_CAPTAIN = 20
     ROLE_LEADER = 30
 
-    def __init__(self, team_id: int):
+    def __init__(self, team_id: int, provider: Provider = None):
         """
         :raises PrimeLeagueConnectionException, TeamWebsite404Exception
         :param team_id:
         """
-        self.data = PrimeLeagueProvider.get_team(team_id=team_id)
+        if provider is None:
+            provider = PrimeLeagueProvider()
+        self.data = provider.get_team(team_id=team_id)
         self.team_id = team_id
 
     @property

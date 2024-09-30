@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'app_prime_league',
     'core',
     'bots',
+    "request_queue",
 ]
 
 MIDDLEWARE = [
@@ -218,6 +219,13 @@ LOCALE_PATHS = [
     BASE_DIR / "app_prime_league" / "locale",
 ]
 
+MONGODB_URI = env.str("MONGODB_URI", None)
+if MONGODB_URI is None:
+    MONGODB_URI = (
+        f"mongodb://{env.str('MONGODB_USERNAME', '')}:{env.str('MONGODB_PASSWORD', 'localhost')}"
+        f"@{env.str('MONGODB_HOST', '')}:{env.str('MONGODB_PORT', 27017)}"
+    )
+
 __MAXIMUM_TIMEOUT = 60 * 5  # maximum seconds for a task
 Q_CLUSTER = {
     'timeout': __MAXIMUM_TIMEOUT,  # maximum seconds for a task
@@ -229,15 +237,7 @@ Q_CLUSTER = {
     "log_level": "DEBUG",
     "sync": env.bool("MONGODB_SYNC", DEBUG),
     'mongo': {
-        'host': (
-            f"mongodb://{env.str('MONGODB_USERNAME', '')}:{env.str('MONGODB_PASSWORD', 'localhost')}"
-            f"@{env.str('MONGODB_HOST', '')}:{env.str('MONGODB_PORT', 27017)}"
-        ),
-        "serverSelectionTimeoutMS": 5_000,
-    }
-    if not DEBUG
-    else {
-        'host': env.str("MONGODB_URI", None),
+        'host': MONGODB_URI,
         "serverSelectionTimeoutMS": 5_000,
     },
     "time_zone": "Europe/Berlin",

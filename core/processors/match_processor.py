@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from typing import Union
 
 from core.parsing.logs import BaseLog, LogChangeTime, LogSchedulingAutoConfirmation, LogSchedulingConfirmation
+from core.providers.base import Provider
 from core.providers.prime_league import PrimeLeagueProvider
 from utils.utils import timestamp_to_datetime
 
@@ -74,13 +75,17 @@ class MatchDataProcessor(__MatchDataMethods):
     Converting json data to functions and providing these.
     """
 
-    def __init__(self, match_id: int, team_id: int, **kwargs):
+    def __init__(self, match_id: int, team_id: int, provider: Provider = None):
         """
-        :raises PrimeLeagueConnectionException, PrimeLeagueParseException, Match404Exception
         :param match_id:
         :param team_id: team's point of view to the match. For example to determine enemy_team of the match.
+        :raises PrimeLeagueConnectionException:
+        :raise PrimeLeagueParseException:
+        :raise Match404Exception:
         """
-        self.data = PrimeLeagueProvider.get_match(match_id=match_id)
+        if provider is None:
+            provider = PrimeLeagueProvider()
+        self.data = provider.get_match(match_id=match_id)
         self.team_id = team_id
         self.team_is_team_1 = self.data_match.get("team_id_1") == team_id
         self.logs = []

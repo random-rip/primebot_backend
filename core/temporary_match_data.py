@@ -6,6 +6,7 @@ from typing import Union
 from app_prime_league.models import Split, Team
 from core.processors.match_processor import MatchDataProcessor
 from core.processors.team_processor import TeamDataProcessor
+from core.providers.base import Provider
 from utils.exceptions import TeamWebsite404Exception
 from utils.utils import timestamp_to_datetime
 
@@ -112,20 +113,27 @@ class TemporaryMatchData:
         return comments
 
     @staticmethod
-    def create_from_website(team: Team, match_id: int) -> "TemporaryMatchData":
+    def create_from_website(
+        team: Team,
+        match_id: int,
+        provider: Provider,
+    ) -> "TemporaryMatchData":
         """
         Method to initialize a TMD object from a MatchDataProcessor
-        Args:
-            team: Team
-            match_id: integer
-
-        Returns: Initialized TMD
-        Raises: PrimeLeagueConnectionException, PrimeLeagueParseException, Match404Exception
-
+        :param team: Team
+        :param match_id: ID of the match
+        :param provider: provider instance to use for the processors
+        :return: Initialized Temporary Match Data
+        :raise PrimeLeagueConnectionException:
+        :raise PrimeLeagueParseException:
+        :raise Match404Exception:
         """
-
         tmd = TemporaryMatchData()
-        processor = MatchDataProcessor(match_id, team.id)
+        processor = MatchDataProcessor(
+            match_id=match_id,
+            team_id=team.id,
+            provider=provider,
+        )
 
         tmd.match_id = match_id
         tmd.match_day = processor.get_match_day()
@@ -153,14 +161,14 @@ class TemporaryMatchData:
                 logging.getLogger("updates").warning(f"Match {match_id=} is not in current split {split=}")
 
         if not Team.objects.filter(id=tmd.enemy_team_id).exists():
-            tmd.create_enemy_team_data_from_website()
+            tmd.create_enemy_team_data_from_website(provider)
         return tmd
 
-    def create_enemy_team_data_from_website(self):
+    def create_enemy_team_data_from_website(self, provider: Provider):
         if self.enemy_team_id is None:
             return
         try:
-            processor = TeamDataProcessor(team_id=self.enemy_team_id)
+            processor = TeamDataProcessor(team_id=self.enemy_team_id, provider=provider)
         except TeamWebsite404Exception:
             return
         self.enemy_team = {

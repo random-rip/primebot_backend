@@ -1,4 +1,6 @@
+import asyncio
 import logging
+from itertools import cycle
 
 from asgiref.sync import sync_to_async
 from discord.ext import commands
@@ -46,21 +48,34 @@ async def start(ctx: commands.Context, team_id_or_url: TeamIDConverter):
         await check_team_not_registered(team_id)
 
         webhook = await DiscordHelper.create_new_webhook(ctx)
+        await ctx.send(_("I'm setting up the team registration for you."))
+        clock_steps = ["🕛", "🕐", "🕑", "🕒", "🕓", "🕔", "🕕", "🕖", "🕗", "🕘", "🕙", "🕚"]
+        msg = _("Please wait a moment...")
+        loading_message = await ctx.send(_(f"{msg} {clock_steps[0]}"))
 
-        await ctx.send(_("All right, I'll see what I can find on this.\n" "This may take a moment...⏳\n"))
-        try:
-            team = await sync_to_async(register_team)(
+        # Start the registration process in a background task
+        registration_task = asyncio.create_task(
+            sync_to_async(register_team)(
                 team_id=team_id,
                 discord_webhook_id=webhook.id,
                 discord_webhook_token=webhook.token,
                 discord_guild_id=ctx.guild.id,
                 discord_channel_id=ctx.channel.id,
             )
+        )
+
+        for c in cycle(clock_steps):
+            if registration_task.done():
+                await loading_message.delete()
+                break
+            await loading_message.edit(content=f"{msg} {c}")
+            await asyncio.sleep(0.4)
+        try:
+            team = await registration_task
         except TeamWebsite404Exception:
             return await ctx.send(
-                _("The team was not found on the Prime League website. Make sure you register the proper team.")
+                _("The team was not found on the Prime League website. Make sure you register the proper team."),
             )
-
         except PrimeLeagueConnectionException:
             return await ctx.send(
                 _(
@@ -81,10 +96,9 @@ async def start(ctx: commands.Context, team_id_or_url: TeamIDConverter):
             "Just try it out! 🎁 \n"
             "The **status of the Prime League API** can be viewed at any time on {website}."
         ).format(team_name=team.name, website=settings.SITE_ID, scouting_website=ScoutingWebsite.default().name)
-        msg = await sync_to_async(MatchesOverview)(team=team)
+        msg = await sync_to_async(MatchesOverview)(team=team, match_ids=None)
         embed = await sync_to_async(msg.generate_discord_embed)()
-    await ctx.send(_("The bot is currently deactivated as it no longer receives updates from the Prime League."))
-    return await ctx.send(response, embed=embed)
+        return await ctx.send(response, embed=embed)
 
 
 @start.error

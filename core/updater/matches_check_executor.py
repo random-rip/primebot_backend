@@ -16,6 +16,7 @@ from bots.messages import (
 )
 from core.comparers.match_comparer import MatchComparer
 from core.processors.team_processor import TeamDataProcessor
+from core.providers.request_queue_processor import RequestQueueProvider
 from core.temporary_match_data import TemporaryMatchData
 from utils.exceptions import Match404Exception
 from utils.messages_logger import log_exception
@@ -49,7 +50,11 @@ def check_match(match: Match):
     match_id = match.match_id
     team = match.team
     try:
-        tmd = TemporaryMatchData.create_from_website(team=team, match_id=match_id)
+        tmd = TemporaryMatchData.create_from_website(
+            team=team,
+            match_id=match_id,
+            provider=RequestQueueProvider(priority=2),
+        )
     except Match404Exception as e:
         match.delete()
         update_logger.info(f"Match deleted {e}")
@@ -63,7 +68,10 @@ def check_match(match: Match):
     log_message = f"New notification for {match_id=} ({team=}): "
     update_logger.info(f"Checking {match_id=} ({team=})...")
     if cmp.compare_new_enemy_team():
-        processor = TeamDataProcessor(team_id=tmd.enemy_team_id)
+        processor = TeamDataProcessor(
+            team_id=tmd.enemy_team_id,
+            provider=RequestQueueProvider(priority=2),
+        )
         enemy_team, created = Team.objects.update_or_create(
             id=tmd.enemy_team_id,
             defaults={

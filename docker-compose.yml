@@ -206,6 +206,42 @@ services:
       - POSTGRES_HOST
       - CACHE_LOCATION
 
+  request_queue:
+    image: orbisk/primebot
+    restart: unless-stopped
+    command: [ 'python', 'manage.py', 'requestqueue' ]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    environment:
+      - MONGODB_USERNAME
+      - MONGODB_PASSWORD
+      - MONGODB_HOST
+      - MONGODB_PORT
+      - TELEGRAM_BOT_API_KEY
+      - DISCORD_API_KEY
+      - DISCORD_APP_CLIENT_ID
+      - DJANGO_SECRET_KEY
+      - DJANGO_DEBUG
+      - DJANGO_ALLOWED_HOSTS
+      - SITE_ID
+      - STATIC_ROOT
+      - MEDIA_ROOT
+      - LOGGING_DIR
+      - FERNET_SECRET_KEY
+      - TG_DEVELOPER_GROUP
+      - FILES_FROM_STORAGE
+      - GITHUB_API_TOKEN
+      - GAME_SPORTS_BASE_URL
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - POSTGRES_DB
+      - POSTGRES_PORT
+      - POSTGRES_HOST
+      - CACHE_LOCATION
+
   postgres:
     image: postgres
     restart: unless-stopped
