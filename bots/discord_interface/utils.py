@@ -44,6 +44,10 @@ class DiscordHelper:
             arguments["embed"] = msg.generate_discord_embed()
         except MessageNotImplementedError:
             arguments["embed"] = Embed(description=msg.generate_message(), color=color)
+        try:
+            arguments["poll"] = msg.generate_poll()
+        except MessageNotImplementedError:
+            pass
         arguments["content"] = DiscordHelper.mask_message_with_mention(
             discord_role_id=discord_role_id, message=msg.generate_title()
         )
