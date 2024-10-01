@@ -48,7 +48,7 @@ async def start(ctx: commands.Context, team_id_or_url: TeamIDConverter):
         await check_team_not_registered(team_id)
 
         webhook = await DiscordHelper.create_new_webhook(ctx)
-        await ctx.send(_("I'm setting up the team registration for you."))
+        await ctx.send(_("I'm setting up the team registration for you (estimated time: 40 seconds)."))
         clock_steps = ["🕛", "🕐", "🕑", "🕒", "🕓", "🕔", "🕕", "🕖", "🕗", "🕘", "🕙", "🕚"]
         msg = _("Please wait a moment...")
         loading_message = await ctx.send(f"{msg} {clock_steps[0]}")

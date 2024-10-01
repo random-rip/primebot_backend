@@ -20,7 +20,7 @@ from utils.utils import get_valid_team_id
 
 def just_wait_a_moment(chat_id, context: CallbackContext):
     context.bot.send_message(
-        text="Alles klar, ich schaue, was ich dazu finden kann.\nDas kann einen Moment dauern...⏳\n",
+        text="Alles klar, ich schaue, was ich dazu finden kann.\nDas dauert circa 40 Sekunden... ⏳\n",
         chat_id=chat_id,
         parse_mode=ParseMode.MARKDOWN,
     )

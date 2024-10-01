@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-01 14:16+0200\n"
+"POT-Creation-Date: 2024-10-01 22:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -112,8 +112,9 @@ msgid "This match day was not found. Try `/match 1`."
 msgstr "Dieser Spieltag wurde nicht gefunden. Probiere `/match 1`. "
 
 #: .\bots\discord_interface\ext\start.py:51
-msgid "I'm setting up the team registration for you."
-msgstr "Ich richte die Teamanmeldung für dich ein."
+msgid ""
+"I'm setting up the team registration for you (estimated time: 40 seconds)."
+msgstr "Ich richte die Teamanmeldung für dich ein (Dauer circa 40 Sekunden)."
 
 #: .\bots\discord_interface\ext\start.py:53
 msgid "Please wait a moment..."
@@ -458,7 +459,7 @@ msgstr "Ihr habt aktuell keine offenen Matches."
 msgid "[Current lineup]({lineup_link})"
 msgstr "[Aktuelles Lineup]({lineup_link})"
 
-#: .\bots\messages\matches_overview.py:67
+#: .\bots\messages\matches_overview.py:66
 msgid "To get more information about a match, use /match MATCH_DAY."
 msgstr "Für mehr Informationen über ein Match, benutze /match MATCH_DAY."
 
