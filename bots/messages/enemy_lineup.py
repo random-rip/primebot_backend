@@ -30,8 +30,6 @@ class NewLineupNotificationMessage(MatchMessage):
     def _generate_discord_embed(self):
         embed = Embed(color=Color.gold())
         embed.add_field(name="", value=self._generate_message(), inline=False)
-        # match_day = self.match.match_day
-        embed.set_footer(
-            text=_("The bot is currently deactivated as it no longer receives updates from the Prime League.")
-        )
+        match_day = self.match.match_day
+        embed.set_footer(text=_(f"To get more information about the match, use /match {match_day}."))
         return embed

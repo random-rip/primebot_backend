@@ -51,7 +51,7 @@ async def start(ctx: commands.Context, team_id_or_url: TeamIDConverter):
         await ctx.send(_("I'm setting up the team registration for you."))
         clock_steps = ["🕛", "🕐", "🕑", "🕒", "🕓", "🕔", "🕕", "🕖", "🕗", "🕘", "🕙", "🕚"]
         msg = _("Please wait a moment...")
-        loading_message = await ctx.send(_(f"{msg} {clock_steps[0]}"))
+        loading_message = await ctx.send(f"{msg} {clock_steps[0]}")
 
         # Start the registration process in a background task
         registration_task = asyncio.create_task(
