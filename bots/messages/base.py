@@ -68,7 +68,6 @@ class BaseMessage:
             return self._generate_discord_embed()
 
     def team_wants_notification(self):
-        return False  # TODO Remove if it works in Production
         key = type(self).settings_key
         if key is None:
             return True
