@@ -5,7 +5,6 @@ from rest_framework import status
 
 from core.providers.base import Provider
 from request_queue import EndpointType, RequestQueue, push
-from request_queue.mongo import mongo_connector
 from utils.exceptions import (
     Match404Exception,
     PrimeLeagueConnectionException,
@@ -70,7 +69,7 @@ class RequestQueueProvider(Provider):
     def _get_or_wait(self, endpoint: EndpointType, detail_id: int) -> dict[str, str | dict | datetime] | None:
         """
         Get the latest response from responses if the entry's
-        - last_crawled timestamp is less than one hour,
+        - last_crawled timestamp is less than 15 minutes,
         - entry is not None,
         - status_code is 200 and
         - force is False
@@ -79,13 +78,13 @@ class RequestQueueProvider(Provider):
         :param detail_id: teamID or matchID
         :return:
         """
-        queue = RequestQueue(connector=mongo_connector)
+        queue = RequestQueue()
         if not self.force:
             latest_response = queue.get_response(endpoint, detail_id)
             if (
                 latest_response is not None
                 and status.is_success(latest_response["status_code"])
-                and latest_response["last_crawled"] > datetime.utcnow() + timedelta(hours=1)
+                and latest_response["last_crawled"] > datetime.utcnow() + timedelta(minutes=15)
             ):
                 return latest_response
         job_id = push(endpoint, detail_id, priority=self.priority)
