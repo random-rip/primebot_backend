@@ -63,7 +63,5 @@ class MatchesOverview(MatchesMessage):
                 )
 
             embed.add_field(name=name, value=value, inline=False)
-        embed.set_footer(
-            text=_("The bot is currently deactivated as it no longer receives updates from the Prime League.")
-        )
+        embed.set_footer(text=_("To get more information about a match, use /match MATCH_DAY."))
         return embed
