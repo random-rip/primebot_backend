@@ -26,7 +26,7 @@ def register_team(*, team_id: int, **kwargs) -> Union[Team, None]:
     if team is None:
         return None
     try:
-        create_matches(processor.get_matches(), team, use_concurrency=False)
+        create_matches(processor.get_matches(), team, use_concurrency=False)  # TODO speedup again?
     except Exception as e:
         trace = "".join(traceback.format_tb(sys.exc_info()[2]))
         send_message_to_devs(

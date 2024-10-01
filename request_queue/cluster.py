@@ -14,7 +14,7 @@ from utils.exceptions import (
     TeamWebsite404Exception,
 )
 
-from .mongo import MongoConnector, mongo_connector
+from .mongo import MongoConnector
 
 __all__ = ["EndpointType", "run", "RequestQueue"]
 
@@ -33,8 +33,8 @@ class RequestQueue:
     REQUEST_COL_NAME = "request_queue"
     RESPONSE_COL_NAME = "responses"
 
-    def __init__(self, connector: MongoConnector):
-        self._connector = connector
+    def __init__(self, connector: MongoConnector = None):
+        self.connector = connector or MongoConnector()
         self.queue_collection = self.get_collection(RequestQueue.REQUEST_COL_NAME)
         self.response_collection = self.get_collection(RequestQueue.RESPONSE_COL_NAME)
         self.ensure_indexes()
@@ -45,7 +45,7 @@ class RequestQueue:
         return cls._instance
 
     def get_collection(self, collection_name):
-        return self._connector.db[collection_name]
+        return self.connector.db[collection_name]
 
     def ensure_indexes(self):
         """Ensure indexes for the priority queue."""
@@ -122,7 +122,7 @@ def __call_api(payload: dict[str, str | int]) -> Tuple[int, dict | None]:
 
 
 def __save_to_db(endpoint: str, detail_id: int, data, status_code):
-    queue = RequestQueue(mongo_connector)
+    queue = RequestQueue()
     queue.response_collection.update_one(
         filter={"endpoint": endpoint, "detail_id": detail_id},
         update={
@@ -146,7 +146,7 @@ def __process_job(job):
     status_code, data = __call_api(job["payload"])
     endpoint = job["payload"]["endpoint"]
     detail_id = job["payload"]["detail_id"]
-    queue = RequestQueue(connector=mongo_connector)
+    queue = RequestQueue()
     if status_code == 200:
         __save_to_db(endpoint, detail_id, data, status_code)
         queue.delete_entry(job["_id"])
@@ -165,7 +165,7 @@ def __process_job(job):
 
 
 def run():
-    queue = RequestQueue(connector=mongo_connector)
+    queue = RequestQueue()
 
     try:
         while True:
@@ -188,5 +188,5 @@ def run():
     except KeyboardInterrupt:
         print("Keyboard interrupt. Closing queue...")
     finally:
-        mongo_connector.close()
+        queue.connector.close()
         print("Queue closed.")
