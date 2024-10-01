@@ -226,7 +226,7 @@ if MONGODB_URI is None:
         f"@{env.str('MONGODB_HOST', '')}:{env.str('MONGODB_PORT', 27017)}"
     )
 
-__MAXIMUM_TIMEOUT = 60 * 5  # maximum seconds for a task
+__MAXIMUM_TIMEOUT = 60 * 20  # maximum seconds for a task
 Q_CLUSTER = {
     'timeout': __MAXIMUM_TIMEOUT,  # maximum seconds for a task
     'retry': __MAXIMUM_TIMEOUT + 10,  # Seconds after a failed task will be queued again
