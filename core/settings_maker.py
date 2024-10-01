@@ -124,6 +124,7 @@ class SettingsMaker(Encoder):
                     "LINEUP_NOTIFICATION",
                     "TEAM_SCHEDULING_SUGGESTION",
                     "ENEMY_SCHEDULING_SUGGESTION",
+                    "ENEMY_SCHEDULING_SUGGESTION_POLL",
                     "SCHEDULING_CONFIRMATION",
                     "SCOUTING_WEBSITE",
                     "LANGUAGE",

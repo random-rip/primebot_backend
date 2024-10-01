@@ -56,12 +56,19 @@ class BaseMessage:
     def _generate_discord_embed(self) -> discord.Embed:
         raise MessageNotImplementedError()
 
+    def generate_poll(self) -> discord.Poll:
+        with translation.override(self.team.language):
+            return self._generate_poll()
+
+    def _generate_poll(self) -> discord.Poll:
+        raise MessageNotImplementedError()
+
     def generate_discord_embed(self) -> discord.Embed:
         with translation.override(self.team.language):
             return self._generate_discord_embed()
 
     def team_wants_notification(self):
-        return False  # TODO Comment in if it works in Production
+        return False  # TODO Remove if it works in Production
         key = type(self).settings_key
         if key is None:
             return True

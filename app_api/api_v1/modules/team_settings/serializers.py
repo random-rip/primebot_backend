@@ -53,6 +53,10 @@ def team_to_serializer_data(team: Team):
             "value": team.value_of_setting("ENEMY_SCHEDULING_SUGGESTION"),
         },
         {
+            "key": "ENEMY_SCHEDULING_SUGGESTION_POLL",
+            "value": team.value_of_setting("ENEMY_SCHEDULING_SUGGESTION_POLL"),
+        },
+        {
             "key": "TEAM_SCHEDULING_SUGGESTION",
             "value": team.value_of_setting("TEAM_SCHEDULING_SUGGESTION"),
         },
