@@ -5,15 +5,19 @@ import threading
 import traceback
 
 from django.conf import settings
+from django.utils import timezone
+from django_q.models import Schedule
 
 from app_prime_league.models import Player, Team
 from app_prime_league.teams import create_matches
 from bots.message_dispatcher import MessageCreatorJob
 from bots.messages import MatchesOverview
+from bots.messages.team_deleted import TeamDeletedMessage
 from bots.telegram_interface.tg_singleton import send_message_to_devs
 from core.comparers.team_comparer import TeamComparer
 from core.processors.team_processor import TeamDataProcessor
 from core.providers.request_queue_processor import RequestQueueProvider
+from utils.exceptions import TeamWebsite404Exception
 from utils.messages_logger import log_exception
 
 thread_local = threading.local()
@@ -21,10 +25,35 @@ update_logger = logging.getLogger("updates")
 notifications_logger = logging.getLogger("notifications")
 
 
+def delete_team(team: Team):
+    """scheduled function to delete a team"""
+    try:
+        team.delete()
+    except Team.DoesNotExist:  # noqa
+        # Team does not exist anymore
+        pass
+
+
 @log_exception
 def update_team(team: Team):
     try:
         processor = TeamDataProcessor(team.id, provider=RequestQueueProvider(priority=2))
+    except TeamWebsite404Exception:
+        if not team.is_registered():
+            team.delete()
+        else:
+            MessageCreatorJob(
+                msg_class=TeamDeletedMessage,
+                team=team,
+            ).enqueue()
+            Schedule.objects.create(
+                name=f"Delete team {team.id}",
+                schedule_type=Schedule.ONCE,
+                next_run=timezone.now() + timezone.timedelta(hours=1),
+                func="core.updater.teams_check_executor.delete_team",
+                args=team,
+            )
+        return
     except Exception as e:
         update_logger.exception(e)
         return

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-01 22:33+0200\n"
+"POT-Creation-Date: 2024-10-02 17:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -504,6 +504,19 @@ msgid ""
 msgstr ""
 "Spielbestätigung gegen [{enemy_team_tag}]({enemy_team_url}) für [{match_day}]"
 "({match_url}):"
+
+#: .\bots\messages\team_deleted.py:12
+#, python-brace-format
+msgid ""
+"The registered team {team_name} has been deleted from the Prime League system. "
+"All information about this team and the link to the channel will be deleted."
+msgstr ""
+"Das registrierte Team {team_name} wurde aus dem Prime League System gelöscht. "
+"Alle Informationen über dieses Team und der Link zum Channel werden gelöscht."
+
+#: .\bots\messages\team_deleted.py:17
+msgid "Team deleted"
+msgstr "Team gelöscht"
 
 #: .\bots\messages\weekly_notification.py:23
 msgid "The following matches are scheduled this week:"
