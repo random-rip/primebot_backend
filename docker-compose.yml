@@ -19,6 +19,7 @@ services:
       - DJANGO_SECRET_KEY
       - DJANGO_DEBUG
       - DJANGO_ALLOWED_HOSTS
+      - DJANGO_CSRF_TRUSTED_ORIGINS
       - SITE_ID
       - STATIC_ROOT
       - MEDIA_ROOT
@@ -67,6 +68,7 @@ services:
       - DJANGO_SECRET_KEY
       - DJANGO_DEBUG
       - DJANGO_ALLOWED_HOSTS
+      - DJANGO_CSRF_TRUSTED_ORIGINS
       - SITE_ID
       - STATIC_ROOT
       - MEDIA_ROOT
@@ -117,6 +119,7 @@ services:
       - DJANGO_SECRET_KEY
       - DJANGO_DEBUG
       - DJANGO_ALLOWED_HOSTS
+      - DJANGO_CSRF_TRUSTED_ORIGINS
       - SITE_ID
       - STATIC_ROOT
       - MEDIA_ROOT
@@ -154,6 +157,7 @@ services:
       - DJANGO_SECRET_KEY
       - DJANGO_DEBUG
       - DJANGO_ALLOWED_HOSTS
+      - DJANGO_CSRF_TRUSTED_ORIGINS
       - SITE_ID
       - STATIC_ROOT
       - MEDIA_ROOT
@@ -190,6 +194,7 @@ services:
       - DJANGO_SECRET_KEY
       - DJANGO_DEBUG
       - DJANGO_ALLOWED_HOSTS
+      - DJANGO_CSRF_TRUSTED_ORIGINS
       - SITE_ID
       - STATIC_ROOT
       - MEDIA_ROOT
@@ -226,6 +231,7 @@ services:
       - DJANGO_SECRET_KEY
       - DJANGO_DEBUG
       - DJANGO_ALLOWED_HOSTS
+      - DJANGO_CSRF_TRUSTED_ORIGINS
       - SITE_ID
       - STATIC_ROOT
       - MEDIA_ROOT
