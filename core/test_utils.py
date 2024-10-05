@@ -3,7 +3,6 @@ from typing import OrderedDict, Union
 
 import pytz
 from django.db import models
-from django.utils.datetime_safe import datetime as datetime_safe
 from django.utils.timezone import make_aware
 
 from app_prime_league.models import Comment, Match, Player, Split, Team
@@ -245,7 +244,7 @@ class SplitBuilder:
     def __init__(self, group_stage_start: datetime.date = None):
         if group_stage_start is None:
             group_stage_start = datetime(2024, 1, 25).date()
-        if isinstance(group_stage_start, datetime) or isinstance(group_stage_start, datetime_safe):
+        if isinstance(group_stage_start, datetime):
             group_stage_start = group_stage_start.date()
         self.split_id = None
         self.name = None

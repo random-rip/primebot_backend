@@ -44,18 +44,14 @@ admin.site.register(Group, GroupAdmin)
 admin.site.register(Theme, ThemeAdmin)
 
 
+@admin.register(Quicklink)
 class QuicklinkAdmin(admin.ModelAdmin):
     list_display = ('title', 'url', "to_url", 'is_active', 'order')
     list_filter = ('is_active', 'groups')
     search_fields = ('title', 'url')
     filter_horizontal = ('groups',)
 
+    @admin.display(description=_("Links"))
     def to_url(self, obj: Quicklink):
         disabled_attr = 'disabled' if not obj.is_active else ''
         return format_html('<a class="button" href="{}" {}>To Page</a>&nbsp;', obj.url, disabled_attr)
-
-    to_url.allow_tags = True
-    to_url.short_description = _("Links")
-
-
-admin.site.register(Quicklink, QuicklinkAdmin)

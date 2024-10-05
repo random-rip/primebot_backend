@@ -141,7 +141,7 @@ def __save_to_db(endpoint: str, detail_id: int, data, status_code):
 
 
 def __process_job(job):
-    print("Processing job...")
+    print(f"Processing job {job['payload']}...")
     current_attempts = job.get("attempts", 0)
     status_code, data = __call_api(job["payload"])
     endpoint = job["payload"]["endpoint"]
@@ -177,7 +177,6 @@ def run():
                     __process_job(job)
                 except Exception as e:
                     print(f"Failed to process job: {e}")
-                    raise e
             else:
                 print("No jobs in the queue. Waiting...")
 

@@ -196,14 +196,12 @@ class TeamAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at", "updated_at", "discord_registered", "telegram_registered", "prime_league_link")
     search_fields = ['id', 'name', 'team_tag']
 
+    @admin.display(description="Prime League")
     def prime_league_link(self, obj):
         return format_html(
             '<a class="button" href="{}" target="_blank">Zur PL</a>&nbsp;',
             obj.prime_league_link,
         )
-
-    prime_league_link.allow_tags = True
-    prime_league_link.short_description = "Prime League"
 
     @admin.display(boolean=True, description='Discord')
     def discord_registered(self, obj):

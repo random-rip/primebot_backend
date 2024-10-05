@@ -1,7 +1,7 @@
+from datetime import datetime
 from unittest import mock
 
 from django.test import TestCase
-from django.utils.datetime_safe import datetime
 from django.utils.timezone import make_aware
 from django.utils.translation import gettext as _
 from telegram import Chat
