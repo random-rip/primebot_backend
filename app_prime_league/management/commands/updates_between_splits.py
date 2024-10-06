@@ -20,7 +20,7 @@ class Command(UpdateScheduleCommand):
     @staticmethod
     def func():
         start_time = time.time()
-        teams = Team.objects.get_registered_teams().order_by("-updated_at")
+        teams = Team.objects.get_registered_teams().order_by("updated_at")  # oldest updated first
         logger.info(f"Updating {len(teams)} teams...")
         update_teams(
             teams=teams,

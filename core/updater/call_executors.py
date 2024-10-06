@@ -23,7 +23,7 @@ def get_priority_teams_and_matches() -> Tuple[set[Team], set[Match]]:
     """
     now = timezone.now()
     three_weeks_later = now + timedelta(weeks=3)
-    all_matches = Match.current_split_objects.get_matches_to_update().order_by('-updated_at')
+    all_matches = Match.current_split_objects.get_matches_to_update().order_by('updated_at')  # oldest updated first
     high_priority_matches = all_matches.filter(begin__lte=three_weeks_later)
     low_priority_matches = all_matches.filter(begin__gt=three_weeks_later)
 
