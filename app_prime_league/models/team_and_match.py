@@ -241,10 +241,10 @@ class Match(models.Model):
     )  # TODO change to auto_confirmation_at
     has_side_choice = models.BooleanField()  # Team has side choice in first game
     begin = models.DateTimeField(null=True)
-    enemy_lineup = models.ManyToManyField(Player, related_name="matches_as_enemy")
-    team_lineup = models.ManyToManyField(Player, related_name="matches")
+    enemy_lineup = models.ManyToManyField(Player, related_name="matches_as_enemy", blank=True)
+    team_lineup = models.ManyToManyField(Player, related_name="matches", blank=True)
     closed = models.BooleanField(null=True)
-    result = models.CharField(max_length=5, null=True)
+    result = models.CharField(max_length=5, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     split = models.ForeignKey(

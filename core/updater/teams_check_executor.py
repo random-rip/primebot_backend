@@ -66,9 +66,8 @@ def update_team(team: Team):
         "split": processor.get_split(),
     }
 
-    if not Team.objects.filter(id=team.id, **to_update).exists():
-        update_logger.info(f"Updating {team}...")
-        team.update(**to_update)
+    update_logger.info(f"Updating {team}...")
+    team.update(**to_update)
 
     try:
         Player.objects.remove_old_player_relations(processor.get_members(), team)

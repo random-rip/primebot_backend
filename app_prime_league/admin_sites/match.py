@@ -18,6 +18,7 @@ class MatchAdmin(admin.ModelAdmin):
         'updated_at',
     ]
     list_filter = ['match_day', 'match_type', 'created_at', 'updated_at', 'begin', "split"]
+    raw_id_fields = ["team", "enemy_team"]
     readonly_fields = (
         "created_at",
         "updated_at",
