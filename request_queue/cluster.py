@@ -1,3 +1,4 @@
+import logging
 import time
 from datetime import datetime, timedelta
 from enum import Enum
@@ -17,6 +18,8 @@ from utils.exceptions import (
 from .mongo import MongoConnector
 
 __all__ = ["EndpointType", "run", "RequestQueue"]
+
+logger = logging.getLogger(__name__)
 
 
 class EndpointType(Enum):
@@ -55,16 +58,17 @@ class RequestQueue:
     def push(self, endpoint: EndpointType, detail_id, priority: int = 0):
         """Add an item to the queue with a given priority and timestamp."""
         timestamp = datetime.utcnow()
+        payload = {"endpoint": endpoint.value, "detail_id": detail_id}
         document = self.queue_collection.insert_one(
             {
-                "payload": {"endpoint": endpoint.value, "detail_id": detail_id},
+                "payload": payload,
                 "priority": priority,
                 "created_at": timestamp,
                 "attempts": 0,
                 "last_processed": None,
             }
         )
-        print("Job pushed to queue.")
+        print(f"Job with payload {payload} pushed to queue.")
         return str(document.inserted_id)
 
     def pop(self, retry_interval_seconds: int = 5):
@@ -148,6 +152,7 @@ def __process_job(job):
     detail_id = job["payload"]["detail_id"]
     queue = RequestQueue()
     if status_code == 200:
+        print(f"Successfully processed job {job['payload']}!")
         __save_to_db(endpoint, detail_id, data, status_code)
         queue.delete_entry(job["_id"])
         return
