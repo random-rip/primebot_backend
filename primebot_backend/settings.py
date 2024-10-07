@@ -227,13 +227,14 @@ if MONGODB_URI is None:
         f"@{env.str('MONGODB_HOST', '')}:{env.str('MONGODB_PORT', 27017)}"
     )
 
-__MAXIMUM_TIMEOUT = 60 * 20  # maximum seconds for a task
+__MAXIMUM_TIMEOUT = 60 * 20  # 20 minutes for the updater
 Q_CLUSTER = {
-    'timeout': __MAXIMUM_TIMEOUT,  # maximum seconds for a task
+    'timeout': __MAXIMUM_TIMEOUT,
     'retry': __MAXIMUM_TIMEOUT + 10,  # Seconds after a failed task will be queued again
-    'max_attempts': 3,  # Maximum retry attempts for failed tasks
+    'max_attempts': 1,  # Maximum retry attempts for failed tasks
     'save_limit': 10_000,  # Limits the amount of successful tasks save to Django
     "ack_failures": False,
+    "workers": 1,
     "catch_up": False,
     "log_level": "DEBUG",
     "sync": env.bool("MONGODB_SYNC", DEBUG),
@@ -242,6 +243,15 @@ Q_CLUSTER = {
         "serverSelectionTimeoutMS": 5_000,
     },
     "time_zone": "Europe/Berlin",
+    "ALT_CLUSTERS": {
+        "messages-cluster": {
+            "cluster_name": "messages",
+            "timeout": 20,  # 20 seconds
+            "retry": 20 + 10,  # 70 seconds
+            "max_attempts": 3,
+            "workers": 8,
+        },
+    },
 }
 
 REST_FRAMEWORK = {

@@ -1,4 +1,4 @@
-from typing import Callable, Dict, Type
+from typing import Any, Callable, Dict, Type
 
 from app_prime_league.models import Team
 from bots.discord_interface.discord_bot import DiscordBot
@@ -39,4 +39,10 @@ class MessageCreatorJob(Job):
             "msg_class": self.msg_class,
             "team": self.team,
             **self.kwargs,
+        }
+
+    def q_options(self) -> Dict[str, Any]:
+        return {
+            "cluster": "messages",
+            "group": f"create {self.msg_class} {self.team}",
         }
