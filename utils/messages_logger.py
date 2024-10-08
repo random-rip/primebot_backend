@@ -114,6 +114,7 @@ def log_exception(fn):
             result = fn(*args, **kwargs)
             return result
         except Exception as e:
+            print(e)
             logging.getLogger("updates").exception(e)
             # text = f"Error in Updates: <code>{e}</code>\n. See <code>update.log</code> for more information."
             # send_message_to_devs(text) # TODO Nur einen Log senden und nicht 1000 alle 15 Minuten"

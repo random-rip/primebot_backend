@@ -1,6 +1,10 @@
 from utils.utils import string_to_datetime, timestamp_to_datetime
 
 
+class ParseLogException(Exception):
+    pass
+
+
 class BaseLog:
     def __init__(self, timestamp, user_id, details):
         self.timestamp = timestamp_to_datetime(timestamp)
@@ -28,8 +32,17 @@ class BaseLog:
             "lineup_fail": LogLineupFail,
             "change_score_status": LogChangeScoreStatus,
         }
-        Log = log_dict.get(action, None)
-        return None if not Log else Log(timestamp, user_id, details)
+        LogClass = log_dict.get(action, None)
+        if LogClass is None:
+            return
+        try:
+            return LogClass(
+                timestamp=timestamp,
+                user_id=user_id,
+                details=details,
+            )
+        except ParseLogException:
+            return None
 
 
 class BaseMatchIsOverLog(BaseLog):
@@ -120,8 +133,12 @@ class LogScoreReport(BaseLog):
 class LogLineupSubmit(BaseLog):
     def __init__(self, timestamp, user_id, details):
         super().__init__(timestamp, user_id, details)
-        self.details = [(*x.split(":"),) for x in self.details.split(", ")]
-        self.details = [(int(id_), name) for id_, name in self.details]
+        try:
+            self.details = [(*x.split(":"),) for x in self.details.split(", ")]
+            self.details = [(int(id_), name) for id_, name in self.details]
+        except ValueError:
+            # Happened for example with an empty lineup submit
+            raise ParseLogException
 
 
 class LogChangeTime(BaseLog):
