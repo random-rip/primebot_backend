@@ -16,9 +16,9 @@ logger = logging.getLogger("updates")
 
 def get_priority_teams_and_matches() -> Tuple[set[Team], set[Match]]:
     """
-    Iterates over matches within the next 3 Weeks (+ last 2 days) and sort by -updated_at.
-    Then takes the first 1-900 matches and its corresponding teams until the summation of Teams and Matches
-    reaches 900.
+    Iterates over matches within the next 3 Weeks (+ last 2 days) and sort by updated_at.
+    Then takes the first 1-700 matches and its corresponding teams until the summation of Teams and Matches
+    reaches 700.
     :return:
     """
     now = timezone.now()
@@ -27,6 +27,8 @@ def get_priority_teams_and_matches() -> Tuple[set[Team], set[Match]]:
     high_priority_matches = all_matches.filter(begin__lte=three_weeks_later)
     low_priority_matches = all_matches.filter(begin__gt=three_weeks_later)
 
+    MAX_TEAMS = 200
+    MAX_UPDATES = 700
     matches_to_update = set()
     teams_to_update = set()
     update_count = 0
@@ -34,20 +36,20 @@ def get_priority_teams_and_matches() -> Tuple[set[Team], set[Match]]:
     def add_matches_and_teams(matches: list[Match]):
         nonlocal update_count
         for match in matches:
-            if update_count >= 900:
+            if update_count >= MAX_UPDATES:
                 break
             if match not in matches_to_update:
                 matches_to_update.add(match)
                 update_count += 1
-            if match.team not in teams_to_update:
+            if match.team not in teams_to_update and len(teams_to_update) < MAX_TEAMS:
                 teams_to_update.add(match.team)
                 update_count += 1
-            if match.enemy_team not in teams_to_update:
+            if match.enemy_team not in teams_to_update and len(teams_to_update) < MAX_TEAMS:
                 teams_to_update.add(match.enemy_team)
                 update_count += 1
 
     add_matches_and_teams(high_priority_matches)
-    if update_count < 900:
+    if update_count < MAX_UPDATES:
         add_matches_and_teams(low_priority_matches)
     return teams_to_update, matches_to_update
 
@@ -64,3 +66,9 @@ def update_teams_and_matches():
     logger.info(f"Checking {len(uncompleted_matches)} uncompleted matches...")
     update_uncompleted_matches(matches=uncompleted_matches)
     logger.info(f"Checked {len(uncompleted_matches)} uncompleted matches in {time.time() - start_time:.2f} seconds")
+    updated_teams = [x.id for x in teams]
+    updated_matches = [x.match_id for x in uncompleted_matches]
+    return {
+        "TEAMS": updated_teams,
+        "MATCHES": updated_matches,
+    }
