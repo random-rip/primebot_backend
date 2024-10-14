@@ -39,39 +39,25 @@ def team_to_serializer_data(team: Team):
     if team.telegram_id is not None:
         platforms.append("telegram")
 
+    team_settings_keys = [
+        "WEEKLY_MATCH_DAY",
+        "LINEUP_NOTIFICATION",
+        "ENEMY_SCHEDULING_SUGGESTION",
+        "ENEMY_SCHEDULING_SUGGESTION_POLL",
+        "CREATE_DISCORD_EVENT_ON_SCHEDULING_CONFIRMATION",
+        "TEAM_SCHEDULING_SUGGESTION",
+        "SCHEDULING_CONFIRMATION",
+        "NEW_COMMENTS_OF_UNKNOWN_USERS",
+        "NEW_MATCHES_NOTIFICATION",
+    ]
     team_settings = [
         {
-            "key": "WEEKLY_MATCH_DAY",
-            "value": team.value_of_setting("WEEKLY_MATCH_DAY"),
-        },
-        {
-            "key": "LINEUP_NOTIFICATION",
-            "value": team.value_of_setting("LINEUP_NOTIFICATION"),
-        },
-        {
-            "key": "ENEMY_SCHEDULING_SUGGESTION",
-            "value": team.value_of_setting("ENEMY_SCHEDULING_SUGGESTION"),
-        },
-        {
-            "key": "ENEMY_SCHEDULING_SUGGESTION_POLL",
-            "value": team.value_of_setting("ENEMY_SCHEDULING_SUGGESTION_POLL"),
-        },
-        {
-            "key": "TEAM_SCHEDULING_SUGGESTION",
-            "value": team.value_of_setting("TEAM_SCHEDULING_SUGGESTION"),
-        },
-        {
-            "key": "SCHEDULING_CONFIRMATION",
-            "value": team.value_of_setting("SCHEDULING_CONFIRMATION"),
-        },
-        {
-            "key": "NEW_COMMENTS_OF_UNKNOWN_USERS",
-            "value": team.value_of_setting("NEW_COMMENTS_OF_UNKNOWN_USERS"),
-        },
-        {
-            "key": "NEW_MATCHES_NOTIFICATION",
-            "value": team.value_of_setting("NEW_MATCHES_NOTIFICATION"),
-        },
+            "key": key,
+            "value": team.value_of_setting(key),
+        }
+        for key in team_settings_keys
+    ]
+    team_settings += [
         {
             "key": "SCOUTING_WEBSITE",
             "value": team.scouting_website.name if team.scouting_website else settings.DEFAULT_SCOUTING_NAME,

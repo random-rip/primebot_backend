@@ -2,7 +2,7 @@ import logging
 
 import discord
 from asgiref.sync import sync_to_async
-from discord import Forbidden, Intents, Message, NotFound, Object, SyncWebhook
+from discord import Client, Forbidden, Intents, Message, NotFound, Object, SyncWebhook
 from discord.ext.commands import Bot, NoPrivateMessage, errors
 from django.conf import settings
 from django.utils.translation import gettext as _
@@ -39,6 +39,13 @@ class DiscordBot(BotInterface):
 
     def run(self):
         self.bot.run(settings.DISCORD_BOT_KEY)
+
+    @property
+    async def client(self):
+        """"""
+        client = Client(intents=Intents.default())
+        await client.login(settings.DISCORD_BOT_KEY)
+        return client
 
     @staticmethod
     def send_message(*, msg: BaseMessage):
@@ -121,7 +128,7 @@ class _DiscordBotV2(Bot):
         discord_logger.info("Hook setup...")
         await self.load_extensions()
         discord_logger.info("Hooked setup.")
-        # await self.sync_commands()
+        await self.sync_commands()
 
     async def on_message(self, message: Message, /):
         pass

@@ -22,6 +22,8 @@ class MatchAdmin(admin.ModelAdmin):
     readonly_fields = (
         "created_at",
         "updated_at",
+        "enemy_lineup",
+        "team_lineup",
     )
     filter_vertical = (
         "enemy_lineup",

@@ -6,6 +6,7 @@ import requests
 from django.conf import settings
 
 from app_prime_league.models import Match, Player, Team
+from bots.discord_interface.create_event import CreateDiscordEventJob
 from bots.message_dispatcher import MessageCreatorJob
 from bots.messages import (
     EnemyNewTimeSuggestionsNotificationMessage,
@@ -101,6 +102,10 @@ def check_match(match: Match):
             match=match,
             latest_confirmation_log=tmd.latest_confirmation_log,
         ).enqueue()
+        if team.discord_channel_id is not None and team.value_of_setting(
+            "CREATE_DISCORD_EVENT_ON_SCHEDULING_CONFIRMATION", default=False
+        ):
+            CreateDiscordEventJob(match).enqueue()
     if cmp.compare_lineup_confirmation(of_enemy_team=True):
         notifications_logger.info(f"{log_message}Neues Lineup des gegnerischen Teams")
         match.update_enemy_lineup(tmd)
