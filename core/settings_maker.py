@@ -127,6 +127,7 @@ class SettingsMaker(Encoder):
                     "ENEMY_SCHEDULING_SUGGESTION_POLL",
                     "SCHEDULING_CONFIRMATION",
                     "SCOUTING_WEBSITE",
+                    "CREATE_DISCORD_EVENT_ON_SCHEDULING_CONFIRMATION",
                     "LANGUAGE",
                     "NEW_COMMENTS_OF_UNKNOWN_USERS",
                     "NEW_MATCHES_NOTIFICATION",

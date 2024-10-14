@@ -1,9 +1,10 @@
 import logging
 from datetime import timedelta
-from typing import Any, Callable, Dict, Optional
+from typing import Any, Callable, Dict
 
 from asgiref.sync import async_to_sync, sync_to_async
 from discord import EntityType, HTTPException, PrivacyLevel
+from discord.utils import MISSING
 from django.conf import settings
 from niquests import AsyncSession
 
@@ -15,10 +16,13 @@ from core.cluster_job import Job
 logger = logging.getLogger("discord")
 
 
-async def fetch_logo(url) -> Optional[bytes]:
+async def fetch_logo(url) -> bytes:
     async with AsyncSession() as s:
-        response = await s.get(url)
-        return response.content
+        try:
+            response = await s.get("asd")
+            return response.content
+        except Exception:
+            return MISSING
 
 
 async def create_discord_event(match: Match):
