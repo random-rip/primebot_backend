@@ -44,7 +44,6 @@ def team_to_serializer_data(team: Team):
         "LINEUP_NOTIFICATION",
         "ENEMY_SCHEDULING_SUGGESTION",
         "ENEMY_SCHEDULING_SUGGESTION_POLL",
-        "CREATE_DISCORD_EVENT_ON_SCHEDULING_CONFIRMATION",
         "TEAM_SCHEDULING_SUGGESTION",
         "SCHEDULING_CONFIRMATION",
         "NEW_COMMENTS_OF_UNKNOWN_USERS",
@@ -58,6 +57,11 @@ def team_to_serializer_data(team: Team):
         for key in team_settings_keys
     ]
     team_settings += [
+        {
+            "key": "CREATE_DISCORD_EVENT_ON_SCHEDULING_CONFIRMATION",
+            "value": team.value_of_setting("CREATE_DISCORD_EVENT_ON_SCHEDULING_CONFIRMATION", default=False),
+            # Defaults to false instead of true, because its a beta feature
+        },
         {
             "key": "SCOUTING_WEBSITE",
             "value": team.scouting_website.name if team.scouting_website else settings.DEFAULT_SCOUTING_NAME,
