@@ -128,7 +128,7 @@ class _DiscordBotV2(Bot):
         discord_logger.info("Hook setup...")
         await self.load_extensions()
         discord_logger.info("Hooked setup.")
-        await self.sync_commands()
+        # await self.sync_commands() # Comment temporary in, if a new command was added or changed
 
     async def on_message(self, message: Message, /):
         pass
