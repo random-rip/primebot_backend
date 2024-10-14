@@ -90,10 +90,10 @@ class Team(models.Model):
         name = self.name or ""
         return f"{self.id}  - {truncatechars(name, 15)}"
 
-    def value_of_setting(self, setting: str):
+    def value_of_setting(self, setting: str, default=True):
         if setting == "NEW_MATCHES_NOTIFICATION":  # FIXME: remove this line in next version update
             return False
-        return self.settings_dict().get(setting, True)
+        return self.settings_dict().get(setting, default)
 
     def settings_dict(self):
         return dict(self.setting_set.all().values_list("attr_name", "attr_value"))

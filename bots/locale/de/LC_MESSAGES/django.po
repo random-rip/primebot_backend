@@ -380,11 +380,11 @@ msgstr "Sonstige Informationen"
 
 #: .\bots\messages\match_details.py:76
 msgid "You have a choice of sides in the **first** game"
-msgstr "Ihr habt im **ersten** Match Seitenwahl"
+msgstr "Ihr habt im **ersten** Spiel Seitenwahl"
 
 #: .\bots\messages\match_details.py:78
 msgid "You have a choice of sides in the **second** game"
-msgstr "Ihr habt im **zweiten** Match Seitenwahl"
+msgstr "Ihr habt im **zweiten** Spiel Seitenwahl"
 
 #: .\bots\messages\match_details.py:83
 msgid "The following champions are expected to be locked at the scheduled date"
