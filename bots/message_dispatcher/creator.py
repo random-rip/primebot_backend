@@ -44,5 +44,5 @@ class MessageCreatorJob(Job):
     def q_options(self) -> Dict[str, Any]:
         return {
             "cluster": "messages",
-            "group": f"create {self.msg_class} {self.team}",
+            "group": f"create {self.msg_class.__name__} {self.team}",
         }

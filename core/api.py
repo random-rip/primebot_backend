@@ -1,4 +1,4 @@
-import requests
+import niquests
 from django.conf import settings
 
 from utils.exceptions import PrimeLeagueConnectionException
@@ -10,12 +10,12 @@ class PrimeLeagueAPI:
     BASE_URL = settings.GAME_SPORTS_BASE_URL
 
     @classmethod
-    def request(cls, endpoint, request=requests.get, query_params=None, **kwargs):
+    def request(cls, endpoint, request_method=niquests.get, query_params=None, **kwargs):
         """
         :param endpoint:
-        :param request:
+        :param request_method:
         :param query_params: optional list of strings
-        :param kwargs: optional params passed to requests method
+        :param kwargs: optional params passed to niquests method
         :return:
         :raises: PrimeLeagueConnectionException
         """
@@ -30,8 +30,8 @@ class PrimeLeagueAPI:
             "timeout": 10,
         }
         try:
-            response = request(url=path, **{**default_requests_params, **kwargs})
-        except requests.exceptions.ConnectionError:
+            response = request_method(url=path, **{**default_requests_params, **kwargs})
+        except niquests.exceptions.ConnectionError:
             raise PrimeLeagueConnectionException()
         return response
 

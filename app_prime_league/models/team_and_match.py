@@ -144,7 +144,11 @@ class Team(models.Model):
         if lineup and match.enemy_lineup_available:
             qs = match.enemy_lineup
         else:
-            qs = match.get_enemy_team().player_set
+            enemy_team = match.get_enemy_team()
+            if enemy_team.id is None:
+                return ""
+            else:
+                qs = enemy_team.player_set
 
         names = list(qs.get_active_players().values_list("summoner_name", flat=True))
         if self.scouting_website:
@@ -263,58 +267,6 @@ class Match(models.Model):
 
     def __str__(self):
         return f"{self.match_id} of Team {self.team}"
-
-    def set_enemy_team(self, gmd):
-        if self.enemy_team is not None:
-            return
-        self.enemy_team = Team.objects.get_team(team_id=gmd.enemy_team_id)
-        self.save(update_fields=["enemy_team"])
-
-    def update_match_data(self, tmd):
-        self.match_id = tmd.match_id
-        self.match_day = tmd.match_day
-        self.match_type = tmd.match_type
-        self.team = tmd.team
-        self.begin = tmd.begin
-        self.match_begin_confirmed = tmd.match_begin_confirmed
-        self.datetime_until_auto_confirmation = tmd.datetime_until_auto_confirmation
-        self.closed = tmd.closed
-        self.result = tmd.result
-        self.has_side_choice = tmd.has_side_choice
-        self.split = tmd.split
-        self.save()
-
-    def update_match_begin(self, tmd):
-        self.begin = tmd.begin
-        self.match_begin_confirmed = tmd.match_begin_confirmed
-        self.datetime_until_auto_confirmation = tmd.datetime_until_auto_confirmation
-        self.save(update_fields=["begin", "match_begin_confirmed", "datetime_until_auto_confirmation"])
-
-    def update_latest_suggestions(self, md):
-        if md.latest_suggestions is not None:
-            self.suggestion_set.all().delete()
-            for suggestion in md.latest_suggestions:
-                self.suggestion_set.add(Suggestion(match=self, begin=suggestion), bulk=False)
-        self.team_made_latest_suggestion = md.team_made_latest_suggestion
-        self.save()
-
-    def update_enemy_lineup(self, md):
-        if md.enemy_lineup is not None:
-            self.enemy_lineup.clear()
-            players = Player.objects.create_or_update_players(md.enemy_lineup, self.enemy_team)
-            self.enemy_lineup.add(*players)
-            self.save()
-
-    def update_team_lineup(self, tmd):
-        if tmd.team_lineup is not None:
-            self.team_lineup.clear()
-            players = Player.objects.create_or_update_players(tmd.team_lineup, self.team)
-            self.team_lineup.add(*players)
-            self.save()
-
-    def update_comments(self, tmd):
-        for i in tmd.comments:
-            Comment.objects.update_or_create(match=self, comment_id=i.comment_id, defaults={**i.comment_as_dict()})
 
     @property
     def enemy_lineup_available(self):

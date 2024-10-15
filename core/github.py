@@ -2,7 +2,7 @@ import logging
 from dataclasses import dataclass
 from typing import Union
 
-import requests
+import niquests
 from django.conf import settings
 from django.core.cache import cache
 
@@ -42,7 +42,7 @@ class GitHub:
         headers = {}
         if settings.GITHUB_API_TOKEN is not None:
             headers["Authorization"] = "token " + settings.GITHUB_API_TOKEN
-        response = requests.get(url, headers=headers)
+        response = niquests.get(url, headers=headers)
         if response.status_code == 200:
             return response.json()
         if response.status_code == 403:

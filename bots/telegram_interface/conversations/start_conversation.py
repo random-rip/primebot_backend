@@ -4,7 +4,6 @@ from telegram.error import BadRequest
 from telegram.ext import CallbackContext, ConversationHandler
 
 from app_prime_league.models import ScoutingWebsite, Team
-from app_prime_league.teams import register_team
 from bots.messages import MatchesOverview
 from bots.telegram_interface.commands.single_commands import set_photo
 from bots.telegram_interface.keyboards import boolean_keyboard
@@ -152,6 +151,8 @@ def team_registration(update: Update, context: CallbackContext):
         new_team_old_chat_id = Team.objects.get_team(team_id).telegram_id
 
     try:
+        from app_prime_league.teams import register_team
+
         new_team = register_team(team_id=team_id, telegram_id=chat_id)
 
     except TeamWebsite404Exception:

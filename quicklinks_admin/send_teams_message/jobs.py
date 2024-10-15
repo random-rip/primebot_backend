@@ -1,5 +1,5 @@
 import logging
-from typing import Callable
+from typing import Any, Callable, Dict
 
 from app_prime_league.models import Team
 from bots.message_dispatcher import MessageCreatorJob
@@ -73,4 +73,10 @@ class EnqueueMessagesJob(Job):
         return {
             "message_template": self.message_template,
             "team_ids": self.team_ids,
+        }
+
+    def q_options(self) -> Dict[str, Any]:
+        return {
+            "cluster": "messages",
+            "group": "enqueue_messages",
         }
