@@ -40,7 +40,7 @@ class TeamManager(models.Manager):
             Q(closed=False) | Q(closed__isnull=True) | Q(closed=True, begin__gte=timezone.now() - timedelta(days=2))
         )
         enemy_teams = Team.objects.filter(matches_as_enemy_team__in=matches)
-        return teams.union(enemy_teams).order_by("id")
+        return teams.union(enemy_teams)
 
     def get_team(self, team_id):
         return self.model.objects.filter(id=team_id).first()
