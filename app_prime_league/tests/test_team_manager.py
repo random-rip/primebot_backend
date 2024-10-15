@@ -33,7 +33,7 @@ class GetTeamsToUpdateTest(TestCase, CompareModelObjectsMixin):
 
     def test_simple(self):
         MatchBuilder(1, team_1=self.team).set_team_2(self.enemy_team).build()
-        result = Team.objects.get_teams_to_update()
+        result = Team.objects.get_teams_to_update().order_by("id")
         expected = [
             {"name": "Team registered"},
             {"name": "Team Enemy"},
@@ -42,7 +42,7 @@ class GetTeamsToUpdateTest(TestCase, CompareModelObjectsMixin):
 
     def test_closed_match(self):
         MatchBuilder(1, team_1=self.team).set_team_2(self.enemy_team).set_closed().build()
-        result = Team.objects.get_teams_to_update()
+        result = Team.objects.get_teams_to_update().order_by("id")
         expected = [
             {"name": "Team registered"},
         ]
@@ -52,7 +52,7 @@ class GetTeamsToUpdateTest(TestCase, CompareModelObjectsMixin):
         MatchBuilder(1, team_1=self.team).set_team_2(self.enemy_team).set_closed().set_match_day(1).build()
         with mock.patch("django.utils.timezone.now") as mock_now:
             mock_now.return_value = make_aware(datetime(2024, 2, 7))
-            result = Team.objects.get_teams_to_update()
+            result = Team.objects.get_teams_to_update().order_by("id")
         expected = [
             {"name": "Team registered"},
         ]
@@ -62,7 +62,7 @@ class GetTeamsToUpdateTest(TestCase, CompareModelObjectsMixin):
         MatchBuilder(1, team_1=self.team).set_team_2(self.enemy_team).set_closed().set_match_day(1).build()
         with mock.patch("django.utils.timezone.now") as mock_now:
             mock_now.return_value = make_aware(datetime(2024, 2, 6))
-            result = Team.objects.get_teams_to_update()
+            result = Team.objects.get_teams_to_update().order_by("id")
         expected = [
             {"name": "Team registered"},
             {"name": "Team Enemy"},

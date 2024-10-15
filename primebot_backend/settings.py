@@ -295,6 +295,11 @@ if not DEBUG:
                 'formatter': 'to_console',
                 'class': 'logging.StreamHandler',
             },
+            "portainer": {
+                'level': "INFO",
+                'formatter': 'to_console',
+                'class': 'logging.StreamHandler',
+            },
             'django': {
                 'level': "INFO",
                 'class': 'logging.handlers.WatchedFileHandler',
@@ -330,30 +335,30 @@ if not DEBUG:
         },
         'loggers': {
             'django': {
-                'handlers': ['django', 'console'],
+                'handlers': ['django', 'portainer'],
                 'level': "WARNING",
                 'propagate': False,
             },
             'notifications': {
-                'handlers': ['notifications', 'console'],
+                'handlers': ['notifications', 'portainer'],
                 'level': "INFO",
                 'propagate': False,
             },
             'commands': {
                 'handlers': [
                     'commands',
-                    'console',
+                    'portainer',
                 ],
                 'level': "INFO",
                 'propagate': False,
             },
             'updates': {
-                'handlers': ['updates'],
+                'handlers': ['updates', 'portainer'],
                 'level': "INFO",
                 'propagate': False,
             },
             'discord': {
-                'handlers': ['discord'],
+                'handlers': ['discord', "portainer"],
                 'level': "INFO",
                 'propagate': False,
             },
