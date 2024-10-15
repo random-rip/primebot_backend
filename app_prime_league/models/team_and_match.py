@@ -241,7 +241,7 @@ class Match(models.Model):
     datetime_until_auto_confirmation = models.DateTimeField(
         null=True, blank=True
     )  # TODO change to auto_confirmation_at
-    has_side_choice = models.BooleanField()  # Team has side choice in first game
+    has_side_choice = models.BooleanField(null=True)  # Team has side choice in first game
     begin = models.DateTimeField(null=True)
     enemy_lineup = models.ManyToManyField(Player, related_name="matches_as_enemy", blank=True)
     team_lineup = models.ManyToManyField(Player, related_name="matches", blank=True)
