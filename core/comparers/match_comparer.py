@@ -220,9 +220,9 @@ class MatchComparer:
         self.match.match_day = self.tmd.match_day
         self.match.match_type = self.tmd.match_type
         self.match.team = self.tmd.team
-        # self.match.begin = self.tmd.begin #these lines should be updated in the dedicated comparers if necessary
-        # self.match.match_begin_confirmed = self.tmd.match_begin_confirmed
-        # self.match_old.datetime_until_auto_confirmation = self.match_new.datetime_until_auto_confirmation
+        self.match.begin = self.tmd.begin  # these lines should be updated in the dedicated comparers if necessary
+        self.match.match_begin_confirmed = self.tmd.match_begin_confirmed
+        self.match.datetime_until_auto_confirmation = self.tmd.datetime_until_auto_confirmation
         self.match.closed = self.tmd.closed
         self.match.result = self.tmd.result
         self.match.has_side_choice = self.tmd.has_side_choice
