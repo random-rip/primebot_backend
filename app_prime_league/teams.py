@@ -6,11 +6,11 @@ from typing import Union
 
 from django.conf import settings
 
-from app_prime_league.models import Match, Player, Suggestion, Team
+from app_prime_league.models import Match, Team
 from bots.telegram_interface.tg_singleton import send_message_to_devs
 from core.processors.team_processor import TeamDataProcessor
 from core.providers.request_queue_processor import RequestQueueProvider
-from core.temporary_match_data import TemporaryMatchData
+from core.updater.matches_check_executor import update_match
 from utils.messages_logger import log_exception
 
 
@@ -65,74 +65,11 @@ def create_match_and_enemy_team(team: Team, match_id: int):
     :param team: Primary Team of the match
     :param match_id: Match ID
     """
-    tmd = TemporaryMatchData.create_from_website(
-        team=team, match_id=match_id, provider=RequestQueueProvider(priority=0)
-    )
-    match, created = Match.objects.update_or_create(
+    match, created = Match.objects.get_or_create(
         match_id=match_id,
         team=team,
-        defaults={
-            "match_id": tmd.match_id,
-            "match_day": tmd.match_day,
-            "match_type": tmd.match_type,
-            "team": tmd.team,
-            "begin": tmd.begin,
-            "team_made_latest_suggestion": tmd.team_made_latest_suggestion,
-            "match_begin_confirmed": tmd.match_begin_confirmed,
-            "datetime_until_auto_confirmation": tmd.datetime_until_auto_confirmation,
-            "closed": tmd.closed,
-            "result": tmd.result,
-            "has_side_choice": tmd.has_side_choice,
-            "split": tmd.split,
-        },
     )
-
-    # Create Team Lineup
-    if tmd.team_lineup is not None:
-        players = Player.objects.create_or_update_players(tmd.team_lineup, team=team)
-        match.team_lineup.add(*players)
-
-    # Create Enemy Team
-    if tmd.enemy_team_id is not None:
-        processor = TeamDataProcessor(
-            team_id=tmd.enemy_team_id,
-            provider=RequestQueueProvider(priority=0),
-        )  # TODO duplicate code
-        enemy_team, created = Team.objects.update_or_create(
-            id=tmd.enemy_team_id,
-            defaults={
-                "name": processor.get_team_name(),
-                "team_tag": processor.get_team_tag(),
-                "division": processor.get_current_division(),
-                "split": processor.get_split(),
-            },
-        )
-        match.enemy_team = enemy_team
-
-        # Create Enemy Players
-        Player.objects.remove_old_player_relations(processor.get_members(), team)
-        Player.objects.create_or_update_players(processor.get_members(), enemy_team)
-
-    # Create Enemy Lineup
-    # TODO: duplicate code, refactor to use match.update_enemy_lineup(md=tmd)
-    match.update_enemy_lineup(md=tmd)
-    if tmd.enemy_lineup is not None:
-        match.enemy_lineup.clear()
-        players = Player.objects.filter(id__in=[x[0] for x in tmd.enemy_lineup])
-        match.enemy_lineup.add(*players)
-
-    # Create Suggestions
-    # TODO: duplicate code, refactor to use match.update_latest_suggestions(md=tmd)
-    if tmd.latest_suggestions is not None:
-        match.suggestion_set.all().delete()
-        for suggestion in tmd.latest_suggestions:
-            match.suggestion_set.add(Suggestion(match=match, begin=suggestion), bulk=False)
-    match.team_made_latest_suggestion = match.team_made_latest_suggestion
-
-    # Create Comments
-    match.update_comments(tmd)
-
-    match.save()
+    update_match(match, notify=False, priority=0)
 
 
 def create_matches(match_ids: list[int], team: Team, use_concurrency=not settings.DEBUG):

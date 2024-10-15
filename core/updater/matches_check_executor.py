@@ -2,21 +2,18 @@ import concurrent.futures
 import logging
 import threading
 
-import requests
+import niquests
 from django.conf import settings
 
-from app_prime_league.models import Match, Player, Team
-from bots.discord_interface.create_event import CreateDiscordEventJob
-from bots.message_dispatcher import MessageCreatorJob
-from bots.messages import (
-    EnemyNewTimeSuggestionsNotificationMessage,
-    NewCommentsNotificationMessage,
-    NewLineupNotificationMessage,
-    OwnNewTimeSuggestionsNotificationMessage,
-    ScheduleConfirmationNotification,
+from app_prime_league.models import Match
+from core.comparers.match_comparer import (
+    LineupConfirmationComparer,
+    MatchComparer,
+    NewCommentsComparer,
+    NewEnemyTeamComparer,
+    NewSuggestionComparer,
+    SchedulingConfirmationComparer,
 )
-from core.comparers.match_comparer import MatchComparer
-from core.processors.team_processor import TeamDataProcessor
 from core.providers.request_queue_processor import RequestQueueProvider
 from core.temporary_match_data import TemporaryMatchData
 from utils.exceptions import Match404Exception
@@ -29,12 +26,12 @@ notifications_logger = logging.getLogger("notifications")
 
 def get_session():
     if not hasattr(thread_local, "session"):
-        thread_local.session = requests.Session()
+        thread_local.session = niquests.Session()
     return thread_local.session
 
 
 @log_exception
-def check_match(match: Match):
+def update_match(match: Match, notify=True, priority=2):
     """
     Checks if a match has new data on the website, updates the match accordingly and sends notifications.
 
@@ -47,14 +44,14 @@ def check_match(match: Match):
     - are new comments. If so, a notification is sent.
 
     :param match: Match that will be updated
+    :param priority: Priority new data will be fetched.
+    :param notify: If True, notifications will be sent.
     """
-    match_id = match.match_id
-    team = match.team
     try:
         tmd = TemporaryMatchData.create_from_website(
-            team=team,
-            match_id=match_id,
-            provider=RequestQueueProvider(priority=2),
+            team=match.team,
+            match_id=match.match_id,
+            provider=RequestQueueProvider(priority=priority),
         )
     except Match404Exception as e:
         match.delete()
@@ -64,70 +61,33 @@ def check_match(match: Match):
         update_logger.exception(e)
         return
 
-    cmp = MatchComparer(match, tmd)
-    # TODO: Nice to have: Eventuell nach einem comparing und updaten mit match.refresh_from_db() arbeiten
-    log_message = f"New notification for {match_id=} ({team=}): "
-    update_logger.info(f"Checking {match_id=} ({team=})...")
-    if cmp.compare_new_enemy_team():
-        processor = TeamDataProcessor(
-            team_id=tmd.enemy_team_id,
-            provider=RequestQueueProvider(priority=2),
-        )
-        enemy_team, created = Team.objects.update_or_create(
-            id=tmd.enemy_team_id,
-            defaults={
-                "name": processor.get_team_name(),
-                "team_tag": processor.get_team_tag(),
-                "division": processor.get_current_division(),
-                "split": processor.get_split(),
-            },
-        )
-        match.enemy_team = enemy_team
-        Player.objects.remove_old_player_relations(processor.get_members(), team)
-        Player.objects.create_or_update_players(processor.get_members(), enemy_team)
-    if cmp.compare_new_suggestion(of_enemy_team=True):
-        notifications_logger.info(f"{log_message}Neuer Terminvorschlag der Gegner")
-        match.update_latest_suggestions(tmd)
-        MessageCreatorJob(msg_class=EnemyNewTimeSuggestionsNotificationMessage, team=match.team, match=match).enqueue()
-    if cmp.compare_new_suggestion():
-        notifications_logger.info(f"{log_message}Eigener neuer Terminvorschlag")
-        match.update_latest_suggestions(tmd)
-        MessageCreatorJob(msg_class=OwnNewTimeSuggestionsNotificationMessage, team=match.team, match=match).enqueue()
-    if cmp.compare_scheduling_confirmation():
-        notifications_logger.info(f"{log_message}Termin wurde festgelegt")
-        match.update_match_begin(tmd)
-        MessageCreatorJob(
-            msg_class=ScheduleConfirmationNotification,
-            team=match.team,
-            match=match,
-            latest_confirmation_log=tmd.latest_confirmation_log,
-        ).enqueue()
-        if team.discord_channel_id is not None and team.value_of_setting(
-            "CREATE_DISCORD_EVENT_ON_SCHEDULING_CONFIRMATION", default=False
-        ):
-            CreateDiscordEventJob(match).enqueue()
-    if cmp.compare_lineup_confirmation(of_enemy_team=True):
-        notifications_logger.info(f"{log_message}Neues Lineup des gegnerischen Teams")
-        match.update_enemy_lineup(tmd)
-        MessageCreatorJob(msg_class=NewLineupNotificationMessage, team=match.team, match=match).enqueue()
+    comparer = MatchComparer(
+        match=match,
+        tmd=tmd,
+        comparers=[
+            NewEnemyTeamComparer(match=match, tmd=tmd, priority=priority),
+            NewSuggestionComparer(match=match, tmd=tmd, of_enemy_team=True),
+            NewSuggestionComparer(match=match, tmd=tmd, of_enemy_team=False),
+            SchedulingConfirmationComparer(match=match, tmd=tmd),
+            LineupConfirmationComparer(match=match, tmd=tmd, of_enemy_team=True),
+            LineupConfirmationComparer(match=match, tmd=tmd, of_enemy_team=False),
+            NewCommentsComparer(match=match, tmd=tmd),
+        ],
+    )
+    comparer.run()
+    comparer.update()
 
-    if cmp.compare_lineup_confirmation(of_enemy_team=False):
-        notifications_logger.info(f"Silenced notification for {match_id=} ({team=}): Neues eigenes Lineup")
-        match.update_team_lineup(tmd)
-    if comment_ids := cmp.compare_new_comments():
-        notifications_logger.info(f"{log_message}Neue Kommentare: {comment_ids}")
-        match.update_comments(tmd)
-        MessageCreatorJob(
-            msg_class=NewCommentsNotificationMessage, team=match.team, match=match, new_comment_ids=comment_ids
-        ).enqueue()
+    if not notify:
+        notifications_logger.info(f"Match {match} updated, but notifications are disabled.")
+        return
 
-    match.update_match_data(tmd)
+    comparer.notify()
 
 
 def update_uncompleted_matches(matches, use_concurrency=not settings.DEBUG):
     if use_concurrency:
         with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
-            executor.map(check_match, matches)
+            executor.map(update_match, matches)
     else:
         for i in matches:
-            check_match(match=i)
+            update_match(match=i)

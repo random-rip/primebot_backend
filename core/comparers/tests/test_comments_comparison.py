@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 from app_prime_league.models import Match, Player, Team
-from core.comparers.match_comparer import MatchComparer
+from core.comparers.match_comparer import NewCommentsComparer
 from core.test_utils import create_comment, create_temporary_comment, create_temporary_match_data
 
 
@@ -37,8 +37,8 @@ class CompareCommentsTest(TestCase):
             team=self.team_a,
             enemy_team=self.team_b,
         )
-        cp = MatchComparer(match_old=match, match_new=md)
-        self.assertFalse(cp.compare_new_comments(), "No comments, but new comments were recognized")
+        cp = NewCommentsComparer(match=match, tmd=md)
+        self.assertFalse(cp.compare(), "No comments, but new comments were recognized")
 
     def test_existing_comments(self):
         match = Match.objects.create(
@@ -54,8 +54,8 @@ class CompareCommentsTest(TestCase):
         md = create_temporary_match_data(
             team=self.team_a, enemy_team=self.team_b, comments=[create_temporary_comment(comment_id=1, user_id=1)]
         )
-        cp = MatchComparer(match_old=match, match_new=md)
-        self.assertFalse(cp.compare_new_comments(), "1 comment exists, but new comments were recognized")
+        cp = NewCommentsComparer(match=match, tmd=md)
+        self.assertFalse(cp.compare(), "1 comment exists, but new comments were recognized")
 
     def test_new_comment_of_team(self):
         match = Match.objects.create(
@@ -71,8 +71,8 @@ class CompareCommentsTest(TestCase):
         md = create_temporary_match_data(
             team=self.team_a, enemy_team=self.team_b, comments=[create_temporary_comment(comment_id=1, user_id=1)]
         )
-        cp = MatchComparer(match_old=match, match_new=md)
-        self.assertFalse(cp.compare_new_comments(), "New comment of members, but recognized as new")
+        cp = NewCommentsComparer(match=match, tmd=md)
+        self.assertFalse(cp.compare(), "New comment of members, but recognized as new")
 
     def test_new_comment_of_enemy_team(self):
         match = Match.objects.create(
@@ -88,8 +88,8 @@ class CompareCommentsTest(TestCase):
         md = create_temporary_match_data(
             team=self.team_a, enemy_team=self.team_b, comments=[create_temporary_comment(comment_id=10, user_id=10)]
         )
-        cp = MatchComparer(match_old=match, match_new=md)
-        self.assertListEqual(cp.compare_new_comments(), [10], "New comment, but not recognized")
+        cp = NewCommentsComparer(match=match, tmd=md)
+        self.assertListEqual(cp.compare(), [10], "New comment, but not recognized")
 
     def test_new_comment_of_random_user_id(self):
         match = Match.objects.create(
@@ -105,8 +105,8 @@ class CompareCommentsTest(TestCase):
         md = create_temporary_match_data(
             team=self.team_a, enemy_team=self.team_b, comments=[create_temporary_comment(comment_id=100, user_id=100)]
         )
-        cp = MatchComparer(match_old=match, match_new=md)
-        self.assertListEqual(cp.compare_new_comments(), [100], "New comment, but not recognized")
+        cp = NewCommentsComparer(match=match, tmd=md)
+        self.assertListEqual(cp.compare(), [100], "New comment, but not recognized")
 
     def test_deleted_comment_of_team(self):
         match = Match.objects.create(
@@ -121,8 +121,8 @@ class CompareCommentsTest(TestCase):
 
         create_comment(comment_id=1, user_id=1, match=match)
         md = create_temporary_match_data(team=self.team_a, enemy_team=self.team_b, comments=[])
-        cp = MatchComparer(match_old=match, match_new=md)
-        self.assertFalse(cp.compare_new_comments(), "No comment, but not recognized")
+        cp = NewCommentsComparer(match=match, tmd=md)
+        self.assertFalse(cp.compare(), "No comment, but not recognized")
 
     def test_deleted_comment_of_enemy_team(self):
         match = Match.objects.create(
@@ -137,8 +137,8 @@ class CompareCommentsTest(TestCase):
 
         create_comment(comment_id=10, user_id=10, match=match)
         md = create_temporary_match_data(team=self.team_a, enemy_team=self.team_b, comments=[])
-        cp = MatchComparer(match_old=match, match_new=md)
-        self.assertFalse(cp.compare_new_comments(), "No comment, but not recognized")
+        cp = NewCommentsComparer(match=match, tmd=md)
+        self.assertFalse(cp.compare(), "No comment, but not recognized")
 
     def test_deleted_comment_of_random_user_id(self):
         match = Match.objects.create(
@@ -153,8 +153,8 @@ class CompareCommentsTest(TestCase):
 
         create_comment(comment_id=100, user_id=100, match=match)
         md = create_temporary_match_data(team=self.team_a, enemy_team=self.team_b, comments=[])
-        cp = MatchComparer(match_old=match, match_new=md)
-        self.assertFalse(cp.compare_new_comments(), "No comment, but not recognized")
+        cp = NewCommentsComparer(match=match, tmd=md)
+        self.assertFalse(cp.compare(), "No comment, but not recognized")
 
     def test_multiple_new_comments(self):
         match = Match.objects.create(
@@ -176,8 +176,8 @@ class CompareCommentsTest(TestCase):
                 create_temporary_comment(comment_id=10, user_id=10),
             ],
         )
-        cp = MatchComparer(match_old=match, match_new=md)
-        self.assertListEqual(cp.compare_new_comments(), [10, 100], "Expected 2 new comments")
+        cp = NewCommentsComparer(match=match, tmd=md)
+        self.assertListEqual(cp.compare(), [10, 100], "Expected 2 new comments")
 
     def test_multiple_deletions(self):
         match = Match.objects.create(
@@ -204,8 +204,8 @@ class CompareCommentsTest(TestCase):
                 create_temporary_comment(comment_id=10, user_id=10),
             ],
         )
-        cp = MatchComparer(match_old=match, match_new=md)
-        self.assertFalse(cp.compare_new_comments(), "No new comments expected")
+        cp = NewCommentsComparer(match=match, tmd=md)
+        self.assertFalse(cp.compare(), "No new comments expected")
 
     def test_multiple_adds_and_deletions(self):
         match = Match.objects.create(
@@ -232,8 +232,8 @@ class CompareCommentsTest(TestCase):
                 create_temporary_comment(comment_id=2, user_id=1),
             ],
         )
-        cp = MatchComparer(match_old=match, match_new=md)
-        self.assertListEqual(cp.compare_new_comments(), [11, 100], "1 new comment expected")
+        cp = NewCommentsComparer(match=match, tmd=md)
+        self.assertListEqual(cp.compare(), [11, 100], "1 new comment expected")
 
     def test_2_registered_teams_of_match(self):
         match1 = Match.objects.create(
@@ -263,15 +263,15 @@ class CompareCommentsTest(TestCase):
                 create_temporary_comment(comment_id=10, user_id=10),
             ],
         )
-        cp = MatchComparer(match_old=match1, match_new=md)
-        self.assertListEqual(cp.compare_new_comments(), [10], "1 new comment expected")
+        cp = NewCommentsComparer(match=match1, tmd=md)
+        self.assertListEqual(cp.compare(), [10], "1 new comment expected")
 
-        match1.update_comments(md)
+        cp.update()
 
-        cp = MatchComparer(match_old=match2, match_new=md)
-        self.assertListEqual(cp.compare_new_comments(), [1], "1 new comment expected")
+        cp = NewCommentsComparer(match=match2, tmd=md)
+        self.assertListEqual(cp.compare(), [1], "1 new comment expected")
 
-        match2.update_comments(md)
+        cp.update()
 
-        cp = MatchComparer(match_old=match1, match_new=md)
-        self.assertFalse(cp.compare_new_comments(), "No comment expected")
+        cp = NewCommentsComparer(match=match1, tmd=md)
+        self.assertFalse(cp.compare(), "No comment expected")

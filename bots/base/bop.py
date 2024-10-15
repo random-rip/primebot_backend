@@ -1,7 +1,7 @@
 import random
 from abc import abstractmethod
 
-import requests
+import niquests
 
 from bots.telegram_interface.tg_singleton import send_message_to_devs
 
@@ -23,7 +23,7 @@ class CatAPI(AnimalAPI):
 class DogAPI(AnimalAPI):
     @classmethod
     def get_url(cls):
-        contents = requests.get('https://api.thedogapi.com/v1/images/search?mime_types=gif').json()
+        contents = niquests.get('https://api.thedogapi.com/v1/images/search?mime_types=gif').json()
         url = contents[0]['url']
         return url
 
