@@ -40,8 +40,8 @@ class GetPriorityTeamsAndMatchesTest(TestCase):
         with patch("app_prime_league.management.commands.updates_in_group_stage_and_playoffs.MAX_UPDATES", 3):
             teams, matches = get_priority_teams_and_matches()
 
-        self.assertEqual(teams, [enemy_team2, enemy_team1, registered_team])
-        self.assertEqual(matches, [])
+        self.assertSetEqual(teams, {enemy_team2, enemy_team1, registered_team})
+        self.assertSetEqual(matches, set())
 
     @patch("app_prime_league.management.commands.updates_in_group_stage_and_playoffs.timezone.now")
     def test_update_all_matches(self, mock_now):
@@ -70,8 +70,8 @@ class GetPriorityTeamsAndMatchesTest(TestCase):
 
         teams, matches = get_priority_teams_and_matches()
 
-        self.assertEqual(set(teams), set())
-        self.assertEqual(set(matches), {match1, match2})
+        self.assertSetEqual(teams, set())
+        self.assertSetEqual(matches, {match1, match2})
 
     @patch("app_prime_league.management.commands.updates_in_group_stage_and_playoffs.timezone.now")
     def test_update_priority_teams_and_matches(self, mock_now):
@@ -101,8 +101,8 @@ class GetPriorityTeamsAndMatchesTest(TestCase):
         with patch("app_prime_league.management.commands.updates_in_group_stage_and_playoffs.MAX_UPDATES", 3):
             teams, matches = get_priority_teams_and_matches()
 
-        self.assertEqual(teams, [registered_team, enemy_team1])
-        self.assertEqual(matches, [match1])
+        self.assertSetEqual(teams, {registered_team, enemy_team1})
+        self.assertSetEqual(matches, {match1})
 
     @patch("app_prime_league.management.commands.updates_in_group_stage_and_playoffs.timezone.now")
     def test_update_no_duplicates(self, mock_now):
@@ -149,5 +149,5 @@ class GetPriorityTeamsAndMatchesTest(TestCase):
         with patch("app_prime_league.management.commands.updates_in_group_stage_and_playoffs.MAX_UPDATES", 5):
             teams, matches = get_priority_teams_and_matches()
 
-        self.assertEqual(teams, [registered_team, enemy_team1])
-        self.assertEqual(matches, [match1, match2, match3])
+        self.assertSetEqual(teams, {registered_team, enemy_team1})
+        self.assertSetEqual(matches, {match1, match2, match3})

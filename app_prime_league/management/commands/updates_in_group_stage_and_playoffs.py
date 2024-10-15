@@ -16,7 +16,7 @@ MAX_TEAMS = 200
 MAX_UPDATES = 700
 
 
-def get_priority_teams_and_matches() -> Tuple[list[Team], list[Match]]:
+def get_priority_teams_and_matches() -> Tuple[set[Team], set[Match]]:
     """
     Retrieve relevant teams and matches to update.
     If it is between 0 and 2 AM on a Monday, Thursday or Sunday, all teams are updated (max 700).
@@ -33,13 +33,13 @@ def get_priority_teams_and_matches() -> Tuple[list[Team], list[Match]]:
         # If the time is between 0 and 2 AM on a Monday, Thursday or Sunday, we update all teams for potential
         # new matches and general team updates like the name
         teams_to_update = Team.objects.get_teams_to_update().order_by('updated_at')[:MAX_UPDATES]
-        return list(teams_to_update), []
+        return set(teams_to_update), set()
 
     if 2 <= now.hour < 5:
         # If the time is between 3 and 5 AM on a Monday, we update all matches
         logger.info("It is between 3 and 5 AM: Updating all matches...")
         matches_to_update = Match.current_split_objects.get_matches_to_update().order_by('updated_at')[:MAX_UPDATES]
-        return [], list(matches_to_update)
+        return set(), set(matches_to_update)
 
     logger.info("It is not between 3 and 5 AM: Updating priority matches and teams...")
     update_count = 0
@@ -72,7 +72,7 @@ def get_priority_teams_and_matches() -> Tuple[list[Team], list[Match]]:
     add_matches_and_teams(high_priority_matches)
     add_matches_and_teams(low_priority_matches)
 
-    return list(teams_to_update), list(matches_to_update)
+    return teams_to_update, matches_to_update
 
 
 class Command(UpdateScheduleCommand):
