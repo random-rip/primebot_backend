@@ -3,10 +3,12 @@ from abc import abstractmethod
 from typing import Union
 
 from app_prime_league.models import Comment, Match, Player, Suggestion, Team
+from bots.discord_interface.create_event import CreateDiscordEventJob
 from bots.message_dispatcher.creator import MessageCreatorJob
 from bots.messages import (
     EnemyNewTimeSuggestionsNotificationMessage,
     NewCommentsNotificationMessage,
+    OwnNewTimeSuggestionsNotificationMessage,
     ScheduleConfirmationNotification,
 )
 from core.processors.team_processor import TeamDataProcessor
@@ -68,11 +70,14 @@ class NewSuggestionComparer(Comparer):
         self.match.team_made_latest_suggestion = self.tmd.team_made_latest_suggestion
 
     def notify(self):
-        msg = "Neuer Terminvorschlag der Gegner" if self.of_enemy_team else "Eigener neuer Terminvorschlag"
-        self.log(msg)
-        MessageCreatorJob(
-            msg_class=EnemyNewTimeSuggestionsNotificationMessage, team=self.match.team, match=self.match
-        ).enqueue()
+        if self.of_enemy_team:
+            log_msg = "Neuer Terminvorschlag der Gegner"
+            msg_class = EnemyNewTimeSuggestionsNotificationMessage
+        else:
+            log_msg = "Eigener neuer Terminvorschlag"
+            msg_class = OwnNewTimeSuggestionsNotificationMessage
+        self.log(log_msg)
+        MessageCreatorJob(msg_class=msg_class, team=self.match.team, match=self.match).enqueue()
 
 
 class SchedulingConfirmationComparer(Comparer):
@@ -92,6 +97,10 @@ class SchedulingConfirmationComparer(Comparer):
             match=self.match,
             latest_confirmation_log=self.tmd.latest_confirmation_log,
         ).enqueue()
+        if self.match.team.discord_channel_id is not None and self.match.team.value_of_setting(
+            "CREATE_DISCORD_EVENT_ON_SCHEDULING_CONFIRMATION", default=False
+        ):
+            CreateDiscordEventJob(self.match).enqueue()
 
 
 class LineupConfirmationComparer(Comparer):
