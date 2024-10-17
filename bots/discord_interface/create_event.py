@@ -18,9 +18,10 @@ logger = logging.getLogger("discord")
 async def fetch_logo(url) -> bytes:
     async with AsyncSession() as s:
         try:
-            response = await s.get("asd")
+            response = await s.get(url)
             return response.content
-        except Exception:
+        except Exception as e:
+            logger.exception(f"Could not fetch logo from {url}", e)
             return MISSING
 
 
