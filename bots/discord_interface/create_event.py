@@ -5,7 +5,6 @@ from typing import Any, Callable, Dict
 from asgiref.sync import async_to_sync, sync_to_async
 from discord import EntityType, HTTPException, PrivacyLevel
 from discord.utils import MISSING
-from django.conf import settings
 from niquests import AsyncSession
 
 from app_prime_league.models import Match, Team
@@ -27,12 +26,13 @@ async def fetch_logo(url) -> bytes:
 
 async def create_discord_event(match: Match):
     client = await DiscordBot().client
-    guild = await client.fetch_guild(settings.DISCORD_GUILD_ID)
 
     team = await sync_to_async(Team.objects.get)(id=match.team_id)
     enemy_team = await sync_to_async(Team.objects.get)(id=match.enemy_team_id)
     title = f"{team.name} vs. {enemy_team.name}"
     image = await fetch_logo(team.logo_url)
+
+    guild = await client.fetch_guild(team.discord_guild_id)
     try:
         event = await guild.create_scheduled_event(
             name=title,
