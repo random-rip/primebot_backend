@@ -140,7 +140,9 @@ class MatchesTest(TestCase):
     @mock.patch('django.utils.timezone.now')
     def test_group_stage_2(self, timezone_mock):
         timezone_mock.return_value = make_aware(datetime(2022, 7, 25))
-        result = list(self.team_a.get_obvious_matches_based_on_stage(99).values_list("match_id", flat=True))
+        result = list(
+            self.team_a.get_obvious_matches_based_on_stage(99).order_by("match_id").values_list("match_id", flat=True)
+        )
         self.assertListEqual([100, 200, 300], result)
 
     @mock.patch('django.utils.timezone.now')
