@@ -183,6 +183,7 @@ DISCORD_APP_CLIENT_ID = env.int("DISCORD_APP_CLIENT_ID", None)
 DISCORD_SERVER_LINK = "https://discord.gg/K8bYxJMDzu"
 DISCORD_GUILD_ID = env.int("DISCORD_GUILD_ID", None)  # Only used for development
 
+IMAGE_STATIC_DIR = BASE_DIR / "bots" / "static"
 LOGIN_URL = "/.admin/login/"
 
 GITHUB_URL = "https://github.com/random-rip/primebot_backend"
