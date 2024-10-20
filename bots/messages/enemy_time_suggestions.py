@@ -4,6 +4,7 @@ import discord
 from django.utils.translation import gettext, ngettext
 
 from app_prime_league.models import Match, Team
+from app_prime_league.models.team_and_match import SettingIsFalseException
 from bots.messages.base import MatchMessage
 from utils.utils import format_datetime
 
@@ -45,7 +46,7 @@ class EnemyNewTimeSuggestionsNotificationMessage(MatchMessage):
 
     def _generate_poll(self) -> discord.Poll:
         if self.team.value_of_setting(self.settings_key_poll) is False:
-            raise Exception
+            raise SettingIsFalseException(self.settings_key_poll)
         poll = discord.Poll(
             question="📆 "
             + gettext("Please vote for a new date against {enemy_team_tag}").format(

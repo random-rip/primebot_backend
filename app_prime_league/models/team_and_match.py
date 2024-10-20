@@ -15,6 +15,10 @@ from .player import Player
 from .scouting_website import ScoutingWebsite
 
 
+class SettingIsFalseException(Exception):
+    pass
+
+
 class CurrentSplitTeamManager(models.Manager):
     """Returns all teams of the current split."""
 

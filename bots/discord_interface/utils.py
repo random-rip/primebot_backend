@@ -10,6 +10,7 @@ from django.conf import settings
 from django.utils import translation
 
 from app_prime_league.models import Team
+from app_prime_league.models.team_and_match import SettingIsFalseException
 from bots.messages.base import BaseMessage, MessageNotImplementedError
 from utils.messages_logger import log_from_discord
 
@@ -46,7 +47,7 @@ class DiscordHelper:
             arguments["embed"] = Embed(description=msg.generate_message(), color=color)
         try:
             arguments["poll"] = msg.generate_poll()
-        except MessageNotImplementedError:
+        except (MessageNotImplementedError, SettingIsFalseException):
             pass
         arguments["content"] = DiscordHelper.mask_message_with_mention(
             discord_role_id=discord_role_id, message=msg.generate_title()
