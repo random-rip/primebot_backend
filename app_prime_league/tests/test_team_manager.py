@@ -14,11 +14,11 @@ class GetRegisteredTeamsTest(TestCase, CompareModelObjectsMixin):
         TeamBuilder("Team Telegram registered").set_telegram(1).build()
         TeamBuilder("Team Discord registered").set_discord(1).build()
 
-        result = Team.objects.get_registered_teams()
+        result = Team.objects.get_registered_teams().order_by("name")
 
         expected = [
-            {"name": "Team Telegram registered"},
             {"name": "Team Discord registered"},
+            {"name": "Team Telegram registered"},
         ]
 
         self.assertModelObjectsListEqual(expected, result)
