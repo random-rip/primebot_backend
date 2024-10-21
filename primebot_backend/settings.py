@@ -251,6 +251,7 @@ Q_CLUSTER = {
             "retry": 20 + 10,  # 30 seconds
             "max_attempts": 3,
             "workers": 4,
+            "cpu_affinity": 1,
         },
     },
 }

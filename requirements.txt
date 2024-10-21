@@ -20,6 +20,7 @@ django-q2==1.7.3
 djangorestframework==3.15.2
 drf-spectacular==0.27.2
 niquests==3.9.1
+psutil==6.1.0
 psycopg2==2.9.9
 pymemcache==4.0.0
 pymongo==4.3.3
