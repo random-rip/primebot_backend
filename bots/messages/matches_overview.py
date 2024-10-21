@@ -39,9 +39,6 @@ class MatchesOverview(MatchesMessage):
             scouting_url=self.get_enemy_team_scouting_url(match),
         )
 
-    def team_wants_notification(self):
-        return False  # FIXME: As a workaround, we disable the notification for now
-
     def _generate_discord_embed(self) -> discord.Embed:
         embed = Embed(color=Colour.gold())
         if len(self.matches) == 0:
