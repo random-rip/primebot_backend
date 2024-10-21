@@ -232,13 +232,12 @@ __MAXIMUM_TIMEOUT = 60 * 14 + 30  # 14,5 minutes for the updater
 Q_CLUSTER = {
     'timeout': __MAXIMUM_TIMEOUT,
     'retry': __MAXIMUM_TIMEOUT + 10,  # Seconds after a failed task will be queued again
-    'max_attempts': 1,  # Maximum retry attempts for failed tasks
+    'max_attempts': 1,  # Maximum attempts for tasks
     'save_limit': 10_000,  # Limits the amount of successful tasks save to Django
     "ack_failures": False,
     "workers": 1,
     "catch_up": False,
     "log_level": "DEBUG",
-    "recycle": 100,
     "sync": env.bool("MONGODB_SYNC", DEBUG),
     'mongo': {
         'host': MONGODB_URI,
@@ -297,11 +296,11 @@ if not DEBUG:
                 'formatter': 'to_console',
                 'class': 'logging.StreamHandler',
             },
-            "portainer": {
-                'level': "INFO",
-                'formatter': 'to_console',
-                'class': 'logging.StreamHandler',
-            },
+            # "portainer": {
+            #     'level': "INFO",
+            #     'formatter': 'to_console',
+            #     'class': 'logging.StreamHandler',
+            # },
             'django': {
                 'level': "INFO",
                 'class': 'logging.handlers.WatchedFileHandler',
@@ -337,30 +336,30 @@ if not DEBUG:
         },
         'loggers': {
             'django': {
-                'handlers': ['django', 'portainer'],
+                'handlers': ['django', 'console'],
                 'level': "WARNING",
                 'propagate': False,
             },
             'notifications': {
-                'handlers': ['notifications', 'portainer'],
+                'handlers': ['notifications', 'console'],
                 'level': "INFO",
                 'propagate': False,
             },
             'commands': {
                 'handlers': [
                     'commands',
-                    'portainer',
+                    'console',
                 ],
                 'level': "INFO",
                 'propagate': False,
             },
             'updates': {
-                'handlers': ['updates', 'portainer'],
+                'handlers': ['updates'],
                 'level': "INFO",
                 'propagate': False,
             },
             'discord': {
-                'handlers': ['discord', "portainer"],
+                'handlers': ['discord'],
                 'level': "INFO",
                 'propagate': False,
             },

@@ -9,6 +9,8 @@ cluster_job_logger = logging.getLogger("cluster_job")
 
 
 def send_message(bot: BotInterface, msg: BaseMessage):
+    if not msg.team_wants_notification():
+        return
     try:
         bot.send_message(msg=msg)
     except Exception as e:
