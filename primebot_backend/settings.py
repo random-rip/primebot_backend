@@ -246,8 +246,7 @@ Q_CLUSTER = {
     },
     "time_zone": "Europe/Berlin",
     "ALT_CLUSTERS": {
-        "messages-cluster": {
-            "cluster_name": "messages",
+        "messages": {
             "timeout": 20,  # 20 seconds
             "retry": 20 + 10,  # 30 seconds
             "max_attempts": 3,
