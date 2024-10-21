@@ -52,7 +52,7 @@ class EnemyNewTimeSuggestionsNotificationMessage(MatchMessage):
             + gettext("Please vote for a new date against {enemy_team_tag}").format(
                 enemy_team_tag=self.match.enemy_team.team_tag
             ),
-            duration=datetime.timedelta(hours=12),
+            duration=datetime.timedelta(hours=24),
             multiple=True,
         )
         for i, detail in enumerate(self.details, start=1):

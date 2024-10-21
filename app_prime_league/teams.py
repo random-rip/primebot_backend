@@ -2,6 +2,7 @@ import concurrent.futures
 import logging
 import sys
 import traceback
+from itertools import repeat
 from typing import Union
 
 from django.conf import settings
@@ -26,7 +27,7 @@ def register_team(*, team_id: int, **kwargs) -> Union[Team, None]:
     if team is None:
         return None
     try:
-        create_matches(processor.get_matches(), team, use_concurrency=False)  # TODO speedup again?
+        create_matches(processor.get_matches(), team, notify=False, use_concurrency=False)  # TODO speedup again?
     except Exception as e:
         trace = "".join(traceback.format_tb(sys.exc_info()[2]))
         send_message_to_devs(
@@ -59,30 +60,42 @@ def create_or_update_team(*, processor, **kwargs) -> Union[Team, None]:
 
 
 @log_exception
-def create_match_and_enemy_team(team: Team, match_id: int):
+def create_match_and_enemy_team(team: Team, match_id: int, notify):
     """
     Create Match, Enemy Team, Enemy Players, Enemy Lineup, Suggestions and Comments.
     :param team: Primary Team of the match
     :param match_id: Match ID
+    :param notify: if True send notifications
     """
     match, created = Match.objects.get_or_create(
         match_id=match_id,
         team=team,
     )
-    update_match(match, notify=False, priority=0)
+    update_match(match, notify=notify, priority=0)
 
 
-def create_matches(match_ids: list[int], team: Team, use_concurrency=not settings.DEBUG):
+def create_matches(
+    match_ids: list[int],
+    team: Team,
+    notify: bool,
+    use_concurrency: bool = not settings.DEBUG,
+):
     """
     Used for registering new teams. Can be parallelized with threads if ``use_concurrency`` is True.
     :param match_ids: List of match ids
     :param team: Primary Team of the matches
+    :param notify: if True send notifications
     :param use_concurrency: if True use threads to parallelize every match
     """
     if use_concurrency:
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-            executor.map(lambda p: create_match_and_enemy_team(*p), ((team, match_id) for match_id in match_ids))
+            executor.map(
+                create_match_and_enemy_team,
+                repeat(team),
+                match_ids,
+                repeat(notify),
+            )
         return
 
     for i in match_ids:
-        create_match_and_enemy_team(team, match_id=i)
+        create_match_and_enemy_team(team, match_id=i, notify=notify)
