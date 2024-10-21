@@ -90,7 +90,7 @@ services:
     command: [ "gunicorn", "-b", ":8000", "--workers=3", "--enable-stdio-inheritance", "primebot_backend.wsgi:application" ]
 
   mongodb:
-    image: mongo
+    image: mongo:7
     restart: unless-stopped
     environment:
       MONGO_INITDB_ROOT_USERNAME: $MONGODB_USERNAME
@@ -335,7 +335,7 @@ services:
       - default
 
   memcached:
-    image: memcached
+    image: memcached:1.6
     restart: unless-stopped
 
 volumes:
