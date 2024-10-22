@@ -227,7 +227,7 @@ LOCALE_PATHS = [
 MONGODB_URI = env.str("MONGODB_URI", None)
 if MONGODB_URI is None:
     MONGODB_URI = (
-        f"mongodb://{env.str('MONGODB_USERNAME', '')}: {env.str('MONGODB_PASSWORD', 'localhost')}"
+        f"mongodb://{env.str('MONGODB_USERNAME', '')}:{env.str('MONGODB_PASSWORD', 'localhost')}"
         f"@{env.str('MONGODB_HOST', '')}:{env.str('MONGODB_PORT', 27017)}"
     )
 
@@ -245,6 +245,7 @@ Q_CLUSTER = {
     'mongo': {
         'host': MONGODB_URI,
         "serverSelectionTimeoutMS": 5_000,
+        "connection": False,
     },
     "time_zone": "Europe/Berlin",
     "ALT_CLUSTERS": {
