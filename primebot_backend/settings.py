@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/3.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
+
 import errno
 import os
 from datetime import datetime
@@ -206,14 +207,16 @@ TEMP_LINK_TIMEOUT_MINUTES = 60
 FILES_FROM_STORAGE = env.bool("FILES_FROM_STORAGE", False)
 
 CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-    }
-    if DEBUG
-    else {
-        'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
-        'LOCATION': env.str('CACHE_LOCATION', "127.0.0.1:11211"),
-    }
+    'default': (
+        {
+            'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        }
+        if DEBUG
+        else {
+            'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+            'LOCATION': env.str('CACHE_LOCATION', "redis://redis:6379"),
+        }
+    )
 }
 
 LOCALE_PATHS = [
@@ -224,7 +227,7 @@ LOCALE_PATHS = [
 MONGODB_URI = env.str("MONGODB_URI", None)
 if MONGODB_URI is None:
     MONGODB_URI = (
-        f"mongodb://{env.str('MONGODB_USERNAME', '')}:{env.str('MONGODB_PASSWORD', 'localhost')}"
+        f"mongodb://{env.str('MONGODB_USERNAME', '')}: {env.str('MONGODB_PASSWORD', 'localhost')}"
         f"@{env.str('MONGODB_HOST', '')}:{env.str('MONGODB_PORT', 27017)}"
     )
 
@@ -237,7 +240,7 @@ Q_CLUSTER = {
     "ack_failures": False,
     "workers": 1,
     "catch_up": False,
-    "log_level": "DEBUG",
+    "log_level": "INFO",
     "sync": env.bool("MONGODB_SYNC", DEBUG),
     'mongo': {
         'host': MONGODB_URI,
@@ -250,6 +253,7 @@ Q_CLUSTER = {
             "retry": 20 + 10,  # 30 seconds
             "max_attempts": 3,
             "workers": 4,
+            "queue_limit": 10,
             "cpu_affinity": 1,
         },
     },

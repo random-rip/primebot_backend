@@ -69,6 +69,8 @@ class ConfirmTeamsMessageView(TemplateView):
                 team_ids = request.POST['team_ids']
                 team_ids = [int(x) for x in team_ids.split(',')]
                 teams = Team.objects.get_registered_teams().filter(id__in=team_ids).values_list('id', flat=True)
+                if not teams:
+                    raise Team.DoesNotExist
             except (Team.DoesNotExist, ValueError):
                 messages.add_message(self.request, messages.ERROR, 'Invalid team_ids')
                 return redirect("admin:send-teams-message:confirm-teams-message")

@@ -49,6 +49,8 @@ services:
         condition: service_healthy
       mongodb:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.app.entrypoints=websecure,web"
@@ -107,6 +109,8 @@ services:
         condition: service_healthy
       mongodb:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     restart: unless-stopped
     environment:
       - MONGODB_USERNAME
@@ -143,6 +147,8 @@ services:
       postgres:
         condition: service_healthy
       mongodb:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     restart: unless-stopped
     environment:
@@ -184,6 +190,8 @@ services:
         condition: service_healthy
       mongodb:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     environment:
       - MONGODB_USERNAME
       - MONGODB_PASSWORD
@@ -221,6 +229,8 @@ services:
         condition: service_healthy
       mongodb:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     environment:
       - MONGODB_USERNAME
       - MONGODB_PASSWORD
@@ -257,6 +267,8 @@ services:
       postgres:
         condition: service_healthy
       mongodb:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     environment:
       - MONGODB_USERNAME
@@ -334,9 +346,11 @@ services:
       - proxy
       - default
 
-  memcached:
-    image: memcached:1.6
+  redis:
+    image: redis:6
     restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
 
 volumes:
   pg-database:

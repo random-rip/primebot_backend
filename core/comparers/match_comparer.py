@@ -241,7 +241,3 @@ class MatchComparer:
     def notify(self):
         for comparer in self.triggered_comparers:
             comparer.notify()
-
-    @property
-    def is_triggered(self):
-        return bool(self.triggered_comparers)
