@@ -38,7 +38,9 @@ async def set_role(
         team.discord_role_id = role.id
         await sync_to_async(team.save)()
     await ctx.send(
-        _("Okay, I'll inform the role **{role_name}** for new notifications from now on. 📯").format(role_name=role.name)
+        _("Okay, I'll inform the role **{role_name}** for new notifications from now on. 📯").format(
+            role_name=role.name
+        )
     )
 
 

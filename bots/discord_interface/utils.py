@@ -153,7 +153,7 @@ def translation_override(func):
     @functools.wraps(func)
     async def wrapper_decorator(*args, **kwargs):
         for arg in args:
-            if type(arg) == Context:
+            if isinstance(arg, Context):
                 context = arg
                 break
         else:

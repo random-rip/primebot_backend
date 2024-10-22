@@ -331,7 +331,7 @@ class Comment(models.Model):
         verbose_name_plural = "Matchkommentare"
 
     def __str__(self):
-        return f"{self.id = }, {self.match = }, {self.comment_id = }"
+        return f"{self.id=}, {self.match=}, {self.comment_id=}"
 
 
 class NoCurrentSplitException(Exception):
