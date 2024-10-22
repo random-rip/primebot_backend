@@ -245,7 +245,7 @@ Q_CLUSTER = {
     'mongo': {
         'host': MONGODB_URI,
         "serverSelectionTimeoutMS": 5_000,
-        "connection": False,
+        "connect": False,
     },
     "time_zone": "Europe/Berlin",
     "ALT_CLUSTERS": {
