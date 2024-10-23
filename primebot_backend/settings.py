@@ -253,8 +253,8 @@ Q_CLUSTER = {
             "timeout": 20,  # 20 seconds
             "retry": 20 + 10,  # 30 seconds
             "max_attempts": 3,
-            "workers": 4,
-            "queue_limit": 10,
+            "workers": 1,
+            "queue_limit": 20,
             "cpu_affinity": 1,
         },
     },

@@ -7,7 +7,7 @@ croniter
 cryptography==43.0.1
 Deprecated~=1.2.13
 discord.py==2.4
-django==5.1.1
+django==5.0.9
 django-admin-interface==0.28.9
 django-cors-headers==4.4.0
 django-coverage-plugin==3.1.0
