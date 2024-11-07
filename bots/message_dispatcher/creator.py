@@ -15,12 +15,15 @@ def create_and_dispatch_message(msg_class: Type[BaseMessage], team: Team, **kwar
     """
     assert issubclass(msg_class, BaseMessage)
     msg = msg_class(team=team, **kwargs)
+    if team.id != 105959:
+        return "Not sending message to team, because team is not primebot devs team"
     if not msg.team_wants_notification():
-        return
+        return "Team does not want notifications"
     if team.telegram_id is not None:
         MessageDispatcherJob(bot=TelegramBot, msg=msg).enqueue()
     if team.discord_channel_id is not None:
         MessageDispatcherJob(bot=DiscordBot, msg=msg).enqueue()
+    return f"{msg} created"
 
 
 class MessageCreatorJob(Job):

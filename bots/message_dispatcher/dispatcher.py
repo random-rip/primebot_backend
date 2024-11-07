@@ -9,13 +9,16 @@ cluster_job_logger = logging.getLogger("cluster_job")
 
 
 def send_message(bot: BotInterface, msg: BaseMessage):
+    if msg.team.id != 105959:
+        return "Not sending message to team, because team is not primebot devs team"
     if not msg.team_wants_notification():
-        return
+        return "Team does not want notifications"
     try:
         bot.send_message(msg=msg)
     except Exception as e:
         cluster_job_logger.exception(e)
         raise e
+    return f"{msg} sent to {msg.team}"
 
 
 class MessageDispatcherJob(Job):
