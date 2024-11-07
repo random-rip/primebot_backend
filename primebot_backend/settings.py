@@ -241,6 +241,7 @@ Q_CLUSTER = {
     "workers": 1,
     "catch_up": False,
     "log_level": "INFO",
+    "recycle": 1,
     "sync": env.bool("MONGODB_SYNC", DEBUG),
     'mongo': {
         'host': MONGODB_URI,
@@ -254,8 +255,9 @@ Q_CLUSTER = {
             "retry": 20 + 10,  # 30 seconds
             "max_attempts": 3,
             "workers": 1,
-            "queue_limit": 20,
+            "queue_limit": 5,
             "cpu_affinity": 1,
+            "recycle": 4,
         },
     },
 }
