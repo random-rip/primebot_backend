@@ -253,7 +253,7 @@ Q_CLUSTER = {
     "time_zone": "Europe/Berlin",
     "ALT_CLUSTERS": {
         "messages": {
-            "timeout": 60,  # 20 seconds
+            "timeout": 60,  # 60 seconds
             "retry": 120,  # 1 minute
             "max_attempts": 1,
             "workers": 1,

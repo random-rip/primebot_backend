@@ -16,7 +16,7 @@ django-environ==0.11.2
 django-extensions==3.2.3
 django-filter==24.3
 django-ical==1.9.2
-django-q2==1.7.3
+django-q2==1.6.1
 djangorestframework==3.15.2
 drf-spectacular==0.27.2
 hiredis==3.0.0
