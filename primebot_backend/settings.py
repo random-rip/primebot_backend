@@ -239,8 +239,9 @@ Q_CLUSTER = {
     'save_limit': 10_000,  # Limits the amount of successful tasks save to Django
     "ack_failures": False,
     "workers": 1,
+    "queue_limit": 1,
     "catch_up": False,
-    "log_level": "INFO",
+    "log_level": "DEBUG",
     "recycle": 1,
     "sync": env.bool("MONGODB_SYNC", DEBUG),
     'mongo': {
@@ -252,11 +253,11 @@ Q_CLUSTER = {
     "ALT_CLUSTERS": {
         "messages": {
             "timeout": 20,  # 20 seconds
-            "retry": 20 + 10,  # 30 seconds
+            "retry": 60,  # 1 minute
             "max_attempts": 1,
             "workers": 1,
-            "queue_limit": 5,
-            "recycle": 4,
+            "queue_limit": 1,
+            "recycle": 100,
         },
     },
 }

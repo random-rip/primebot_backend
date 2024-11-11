@@ -12,8 +12,8 @@ from core.updater.teams_check_executor import update_teams
 
 logger = logging.getLogger("updates")
 
-MAX_TEAMS = 200
-MAX_UPDATES = 700
+MAX_TEAMS = 100
+MAX_UPDATES = 400
 
 
 def get_priority_teams_and_matches() -> Tuple[set[Team], set[Match]]:
