@@ -91,17 +91,6 @@ services:
       - media:/var/opt/prime_bot_backend/media/
     command: [ "gunicorn", "-b", ":8000", "--workers=3", "--enable-stdio-inheritance", "primebot_backend.wsgi:application" ]
 
-  mongodb:
-    image: mongo:7
-    restart: unless-stopped
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: $MONGODB_USERNAME
-      MONGO_INITDB_ROOT_PASSWORD: $MONGODB_PASSWORD
-    volumes:
-      - mongo-data:/data/db
-    healthcheck:
-      test: [ "CMD","mongosh", "--eval", "db.adminCommand('ping')" ]
-
   queue-cluster:
     image: orbisk/primebot
     depends_on:
@@ -297,6 +286,19 @@ services:
       - POSTGRES_PORT
       - POSTGRES_HOST
       - CACHE_LOCATION
+
+  mongodb:
+    image: mongo:7
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: $MONGODB_USERNAME
+      MONGO_INITDB_ROOT_PASSWORD: $MONGODB_PASSWORD
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: [ "CMD","mongosh", "--eval", "db.adminCommand('ping')" ]
+      retries: 3
+      interval: 10s
 
   postgres:
     image: postgres:16

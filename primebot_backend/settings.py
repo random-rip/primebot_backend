@@ -253,10 +253,9 @@ Q_CLUSTER = {
         "messages": {
             "timeout": 20,  # 20 seconds
             "retry": 20 + 10,  # 30 seconds
-            "max_attempts": 3,
+            "max_attempts": 1,
             "workers": 1,
             "queue_limit": 5,
-            "cpu_affinity": 1,
             "recycle": 4,
         },
     },
