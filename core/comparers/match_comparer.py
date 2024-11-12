@@ -137,7 +137,9 @@ class LineupConfirmationComparer(Comparer):
         if self.of_enemy_team:
             self.log("Neues Lineup des gegnerischen Teams")
             MessageCreatorJob(
-                msg_class=NewLineupNotificationMessage, team=self.match.team, match=self.match
+                msg_class=NewLineupNotificationMessage, 
+                team=self.match.team, 
+                match=self.match,
             ).enqueue()
         else:
             self.log("SILENCED Neues Lineup des eigenen Teams")
