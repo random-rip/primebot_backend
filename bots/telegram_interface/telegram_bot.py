@@ -23,6 +23,8 @@ class TelegramBot(BotInterface):
     Botfather Class. Provides Communication with Bot(Telegram API) and Client
     """
 
+    platform_name = "Telegram"
+
     def __init__(self):
         if not settings.TELEGRAM_BOT_KEY:
             raise VariableNotSetException("TELEGRAM_BOT_KEY")

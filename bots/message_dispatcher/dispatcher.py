@@ -1,5 +1,5 @@
 import logging
-from typing import Callable, Dict
+from typing import Callable, Dict, Type
 
 from bots.base.bot_interface import BotInterface
 from bots.messages.base import BaseMessage
@@ -9,8 +9,6 @@ cluster_job_logger = logging.getLogger("cluster_job")
 
 
 def send_message(bot: BotInterface, msg: BaseMessage):
-    if msg.team.id != 105959:
-        return "Not sending message to team, because team is not primebot devs team"
     if not msg.team_wants_notification():
         return "Team does not want notifications"
     try:
@@ -32,7 +30,7 @@ class MessageDispatcherJob(Job):
     def function_to_execute(self) -> Callable:
         return send_message
 
-    def __init__(self, bot, msg):
+    def __init__(self, bot: Type[BotInterface], msg: BaseMessage):
         self.bot = bot
         self.msg = msg
 

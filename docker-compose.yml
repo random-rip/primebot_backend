@@ -89,7 +89,7 @@ services:
     restart: unless-stopped
     volumes:
       - media:/var/opt/prime_bot_backend/media/
-    command: [ "gunicorn", "-b", ":8000", "--workers=3", "--enable-stdio-inheritance", "primebot_backend.wsgi:application" ]
+    command: [ "gunicorn", "-b", ":8000", "--workers=3", "--timeout=180", "--enable-stdio-inheritance", "primebot_backend.wsgi:application" ]
 
   queue-cluster:
     image: orbisk/primebot

@@ -25,6 +25,8 @@ class DiscordBot(BotInterface):
     DiscordBot Class. Provides Communication with Bot(Discord API) and Client
     """
 
+    platform_name = "Discord"
+
     def __init__(self):
         if not settings.DISCORD_BOT_KEY:
             raise VariableNotSetException("DISCORD_BOT_KEY")

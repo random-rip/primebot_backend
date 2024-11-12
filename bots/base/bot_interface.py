@@ -4,6 +4,8 @@ from bots.messages.base import BaseMessage
 
 
 class BotInterface:
+    platform_name = None
+
     def __init__(self, *, bot, bot_config=None):
         bot_config = bot_config or {}
         self.bot = bot(**bot_config)
