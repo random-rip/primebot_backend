@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     "debug_toolbar",
     'django_filters',
+    "request",
     # own
     'app_prime_league',
     'core',
