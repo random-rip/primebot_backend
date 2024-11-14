@@ -292,8 +292,8 @@ SPECTACULAR_SETTINGS = {
 REQUEST_LOG_IP = True
 REQUEST_LOG_USER = False
 REQUEST_IGNORE_PATHS = (
-    "r/^.admin/",
-    "r/favicon.ico",
+    r"^.admin/",
+    r"^favicon.ico",
 )
 REQUEST_TRAFFIC_MODULES = (
     "request.traffic.UniqueVisitor",
