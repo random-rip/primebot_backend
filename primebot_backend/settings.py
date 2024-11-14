@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'core',
     'bots',
     "request_queue",
+    "request",
 ]
 
 MIDDLEWARE = [
@@ -74,6 +75,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'request.middleware.RequestMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -286,6 +288,19 @@ SPECTACULAR_SETTINGS = {
     # OTHER SETTINGS
 }
 
+# Django Request
+REQUEST_LOG_IP = True
+REQUEST_LOG_USER = False
+REQUEST_IGNORE_PATHS = (
+    "r/^.admin/",
+    "r/favicon.ico",
+)
+REQUEST_TRAFFIC_MODULES = (
+    "request.traffic.UniqueVisitor",
+    "request.traffic.Hit",
+    "request.traffic.Ajax",
+    "request.traffic.Error",
+)
 if not DEBUG:
     LOGGING = {
         'version': 1,
