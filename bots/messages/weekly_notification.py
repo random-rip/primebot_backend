@@ -27,8 +27,3 @@ class WeeklyNotificationMessage(MatchesOverview):
 
     def _generate_title(self):
         return "🌟 " + _("Weekly overview")
-
-    def team_wants_notification(self):
-        if self.team.id == 105959:
-            return True
-        return False  # FIXME: As a workaround, we disable the notification for now
