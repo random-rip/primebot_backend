@@ -10,7 +10,7 @@ from django.conf import settings
 from app_prime_league.models import Match, Team
 from bots.telegram_interface.tg_singleton import send_message_to_devs
 from core.processors.team_processor import TeamDataProcessor
-from core.providers.request_queue_processor import RequestQueueProvider
+from core.providers.get import get_provider
 from core.updater.matches_check_executor import update_match
 from utils.messages_logger import log_exception
 
@@ -22,7 +22,7 @@ def register_team(*, team_id: int, **kwargs) -> Union[Team, None]:
     **kwargs will be directly parsed to the Team model, usually the telegram ID or discord IDs.
     :raises PrimeLeagueConnectionException, TeamWebsite404Exception:
     """
-    processor = TeamDataProcessor(team_id=team_id, provider=RequestQueueProvider(priority=0, force=True))
+    processor = TeamDataProcessor(team_id=team_id, provider=get_provider(priority=0, force=True))
     team = create_or_update_team(processor=processor, **kwargs)
     if team is None:
         return None

@@ -16,7 +16,7 @@ from bots.messages.team_deleted import TeamDeletedMessage
 from bots.telegram_interface.tg_singleton import send_message_to_devs
 from core.comparers.team_comparer import TeamComparer
 from core.processors.team_processor import TeamDataProcessor
-from core.providers.request_queue_processor import RequestQueueProvider
+from core.providers.get import get_provider
 from utils.exceptions import TeamWebsite404Exception
 from utils.messages_logger import log_exception
 
@@ -37,7 +37,7 @@ def delete_team(team: Team):
 @log_exception
 def update_team(team: Team):
     try:
-        processor = TeamDataProcessor(team.id, provider=RequestQueueProvider(priority=2))
+        processor = TeamDataProcessor(team.id, provider=get_provider(priority=2))
     except TeamWebsite404Exception:
         if not team.is_registered():
             team.delete()
