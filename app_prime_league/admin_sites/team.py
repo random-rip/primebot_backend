@@ -1,6 +1,7 @@
 from django.contrib import admin
-from django.db.models import Q
+from django.db.models import Count, Q
 from django.utils.html import format_html
+from django.utils.translation import gettext_lazy as _
 
 from app_prime_league.models import Match, Player
 
@@ -46,6 +47,25 @@ class RegisterFilter(admin.SimpleListFilter):
             return queryset.filter(
                 Q(telegram_id__isnull=False) | Q(discord_channel_id__isnull=False), division__isnull=False
             )
+        return queryset
+
+
+class PlayersFilter(admin.SimpleListFilter):
+
+    title = _("Players")
+    parameter_name = "no_players"
+
+    def lookups(self, request, model_admin):
+        return (
+            ("yes", _("With Players")),
+            ("no", _("Without Players")),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == "no":
+            return queryset.annotate(num_players=Count("player")).filter(num_players=0)
+        if self.value() == "yes":
+            return queryset.annotate(num_players=Count("player")).exclude(num_players=0)
         return queryset
 
 
@@ -188,6 +208,7 @@ class TeamAdmin(admin.ModelAdmin):
     list_filter = [
         PlatformFilter,
         RegisterFilter,
+        PlayersFilter,
         'language',
         'created_at',
         'updated_at',
@@ -213,3 +234,6 @@ class TeamAdmin(admin.ModelAdmin):
     )
     def telegram_registered(self, obj):
         return bool(obj.telegram_id)
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related("split")

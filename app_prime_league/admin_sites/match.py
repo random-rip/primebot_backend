@@ -24,12 +24,29 @@ class MatchAdmin(admin.ModelAdmin):
         "updated_at",
         "enemy_lineup",
         "team_lineup",
+        "prime_league_link",
     )
     filter_vertical = (
         "enemy_lineup",
         "team_lineup",
     )
     search_fields = ['team__id', 'team__name', 'enemy_team__id', 'enemy_team__name', 'match_id']
+    fields = (
+        "match_id",
+        "prime_league_link",
+        "match_day",
+        "match_type",
+        "team",
+        "enemy_team",
+        "begin",
+        "closed",
+        "result",
+        "split",
+        "created_at",
+        "updated_at",
+        "team_lineup",
+        "enemy_lineup",
+    )
 
     @admin.display(description="Prime League")
     def prime_league_link(self, obj):

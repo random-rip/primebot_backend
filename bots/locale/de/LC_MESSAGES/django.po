@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-02 17:48+0200\n"
+"POT-Creation-Date: 2024-11-22 17:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\bots\discord_interface\discord_bot.py:108
+#: .\bots\discord_interface\discord_bot.py:117
 msgid ""
 "There is currently no team registered in this channel. Use `/start` to "
 "register a team."
@@ -26,11 +26,11 @@ msgstr ""
 "In diesem Channel wurde noch kein Team registriert. Benutzt `/start` um eins "
 "zu registrieren."
 
-#: .\bots\discord_interface\discord_bot.py:111
+#: .\bots\discord_interface\discord_bot.py:120
 msgid "This is a channel command."
 msgstr "Das ist ein Befehl, der nur in einem Channel ausgeführt werden kann."
 
-#: .\bots\discord_interface\discord_bot.py:114
+#: .\bots\discord_interface\discord_bot.py:123
 #: .\bots\discord_interface\ext\bop.py:38
 #: .\bots\discord_interface\ext\start.py:144
 #, python-brace-format
@@ -248,12 +248,12 @@ msgstr ""
 "Okay, ich werde die Rolle **{role_name}** ab jetzt über neue "
 "Benachrichtigungen informieren. 📯"
 
-#: .\bots\discord_interface\ext\team_settings.py:61
+#: .\bots\discord_interface\ext\team_settings.py:63
 #, python-brace-format
 msgid "Change settings for {team}"
 msgstr "Einstellungen für {team} ändern"
 
-#: .\bots\discord_interface\ext\team_settings.py:64
+#: .\bots\discord_interface\ext\team_settings.py:66
 #, python-brace-format
 msgid ""
 "The link is only valid for {minutes} minutes. After that, a new link must be "
@@ -303,11 +303,11 @@ msgstr ""
 msgid "To get more information about the match, use /match {match_day}."
 msgstr ""
 
-#: .\bots\messages\enemy_time_suggestions.py:21
+#: .\bots\messages\enemy_time_suggestions.py:22
 msgid "New date proposed by an opponent"
 msgstr "Neuer Terminvorschlag eines Gegners"
 
-#: .\bots\messages\enemy_time_suggestions.py:28
+#: .\bots\messages\enemy_time_suggestions.py:29
 #, python-brace-format
 msgid ""
 "New date proposed by [{enemy_team_tag}]({enemy_team_url}) for [{match_day}]"
@@ -322,12 +322,12 @@ msgstr[1] ""
 "Neue Terminvorschläge von [{enemy_team_tag}]({enemy_team_url}) für "
 "[{match_day}]({match_url}):"
 
-#: .\bots\messages\enemy_time_suggestions.py:51
+#: .\bots\messages\enemy_time_suggestions.py:52
 #, python-brace-format
 msgid "Please vote for a new date against {enemy_team_tag}"
 msgstr "Bitte stimme für einen neuen Termin gegen {enemy_team_tag}"
 
-#: .\bots\messages\enemy_time_suggestions.py:63
+#: .\bots\messages\enemy_time_suggestions.py:64
 msgid "None of the above"
 msgstr "Keiner der vorgeschlagenen Termine"
 
@@ -508,11 +508,13 @@ msgstr ""
 #: .\bots\messages\team_deleted.py:12
 #, python-brace-format
 msgid ""
-"The registered team {team_name} has been deleted from the Prime League system. "
-"All information about this team and the link to the channel will be deleted."
+"The registered team {team_name} has been deleted from the Prime League "
+"system. All information about this team and the link to the channel will be "
+"deleted."
 msgstr ""
-"Das registrierte Team {team_name} wurde aus dem Prime League System gelöscht. "
-"Alle Informationen über dieses Team und der Link zum Channel werden gelöscht."
+"Das registrierte Team {team_name} wurde aus dem Prime League System "
+"gelöscht. Alle Informationen über dieses Team und der Link zum Channel "
+"werden gelöscht."
 
 #: .\bots\messages\team_deleted.py:17
 msgid "Team deleted"
@@ -531,14 +533,14 @@ msgid "Weekly overview"
 msgstr "Wochenübersicht"
 
 #: .\bots\telegram_interface\commands\single_commands.py:145
-#: .\bots\telegram_interface\tests\commands\test_match.py:24
-#: .\bots\telegram_interface\tests\commands\test_match.py:29
-#: .\bots\telegram_interface\tests\commands\test_match.py:34
+#: .\bots\telegram_interface\tests\commands\test_match.py:22
+#: .\bots\telegram_interface\tests\commands\test_match.py:27
+#: .\bots\telegram_interface\tests\commands\test_match.py:32
 msgid "Invalid match day. Try using /match 1."
 msgstr "Invalider Spieltag. Versuche es mit `/match 1`."
 
 #: .\bots\telegram_interface\commands\single_commands.py:162
-#: .\bots\telegram_interface\tests\commands\test_match.py:46
+#: .\bots\telegram_interface\tests\commands\test_match.py:44
 msgid "Sadly there is no match on the given match day."
 msgstr "Leider existieren für diesen Spieltag keine Matches."
 

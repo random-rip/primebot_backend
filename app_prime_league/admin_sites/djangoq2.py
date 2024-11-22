@@ -36,6 +36,7 @@ class TaskAdmin(DjangoQ2TaskAdmin):
         "stopped",
         "time_taken",
     )
+    list_filter = ["cluster"]
 
 
 class FailAdmin(DjangoQ2FailAdmin):
@@ -49,3 +50,4 @@ class FailAdmin(DjangoQ2FailAdmin):
         "stopped",
         "short_result",
     )
+    list_filter = ["cluster"]
