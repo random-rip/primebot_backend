@@ -4,10 +4,9 @@ from unittest import mock
 from django.test import TestCase
 from django.utils.timezone import make_aware
 from django.utils.translation import gettext as _
-from telegram import Chat
 
 from app_prime_league.models import Team
-from bots.telegram_interface.tests.commands.utils import TestBot, test_call_match
+from bots.telegram_interface.tests.commands.utils import BotMock, test_call_match
 from core.test_utils import MatchBuilder, SplitBuilder, TeamBuilder
 
 
@@ -15,33 +14,32 @@ class TelegramMatchTestCase(TestCase):
     TELEGRAM_ID = 1
 
     def setUp(self) -> None:
-        self.telegram_chat = Chat(self.TELEGRAM_ID, Chat.CHANNEL)
-        self.bot = TestBot()
+        self.bot = BotMock()
 
     def test_required_match_day_arg_is_missing(self):
-        test_call_match("/match", self.telegram_chat, self.bot)
+        test_call_match("/match", bot=self.bot)
 
         self.assertEqual(_("Invalid match day. Try using /match 1."), self.bot.response_text)
 
     def test_match_day_arg_has_invalid_format(self):
-        test_call_match("/zwei", self.telegram_chat, self.bot)
+        test_call_match("/zwei", bot=self.bot)
 
         self.assertEqual(_("Invalid match day. Try using /match 1."), self.bot.response_text)
 
     def test_match_day_arg_has_invalid_spacing(self):
-        test_call_match("/match 2 2", self.telegram_chat, self.bot)
+        test_call_match("/match 2 2", bot=self.bot)
 
         self.assertEqual(_("Invalid match day. Try using /match 1."), self.bot.response_text)
 
     def test_no_registered_team_in_telegram_chat(self):
-        test_call_match("/match 3", self.telegram_chat, self.bot)
+        test_call_match("/match 3", bot=self.bot)
 
         self.assertEqual("In der Telegram-Gruppe wurde noch kein Team registriert (/start).", self.bot.response_text)
 
     def test_at_match_day_are_no_matches(self):
         TeamBuilder("Team 1").set_telegram(self.TELEGRAM_ID).build()
         SplitBuilder(group_stage_start=datetime(2022, 1, 1)).build()
-        test_call_match("/match 3", self.telegram_chat, self.bot)
+        test_call_match("/match 3", bot=self.bot)
 
         self.assertEqual(_("Sadly there is no match on the given match day."), self.bot.response_text)
 
@@ -60,7 +58,7 @@ class TelegramMatchTestCase(TestCase):
         SplitBuilder(group_stage_start=datetime(2022, 1, 1)).build()
         MatchBuilder(1, team_1).set_team_2(team_2).set_match_day(2).build()
 
-        test_call_match("/match 2", self.telegram_chat, self.bot)
+        test_call_match("/match 2", bot=self.bot)
 
         expected = (
             "*⚔ Gameday 2*\n"

@@ -3,9 +3,9 @@ import sys
 import traceback
 
 from django.conf import settings
+from telegram.error import ChatMigrated, TelegramError, Unauthorized
 from telegram.ext import CallbackQueryHandler, CommandHandler, ConversationHandler, MessageHandler, Updater
 from telegram.ext.filters import Filters
-from telepot.exception import BotWasBlockedError, BotWasKickedError, TelegramError
 
 from bots import send_message
 from bots.base.bot_interface import BotInterface
@@ -80,19 +80,21 @@ class TelegramBot(BotInterface):
         To send a message from a user triggered action (f.e. a reply message), use context based messages
         directly. This is different for each of the communication platforms.
         """
+        msg_content = msg.generate_message()
         try:
-            send_message(msg=msg.generate_message(), chat_id=msg.team.telegram_id, raise_again=True)
-        except (BotWasKickedError, BotWasBlockedError, TelegramError) as e:
-            if isinstance(e, TelegramError) and not e.description == 'Bad Request: chat not found':
-                notifications_logger.exception(e)
-                raise e
-            msg.team.set_telegram_null()
-            notifications_logger.info(f"Soft deleted Telegram {msg.team}'")
-            return
-        except Exception as e:
-            notifications_logger.exception(
-                f"Could not send Telegram Message {msg.__class__.__name__} to {msg.team}.", e
+            send_message(msg=msg_content, chat_id=msg.team.telegram_id, raise_again=True)
+        except ChatMigrated as e:
+            msg.team.telegram_id = e.new_chat_id
+            msg.team.save()
+            send_message(msg=msg_content, chat_id=msg.team.telegram_id)
+        except Unauthorized as e:
+            notifications_logger.error(
+                f"Unauthorized to send message in chat_id={msg.team.telegram_id}. Setting telegram_id to None.",
+                e.message,
             )
+            msg.team.set_telegram_null()
+        except TelegramError as e:
+            notifications_logger.error(f"Could not send Telegram Message {msg.__class__.__name__} to {msg.team}.", e)
             raise e
 
 
