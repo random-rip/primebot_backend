@@ -13,7 +13,7 @@ from bots.messages import (
     ScheduleConfirmationNotification,
 )
 from core.processors.team_processor import TeamDataProcessor
-from core.providers.request_queue_processor import RequestQueueProvider
+from core.providers.get import get_provider
 from core.temporary_match_data import TemporaryMatchData
 
 notifications_logger = logging.getLogger("notifications")
@@ -193,7 +193,7 @@ class NewEnemyTeamComparer(Comparer):
     def update(self):
         processor = TeamDataProcessor(
             team_id=self.tmd.enemy_team_id,
-            provider=RequestQueueProvider(priority=self.priority),
+            provider=get_provider(priority=self.priority),
         )
         enemy_team, created = Team.objects.update_or_create(
             id=self.tmd.enemy_team_id,

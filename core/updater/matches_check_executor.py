@@ -14,7 +14,7 @@ from core.comparers.match_comparer import (
     NewSuggestionComparer,
     SchedulingConfirmationComparer,
 )
-from core.providers.request_queue_processor import RequestQueueProvider
+from core.providers.get import get_provider
 from core.temporary_match_data import TemporaryMatchData
 from utils.exceptions import Match404Exception
 from utils.messages_logger import log_exception
@@ -51,7 +51,7 @@ def update_match(match: Match, notify=True, priority=2):
         tmd = TemporaryMatchData.create_from_website(
             team=match.team,
             match_id=match.match_id,
-            provider=RequestQueueProvider(priority=priority),
+            provider=get_provider(priority=priority),
         )
     except Match404Exception as e:
         match.delete()

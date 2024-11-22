@@ -83,7 +83,7 @@ async def create_discord_event(match: Match):
     try:
         event = await guild.create_scheduled_event(
             name=title,
-            start_time=match.begin,
+            start_time=match.begin - timedelta(minutes=15),
             end_time=match.begin + timedelta(hours=2),
             privacy_level=PrivacyLevel.guild_only,
             entity_type=EntityType.external,
