@@ -52,11 +52,10 @@ League.
 - PostgreSQL 16
 - Django (+ DRF) (python package)
 - discord.py (python package)
-- Telepot (python package)
 - python-telegram-bot (python package)
 - DjangoQ2 (python package)
-- MongoDB as Message-Broker
-- Memcached as Cache
+- MongoDB as Message-Broker for RequestQueue
+- Redis as Cache
 
 ### Setup
 
@@ -167,7 +166,7 @@ the `.env` you have to add
 FILES_FROM_STORAGE=True
 ```
 
-After that the ``providers`` use the filesystem.
+After that the ``get_provider`` function uses the filesystem.
 
 The files can have dependencies among each other (for example: in team_*.json there is a list of match_ids pointing to
 calibration matches or matches from the starter div). For this reason, teams cannot be arbitrarily selected from
