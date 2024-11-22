@@ -244,13 +244,8 @@ Q_CLUSTER = {
     "catch_up": False,
     "log_level": "DEBUG",
     "recycle": 10,
-    "sync": env.bool("MONGODB_SYNC", DEBUG),
+    "sync": env.bool("QCLUSTER_SYNC", DEBUG),
     "orm": "default",
-    # 'mongo': {
-    #     'host': MONGODB_URI,
-    #     "serverSelectionTimeoutMS": 5_000,
-    #     "connect": False,
-    # },
     "time_zone": "Europe/Berlin",
     "ALT_CLUSTERS": {
         "messages": {
