@@ -1,9 +1,10 @@
 import logging
+from time import sleep
 
 import discord
 from asgiref.sync import sync_to_async
 from discord import Client, Forbidden, Intents, Message, NotFound, Object, SyncWebhook
-from discord.ext.commands import Bot, NoPrivateMessage, errors
+from discord.ext.commands import Bot, NoPrivateMessage, errors, guild_only
 from django.conf import settings
 from django.utils.translation import gettext as _
 
@@ -38,6 +39,18 @@ class DiscordBot(BotInterface):
 
     def _initialize(self):
         self.bot.remove_command("help")
+
+        @self.bot.tree.context_menu()
+        @guild_only()
+        async def ask(
+            interaction: discord.Interaction,
+            message: discord.Message,
+        ) -> None:
+            await interaction.response.defer(thinking=True)
+            sleep(1)
+            await interaction.followup.send(
+                content=f"You sent: {message.content}, my answer is 42",
+            )
 
     def run(self):
         self.bot.run(settings.DISCORD_BOT_KEY)
@@ -172,6 +185,7 @@ class _DiscordBotV2(Bot):
             guild = Object(id=settings.DISCORD_GUILD_ID)
             discord_logger.info(f"Debug is true, so commands will be synced to guild {guild.id}...")
             self.tree.copy_global_to(guild=guild)
+            await self.tree.sync(guild=guild)
             synced_commands = self.tree.get_commands(guild=guild)
         else:
             discord_logger.info("Debug is false, so commands will be synced globally. This can take up to an hour...")
