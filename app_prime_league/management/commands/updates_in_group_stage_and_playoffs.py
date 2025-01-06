@@ -99,9 +99,14 @@ class Command(UpdateScheduleCommand):
 
     @staticmethod
     def is_time_exceeded() -> bool:
-        """Returns True if the playoffs ended (two days after playoffs end because of completed matches)."""
+        """
+        Returns True if the playoffs ended (two days after playoffs end because of completed matches).
+        If there are still open matches, it returns False.
+        """
+        if Match.current_split_objects.filter(closed=False).exists():
+            return False
         playoffs_end = Split.objects.get_current_split().playoffs_end + timezone.timedelta(days=2)
-        return playoffs_end > timezone.now().date()
+        return playoffs_end < timezone.now().date()
 
     def cron(self) -> str:
         return "5/15 * * * *"
