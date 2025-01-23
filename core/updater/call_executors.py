@@ -10,18 +10,18 @@ thread_local = threading.local()
 logger = logging.getLogger("updates")
 
 
-def update_teams_and_matches():
+def update_teams_and_matches(notify: bool):
     """Updates teams and matches."""
     start_time = time.time()
     teams = Team.objects.get_teams_to_update()
     logger.info(f"Updating {len(teams)} teams...")
-    update_teams(teams=teams)
+    update_teams(teams=teams, notify=notify)
     logger.info(f"Updated {len(teams)} teams in {time.time() - start_time:.2f} seconds")
 
     start_time = time.time()
     uncompleted_matches = Match.current_split_objects.get_matches_to_update()
     logger.info(f"Checking {len(uncompleted_matches)} uncompleted matches...")
-    update_uncompleted_matches(matches=uncompleted_matches)
+    update_uncompleted_matches(matches=uncompleted_matches, notify=notify)
     logger.info(f"Checked {len(uncompleted_matches)} uncompleted matches in {time.time() - start_time:.2f} seconds")
     updated_teams = [x.id for x in teams]
     updated_matches = [x.match_id for x in uncompleted_matches]

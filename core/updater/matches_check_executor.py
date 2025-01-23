@@ -1,6 +1,7 @@
 import concurrent.futures
 import logging
 import threading
+from itertools import repeat
 
 import niquests
 from django.conf import settings
@@ -84,10 +85,10 @@ def update_match(match: Match, notify=True, priority=2):
     comparer.notify()
 
 
-def update_uncompleted_matches(matches, use_concurrency=not settings.DEBUG):
+def update_uncompleted_matches(matches, notify: bool, use_concurrency=not settings.DEBUG):
     if use_concurrency:
         with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
-            executor.map(update_match, matches)
+            executor.map(update_match, matches, repeat(notify))
     else:
         for i in matches:
-            update_match(match=i)
+            update_match(match=i, notify=notify)

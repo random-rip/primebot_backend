@@ -81,16 +81,16 @@ class Command(UpdateScheduleCommand):
     name = "Update Teams and Matches in Group Stage and Playoffs"
 
     @staticmethod
-    def func():
+    def func(notify=True):
         start_time = time.time()
         teams, uncompleted_matches = get_priority_teams_and_matches()
         logger.info(f"Updating {len(teams)} teams...")
-        update_teams(teams=teams)
+        update_teams(teams=teams, notify=notify)
         logger.info(f"Updated {len(teams)} teams in {time.time() - start_time:.2f} seconds")
 
         start_time = time.time()
         logger.info(f"Checking {len(uncompleted_matches)} uncompleted matches...")
-        update_uncompleted_matches(matches=uncompleted_matches)
+        update_uncompleted_matches(matches=uncompleted_matches, notify=notify)
         logger.info(f"Checked {len(uncompleted_matches)} uncompleted matches in {time.time() - start_time:.2f} seconds")
         return {
             "TEAMS": teams,

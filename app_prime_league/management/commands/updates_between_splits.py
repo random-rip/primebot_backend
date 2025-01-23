@@ -18,12 +18,13 @@ class Command(UpdateScheduleCommand):
     name = "Updates between splits"
 
     @staticmethod
-    def func():
+    def func(notify=True):
         start_time = time.time()
         teams = Team.objects.get_registered_teams().order_by("updated_at")  # oldest updated first
         logger.info(f"Updating {len(teams)} teams...")
         update_teams(
             teams=teams,
+            notify=notify,
         )
         logger.info(f"Updated {len(teams)} teams in {time.time() - start_time:.2f} seconds")
 

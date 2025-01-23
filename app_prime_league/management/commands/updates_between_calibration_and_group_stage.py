@@ -10,10 +10,10 @@ class Command(UpdateScheduleCommand):
     name = "Update Teams and Matches between Calibration and Group Stage"
 
     @staticmethod
-    def func():
+    def func(notify=True):
         from core.updater.call_executors import update_teams_and_matches
 
-        update_teams_and_matches()
+        update_teams_and_matches(notify=notify)
 
     @staticmethod
     def is_time_exceeded() -> bool:

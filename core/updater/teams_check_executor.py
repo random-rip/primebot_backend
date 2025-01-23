@@ -3,6 +3,7 @@ import logging
 import sys
 import threading
 import traceback
+from itertools import repeat
 
 from django.conf import settings
 from django.utils import timezone
@@ -35,7 +36,7 @@ def delete_team(team: Team):
 
 
 @log_exception
-def update_team(team: Team):
+def update_team(team: Team, notify: bool):
     try:
         processor = TeamDataProcessor(team.id, provider=get_provider(priority=2))
     except TeamWebsite404Exception:
@@ -79,7 +80,7 @@ def update_team(team: Team):
         # TODO Spieler ohne namen werden von der Prime League zurückgegeben, sollen die gespeichert werden?
         pass
 
-    if not team.is_registered():
+    if not notify or not team.is_registered():
         return team
 
     try:
@@ -100,10 +101,10 @@ def update_team(team: Team):
     return team
 
 
-def update_teams(teams, use_concurrency=not settings.DEBUG):
+def update_teams(teams, notify: bool, use_concurrency=not settings.DEBUG):
     if use_concurrency:
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-            executor.map(update_team, teams)
+            executor.map(update_team, teams, repeat(notify))
     else:
         for i in teams:
-            update_team(team=i)
+            update_team(team=i, notify=notify)
