@@ -33,23 +33,31 @@ class MentionSelectView(discord.ui.View):
         super().__init__()
         self.default_mention = default_mention
         self.default_team = default_team
+        self.team_options = teams or []
+        self.selected_team = default_team
         self.create_team_select(teams=teams, default=default_team)
-        self.create_mention_select(default_mention=default_mention)
+        self.create_mention_select(default_values=[default_mention])
 
     def create_team_select(self, teams: List[Team], **kwargs):
         kwargs.setdefault("disabled",(self.default_team is not None))
-        self.add_item(SettingsViewTeamSelect(options=teams, default=self.default_mention, **kwargs))
+        self.add_item(SettingsViewTeamSelect(options=teams, **kwargs))
 
     def create_mention_select(self, **kwargs):
         kwargs.setdefault("disabled",(self.default_team is None))
-        self.add_item(MentionSelect(default_values=[self.default_mention], **kwargs))
+        kwargs.setdefault("default_values",([self.default_mention]))
+        self.add_item(MentionSelect(**kwargs))
 
     async def handle_mention_select(self, role: Member | User | Role ,interaction: discord.Interaction):
         self.clear_items()
-        print(type(role))
-        await interaction.response.edit_message(content="Mentioned: " + role.mention, view=self)
+        await interaction.response.edit_message(content="Mentioned: " + role.mention + " for " + self.selected_team.name, view=self)
         pass # todo @janek implement
 
+
+    async def handle_team_select(self, team: Team | None, interaction: discord.Interaction):
+        self.clear_items()
+        self.selected_team = team
+        await interaction.response.edit_message(view=MentionSelectView(teams=self.team_options,default_team=team, default_mention=self.default_mention))
+        pass
 
 
 class OpenSettingsButton(discord.ui.Button):
@@ -120,7 +128,7 @@ async def bop(
     ctx: commands.Context,
 ) -> None:
     teams = await sync_to_async(list)(Team.objects.all())
-    await ctx.send(view=MentionSelectView(teams=teams,default_team=teams[0], default_mention=merlin), ephemeral=True)
+    await ctx.send(view=MentionSelectView(teams=teams,default_team=None, default_mention=merlin), ephemeral=True)
     # await ctx.interaction.response.send_modal(Feedback())
     # async with ctx.typing():
     #     try:
