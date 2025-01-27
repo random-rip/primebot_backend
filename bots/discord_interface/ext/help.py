@@ -9,7 +9,7 @@ from core.github import GitHub
 
 @commands.hybrid_command(
     name="help",
-    help="Creates an overview of the bot and commands",
+    help=_("Create an overview of the bot and commands"),
 )
 @translation_override
 async def bot_help(

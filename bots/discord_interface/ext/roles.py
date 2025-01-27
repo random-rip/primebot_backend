@@ -152,7 +152,7 @@ class TeamSelectionView(BaseTeamSelectionView):
         )
 
 
-@commands.hybrid_command(name="role", help="Sets a Discord role that will be used in notifications.")
+@commands.hybrid_command(name="role", help=_("Set a Discord role that will be used in notifications"))
 @commands.guild_only()
 @channel_is_registered()
 @channel_has_at_least_one_team()

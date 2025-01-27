@@ -55,7 +55,7 @@ async def load_in_background(ctx: commands.Context, team_id: int):
     return await registration_task
 
 
-@commands.hybrid_command(help="Registers the Prime League team in the channel")
+@commands.hybrid_command(help=_("Register the given Prime League team in the channel"))
 @commands.guild_only()
 @check_channel_type()
 @translation_override

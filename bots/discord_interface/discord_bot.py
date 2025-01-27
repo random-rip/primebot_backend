@@ -36,8 +36,8 @@ class DiscordBot(BotInterface):
             bot=_DiscordBotV2,
         )
 
-    def _initialize(self):
-        self.bot.remove_command("help")
+    # def _initialize(self):
+    #     self.bot.remove_command("help")
 
     def run(self):
         self.bot.run(settings.DISCORD_BOT_KEY)
@@ -100,6 +100,7 @@ class _DiscordBotV2(Bot):
         super().__init__(
             command_prefix="!",
             intents=Intents.default(),
+            help_command=None,
         )
 
     async def on_ready(self):

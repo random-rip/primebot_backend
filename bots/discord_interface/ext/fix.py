@@ -7,7 +7,7 @@ from app_prime_league.models.channel import Platforms
 from bots.discord_interface.utils import DiscordHelper, channel_is_registered, translation_override
 
 
-@commands.hybrid_command(help="Recreates the notification webhook")
+@commands.hybrid_command(help=_("Recreate the notification webhook"))
 @commands.guild_only()
 @channel_is_registered()
 @translation_override

@@ -69,7 +69,7 @@ class TeamSelectionView(BaseTeamSelectionView):
 
 @commands.hybrid_command(
     name="settings",
-    help="Creates a temporary link to make notification settings",
+    help=_("Create a temporary link to make notification settings"),
 )
 @commands.guild_only()
 @channel_is_registered()

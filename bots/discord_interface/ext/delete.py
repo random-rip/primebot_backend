@@ -82,7 +82,7 @@ class DeleteView(BaseTeamSelectionView):
         )
 
 
-@commands.hybrid_command(help="Removes the team from the channel")
+@commands.hybrid_command(help=_("Remove the team from the channel"))
 @commands.guild_only()
 @channel_is_registered()
 @check_channel_type()

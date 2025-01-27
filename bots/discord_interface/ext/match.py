@@ -62,7 +62,7 @@ class TeamSelectionView(BaseTeamSelectionView):
         await interaction.response.edit_message(content=content, view=view)
 
 
-@commands.hybrid_command(name="match", help="Creates an overview for a given match day")
+@commands.hybrid_command(name="match", help=_("Create an overview for a specific match day"))
 @commands.guild_only()
 @channel_is_registered()
 @channel_has_at_least_one_team()

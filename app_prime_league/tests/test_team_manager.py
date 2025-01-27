@@ -165,11 +165,11 @@ class SoftDeleteTests(TestCase, CompareModelObjectsMixin):
         self.assertListEqual(["Delete me", "Related team"], result)
         self.assertModelObjectsListEqual(
             [
-                {"name": "But not me"},
                 {"name": "Also not me"},
                 {"name": "Also not me because i have other matches"},
+                {"name": "But not me"},
             ],
-            Team.objects.all(),
+            Team.objects.order_by("name"),
         )
         self.assertEqual(Match.objects.count(), 2)
 

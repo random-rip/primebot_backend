@@ -9,7 +9,7 @@ from bots.base.bop import GIFinator
 from bots.discord_interface.utils import translation_override
 
 
-@commands.hybrid_command(help="What's boppin'?")
+@commands.hybrid_command(help=_("What's boppin'?"))
 @translation_override
 async def bop(ctx: commands.Context):
     async with ctx.typing():

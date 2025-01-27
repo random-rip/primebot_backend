@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-27 18:37+0100\n"
+"POT-Creation-Date: 2025-01-27 22:13+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\primebot_backend\settings.py:144
+#: .\primebot_backend\settings.py:143
 msgid "German"
 msgstr "Deutsch"
 
-#: .\primebot_backend\settings.py:145
+#: .\primebot_backend\settings.py:144
 msgid "English"
 msgstr "Englisch"
 
@@ -49,11 +49,11 @@ msgstr "Anzahl der Zeichen"
 msgid "Channel-IDs for Test Message (comma separated):"
 msgstr "Kanal-IDs für Testnachricht (durch Kommas getrennt):"
 
-#: .\quicklinks_admin\templates\send_teams_message\confirm_teams_message.html:31
+#: .\quicklinks_admin\templates\send_teams_message\confirm_teams_message.html:30
 msgid "Send Test Message"
 msgstr "Testnachricht senden"
 
-#: .\quicklinks_admin\templates\send_teams_message\confirm_teams_message.html:35
+#: .\quicklinks_admin\templates\send_teams_message\confirm_teams_message.html:34
 msgid "Send messages"
 msgstr "Nachrichten senden"
 
@@ -71,14 +71,14 @@ msgstr "Die folgenden Attribute können verwendet werden:"
 msgid "Next"
 msgstr "Weiter"
 
-#: .\utils\utils.py:33
+#: .\utils\utils.py:35
 #, python-format
 msgid "%d hr"
 msgid_plural "%d hrs"
 msgstr[0] "%d Std"
 msgstr[1] "%d Std"
 
-#: .\utils\utils.py:34
+#: .\utils\utils.py:36
 #, python-format
 msgid "%d min"
 msgid_plural "%d min"

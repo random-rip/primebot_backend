@@ -25,7 +25,7 @@ class NewCommentsNotificationMessage(MatchMessage):
             len(self.new_comment_ids),
         )
 
-        return gettext(message).format(
+        return message.format(
             match_day=self.match_helper.display_match_day(self.match),
             enemy_team_tag=enemy_team_tag,
             match_url=self.match_url,

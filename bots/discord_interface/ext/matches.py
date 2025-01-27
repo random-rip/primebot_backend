@@ -24,7 +24,7 @@ class TeamSelectionView(BaseTeamSelectionView):
         )
 
 
-@commands.hybrid_command(help="Creates an overview for open matches")
+@commands.hybrid_command(help=_("Create an overview for open matches"))
 @commands.guild_only()
 @channel_is_registered()
 @channel_has_at_least_one_team()

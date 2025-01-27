@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 
-from app_prime_league.models import ScoutingWebsite
+from app_prime_league.models.scouting_website import ScoutingWebsite
 
 
 class ChannelTeam(models.Model):

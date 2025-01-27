@@ -31,7 +31,7 @@ class DiscordMessageTests(TestCase):
             f"matches/1) gegen [xyz](https://www.primeleague.gg/de/leagues/teams/{self.team_b.id})."
         )
 
-        self.assertEqual(result, expected)
+        self.assertEqual(expected, result)
 
     def test_datetime_format(self):
         self.match.begin = string_to_datetime("2022-02-17 15:00")
