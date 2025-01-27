@@ -40,7 +40,7 @@ def update_team(team: Team, notify: bool):
     try:
         processor = TeamDataProcessor(team.id, provider=get_provider(priority=2))
     except TeamWebsite404Exception:
-        if not team.is_registered():
+        if not team.has_subscriptions():
             team.delete()
         else:
             MessageCreatorJob(
@@ -77,10 +77,8 @@ def update_team(team: Team, notify: bool):
         update_logger.warning(
             f"Exception occurred while updating players on team {team}. Players: {processor.get_members()}"
         )
-        # TODO Spieler ohne namen werden von der Prime League zurückgegeben, sollen die gespeichert werden?
-        pass
 
-    if not notify or not team.is_registered():
+    if not notify or not team.has_subscriptions():
         return team
 
     try:
@@ -90,7 +88,6 @@ def update_team(team: Team, notify: bool):
             notifications_logger.info(f"{log_message}Neue Matches")
             create_matches(missing_ids, team=team, notify=True, use_concurrency=False)
             MessageCreatorJob(msg_class=MatchesOverview, team=team, match_ids=missing_ids).enqueue()
-
     except Exception as e:
         trace = "".join(traceback.format_tb(sys.exc_info()[2]))
         send_message_to_devs(

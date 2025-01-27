@@ -7,6 +7,7 @@ from telegram.error import ChatMigrated, TelegramError, Unauthorized
 from telegram.ext import CallbackQueryHandler, CommandHandler, ConversationHandler, MessageHandler, Updater
 from telegram.ext.filters import Filters
 
+from app_prime_league.models import Team
 from bots import send_message
 from bots.base.bot_interface import BotInterface
 from bots.messages.base import BaseMessage
@@ -70,7 +71,7 @@ class TelegramBot(BotInterface):
         dp.add_error_handler(error)
 
     def run(self):
-        self.bot.start_polling()  # TODO: try catch connection errors
+        self.bot.start_polling()
         self.bot.idle()
 
     @staticmethod
@@ -82,19 +83,20 @@ class TelegramBot(BotInterface):
         """
         msg_content = msg.generate_message()
         try:
-            send_message(msg=msg_content, chat_id=msg.team.telegram_id, raise_again=True)
+            send_message(msg=msg_content, chat_id=int(msg.channel.telegram_id), raise_again=True)
         except ChatMigrated as e:
-            msg.team.telegram_id = e.new_chat_id
-            msg.team.save()
-            send_message(msg=msg_content, chat_id=msg.team.telegram_id)
+            msg.channel.telegram_id = e.new_chat_id
+            msg.channel.save()
+            send_message(msg=msg_content, chat_id=int(msg.channel.telegram_id))
         except Unauthorized as e:
             notifications_logger.error(
-                f"Unauthorized to send message in chat_id={msg.team.telegram_id}. Setting telegram_id to None.",
+                f"Unauthorized to send message in chat_id={msg.channel.telegram_id}. Setting telegram_id to None.",
                 e.message,
             )
-            msg.team.set_telegram_null()
+            Team.objects.cleanup(channel_teams=msg.channel_team)
+            msg.channel.delete()
         except TelegramError as e:
-            notifications_logger.error(f"Could not send Telegram Message {msg.__class__.__name__} to {msg.team}.", e)
+            notifications_logger.error(f"Could not send Telegram Message {msg.__class__.__name__} to {msg.channel}.", e)
             raise e
 
 

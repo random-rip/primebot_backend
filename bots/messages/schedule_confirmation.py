@@ -4,7 +4,7 @@ from django.conf import settings
 from django.utils.translation import gettext as _
 from telegram import ParseMode
 
-from app_prime_league.models import Match, Team
+from app_prime_league.models import ChannelTeam, Match
 from bots.messages.base import MatchMessage
 from bots.telegram_interface.tg_singleton import send_message_to_devs
 from core.parsing.logs import LogChangeTime, LogSchedulingAutoConfirmation
@@ -15,8 +15,8 @@ class ScheduleConfirmationNotification(MatchMessage):
     settings_key = "SCHEDULING_CONFIRMATION"
     mentionable = True
 
-    def __init__(self, team: Team, match: Match, latest_confirmation_log):
-        super().__init__(team=team, match=match)
+    def __init__(self, channel_team: ChannelTeam, match: Match, latest_confirmation_log):
+        super().__init__(channel_team=channel_team, match=match)
         self.latest_confirmation_log = latest_confirmation_log
 
     def _generate_title(self):

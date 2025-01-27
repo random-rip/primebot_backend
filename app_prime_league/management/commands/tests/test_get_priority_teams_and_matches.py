@@ -4,6 +4,7 @@ from unittest.mock import patch
 from django.test import TestCase
 from django.utils.timezone import make_aware
 
+from app_prime_league.factories import ChannelFactory, MatchFactory, TeamFactory
 from app_prime_league.management.commands.updates_in_group_stage_and_playoffs import get_priority_teams_and_matches
 from app_prime_league.models import Match, Team
 
@@ -15,27 +16,15 @@ class GetPriorityTeamsAndMatchesTest(TestCase):
         # Mock the current time to be 0 AM on a Monday
         mock_now.return_value = now  # Monday
 
-        registered_team = Team.objects.create(name="Registered Team", discord_channel_id=1)
+        registered_team = TeamFactory(name="Registered Team", channels=ChannelFactory())
         Team.objects.filter(id=registered_team.id).update(updated_at=now - timedelta(hours=1))
-        Team.objects.create(name="Unregistered Team")
-        enemy_team1 = Team.objects.create(name="Enemy Team")
+        TeamFactory(name="Unregistered Team")
+        enemy_team1 = TeamFactory(name="Enemy Team")
         Team.objects.filter(id=enemy_team1.id).update(updated_at=now - timedelta(hours=2))
-        enemy_team2 = Team.objects.create(name="Enemy Team 2")
+        enemy_team2 = TeamFactory(name="Enemy Team 2")
         Team.objects.filter(id=enemy_team2.id).update(updated_at=now - timedelta(hours=3))
-        Match.objects.create(
-            team=registered_team,
-            match_id=1,
-            enemy_team=enemy_team1,
-            begin=now + timedelta(weeks=1),
-            has_side_choice=True,
-        )
-        Match.objects.create(
-            team=registered_team,
-            match_id=2,
-            enemy_team=enemy_team2,
-            begin=now + timedelta(weeks=4),
-            has_side_choice=True,
-        )
+        MatchFactory(team=registered_team, enemy_team=enemy_team1, begin=now + timedelta(weeks=1))
+        MatchFactory(team=registered_team, enemy_team=enemy_team2, begin=now + timedelta(weeks=4))
 
         with patch("app_prime_league.management.commands.updates_in_group_stage_and_playoffs.MAX_UPDATES", 3):
             teams, matches = get_priority_teams_and_matches()
@@ -49,24 +38,12 @@ class GetPriorityTeamsAndMatchesTest(TestCase):
         now = make_aware(datetime(2024, 10, 14, 4, 0))
         mock_now.return_value = now
 
-        registered_team = Team.objects.create(name="Registered Team", discord_channel_id=1)
-        Team.objects.create(name="Unregistered Team")
-        enemy_team1 = Team.objects.create(name="Enemy Team")
-        enemy_team2 = Team.objects.create(name="Enemy Team 2")
-        match1 = Match.objects.create(
-            team=registered_team,
-            match_id=1,
-            enemy_team=enemy_team1,
-            begin=now + timedelta(weeks=1),
-            has_side_choice=True,
-        )
-        match2 = Match.objects.create(
-            team=registered_team,
-            match_id=2,
-            enemy_team=enemy_team2,
-            begin=now + timedelta(weeks=4),
-            has_side_choice=True,
-        )
+        registered_team = TeamFactory(name="Registered Team", channels=ChannelFactory())
+        TeamFactory(name="Unregistered Team")
+        enemy_team1 = TeamFactory(name="Enemy Team")
+        enemy_team2 = TeamFactory(name="Enemy Team 2")
+        match1 = MatchFactory(team=registered_team, enemy_team=enemy_team1, begin=now + timedelta(weeks=1))
+        match2 = MatchFactory(team=registered_team, enemy_team=enemy_team2, begin=now + timedelta(weeks=4))
 
         teams, matches = get_priority_teams_and_matches()
 
@@ -79,24 +56,13 @@ class GetPriorityTeamsAndMatchesTest(TestCase):
         now = make_aware(datetime(2024, 10, 14, 5, 0))
         mock_now.return_value = now
 
-        registered_team = Team.objects.create(name="Registered Team", discord_channel_id=1)
-        Team.objects.create(name="Unregistered Team")
-        enemy_team1 = Team.objects.create(name="Enemy Team")
-        enemy_team2 = Team.objects.create(name="Enemy Team 2")
-        match1 = Match.objects.create(
-            team=registered_team,
-            match_id=1,
-            enemy_team=enemy_team1,
-            begin=now + timedelta(weeks=1),
-            has_side_choice=True,
-        )
-        Match.objects.create(
-            team=registered_team,
-            match_id=2,
-            enemy_team=enemy_team2,
-            begin=now + timedelta(weeks=4),
-            has_side_choice=True,
-        )
+        registered_team = TeamFactory(name="Registered Team", channels=ChannelFactory())
+        TeamFactory(name="Unregistered Team")
+
+        enemy_team1 = TeamFactory(name="Enemy Team")
+        enemy_team2 = TeamFactory(name="Enemy Team 2")
+        match1 = MatchFactory(team=registered_team, enemy_team=enemy_team1, begin=now + timedelta(weeks=1))
+        MatchFactory(team=registered_team, enemy_team=enemy_team2, begin=now + timedelta(weeks=4))
 
         with patch("app_prime_league.management.commands.updates_in_group_stage_and_playoffs.MAX_UPDATES", 3):
             teams, matches = get_priority_teams_and_matches()
@@ -110,41 +76,17 @@ class GetPriorityTeamsAndMatchesTest(TestCase):
         now = make_aware(datetime(2024, 10, 14, 5, 0))
         mock_now.return_value = now
 
-        registered_team = Team.objects.create(name="Registered Team", discord_channel_id=1)
-        Team.objects.create(name="Unregistered Team")
-        enemy_team1 = Team.objects.create(name="Enemy Team")
-        Team.objects.create(name="Enemy Team 2")
-        match1 = Match.objects.create(
-            team=registered_team,
-            match_id=1,
-            enemy_team=enemy_team1,
-            begin=now + timedelta(weeks=1),
-            has_side_choice=True,
-        )
+        registered_team = TeamFactory(name="Registered Team", channels=ChannelFactory())
+        TeamFactory(name="Unregistered Team")
+        enemy_team1 = TeamFactory(name="Enemy Team")
+        TeamFactory(name="Enemy Team 2")
+        match1 = MatchFactory(team=registered_team, enemy_team=enemy_team1, begin=now + timedelta(weeks=1))
         Match.objects.filter(id=match1.id).update(updated_at=now - timedelta(hours=3))
-        match2 = Match.objects.create(
-            team=registered_team,
-            match_id=2,
-            enemy_team=enemy_team1,
-            begin=now + timedelta(weeks=2),
-            has_side_choice=True,
-        )
+        match2 = MatchFactory(team=registered_team, enemy_team=enemy_team1, begin=now + timedelta(weeks=2))
         Match.objects.filter(id=match2.id).update(updated_at=now - timedelta(hours=2))
-        match3 = Match.objects.create(
-            team=registered_team,
-            match_id=3,
-            enemy_team=enemy_team1,
-            begin=now + timedelta(weeks=3),
-            has_side_choice=True,
-        )
+        match3 = MatchFactory(team=registered_team, enemy_team=enemy_team1, begin=now + timedelta(weeks=3))
         Match.objects.filter(id=match3.id).update(updated_at=now - timedelta(hours=1))
-        Match.objects.create(
-            team=registered_team,
-            match_id=4,
-            enemy_team=enemy_team1,
-            begin=now + timedelta(weeks=4),
-            has_side_choice=True,
-        )
+        MatchFactory(team=registered_team, enemy_team=enemy_team1, begin=now + timedelta(weeks=4))
 
         with patch("app_prime_league.management.commands.updates_in_group_stage_and_playoffs.MAX_UPDATES", 5):
             teams, matches = get_priority_teams_and_matches()

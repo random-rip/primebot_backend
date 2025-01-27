@@ -20,13 +20,11 @@ class ScoutingWebsite(models.Model):
         verbose_name = "Scouting Website"
         verbose_name_plural = "Scouting Websites"
 
-    def generate_url(self, names):
+    def generate_url(self, names: list[str] | str) -> str:
         """
         Url encode given names and generate link.
-        Args:
-            names:  list of strings or string
-
-        Returns: String
+        :param names:  list of summoner names or a single summoner name
+        :return: Urlencoded string of team
         """
         if not isinstance(names, list):
             names = [names]

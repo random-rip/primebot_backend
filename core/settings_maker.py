@@ -1,6 +1,6 @@
 import logging
-import urllib
-from datetime import timedelta
+from datetime import datetime, timedelta
+from urllib import parse
 
 import cryptography
 from cryptography.fernet import Fernet
@@ -9,7 +9,8 @@ from django.conf import settings
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
 
-from app_prime_league.models import ScoutingWebsite, SettingsExpiring, Team
+from app_prime_league.models import ChannelTeam, ScoutingWebsite, SettingsExpiring
+from app_prime_league.models.channel import Platforms
 from utils.utils import Encoder
 
 MALFORMED_REQUEST = "invalid_request"
@@ -27,41 +28,40 @@ class SettingsMaker(Encoder):
     links. Set `team` or `data` in initialization.
     """
 
-    key_team = "enc"
+    key_channel_team = "enc"
     key_validation_hash = "hash"
     key_expiring_at = "expiring_at"
     key_platform = "platform"
     key_content = "settings"
 
     def __init__(self, **kwargs):
-        self.team = None
+        self.channel_team: ChannelTeam | None = None
         self.platform = None
         self.expiring_at = None
         self.errors = []
         self.data = None
         self.settings = {}
-        self.__data_validated = False
+        self._data_validated = False
 
-        if "team" in kwargs:
-            self.__init_encoding(**kwargs)
-            return
-        if "data" in kwargs:
-            self.__init_decoding(**kwargs)
-            return
-        raise KeyError("'team' or 'data' is required at instance creation.")
+        if "channel_team" in kwargs:
+            self._init_encoding(**kwargs)
+        elif "data" in kwargs:
+            self._init_decoding(**kwargs)
+        else:
+            raise KeyError("'channel_team' or 'data' is required at instance creation.")
 
-    def __init_encoding(self, **kwargs):
-        self.team = kwargs.get("team")
+    def _init_encoding(self, **kwargs):
+        self.channel_team = kwargs.get("channel_team")
         self.platform = kwargs.get("platform")
         self.expiring_at = kwargs.get("expiring_at")
 
-    def __init_decoding(self, **kwargs):
+    def _init_decoding(self, **kwargs):
         self.data = kwargs.get("data")
 
     def enc_and_hash_are_valid(self, raise_exception=False):
         self.errors = []
         try:
-            self.__parse_team()
+            self._parse_channel_team()
         except Exception as e:
             logging.getLogger("django").exception(e)
             self.errors.append(MALFORMED_REQUEST)
@@ -72,48 +72,48 @@ class SettingsMaker(Encoder):
     def validate_data(self, raise_exception=False):
         self.errors = []
         try:
-            self.__parse_team()
-            self.__parse_expiring_at()
+            self._parse_channel_team()
+            self._parse_expiring_at()
             # self.__parse_platform()
-            self.__parse_content()
+            self._parse_content()
         except Exception as e:
             logging.getLogger("django").exception(e)
             self.errors.append(MALFORMED_REQUEST)
         if raise_exception and len(self.errors) > 0:
             raise ValidationError({"errors": self.errors})
-        self.__data_validated = True
+        self._data_validated = True
         return len(self.errors) == 0
 
-    def __parse_team(self):
+    def _parse_channel_team(self):
         try:
-            encrypted_team_id = self.data.get(self.key_team)
-            self.team = Team.objects.get(id=self.decrypt(encrypted_team_id))
+            encrypted_channel_team_id = self.data.get(self.key_channel_team)
+            self.channel_team = ChannelTeam.objects.get(id=self.decrypt(encrypted_channel_team_id))
             validation_hash = self.data.get(self.key_validation_hash)
-            if self.team is None or validation_hash != self.hash(self.team.id):
+            if self.channel_team is None or validation_hash != self.hash(self.channel_team.id):
                 self.errors.append(MALFORMED_TEAM)
-        except (KeyError, Team.DoesNotExist, cryptography.fernet.InvalidToken):
+        except (KeyError, ChannelTeam.DoesNotExist, cryptography.fernet.InvalidToken):
             self.errors.append(MALFORMED_TEAM)
 
-    def __parse_expiring_at(self):
+    def _parse_expiring_at(self):
         try:
-            if not hasattr(self.team, "settings_expiring"):
+            if not hasattr(self.channel_team, "settings_expiring"):
                 self.errors.append(EXPIRED_DATE)
                 return
-            if timezone.now() >= self.team.settings_expiring.expires:
+            if timezone.now() >= self.channel_team.settings_expiring.expires:
                 self.errors.append(EXPIRED_DATE)
                 return
-        except (KeyError, ParserError, Team.DoesNotExist):
+        except (KeyError, ParserError, ChannelTeam.DoesNotExist):
             self.errors.append(MALFORMED_DATE)
 
-    def __parse_platform(self):
+    def _parse_platform(self):
         try:
             platform = self.data.get(self.key_platform)
-            if platform not in ["discord", "telegram"]:
+            if platform not in Platforms.values:
                 self.errors.append(MALFORMED_PLATFORM)
-        except (KeyError,):
+        except KeyError:
             self.errors.append(MALFORMED_PLATFORM)
 
-    def __parse_content(self):
+    def _parse_content(self):
         try:
             content = self.data.get(self.key_content)
             self.settings = {x["key"]: x["value"] for x in content}
@@ -155,38 +155,33 @@ class SettingsMaker(Encoder):
     def generate_expiring_link(
         self,
         platform,
-        expiring_at=None,
+        expiring_at: datetime | None = None,
     ) -> str:
         if expiring_at is None:
             expiring_at = timezone.now() + timedelta(minutes=settings.TEMP_LINK_TIMEOUT_MINUTES)
 
-        SettingsExpiring.objects.filter(team=self.team).delete()
-        SettingsExpiring.objects.create(expires=expiring_at, team=self.team)
+        SettingsExpiring.objects.filter(channel_team=self.channel_team).delete()
+        SettingsExpiring.objects.create(expires=expiring_at, channel_team=self.channel_team)
         url = settings.SITE_ID + "/settings/?"
         qps = {
-            self.key_team: self.encrypt(self.team.id),
-            self.key_validation_hash: self.hash(self.team.id),
+            self.key_channel_team: self.encrypt(self.channel_team.id),
+            self.key_validation_hash: self.hash(self.channel_team.id),
             self.key_platform: platform,
         }
-        url += urllib.parse.urlencode(
-            qps,
-            doseq=False,
-        )
+        url += parse.urlencode(qps, doseq=False)
         return url
 
     def save(self):
-        if not self.__data_validated:
-            raise Exception("call .validate_data first.")
+        if not self._data_validated:
+            raise Exception("call .validate_data() first.")
         for key, value in self.settings.items():
-            setting, _ = self.team.setting_set.get_or_create(
+            setting, _ = self.channel_team.settings.update_or_create(
                 attr_name=key,
                 defaults={
                     "attr_value": value,
                 },
             )
-            setting.attr_value = value
-            setting.save()
 
-        self.team.scouting_website = self.scouting_website
-        self.team.language = self.language
-        self.team.save()
+        self.channel_team.channel.scouting_website = self.scouting_website
+        self.channel_team.channel.language = self.language
+        self.channel_team.channel.save()

@@ -1,22 +1,25 @@
 import logging
-from typing import Callable, Dict, Type
+from typing import Callable, Dict
 
-from bots.base.bot_interface import BotInterface
+from app_prime_league.models.channel import Platforms
+from bots.discord_interface.discord_bot import DiscordBot
 from bots.messages.base import BaseMessage
+from bots.telegram_interface.telegram_bot import TelegramBot
 from core.cluster_job import Job
 
 cluster_job_logger = logging.getLogger("cluster_job")
 
 
-def send_message(bot: BotInterface, msg: BaseMessage):
+def send_message(msg: BaseMessage):
     if not msg.team_wants_notification():
         return "Team does not want notifications"
-    try:
-        bot.send_message(msg=msg)
-    except Exception as e:
-        cluster_job_logger.exception(e)
-        raise e
-    return f"{msg} sent to {msg.team}"
+    if msg.channel.platform == Platforms.DISCORD:
+        DiscordBot.send_message(msg=msg)
+    elif msg.channel.platform == Platforms.TELEGRAM:
+        TelegramBot.send_message(msg=msg)
+    else:
+        raise NotImplementedError(f"No implementation for {msg.channel.platform}")
+    return f"{msg} sent to {msg.team} on {msg.channel.platform}"
 
 
 class MessageDispatcherJob(Job):
@@ -30,8 +33,7 @@ class MessageDispatcherJob(Job):
     def function_to_execute(self) -> Callable:
         return send_message
 
-    def __init__(self, bot: Type[BotInterface], msg: BaseMessage):
-        self.bot = bot
+    def __init__(self, msg: BaseMessage):
         self.msg = msg
 
     def get_kwargs(self) -> Dict:
@@ -40,7 +42,6 @@ class MessageDispatcherJob(Job):
         Returns: Keyword arguments for the `function_to_execute`
         """
         return {
-            "bot": self.bot,
             "msg": self.msg,
         }
 

@@ -3,7 +3,7 @@ from discord.ext import commands
 from django.conf import settings
 from django.utils.translation import gettext as _
 
-from bots.discord_interface.utils import COLOR_SETTINGS, translation_override
+from bots.discord_interface.utils import COLOR_NOTIFICATION, translation_override
 from core.github import GitHub
 
 
@@ -16,7 +16,7 @@ async def bot_help(
     ctx: commands.Context,
 ) -> None:
     async with ctx.typing():
-        embed = Embed(title=_("Help"), color=COLOR_SETTINGS)
+        embed = Embed(title=_("Help"), color=COLOR_NOTIFICATION)
         project_version = GitHub.latest_version().version
         desc = _(
             "Disclaimer: This bot was not created in cooperation with Prime League or Freaks4u Gaming GmbH. "
@@ -31,7 +31,7 @@ async def bot_help(
             embed.add_field(name=name, value=value, inline=False)
         general = _(
             "PrimeBot Website for API status and help: {website}\n"
-            "Discord Community Server for help and updates: {discord_url}\n"
+            "Discord Server for help and updates: {discord_url}\n"
             "Checkout our Github for contributions: {github_url}\n"
             "_Version: {version}_\n"
         ).format(

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-22 17:20+0100\n"
+"POT-Creation-Date: 2025-01-27 18:37+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,30 +17,43 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#: .\app_prime_league\admin_sites\team.py:53
+#: .\app_prime_league\admin\team.py:49
 msgid "Players"
 msgstr "Spieler:innen"
 
-#: .\app_prime_league\admin_sites\team.py:58
+#: .\app_prime_league\admin\team.py:54
 msgid "With Players"
 msgstr "Mit Spieler:innen"
 
-#: .\app_prime_league\admin_sites\team.py:59
+#: .\app_prime_league\admin\team.py:55
 msgid "Without Players"
 msgstr "Ohne Spieler:innen"
 
-#: .\app_prime_league\models\team_and_match.py:55
+#: .\app_prime_league\models\channel.py:23
+msgid "Channel-Team Relation"
+msgstr "Kanal-Team Relation"
+
+#: .\app_prime_league\models\channel.py:24
+msgid "Channel-Team Relations"
+msgstr "Kanal-Team Relationen"
+
+#: .\app_prime_league\models\channel.py:37
 msgid "german"
 msgstr "deutsch"
 
-#: .\app_prime_league\models\team_and_match.py:56
+#: .\app_prime_league\models\channel.py:38
 msgid "english"
 msgstr "englisch"
 
-#: .\app_prime_league\models\team_and_match.py:290
-#: .\app_prime_league\models\team_and_match.py:291
-#, fuzzy
-#| msgid "Deleted Team"
+#: .\app_prime_league\models\channel.py:42
+msgid "Discord"
+msgstr "Discord"
+
+#: .\app_prime_league\models\channel.py:43
+msgid "Telegram"
+msgstr "Telegram"
+
+#: .\app_prime_league\models\team_and_match.py:329
+#: .\app_prime_league\models\team_and_match.py:330
 msgid "Deleted Team/TBD"
-msgstr "Gelöschtes Team/TBD"
+msgstr "Gelöschtes Team/Team noch festzulegen"

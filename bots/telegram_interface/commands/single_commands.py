@@ -9,7 +9,8 @@ from django.utils.translation import gettext as _
 from telegram import ReplyKeyboardRemove, Update
 from telegram.ext import CallbackContext, ConversationHandler
 
-from app_prime_league.models import Team
+from app_prime_league.models import Channel, ChannelTeam, Team
+from app_prime_league.models.channel import Platforms
 from bots.base.bop import GIFinator
 from bots.messages import MatchesOverview, MatchOverview
 from bots.telegram_interface.validation_messages import channel_not_registered
@@ -47,9 +48,18 @@ def set_photo(chat_id, context: CallbackContext, url):
 @log_command
 def set_logo(update: Update, context: CallbackContext):
     chat_id = update.message.chat.id
-    if not Team.objects.filter(telegram_id=chat_id).exists():
+    channel_team = (
+        ChannelTeam.objects.filter(
+            channel__platform=Platforms.TELEGRAM,
+            channel__telegram_id=chat_id,
+        )
+        .select_related("team", "channel")
+        .first()
+    )
+    if channel_team is None:
         return channel_not_registered(update)
-    url = Team.objects.get(telegram_id=chat_id).logo_url
+
+    url = channel_team.team.logo_url
     successful = set_photo(chat_id, context, url)
     if successful:
         update.message.reply_markdown(
@@ -95,13 +105,14 @@ def helpcommand(update: Update, context: CallbackContext):
     update.message.reply_markdown(
         text=(
             "Überblick:\n"
-            "/start - um euer Team zu registrieren\n"
-            "/settings - um die Einstellungen fürs Team zu bearbeiten\n"
-            "/matches - um eine Übersicht der offenen Matches zu erhalten\n"
-            "/delete - um euer registrierter Team aus der Gruppe zu entfernen\n"
+            "/start - Registriert euer Team\n"
+            "/settings - Bearbeitet die Einstellungen fürs Team\n"
+            "/matches - Erhaltet eine Übersicht der offenen Matches\n"
+            "/match X - Erhaltet eine detaillierte Übersicht eines Matches\n"
+            "/delete - Entfernt euer registriertes Team aus der Gruppe\n"
             "/bop - What's boppin'?\n"
-            "/cancel - um den aktuellen Vorgang abzubrechen\n"
-            "/set\\_logo - um das Gruppenbild zu aktualisieren (Logo von der Prime League)\n"
+            "/cancel - Brecht den aktuellen Vorgang ab\n"
+            "/set\\_logo - Aktualisiert das Gruppenbild (Logo von der Prime League)\n"
         ),
         reply_markup=ReplyKeyboardRemove(),
         disable_web_page_preview=True,
@@ -112,12 +123,18 @@ def helpcommand(update: Update, context: CallbackContext):
 @log_command
 def matches(update: Update, context: CallbackContext):
     chat_id = update.message.chat.id
-    try:
-        team = Team.objects.get(telegram_id=chat_id)
-    except Team.DoesNotExist:
+    channel_team = (
+        ChannelTeam.objects.filter(
+            channel__platform=Platforms.TELEGRAM,
+            channel__telegram_id=chat_id,
+        )
+        .select_related("team", "channel")
+        .first()
+    )
+    if channel_team is None:
         return channel_not_registered(update)
 
-    msg = MatchesOverview(team=team)
+    msg = MatchesOverview(channel_team=channel_team)
     update.message.reply_markdown(
         msg.generate_message(),
         reply_markup=ReplyKeyboardRemove(),
@@ -132,12 +149,19 @@ class InvalidMatchDay(Exception):
 
 @log_command
 def match(update: Update, context: CallbackContext) -> int:
-    return call_match(update, context)
+    chat_id = update.message.chat.id
+    channel_team = (
+        ChannelTeam.objects.filter(
+            channel__platform=Platforms.TELEGRAM,
+            channel__telegram_id=chat_id,
+        )
+        .select_related("team", "channel")
+        .first()
+    )
+    if channel_team is None:
+        return channel_not_registered(update)
 
-
-def call_match(update: Update, context: CallbackContext) -> int:
     user_command = update.message.text
-
     try:
         match_day = get_match_day(user_command)
     except InvalidMatchDay:
@@ -148,14 +172,7 @@ def call_match(update: Update, context: CallbackContext) -> int:
         )
         return ConversationHandler.END
 
-    chat_id = update.message.chat.id
-
-    try:
-        team = Team.objects.get(telegram_id=chat_id)
-    except Team.DoesNotExist:
-        return channel_not_registered(update)
-
-    found_matches = team.get_obvious_matches_based_on_stage(match_day=match_day)
+    found_matches = channel_team.team.get_obvious_matches_based_on_stage(match_day=match_day)
 
     if not found_matches:
         update.message.reply_markdown(
@@ -166,7 +183,7 @@ def call_match(update: Update, context: CallbackContext) -> int:
         return ConversationHandler.END
 
     for i in found_matches:
-        msg = MatchOverview(team=team, match=i)
+        msg = MatchOverview(channel_team=channel_team, match=i)
         update.message.reply_markdown(
             msg.generate_message(),
             reply_markup=ReplyKeyboardRemove(),
@@ -196,16 +213,24 @@ def get_validated_match_day(possible_match_day: str) -> int:
 @log_command
 def delete(update: Update, context: CallbackContext):
     chat_id = update.message.chat.id
-    if not Team.objects.filter(telegram_id=chat_id).exists():
+    channel_team = (
+        ChannelTeam.objects.filter(
+            channel__platform=Platforms.TELEGRAM,
+            channel__telegram_id=chat_id,
+        )
+        .select_related("team", "channel")
+        .first()
+    )
+    if channel_team is None:
         return channel_not_registered(update)
-    team = Team.objects.get(telegram_id=chat_id)
-    team.set_telegram_null()
+
+    Team.objects.cleanup(channel_team)
+    channel_team.channel.delete()
+
     update.message.reply_markdown(
         text=(
             "Alles klar, ich habe alle Verknüpfungen zu dieser Gruppe und dem Team gelöscht. "
             "Gebt uns gerne Feedback, falls euch Funktionalitäten fehlen oder nicht gefallen. Bye! ✌\n"
-            "_Das Team kann jetzt in einem anderen Channel registriert werden, "
-            "oder ein anderes Team kann in diesem Channel registriert werden._"
         ),
     )
     return ConversationHandler.END
@@ -214,16 +239,21 @@ def delete(update: Update, context: CallbackContext):
 @log_command
 def team_settings(update: Update, context: CallbackContext):
     chat_id = update.message.chat.id
-    try:
-        team = Team.objects.get(telegram_id=chat_id)  # noqa
-    except Team.DoesNotExist:
-        channel_not_registered(update)
-        return ConversationHandler.END
+    channel_team = (
+        ChannelTeam.objects.filter(
+            channel__platform=Platforms.TELEGRAM,
+            channel__telegram_id=chat_id,
+        )
+        .select_related("team", "channel")
+        .first()
+    )
+    if channel_team is None:
+        return channel_not_registered(update)
 
-    maker = SettingsMaker(team=team)
+    maker = SettingsMaker(channel_team=channel_team)
     link = maker.generate_expiring_link(platform="telegram")
-    title = "Einstellungen für {team} ändern".format(team=team.name)
-    content = ("Der Link ist nur {minutes} Minuten gültig. Danach muss ein neuer Link generiert werden.").format(
+    title = "Einstellungen für {team} ändern".format(team=channel_team.team.name)
+    content = "Der Link ist nur {minutes} Minuten gültig. Danach muss ein neuer Link generiert werden.".format(
         minutes=settings.TEMP_LINK_TIMEOUT_MINUTES
     )
 
@@ -240,9 +270,9 @@ def migrate_chat(update: Update, context: CallbackContext):
         return
     try:
         old_chat_id = update.message.chat.id
-        team = Team.objects.get(telegram_id=old_chat_id)
-    except Team.DoesNotExist:
+        channel = Channel.objects.get(platform=Platforms.TELEGRAM, telegram_id=old_chat_id)
+    except Channel.DoesNotExist:
         return
     new_chat_id = update.message.migrate_to_chat_id
-    team.telegram_id = new_chat_id
-    team.save()
+    channel.telegram_id = new_chat_id
+    channel.save()

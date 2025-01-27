@@ -11,9 +11,6 @@ class WeeklyNotificationMessage(MatchesOverview):
     settings_key = "WEEKLY_MATCH_DAY"
     mentionable = True
 
-    def __init__(self, team: Team):
-        super().__init__(team=team, match_ids=None)
-
     def _get_relevant_matches(self, team: Team, match_ids=None):
         lower_bound = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0)
         upper_bound = lower_bound + timedelta(days=7)

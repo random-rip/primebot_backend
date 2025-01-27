@@ -3,7 +3,7 @@ from unittest.mock import MagicMock
 
 from telegram import Chat, Message, Update
 
-from bots.telegram_interface.commands.single_commands import call_match
+from bots.telegram_interface.commands.single_commands import match
 
 
 class BotMock(MagicMock):
@@ -22,4 +22,4 @@ def test_call_match(text: str, chat=None, bot=None):
     bot = bot or BotMock()
     message = Message(1, chat=chat, text=text, bot=bot, date=datetime.now())
     update = Update(1, message)
-    call_match(update, MagicMock())
+    match(update, MagicMock())

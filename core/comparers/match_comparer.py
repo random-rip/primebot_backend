@@ -1,6 +1,5 @@
 import logging
 from abc import abstractmethod
-from typing import Union
 
 from app_prime_league.models import Comment, Match, Player, Suggestion, Team
 from bots.discord_interface.create_event import CreateDiscordEventJob
@@ -213,7 +212,7 @@ class NewEnemyTeamComparer(Comparer):
 
 
 class MatchComparer:
-    def __init__(self, match: Union[Match,], tmd: TemporaryMatchData, comparers: list[Comparer]):
+    def __init__(self, match: Match, tmd: TemporaryMatchData, comparers: list[Comparer]):
         self.match = match
         self.tmd = tmd
         self.comparers = comparers

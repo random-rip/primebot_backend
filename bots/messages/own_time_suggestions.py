@@ -1,7 +1,6 @@
 from django.utils.translation import gettext as _
 from django.utils.translation import ngettext
 
-from app_prime_league.models import Match, Team
 from bots.messages.base import MatchMessage
 from utils.utils import format_datetime
 
@@ -9,9 +8,6 @@ from utils.utils import format_datetime
 class OwnNewTimeSuggestionsNotificationMessage(MatchMessage):
     settings_key = "TEAM_SCHEDULING_SUGGESTION"
     mentionable = True
-
-    def __init__(self, team: Team, match: Match):
-        super().__init__(team=team, match=match)
 
     def _generate_title(self):
         return "📆 " + _("New date proposed by you")

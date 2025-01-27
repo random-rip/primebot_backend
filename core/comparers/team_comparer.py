@@ -9,8 +9,7 @@ class TeamComparer:
 
     def compare_new_matches(self):
         """
-        Returns: List of integers or False
-
+        :return: List of integers or False
         """
         new_match_ids = self.processor.get_matches()
         current_match_ids = self.team.matches_against.values_list("match_id", flat=True)

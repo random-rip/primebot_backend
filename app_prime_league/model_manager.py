@@ -2,6 +2,7 @@ import logging
 from typing import List
 
 from django.db import IntegrityError, models
+from django.db.models import QuerySet
 
 update_logger = logging.getLogger("updates")
 
@@ -38,11 +39,10 @@ class PlayerManager(models.Manager):
             current_players.append(player)
         return current_players
 
-    def get_active_players(self):
+    def get_active_players(self) -> QuerySet:
         """
-        Spieler mit fehlendem Gameaccount haben keinen `summoner_name`.
-        Returns: aktive Spieler
-
+        Players with a missing Game-Account have no `summoner_name`.
+        :return: Filtered QuerySet with active players
         """
         return self.get_queryset().filter(summoner_name__isnull=False)
 

@@ -6,7 +6,7 @@ from drf_spectacular.utils import extend_schema
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from app_prime_league.models import Team
+from app_prime_league.models import ChannelTeam, Team
 from core.api import PrimeLeagueAPI
 from core.github import GitHub
 
@@ -42,6 +42,7 @@ class StatusView(APIView):
             "discord_status": self._get_discord_bot_status(),
             "telegram_status": self._get_telegram_bot_status(),
             "registered_teams": Team.objects.get_registered_teams().count(),
+            "subscribed_teams": ChannelTeam.objects.count(),
             "total_teams": Team.objects.all().count(),
         }
         return Response(data)

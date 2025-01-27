@@ -10,7 +10,6 @@ from rest_framework import viewsets
 from rest_framework.filters import OrderingFilter, SearchFilter
 
 from app_prime_league.models import Match, Team
-from bots.messages.base import MatchMixin
 from bots.messages.helpers import MatchDisplayHelper
 
 from .serializers import TeamDetailSerializer, TeamSerializer
@@ -51,7 +50,7 @@ class TeamViewSet(viewsets.ReadOnlyModelViewSet):
         return self.serializer_class
 
 
-class MatchEvent(MatchMixin):
+class MatchEvent:
     def __init__(self, match):
         self.match = match
         self.team = self.match.team
@@ -99,8 +98,8 @@ class MatchEvent(MatchMixin):
                 match_day=MatchDisplayHelper.display_match_day(self.match),
                 match_schedule=MatchDisplayHelper.display_match_schedule_simple(self.match),
                 scouting_website=scouting_website,
-                enemy_scouting_url=self.get_enemy_team_scouting_url(self.match),
-                enemy_lineup_url=self.get_enemy_lineup_scouting_url(self.match),
+                enemy_scouting_url=self.match.get_enemy_scouting_url(lineup=False),
+                enemy_lineup_url=self.match.get_enemy_scouting_url(lineup=True),
                 prime_league_link=self.match.prime_league_link,
                 legend=self.legend,
             )

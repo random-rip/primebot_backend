@@ -1,98 +1,87 @@
-from datetime import datetime
+from datetime import date, datetime
 from unittest import mock
 
 from django.test import TestCase
 from django.utils.timezone import make_aware
 
-from app_prime_league.models import Match, Team
-from core.test_utils import MatchBuilder, SplitBuilder
+from app_prime_league.factories import MatchFactory, SplitFactory, TeamFactory
+from app_prime_league.models import Match
 
 
 class MatchesTest(TestCase):
     def setUp(self):
-        self.team_a = Team.objects.create(id=1, name="Team A", team_tag="TA")
-        SplitBuilder(group_stage_start=datetime(2022, 6, 2)).build()
+        self.team_a = TeamFactory(name="Team A", team_tag="TA")
+        SplitFactory.from_registration_dates(date(2022, 5, 19), date(2022, 6, 1))
         # calibration
-        Match.objects.create(
+        MatchFactory(
             match_id=1,
             match_day=1,
             match_type=Match.MATCH_TYPE_GROUP,
             team=self.team_a,
-            has_side_choice=True,
         )
-        Match.objects.create(
+        MatchFactory(
             match_id=2,
             match_day=2,
             match_type=Match.MATCH_TYPE_GROUP,
             team=self.team_a,
-            has_side_choice=True,
         )
-        Match.objects.create(
+        MatchFactory(
             match_id=3,
             match_day=3,
             match_type=Match.MATCH_TYPE_GROUP,
             team=self.team_a,
-            has_side_choice=True,
         )
-        Match.objects.create(
+        MatchFactory(
             match_id=4,
             match_day=4,
             match_type=Match.MATCH_TYPE_GROUP,
             team=self.team_a,
-            has_side_choice=True,
         )
 
         # group phase
-        Match.objects.create(
+        MatchFactory(
             match_id=10,
             match_day=1,
             match_type=Match.MATCH_TYPE_LEAGUE,
             team=self.team_a,
-            has_side_choice=True,
         )
-        Match.objects.create(
+        MatchFactory(
             match_id=20,
             match_day=2,
             match_type=Match.MATCH_TYPE_LEAGUE,
             team=self.team_a,
-            has_side_choice=True,
         )
-        Match.objects.create(
+        MatchFactory(
             match_id=30,
             match_day=3,
             match_type=Match.MATCH_TYPE_LEAGUE,
             team=self.team_a,
-            has_side_choice=True,
         )
-        Match.objects.create(
+        MatchFactory(
             match_id=40,
             match_day=4,
             match_type=Match.MATCH_TYPE_LEAGUE,
             team=self.team_a,
-            has_side_choice=True,
         )
 
         # tiebreaker
-        Match.objects.create(
+        MatchFactory(
             match_id=100,
             match_day=Match.MATCH_DAY_TIEBREAKER,
             match_type=Match.MATCH_TYPE_LEAGUE,
             team=self.team_a,
-            has_side_choice=True,
         )
-        Match.objects.create(
+        MatchFactory(
             match_id=200,
             match_day=Match.MATCH_DAY_TIEBREAKER,
             match_type=Match.MATCH_TYPE_LEAGUE,
             team=self.team_a,
-            has_side_choice=True,
         )
-        Match.objects.create(
+        MatchFactory(
             match_id=300,
             match_day=Match.MATCH_DAY_TIEBREAKER,
             match_type=Match.MATCH_TYPE_LEAGUE,
             team=self.team_a,
-            has_side_choice=True,
         )
 
     @mock.patch('django.utils.timezone.now')
@@ -153,11 +142,11 @@ class MatchesTest(TestCase):
 
     @mock.patch('django.utils.timezone.now')
     def test_playoffs(self, timezone_mock):
-        timezone_mock.return_value = make_aware(datetime(2022, 8, 1))
-        # Playoffs start on 2022-08-01
-        MatchBuilder(1000, self.team_a).set_match_type(Match.MATCH_TYPE_PLAYOFF).does_have_side_choice().build()
-        MatchBuilder(2000, self.team_a).set_match_type(Match.MATCH_TYPE_PLAYOFF).does_have_side_choice().build()
-        MatchBuilder(3000, self.team_a).set_match_type(Match.MATCH_TYPE_PLAYOFF).does_have_side_choice().build()
+        timezone_mock.return_value = make_aware(datetime(2022, 8, 21))
+        # Playoffs start on 2022-08-21
+        MatchFactory(match_id=1000, team=self.team_a, match_type=Match.MATCH_TYPE_PLAYOFF, match_day=0)
+        MatchFactory(match_id=2000, team=self.team_a, match_type=Match.MATCH_TYPE_PLAYOFF, match_day=0)
+        MatchFactory(match_id=3000, team=self.team_a, match_type=Match.MATCH_TYPE_PLAYOFF, match_day=0)
 
         result = list(self.team_a.get_obvious_matches_based_on_stage(0).values_list("match_id", flat=True))
         self.assertListEqual([1000, 2000, 3000], result)

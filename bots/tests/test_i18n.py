@@ -1,7 +1,9 @@
 from django.test import TestCase
 from django.utils import translation
 
-from app_prime_league.models import Match, Player, Team
+from app_prime_league.factories import ChannelFactory, MatchFactory, TeamFactory
+from app_prime_league.models import Match
+from app_prime_league.models.channel import ChannelTeam, Platforms
 from bots.messages import NewCommentsNotificationMessage
 from core.test_utils import string_to_datetime
 from utils.utils import format_datetime
@@ -9,40 +11,27 @@ from utils.utils import format_datetime
 
 class DiscordMessageTests(TestCase):
     def setUp(self):
-        self.team_a = Team.objects.create(id=1, name="ABC", team_tag="abc")
-        self.team_b = Team.objects.create(id=2, name="XYZ", team_tag="xyz")
-        self.match = Match.objects.create(
-            match_id=1, team=self.team_a, enemy_team=self.team_b, match_day=1, has_side_choice=True
+        self.team_a = TeamFactory(team_tag="abc", channels=ChannelFactory(platform=Platforms.DISCORD))
+        self.team_b = TeamFactory(team_tag="xyz")
+        self.match = MatchFactory(
+            team=self.team_a, enemy_team=self.team_b, match_day=1, match_id=1, match_type=Match.MATCH_TYPE_LEAGUE
         )
-        line_up_players = [
-            Player.objects.create(
-                name="player 1",
-                summoner_name="player1",
-                team=self.team_b,
-            ),
-            Player.objects.create(name="player 2", summoner_name="player2", team=self.team_b),
-            Player.objects.create(name="player 3", summoner_name="player3", team=self.team_b),
-            Player.objects.create(name="player 4", summoner_name="player4", team=self.team_b),
-            Player.objects.create(name="player 5", summoner_name="player5", team=self.team_b),
-        ]
-        Player.objects.create(name="player 6", summoner_name="player6", team=self.team_b),
-        self.match.enemy_lineup.add(*line_up_players)
 
     def test_i18n(self):
-        self.team_a.language = "de"
-        msg = NewCommentsNotificationMessage(match=self.match, team=self.team_a, new_comment_ids=[123456789])
+        msg = NewCommentsNotificationMessage(
+            channel_team=ChannelTeam.objects.first(),
+            match=self.match,
+            new_comment_ids=[123],
+        )
         result = msg.generate_message()
 
         expected = (
             "Es gibt [einen neuen Kommentar](https://www.primeleague.gg/de/leagues/matches/1#comment:"
-            "123456789) für [Spieltag 1](https://www.primeleague.gg/de/leagues/"
-            "matches/1#comment:123456789) gegen [xyz](https://www.primeleague.gg/de/leagues/teams/2)."
+            "123) für [Spieltag 1](https://www.primeleague.gg/de/leagues/"
+            f"matches/1) gegen [xyz](https://www.primeleague.gg/de/leagues/teams/{self.team_b.id})."
         )
 
-        self.assertEqual(
-            result,
-            expected,
-        )
+        self.assertEqual(result, expected)
 
     def test_datetime_format(self):
         self.match.begin = string_to_datetime("2022-02-17 15:00")

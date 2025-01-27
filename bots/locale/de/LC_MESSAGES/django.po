@@ -1,14 +1,14 @@
 # English Translation for bots.
-# Copyright (C) 2022 Janek Mangold
+# Copyright (C) 2025 Janek Mangold
 # This file is distributed under the same license as the primebot_backend package.
-# Janek Mangold <mangold.janek@web.de>, 2022.
+# Janek Mangold <mangold.janek@web.de>, 2025.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-22 17:20+0100\n"
+"POT-Creation-Date: 2025-01-27 19:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,21 +18,20 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\bots\discord_interface\discord_bot.py:117
+#: .\bots\discord_interface\discord_bot.py:123
 msgid ""
 "There is currently no team registered in this channel. Use `/start` to "
 "register a team."
 msgstr ""
-"In diesem Channel wurde noch kein Team registriert. Benutzt `/start` um eins "
-"zu registrieren."
+"Derzeit ist kein Team in diesem Kanal registriert. Verwende /start, "
+"um ein Team zu registrieren."
 
-#: .\bots\discord_interface\discord_bot.py:120
+#: .\bots\discord_interface\discord_bot.py:126
 msgid "This is a channel command."
 msgstr "Das ist ein Befehl, der nur in einem Channel ausgeführt werden kann."
 
-#: .\bots\discord_interface\discord_bot.py:123
-#: .\bots\discord_interface\ext\bop.py:38
-#: .\bots\discord_interface\ext\start.py:144
+#: .\bots\discord_interface\discord_bot.py:129
+#: .\bots\discord_interface\ext\start.py:143
 #, python-brace-format
 msgid ""
 "An unknown error has occurred. Please contact the developers on Discord at "
@@ -41,39 +40,54 @@ msgstr ""
 "Es ist ein unbekannter Fehler aufgetreten. Bitte kontaktiert die Entwickler "
 "auf Discord unter {discord_link}."
 
-#: .\bots\discord_interface\ext\bop.py:24
-#: .\bots\discord_interface\ext\bop.py:35
+#: .\bots\discord_interface\ext\bop.py:21
 msgid "It's not my fault, but I can't get you your surprise. :("
 msgstr ""
-"Es ist nicht meine Schuld, aber ich kann dir die Überraschung nicht geben. :("
 
-#: .\bots\discord_interface\ext\delete.py:17
-msgid "Alright, I will delete all links to this channel and the team."
-msgstr "In Ordnung, ich werde alle Links zu diesem Kanal und dem Team löschen."
+#: .\bots\discord_interface\ext\delete.py:18
+#, python-brace-format
+msgid "Remove {team_name} from Channel"
+msgstr "{team_name} aus dem Kanal entfernen"
 
-#: .\bots\discord_interface\ext\delete.py:24
+#: .\bots\discord_interface\ext\delete.py:33
+#, python-brace-format
+msgid "The team {team_name} has been removed from the channel."
+msgstr "Das Team {team_name} wurde aus dem Kanal entfernt."
+
+#: .\bots\discord_interface\ext\delete.py:41
+msgid ""
+"All teams have been removed from the channel, so I clean up the remaining "
+"channel settings for you. 🧹"
+msgstr ""
+"Alle Teams wurden aus dem Kanal entfernt, daher lösche ich die "
+"verbleibenden Kanaleinstellungen für dich. 🧹"
+
+#: .\bots\discord_interface\ext\delete.py:48
 #, python-brace-format
 msgid ""
 "All deleted. Feel free to give us feedback on {discord_link} if you are "
 "missing or don't like any functionality. Bye! ✌\n"
-"_The team can now be registered in another channel, or another team can be "
-"registered in this channel._"
 msgstr ""
-"Alles gelöscht. Bitte gebt uns unter {discord_link} Feedback, wenn ihr eine "
-"Funktion vermisst oder nicht mögt. Bye! ✌\n"
-"_Das Team kann nun in einem anderen Channel registriert werden, oder ein "
-"anderes Team kann in diesem Channel registriert werden._"
+"Alles gelöscht. Gib uns gerne Feedback unter {discord_link}, wenn dir "
+"irgendwelche Funktionen fehlen oder nicht gefallen. Tschüss! ✌\n"
 
-#: .\bots\discord_interface\ext\fix.py:23
+#: .\bots\discord_interface\ext\delete.py:70
+#: .\bots\discord_interface\ext\delete.py:99
+#: .\bots\discord_interface\ext\match.py:45
+#: .\bots\discord_interface\ext\match.py:89
+#: .\bots\discord_interface\ext\matches.py:47
+#: .\bots\discord_interface\ext\team_settings.py:90
+msgid "Select a team"
+msgstr "Wähle ein Team aus"
+
+#: .\bots\discord_interface\ext\fix.py:26
 #, python-brace-format
 msgid ""
 "The webhook has been recreated. If you still experience problems, check our "
-"website {website}/discord/ for help or join our Discord Community Server "
-"{discord}."
+"website {website}/discord/ for help or join our Discord Server {discord}."
 msgstr ""
-"Der Webhook wurde neu erstellt. Wenn ihr weiterhin Probleme habt, schaut auf "
-"unserer Website {website}/discord/ nach Hilfe oder tretet dem Discord "
-"Community Server {discord} bei."
+"Das Webhook wurde neu erstellt. Wenn weiterhin Probleme auftreten, besuche "
+"unsere Website {website}/discord/ für Hilfe oder tritt unserem Discord-Server bei {discord}"
 
 #: .\bots\discord_interface\ext\help.py:19
 msgid "Help"
@@ -98,27 +112,84 @@ msgstr ""
 #, python-brace-format
 msgid ""
 "PrimeBot Website for API status and help: {website}\n"
-"Discord Community Server for help and updates: {discord_url}\n"
+"Discord Server for help and updates: {discord_url}\n"
 "Checkout our Github for contributions: {github_url}\n"
 "_Version: {version}_\n"
 msgstr ""
 "PrimeBot Website für API Status und Hilfe: {website}\n"
-"Discord Community Server für Hilfe und Updates: {discord_url}\n"
+"Discord Server für Hilfe und Updates: {discord_url}\n"
 "Helft uns den PrimeBot zu verbessern: {github_url}\n"
 "_Version: {version}_\n"
 
-#: .\bots\discord_interface\ext\matches.py:35
-msgid "This match day was not found. Try `/match 1`."
-msgstr "Dieser Spieltag wurde nicht gefunden. Probiere `/match 1`. "
+#: .\bots\discord_interface\ext\match.py:61
+msgid "Select a match"
+msgstr "Wähle ein Match aus"
 
-#: .\bots\discord_interface\ext\start.py:51
+#: .\bots\discord_interface\ext\match.py:61
+msgid "No matches found"
+msgstr "Keine Matches gefunden"
+
+#: .\bots\discord_interface\ext\roles.py:21
+msgid "Select a role"
+msgstr "Wähle eine Rolle aus"
+
+#: .\bots\discord_interface\ext\roles.py:45
+#, python-brace-format
+msgid "All right, I've removed the role for the team **{team_name}**."
+msgstr "Alles klar, ich habe die Rolle für das Team **{team_name}** entfernt."
+
+#: .\bots\discord_interface\ext\roles.py:55
+#, python-brace-format
+msgid ""
+"Okay, I'll  inform the team **{team_name}** with the role **{role_name}** 📯"
+msgstr ""
+"Okay, ich werde das Team **{team_name}** mit der Rolle **{role_name}** informieren 📯"
+
+#: .\bots\discord_interface\ext\roles.py:80
+#: .\bots\discord_interface\ext\roles.py:106
+#: .\bots\discord_interface\ext\roles.py:190
+msgid ""
+"Select a team for which you want to set a role or update the role for all "
+"teams."
+msgstr ""
+"Wähle ein Team aus, für das du eine Rolle festlegen möchtest, oder "
+"aktualisiere die Rolle für alle Teams."
+
+#: .\bots\discord_interface\ext\roles.py:119
+msgid "Alright, I've removed the roles for all teams."
+msgstr "Alles klar, ich habe die Rollen für alle Teams entfernt."
+
+#: .\bots\discord_interface\ext\roles.py:128
+#, python-brace-format
+msgid "Okay, I'll inform all teams with the role **{role_name}** 📯"
+msgstr "Okay, ich werde alle Teams mit der Rolle **{role_name}** informieren 📯"
+
+#: .\bots\discord_interface\ext\roles.py:136
+msgid "Update all teams at once"
+msgstr "Alle Teams gleichzeitig aktualisieren"
+
+#: .\bots\discord_interface\ext\roles.py:145
+msgid "Select a role or remove the roles for all teams."
+msgstr "Wähle eine Rolle aus oder entferne die Rollen für alle Teams."
+
+#: .\bots\discord_interface\ext\roles.py:162
+#, python-brace-format
+msgid "Select a role or remove the role for the team **{team_name}**."
+msgstr "Wähle eine Rolle aus oder entferne die Rolle für das Team **{team_name}**."
+
+#: .\bots\discord_interface\ext\start.py:37
 msgid ""
 "I'm setting up the team registration for you (estimated time: 40 seconds)."
-msgstr "Ich richte die Teamanmeldung für dich ein (Dauer circa 40 Sekunden)."
+msgstr ""
+"Ich richte die Teamregistrierung für dich ein (geschätzte Zeit: 40 Sekunden)."
 
-#: .\bots\discord_interface\ext\start.py:53
+#: .\bots\discord_interface\ext\start.py:39
 msgid "Please wait a moment..."
 msgstr "Das dauert ein Moment..."
+
+#: .\bots\discord_interface\ext\start.py:69
+msgid "This team is already registered in this channel."
+msgstr "Dieses Team ist bereits in diesem Kanal registriert."
 
 #: .\bots\discord_interface\ext\start.py:77
 msgid ""
@@ -134,23 +205,23 @@ msgid ""
 "Currently unable to connect to the Prime League website. Try again in a few "
 "hours.\n"
 "If it still doesn't work later, check our website {website} for help or join "
-"our Discord Community Server {discord}."
+"our Discord Server {discord}."
 msgstr ""
 "Derzeit kann keine Verbindung zur Prime League Website hergestellt werden."
 "Versucht es in ein paar Stunden erneut. Wenn es dann immer noch nicht "
 "funktioniert, schaut auf unserer Website {website}/discord/ nach Hilfe oder "
 "tretet dem Discord Community Server {discord} bei."
 
-#: .\bots\discord_interface\ext\start.py:89
+#: .\bots\discord_interface\ext\start.py:101
 #, python-brace-format
 msgid ""
 "Perfect, this channel was registered for team **{team_name}**.\n"
 "The most important commands:\n"
-"📌 `/role ROLE_NAME` - to set a role to be mentioned in notifications\n"
+"📌 `/role` - to set a role to be mentioned in notifications\n"
 "📌 `/settings` - to personalize the notifications, change the PrimeBot "
 "language or change the scouting website (default: {scouting_website})\n"
 "📌 `/matches` - to get an overview of the matches that are still open\n"
-"📌 `/match MATCH_DAY` - to receive detailed information about a match day\n"
+"📌 `/match` - to receive detailed information about a match day\n"
 "\n"
 "Just try it out! 🎁 \n"
 "The **status of the Prime League API** can be viewed at any time on "
@@ -158,109 +229,68 @@ msgid ""
 msgstr ""
 "Perfekt, dieser Channel wurde für das Team **{team_name}** registriert.\n"
 "Die wichtigsten Befehle:\n"
-"📌 `/role ROLE_NAME` - um eine Discordrolle zu setzen, die in den "
+"📌 `/role` - um eine Discordrolle zu setzen, die in den "
 "Benachrichtigungen erwähnt werden soll\n"
 "📌 `/settings` - um die Benachrichtigungen zu personalisieren, die Sprache "
 "des PrimeBots, oder die Scouting Website (standard: {scouting_website}) zu "
 "ändern\n"
 "📌 `/matches` - um eine Übersicht eurer offenen Matches zu erhalten\n"
-"📌 `/match MATCH_DAY` - um detaillierte Informationen zu einem Spieltag zu "
+"📌 `/match` - um detaillierte Informationen zu einem Spieltag zu "
 "erhalten\n"
 "\n"
 "Einfach ausprobieren! 🎁 \n"
 "Der **Status der Prime League API** kann jederzeit auf {website} angeschaut "
 "werden."
 
-#: .\bots\discord_interface\ext\start.py:111
+#: .\bots\discord_interface\ext\start.py:123
 #, python-brace-format
 msgid ""
 "No ID could be found from the passed argument.\n"
-"Check out our website {website} for help or join our Discord Community "
-"Server {discord}."
+"Check out our website {website} for help or join our Discord Server "
+"{discord}."
 msgstr ""
 "Es konnte keine ID aus dem übergebenen Argument gefunden werden.\n"
 " Besucht unsere Website {website} für Hilfe oder tretet unserer Discord-"
-"Community Server {discord}."
+"Server {discord}."
 
-#: .\bots\discord_interface\ext\start.py:116
+#: .\bots\discord_interface\ext\start.py:128
 msgid "No teams from Division 1 or 2 can be registered."
 msgstr "Es können keine Teams aus Division 1 oder 2 registriert werden."
 
-#: .\bots\discord_interface\ext\start.py:120
+#: .\bots\discord_interface\ext\start.py:131
 msgid ""
-"There is already a team registered for this channel. If you want to register "
-"another team here, first delete the link to the current team with `/delete`. "
-"If no more notifications arrive in the channel, but you have already "
-"registered the team, please use `/fix`."
+"Only Text, Voice and News channels are supported. Please use one of these "
+"channel types."
 msgstr ""
-"Es ist bereits ein Team für diesen Kanal registriert. Wenn ihr ein anderes "
-"Team hier registrieren wollt, löscht zuerst den Link zum aktuellen Team mit "
-"`/delete`. Wenn keine Benachrichtigungen mehr in dem Channel ankommen, ihr "
-"das Team aber bereits registriert habt, verwende bitte `/fix`."
-
-#: .\bots\discord_interface\ext\start.py:128
-#, python-brace-format
-msgid ""
-"This team is already registered in another channel. First delete the link in "
-"the other channel with `/delete`.\n"
-" Check our website {website} for help or join our Discord Community Server "
-"{discord}."
-msgstr ""
-"Dieses Team ist bereits in einem anderen Kanal registriert. Löscht zuerst "
-"den Link in dem anderen Channel mit `/delete`.\n"
-" Schaut auf unserer Website {website} nach Hilfe oder tretet unserem Discord "
-"Community Server {discord} bei."
+"Nur Text-, Sprach- und Newskanäle werden unterstützt. Bitte verwende einen "
+"dieser Kanaltypen."
 
 #: .\bots\discord_interface\ext\start.py:136
 #, python-brace-format
 msgid ""
 "I lack the permission to manage webhooks. Please make sure I have that "
-"permission. If necessary, wait an hour before running the command again. If "
-"it still doesn't work after that, check our website {website} for help or "
-"join our Discord Community Server {discord}."
+"permission. Check our website {website} or join our Discord Server {discord} "
+"for help."
 msgstr ""
-"Ich habe nicht die Berechtigung, Webhooks zu verwalten. Bitte stellt sicher, "
-"dass ich diese Berechtigung habe. Wenn nötig, wartet eine Stunde, bevor ihr "
-"den Befehl erneut ausführt. Wenn es danach immer noch nicht funktioniert, "
-"schaut auf unserer Website {website}/discord/ nach Hilfe oder tretet dem "
-"Discord Community Server {discord} bei."
+"Mir fehlt die Berechtigung, Webhooks zu verwalten. Bitte stelle sicher, "
+"dass ich diese Berechtigung habe. Besuche unsere Website {website} oder "
+"tritt unserem Discord-Server bei {discord} für Hilfe."
 
-#: .\bots\discord_interface\ext\team_settings.py:29
-msgid ""
-"All right, I've removed the role mention. You can turn it back on if needed, "
-"just use `/role ROLE_NAME`."
-msgstr ""
-"In Ordnung, ich habe die Rollenerwähnung entfernt. Ihr könnt sie bei Bedarf "
-"wieder einschalten, indem Ihr einfach `/role ROLE_NAME` verwendet."
+#: .\bots\discord_interface\ext\team_settings.py:65
+msgid "Notification Settings"
+msgstr "Benachrichtigungseinstellungen"
 
-#: .\bots\discord_interface\ext\team_settings.py:35
-msgid "You can't use role **everyone**. Please choose a different role."
-msgstr ""
-"Ihr könnte die Rolle **everyone** nicht benutzen. Bitte wählt eine andere "
-"Rolle aus."
+#: .\bots\discord_interface\ui\buttons.py:40
+msgid "Back"
+msgstr "Zurück"
 
-#: .\bots\discord_interface\ext\team_settings.py:41
-#, python-brace-format
-msgid ""
-"Okay, I'll inform the role **{role_name}** for new notifications from now "
-"on. 📯"
-msgstr ""
-"Okay, ich werde die Rolle **{role_name}** ab jetzt über neue "
-"Benachrichtigungen informieren. 📯"
+#: .\bots\discord_interface\ui\buttons.py:53
+msgid "Close"
+msgstr "Schließen"
 
-#: .\bots\discord_interface\ext\team_settings.py:63
-#, python-brace-format
-msgid "Change settings for {team}"
-msgstr "Einstellungen für {team} ändern"
-
-#: .\bots\discord_interface\ext\team_settings.py:66
-#, python-brace-format
-msgid ""
-"The link is only valid for {minutes} minutes. After that, a new link must be "
-"generated."
-msgstr ""
-"Der Link ist nur für {minutes} Minuten gültig. Danach muss ein neuer Link "
-"generiert werden."
+#: .\bots\discord_interface\ui\buttons.py:58
+msgid "Done."
+msgstr "Erledigt."
 
 #: .\bots\messages\comments.py:16
 msgid "New comments"
@@ -269,11 +299,11 @@ msgstr "Neue Kommentare"
 #: .\bots\messages\comments.py:21
 #, python-brace-format
 msgid ""
-"There is [a new comment]({match_url}) for [{match_day}]({match_url}) against "
-"[{enemy_team_tag}]({enemy_team_url})."
+"There is [a new comment]({comment_url}) for [{match_day}]({match_url}) "
+"against [{enemy_team_tag}]({enemy_team_url})."
 msgid_plural ""
-"There are [new comments]({match_url}) for [{match_day}]({match_url}) against "
-"[{enemy_team_tag}]({enemy_team_url})."
+"There are [new comments]({comment_url}) for [{match_day}]({match_url}) "
+"against [{enemy_team_tag}]({enemy_team_url})."
 msgstr[0] ""
 "Es gibt [einen neuen Kommentar]({match_url}) für [{match_day}]({match_url}) "
 "gegen [{enemy_team_tag}]({enemy_team_url})."
@@ -285,11 +315,11 @@ msgstr[1] ""
 msgid "Developer notification"
 msgstr "Entwicklerbenachrichtigung"
 
-#: .\bots\messages\enemy_lineup.py:16
+#: .\bots\messages\enemy_lineup.py:14
 msgid "New lineup"
 msgstr "Neues Lineup"
 
-#: .\bots\messages\enemy_lineup.py:20
+#: .\bots\messages\enemy_lineup.py:18
 #, python-brace-format
 msgid ""
 "[{enemy_team_tag}]({enemy_team_url}) ([{match_day}]({match_url})) submitted "
@@ -298,10 +328,10 @@ msgstr ""
 "[{enemy_team_tag}]({enemy_team_url}) ([{match_day}]({match_url})) hat ein "
 "neues [Lineup]({scouting_url}) aufgestellt."
 
-#: .\bots\messages\enemy_lineup.py:34
+#: .\bots\messages\enemy_lineup.py:32
 #, python-brace-format
-msgid "To get more information about the match, use /match {match_day}."
-msgstr ""
+msgid "To get more information about the match, use /match."
+msgstr "Um mehr Informationen über das Match zu erhalten, verwende /match."
 
 #: .\bots\messages\enemy_time_suggestions.py:22
 msgid "New date proposed by an opponent"
@@ -366,76 +396,92 @@ msgstr "Offene Terminvorschläge von euch. Verbleibende Zeit: {left_time}"
 msgid "Dates proposed by the opponent are open! Left time: {left_time}"
 msgstr "Offene Terminvorschläge vom Gegner! Verbleibende Zeit: {left_time}"
 
-#: .\bots\messages\match_details.py:17
+#: .\bots\messages\helpers.py:68
+msgid "⚔ Match begin confirmed"
+msgstr "⚔ Match-Beginn bestätigt"
+
+#: .\bots\messages\helpers.py:71
+msgid "📆 No dates proposed"
+msgstr "📆 Keine Termine vorgeschlagen"
+
+#: .\bots\messages\helpers.py:74
+msgid "✅ Dates proposed by you are open"
+msgstr "✅ Offene Terminvorschläge von euch"
+
+#: .\bots\messages\helpers.py:76
+msgid "⚠ Dates proposed by the opponent are open!"
+msgstr "⚠ Offene Terminvorschläge vom Gegner!"
+
+#: .\bots\messages\match_details.py:21
 msgid "Match overview"
 msgstr "Matchübersicht"
 
-#: .\bots\messages\match_details.py:59 .\bots\messages\match_details.py:146
+#: .\bots\messages\match_details.py:55 .\bots\messages\match_details.py:142
 msgid "Date"
 msgstr "Termin"
 
-#: .\bots\messages\match_details.py:72
+#: .\bots\messages\match_details.py:68
 msgid "Other information"
 msgstr "Sonstige Informationen"
 
-#: .\bots\messages\match_details.py:76
+#: .\bots\messages\match_details.py:72
 msgid "You have a choice of sides in the **first** game"
 msgstr "Ihr habt im **ersten** Spiel Seitenwahl"
 
-#: .\bots\messages\match_details.py:78
+#: .\bots\messages\match_details.py:74
 msgid "You have a choice of sides in the **second** game"
 msgstr "Ihr habt im **zweiten** Spiel Seitenwahl"
 
-#: .\bots\messages\match_details.py:83
+#: .\bots\messages\match_details.py:79
 msgid "The following champions are expected to be locked at the scheduled date"
 msgstr "Folgende Champions sind voraussichtlich beim Spieltermin gesperrt"
 
-#: .\bots\messages\match_details.py:86
+#: .\bots\messages\match_details.py:82
 msgid "until patch"
 msgstr "bis Patch"
 
-#: .\bots\messages\match_details.py:89
+#: .\bots\messages\match_details.py:85
 msgid "The rulebook is available [here.]"
 msgstr "Das Regelwerk gibt es [hier.]"
 
-#: .\bots\messages\match_details.py:94
+#: .\bots\messages\match_details.py:90
 msgid "Opposing team"
 msgstr "Gegnerteam"
 
-#: .\bots\messages\match_details.py:106
+#: .\bots\messages\match_details.py:102
 msgid "Opposing players (leagueofgraphs.com)"
-msgstr "Gegnerische Spieler (leagueofgraphs.com)"
+msgstr "Gegnerische Spieler:innen (leagueofgraphs.com)"
 
-#: .\bots\messages\match_details.py:143
+#: .\bots\messages\match_details.py:139
 msgid "Match result"
 msgstr "Matchergebnis"
 
-#: .\bots\messages\match_details.py:145
+#: .\bots\messages\match_details.py:141
 msgid "Result"
 msgstr "Ergebnis"
 
-#: .\bots\messages\match_details.py:150
+#: .\bots\messages\match_details.py:146
 msgid "Your lineup"
 msgstr "Eure Aufstellung"
 
-#: .\bots\messages\match_details.py:154
+#: .\bots\messages\match_details.py:150
 msgid "Own lineup submitted:"
 msgstr "Eigenes Lineup aufgestellt:"
 
-#: .\bots\messages\match_details.py:158 .\bots\messages\match_details.py:177
+#: .\bots\messages\match_details.py:154 .\bots\messages\match_details.py:173
 msgid "No lineup has been submitted yet."
 msgstr "Es wurde noch kein Lineup aufgestellt."
 
-#: .\bots\messages\match_details.py:162
+#: .\bots\messages\match_details.py:158
 msgid "Lineup of opponent"
 msgstr "Gegnerische Aufstellung"
 
-#: .\bots\messages\match_details.py:184 .\bots\messages\matches_overview.py:53
+#: .\bots\messages\match_details.py:180 .\bots\messages\matches_overview.py:53
 #, python-brace-format
 msgid "[against {enemy_team_name}]({match_url})"
 msgstr "[gegen {enemy_team_name}]({match_url})"
 
-#: .\bots\messages\match_details.py:205
+#: .\bots\messages\match_details.py:201
 msgid ""
 "If there are outdated scouting links just use /match again after 15 minutes."
 msgstr ""
@@ -460,14 +506,14 @@ msgid "[Current lineup]({lineup_link})"
 msgstr "[Aktuelles Lineup]({lineup_link})"
 
 #: .\bots\messages\matches_overview.py:66
-msgid "To get more information about a match, use /match MATCH_DAY."
-msgstr "Für mehr Informationen über ein Match, benutze /match MATCH_DAY."
+msgid "To get more information about a match, use /match."
+msgstr "Für mehr Informationen über ein Match, benutze /match."
 
-#: .\bots\messages\own_time_suggestions.py:17
+#: .\bots\messages\own_time_suggestions.py:14
 msgid "New date proposed by you"
 msgstr "Eigener neuer Terminvorschlag"
 
-#: .\bots\messages\own_time_suggestions.py:23
+#: .\bots\messages\own_time_suggestions.py:20
 #, python-brace-format
 msgid "New date proposed by you for [{match_day}]({match_url}):"
 msgid_plural "New dates proposed by you for [{match_day}]({match_url}):"
@@ -513,34 +559,34 @@ msgid ""
 "deleted."
 msgstr ""
 "Das registrierte Team {team_name} wurde aus dem Prime League System "
-"gelöscht. Alle Informationen über dieses Team und der Link zum Channel "
+"gelöscht. Alle Informationen über dieses Team und der Link zum Kanal "
 "werden gelöscht."
 
 #: .\bots\messages\team_deleted.py:17
 msgid "Team deleted"
 msgstr "Team gelöscht"
 
-#: .\bots\messages\weekly_notification.py:23
+#: .\bots\messages\weekly_notification.py:21
 msgid "The following matches are scheduled this week:"
 msgstr "Folgende Matches finden diese Woche statt:"
 
-#: .\bots\messages\weekly_notification.py:26
+#: .\bots\messages\weekly_notification.py:24
 msgid "You have no matches this week."
 msgstr "Ihr habt keine Matches diese Woche."
 
-#: .\bots\messages\weekly_notification.py:29
+#: .\bots\messages\weekly_notification.py:27
 msgid "Weekly overview"
 msgstr "Wochenübersicht"
 
-#: .\bots\telegram_interface\commands\single_commands.py:145
-#: .\bots\telegram_interface\tests\commands\test_match.py:22
-#: .\bots\telegram_interface\tests\commands\test_match.py:27
+#: .\bots\telegram_interface\commands\single_commands.py:157
+#: .\bots\telegram_interface\tests\commands\test_match.py:26
 #: .\bots\telegram_interface\tests\commands\test_match.py:32
+#: .\bots\telegram_interface\tests\commands\test_match.py:38
 msgid "Invalid match day. Try using /match 1."
 msgstr "Invalider Spieltag. Versuche es mit `/match 1`."
 
-#: .\bots\telegram_interface\commands\single_commands.py:162
-#: .\bots\telegram_interface\tests\commands\test_match.py:44
+#: .\bots\telegram_interface\commands\single_commands.py:167
+#: .\bots\telegram_interface\tests\commands\test_match.py:50
 msgid "Sadly there is no match on the given match day."
 msgstr "Leider existieren für diesen Spieltag keine Matches."
 
@@ -551,35 +597,3 @@ msgstr "Ja"
 #: .\bots\telegram_interface\keyboards.py:9
 msgid "No"
 msgstr "Nein"
-
-#~ msgid ""
-#~ "The bot is currently deactivated as it no longer receives updates from "
-#~ "the Prime League."
-#~ msgstr ""
-#~ "Der Bot ist zurzeit deaktiviert, da er keine Updates mehr von der Prime "
-#~ "League erhält."
-
-#~ msgid ""
-#~ "All right, I'll see what I can find on this.\n"
-#~ "This may take a moment...⏳\n"
-#~ msgstr ""
-#~ "Alls klar. Ich schaue, was ich dazu finden kann.\n"
-#~ "Das kann einen Moment dauern...⏳\n"
-
-#~ msgid "If there are outdated scouting links just use /matches again."
-#~ msgstr ""
-#~ "Wenn es veraltete Scouting-Links gibt, verwende einfach /matches nochmal "
-#~ "nach 15 Minuten."
-
-#~ msgid "New match"
-#~ msgstr "Neues Match"
-
-#, python-brace-format
-#~ msgid ""
-#~ "Your next match in the calibration stage:\n"
-#~ "[{match_day}]({match_url}) against [{enemy_team_tag}]({enemy_team_url}):\n"
-#~ "Here is your [{website} link]({scouting_url}) of the team."
-#~ msgstr ""
-#~ "Euer nächstes Match in der Kalibrierungsphase:\n"
-#~ "[{match_day}]({match_url}) gegen [{enemy_team_tag}]({enemy_team_url}):\n"
-#~ "Hier ist der [{website} Link]({scouting_url}) des Teams."

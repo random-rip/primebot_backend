@@ -4,6 +4,7 @@ from telegram.error import BadRequest
 from telegram.ext import CallbackContext, ConversationHandler
 
 from app_prime_league.models import ScoutingWebsite, Team
+from app_prime_league.models.channel import Channel, ChannelTeam, Platforms
 from bots.messages import MatchesOverview
 from bots.telegram_interface.commands.single_commands import set_photo
 from bots.telegram_interface.keyboards import boolean_keyboard
@@ -17,40 +18,10 @@ from utils.messages_logger import log_callbacks, log_command
 from utils.utils import get_valid_team_id
 
 
-def just_wait_a_moment(chat_id, context: CallbackContext):
-    context.bot.send_message(
-        text="Alles klar, ich schaue, was ich dazu finden kann.\nDas dauert circa 40 Sekunden... ⏳\n",
-        chat_id=chat_id,
-        parse_mode=ParseMode.MARKDOWN,
-    )
-    # context.bot.send_message(
-    #     text="Der Bot ist zurzeit deaktiviert, da er keine Updates mehr von der Prime League erhält.",
-    #     chat_id=chat_id,
-    #     parse_mode=ParseMode.MARKDOWN,
-    # )
-
-
-def get_existing_chat_id(update: Update):
-    chat_id = get_chat_id(update)
-    if Team.objects.filter(telegram_id=chat_id).exists():
-        return chat_id
-    return None
-
-
-def get_chat_id(update: Update):
-    return update.message.chat.id
-
-
-def chat_id_exists_in_db(chat_id):
-    return Team.objects.filter(telegram_id=chat_id).exists()
-
-
-def team_is_locked(team_id):
-    new_team = Team.objects.get_team(team_id)
-    if new_team is None:
-        return False
-    new_team_settings = dict(new_team.setting_set.all().values_list("attr_name", "attr_value"))
-    return new_team_settings.get("lock_team", True) and new_team.telegram_id is not None
+def channel_has_at_least_one_team(update: Update) -> ChannelTeam:
+    return ChannelTeam.objects.filter(
+        channel__platform=Platforms.TELEGRAM, channel__telegram_id=update.message.chat.id
+    ).first()
 
 
 # /start
@@ -68,14 +39,13 @@ def start(update: Update, context: CallbackContext):
                 "3️⃣ Personalisiere mit /settings deine Benachrichtigungen.\n\n"
                 "Viel Erfolg auf den Richtfeldern! 🍀"
             ).format(start_link=settings.TELEGRAM_START_LINK),
-            parse_mode=ParseMode.MARKDOWN,
             disable_web_page_preview=True,
         )
         return ConversationHandler.END
-    if get_existing_chat_id(update) is not None:
+    if (channel_team := channel_has_at_least_one_team(update)) is not None:
         update.message.reply_markdown(
             text=(
-                "In diesem Chat ist bereits ein Team registriert. "
+                f"In diesem Chat ist bereits das Team *{channel_team.team.name}* registriert. "
                 "Möchtest Du ein anderes Team für diesen Channel registrieren?\n"
                 "Dann gib jetzt deine *Team-URL* oder deine *Team ID* an. Wenn nicht, benutze /cancel.\n\n"
                 "Solltest Du Hilfe benötigen, benutze /help."
@@ -114,7 +84,7 @@ def team_registration(update: Update, context: CallbackContext):
             text=(
                 "Die angegebene URL entspricht nicht dem richtigen Format.\n"
                 "Achte auf das richtige Format oder gib die *Team ID* ein.\n"
-                "Bitte versuche es erneut oder /cancel."
+                "Bitte versuche es erneut oder benutze /cancel."
             ),
             quote=False,
         )
@@ -125,36 +95,30 @@ def team_registration(update: Update, context: CallbackContext):
             quote=False,
         )
         return 1
-    chat_id = get_chat_id(update)
-    just_wait_a_moment(chat_id, context)
+    chat_id = update.message.chat.id
 
-    if team_is_locked(team_id):
+    if ChannelTeam.objects.filter(
+        channel__platform=Platforms.TELEGRAM,
+        team_id=team_id,
+        channel__telegram_id=chat_id,
+    ).exists():
         update.message.reply_markdown(
-            text=(
-                "Das Team *{team_name}* wurde bereits in einem anderen Chat registriert.\n"
-                "Lösche zuerst die Verknüpfung im anderen Chat mit /delete. \n\n"
-                "Solltest Du Hilfe benötigen, benutze /help."
-            ).format(team_name=Team.objects.get_team(team_id).name),
+            text="Das Team ist bereits in diesem Chat registriert. Bitte gib eine andere Team ID ein oder"
+            " benutze /cancel.",
             quote=False,
         )
-        return ConversationHandler.END
+        return 1
 
-    old_team = Team.objects.filter(telegram_id=chat_id).first()
-    old_team_chat_id = None
-    if chat_id_exists_in_db(chat_id) and team_has_chat_id(old_team.id):
-        old_team_chat_id = old_team.telegram_id
-        old_team.telegram_id = None
-        old_team.save()
-    new_team_old_chat_id = None
-
-    if team_exists(team_id):
-        new_team_old_chat_id = Team.objects.get_team(team_id).telegram_id
+    context.bot.send_message(
+        text="Alles klar, ich schaue, was ich dazu finden kann.\nDas dauert circa 40 Sekunden... ⏳\n",
+        chat_id=chat_id,
+        parse_mode=ParseMode.MARKDOWN,
+    )
 
     try:
         from app_prime_league.teams import register_team
 
-        new_team = register_team(team_id=team_id, telegram_id=chat_id)
-
+        team = register_team(team_id=team_id)
     except TeamWebsite404Exception:
         update.message.reply_markdown(
             text=(
@@ -175,47 +139,21 @@ def team_registration(update: Update, context: CallbackContext):
             ),
             quote=False,
         )
-        return 1
+        return ConversationHandler.END
 
-    if new_team is None and old_team is not None:
-        old_team.telegram_id = old_team_chat_id
-        old_team.save()
-        update.message.reply_markdown(
-            text=(
-                "Die ID: *{id}* konnte *keinem* Team zugeordnet werden.\n\n"
-                "Bitte kopiere deine *TEAM_URL* oder deine *TEAM_ID* in den Chat. Benutze /cancel um abzubrechen."
-            ).format(id=team_id),
-            disable_web_page_preview=True,
-            quote=False,
-        )
-        return 1
-    elif new_team is None:
-        update.message.reply_markdown(
-            text=(
-                "Die ID: *{id}* konnte *keinem* Team zugeordnet werden.\n\n"
-                "Bitte kopiere deine *TEAM_URL* oder deine *TEAM_ID* in den Chat. Benutze /cancel um abzubrechen."
-            ).format(id=team_id),
-            disable_web_page_preview=True,
-        )
-        return 1
-    else:
-        if new_team_old_chat_id is not None:
-            update.message.reply_markdown(
-                msg=(
-                    "Dein Team wurde in einem anderen Chat registriert!\n"
-                    "Es werden in dieser Gruppe keine weiteren Updates zu *{team.name}* folgen.\n\n"
-                    "Solltest Du Hilfe benötigen, benutze /help."
-                ).format(team=new_team),
-                chat_id=new_team_old_chat_id,
-                quote=False,
-            )
-        update.message.reply_markdown(
-            text=(
-                "Soll ich das Teambild aus der Prime League importieren?\n"
-                "_Dazu werden Adminrechte hier in der Gruppe benötigt._"
-            ),
-            reply_markup=boolean_keyboard(0),
-        )
+    channel, created = Channel.objects.get_or_create(telegram_id=chat_id, platform=Platforms.TELEGRAM)
+    if not created:
+        channel.channel_teams.all().delete()
+
+    ChannelTeam.objects.create(channel=channel, team=team)
+
+    update.message.reply_markdown(
+        text=(
+            "Soll ich das Teambild aus der Prime League importieren?\n"
+            "_Dazu werden Adminrechte hier in der Gruppe benötigt._"
+        ),
+        reply_markup=boolean_keyboard(0),
+    )
 
     return ConversationHandler.END
 
@@ -224,7 +162,8 @@ def team_registration(update: Update, context: CallbackContext):
 def set_optional_photo(update: Update, context: CallbackContext):
     query = update.callback_query
     chat_id = query.message.chat_id
-    url = Team.objects.get(telegram_id=chat_id).logo_url
+
+    url = Team.objects.get(channels__platform=Platforms.TELEGRAM, channels__telegram_id=chat_id).logo_url
     successful = set_photo(chat_id, context, url)
     if successful:
         finish_registration(update, context)
@@ -248,7 +187,10 @@ def set_optional_photo(update: Update, context: CallbackContext):
 def finish_registration(update: Update, context: CallbackContext):
     query = update.callback_query
     chat_id = query.message.chat_id
-    team = Team.objects.get(telegram_id=chat_id)
+    channel_team = ChannelTeam.objects.get(
+        channel__telegram_id=chat_id,
+    )
+
     context.bot.edit_message_text(
         chat_id=query.message.chat_id,
         message_id=query.message.message_id,
@@ -265,13 +207,13 @@ def finish_registration(update: Update, context: CallbackContext):
             "wenn es neue Updates zu euren Matches gibt. 🏆\n"
             "Du kannst noch mit /settings Benachrichtigungen personalisieren und "
             "die Scouting Website (Standard: {scouting_website}) ändern."
-        ).format(team_name=team.name, scouting_website=ScoutingWebsite.default().name),
+        ).format(team_name=channel_team.team.name, scouting_website=ScoutingWebsite.default().name),
         chat_id=chat_id,
         disable_web_page_preview=True,
         parse_mode=ParseMode.MARKDOWN,
     )
 
-    msg = MatchesOverview(team=team)
+    msg = MatchesOverview(channel_team=channel_team)
     context.bot.send_message(
         text=msg.generate_message(),
         chat_id=chat_id,

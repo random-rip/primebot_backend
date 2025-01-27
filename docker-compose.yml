@@ -86,6 +86,7 @@ services:
       - POSTGRES_PORT
       - POSTGRES_HOST
       - CACHE_LOCATION
+      - EXAMPLE_CHANNEL_IDS
     restart: unless-stopped
     volumes:
       - media:/var/opt/prime_bot_backend/media/

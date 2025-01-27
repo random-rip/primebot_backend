@@ -1,4 +1,5 @@
 from django import forms
+from django.conf import settings
 from django.contrib import admin, messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import redirect
@@ -7,8 +8,9 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import FormView, TemplateView
 
-from app_prime_league.models import Team
+from app_prime_league.models import Channel
 from bots.messages.custom_notification import validate_template
+from core.github import GitHub
 from quicklinks_admin.send_teams_message.jobs import EnqueueMessagesJob, VersionUpdateMessage
 
 
@@ -17,7 +19,12 @@ class MessageForm(forms.Form):
 
     def clean_message_template(self):
         message_template = self.cleaned_data['message_template']
-        rendered_message = validate_template(VersionUpdateMessage, message_template)
+        rendered_message = validate_template(
+            VersionUpdateMessage,
+            message_template,
+            github=GitHub.latest_version(),
+            website=settings.SITE_ID,
+        )
         self.cleaned_data['rendered_message'] = rendered_message
         return message_template
 
@@ -58,25 +65,26 @@ class ConfirmTeamsMessageView(TemplateView):
         context.update(admin_site_context)
         context['message_template'] = self.request.session.get('message_template', '')
         context['rendered_message'] = self.request.session.get('rendered_message', '')
+        context["example_channel_ids"] = settings.EXAMPLE_CHANNEL_IDS
         return context
 
     def post(self, request, *args, **kwargs):
         if 'message_template' not in request.session:
             return redirect("admin:send-teams-message:send-teams-message")
-        is_test_message = 'team_ids' in request.POST
+        is_test_message = 'channel_ids' in request.POST
         if is_test_message:
             try:
-                team_ids = request.POST['team_ids']
-                team_ids = [int(x) for x in team_ids.split(',')]
-                teams = Team.objects.get_registered_teams().filter(id__in=team_ids).values_list('id', flat=True)
-                if not teams:
-                    raise Team.DoesNotExist
-            except (Team.DoesNotExist, ValueError):
-                messages.add_message(self.request, messages.ERROR, 'Invalid team_ids')
+                channel_ids = request.POST['channel_ids']
+                channel_ids = [int(x) for x in channel_ids.split(',')]
+                channels = Channel.objects.get_channels_by_ids(channel_ids).values_list('id', flat=True)
+                if not channels:
+                    raise Channel.DoesNotExist
+            except (Channel.DoesNotExist, ValueError):
+                messages.add_message(self.request, messages.ERROR, "I haven't found any channels with the given IDs.")
                 return redirect("admin:send-teams-message:confirm-teams-message")
             else:
                 message_template = request.session.get('message_template')
-                EnqueueMessagesJob(message_template=message_template, team_ids=teams).enqueue()
+                EnqueueMessagesJob(message_template=message_template, channel_ids=channels).enqueue()
                 messages.add_message(self.request, messages.SUCCESS, 'Test messages have been queued')
                 return redirect("admin:send-teams-message:confirm-teams-message")
 
