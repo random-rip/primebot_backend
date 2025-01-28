@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.template.defaultfilters import urlencode
+from django.utils.translation import gettext_lazy as _
 
 from app_prime_league.model_manager import ScoutingWebsiteManager
 
@@ -17,8 +18,8 @@ class ScoutingWebsite(models.Model):
 
     class Meta:
         db_table = "scouting_websites"
-        verbose_name = "Scouting Website"
-        verbose_name_plural = "Scouting Websites"
+        verbose_name = _("Scouting Website")
+        verbose_name_plural = _("Scouting Websites")
 
     def generate_url(self, names: list[str] | str) -> str:
         """

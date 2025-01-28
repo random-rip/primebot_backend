@@ -1,4 +1,4 @@
-# English Translation for bots.
+# English Translation for primebot.
 # Copyright (C) 2025 Janek Mangold
 # This file is distributed under the same license as the primebot_backend package.
 # Janek Mangold <mangold.janek@web.de>, 2025.
@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-27 22:37+0100\n"
+"POT-Creation-Date: 2025-01-28 13:15+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\bots\discord_interface\discord_bot.py:124
+#: .\bots\discord_interface\discord_bot.py:125
 msgid ""
 "There is currently no team registered in this channel. Use `/start` to "
 "register a team."
@@ -26,11 +26,11 @@ msgstr ""
 "Derzeit ist kein Team in diesem Kanal registriert. Verwende /start, um ein "
 "Team zu registrieren."
 
-#: .\bots\discord_interface\discord_bot.py:127
+#: .\bots\discord_interface\discord_bot.py:128
 msgid "This is a channel command."
 msgstr "Das ist ein Befehl, der nur in einem Channel ausgeführt werden kann."
 
-#: .\bots\discord_interface\discord_bot.py:130
+#: .\bots\discord_interface\discord_bot.py:131
 #: .\bots\discord_interface\ext\start.py:145
 #, python-brace-format
 msgid ""
@@ -317,7 +317,8 @@ msgstr "Benachrichtigungseinstellungen"
 
 #: .\bots\discord_interface\ext\team_settings.py:72
 msgid "Create a temporary link to make notification settings"
-msgstr "Erstelle einen temporären Link, um Benachrichtigungseinstellungen vorzunehmen"
+msgstr ""
+"Erstelle einen temporären Link, um Benachrichtigungseinstellungen vorzunehmen"
 
 #: .\bots\discord_interface\ui\buttons.py:40
 msgid "Back"
@@ -450,100 +451,100 @@ msgstr "✅ Offene Terminvorschläge von euch"
 msgid "⚠ Dates proposed by the opponent are open!"
 msgstr "⚠ Offene Terminvorschläge vom Gegner!"
 
-#: .\bots\messages\match_details.py:21
+#: .\bots\messages\match_details.py:22
 msgid "Match overview"
 msgstr "Matchübersicht"
 
-#: .\bots\messages\match_details.py:55 .\bots\messages\match_details.py:142
+#: .\bots\messages\match_details.py:56 .\bots\messages\match_details.py:143
 msgid "Date"
 msgstr "Termin"
 
-#: .\bots\messages\match_details.py:68
+#: .\bots\messages\match_details.py:69
 msgid "Other information"
 msgstr "Sonstige Informationen"
 
-#: .\bots\messages\match_details.py:72
+#: .\bots\messages\match_details.py:73
 msgid "You have a choice of sides in the **first** game"
 msgstr "Ihr habt im **ersten** Spiel Seitenwahl"
 
-#: .\bots\messages\match_details.py:74
+#: .\bots\messages\match_details.py:75
 msgid "You have a choice of sides in the **second** game"
 msgstr "Ihr habt im **zweiten** Spiel Seitenwahl"
 
-#: .\bots\messages\match_details.py:79
+#: .\bots\messages\match_details.py:80
 msgid "The following champions are expected to be locked at the scheduled date"
 msgstr "Folgende Champions sind voraussichtlich beim Spieltermin gesperrt"
 
-#: .\bots\messages\match_details.py:82
+#: .\bots\messages\match_details.py:83
 msgid "until patch"
 msgstr "bis Patch"
 
-#: .\bots\messages\match_details.py:85
+#: .\bots\messages\match_details.py:86
 msgid "The rulebook is available [here.]"
 msgstr "Das Regelwerk gibt es [hier.]"
 
-#: .\bots\messages\match_details.py:90
+#: .\bots\messages\match_details.py:91
 msgid "Opposing team"
 msgstr "Gegnerteam"
 
-#: .\bots\messages\match_details.py:102
+#: .\bots\messages\match_details.py:103
 msgid "Opposing players (leagueofgraphs.com)"
 msgstr "Gegnerische Spieler:innen (leagueofgraphs.com)"
 
-#: .\bots\messages\match_details.py:139
+#: .\bots\messages\match_details.py:140
 msgid "Match result"
 msgstr "Matchergebnis"
 
-#: .\bots\messages\match_details.py:141
+#: .\bots\messages\match_details.py:142
 msgid "Result"
 msgstr "Ergebnis"
 
-#: .\bots\messages\match_details.py:146
+#: .\bots\messages\match_details.py:147
 msgid "Your lineup"
 msgstr "Eure Aufstellung"
 
-#: .\bots\messages\match_details.py:150
+#: .\bots\messages\match_details.py:151
 msgid "Own lineup submitted:"
 msgstr "Eigenes Lineup aufgestellt:"
 
-#: .\bots\messages\match_details.py:154 .\bots\messages\match_details.py:173
+#: .\bots\messages\match_details.py:155 .\bots\messages\match_details.py:174
 msgid "No lineup has been submitted yet."
 msgstr "Es wurde noch kein Lineup aufgestellt."
 
-#: .\bots\messages\match_details.py:158
+#: .\bots\messages\match_details.py:159
 msgid "Lineup of opponent"
 msgstr "Gegnerische Aufstellung"
 
-#: .\bots\messages\match_details.py:180 .\bots\messages\matches_overview.py:53
+#: .\bots\messages\match_details.py:181 .\bots\messages\matches_overview.py:54
 #, python-brace-format
 msgid "[against {enemy_team_name}]({match_url})"
 msgstr "[gegen {enemy_team_name}]({match_url})"
 
-#: .\bots\messages\match_details.py:201
+#: .\bots\messages\match_details.py:202
 msgid ""
 "If there are outdated scouting links just use /match again after 15 minutes."
 msgstr ""
 "Wenn es veraltete Scouting-Links gibt, verwende einfach /match nochmal nach "
 "15 Minuten."
 
-#: .\bots\messages\matches_overview.py:25
+#: .\bots\messages\matches_overview.py:26
 msgid "New matches"
 msgstr "Neue Matches"
 
-#: .\bots\messages\matches_overview.py:28
+#: .\bots\messages\matches_overview.py:29
 msgid "An overview of your open matches:"
 msgstr "Eine Übersicht eurer offenen Matches:"
 
-#: .\bots\messages\matches_overview.py:31
+#: .\bots\messages\matches_overview.py:32
 msgid "You currently have no open matches."
 msgstr "Ihr habt aktuell keine offenen Matches."
 
-#: .\bots\messages\matches_overview.py:61
+#: .\bots\messages\matches_overview.py:62
 #, python-brace-format
 msgid "[Current lineup]({lineup_link})"
 msgstr "[Aktuelles Lineup]({lineup_link})"
 
-#: .\bots\messages\matches_overview.py:66
+#: .\bots\messages\matches_overview.py:67
 msgid "To get more information about a match, use /match."
 msgstr "Für mehr Informationen über ein Match, benutze /match."
 

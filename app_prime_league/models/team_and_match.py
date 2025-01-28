@@ -227,15 +227,17 @@ class Match(models.Model):
     MATCH_DAY_PLAYOFF = 0
 
     match_id = models.IntegerField()
-    match_day = models.IntegerField(null=True)
-    match_type = models.CharField(max_length=15, null=True, choices=MATCH_TYPES)
+    match_day = models.IntegerField(null=True, blank=True)
+    match_type = models.CharField(max_length=15, null=True, choices=MATCH_TYPES, blank=True)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="matches_against")
-    enemy_team = models.ForeignKey(Team, on_delete=models.SET_NULL, related_name="matches_as_enemy_team", null=True)
+    enemy_team = models.ForeignKey(
+        Team, on_delete=models.SET_NULL, related_name="matches_as_enemy_team", null=True, blank=True
+    )
     team_made_latest_suggestion = models.BooleanField(null=True, blank=True)
     match_begin_confirmed = models.BooleanField(default=False, blank=True)
     datetime_until_auto_confirmation = models.DateTimeField(null=True, blank=True)
     has_side_choice = models.BooleanField(null=True)  # Team has side choice in first game
-    begin = models.DateTimeField(null=True)
+    begin = models.DateTimeField(null=True, blank=True)
     enemy_lineup = models.ManyToManyField(Player, related_name="matches_as_enemy", blank=True)
     team_lineup = models.ManyToManyField(Player, related_name="matches", blank=True)
     closed = models.BooleanField(null=True)
