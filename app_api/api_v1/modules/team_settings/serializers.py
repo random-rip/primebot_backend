@@ -77,7 +77,7 @@ def create_settings_json(channel_team: ChannelTeam):
             "settings": _settings,
             "expiring_at": channel_team.settings_expiring.expires,
             "logo_url": team.logo_url,
-            "channel_name": channel.get_real_channel_id(),
+            "channel_name": channel.name or channel.get_real_channel_id(),
         }
     )
     return serializer.data

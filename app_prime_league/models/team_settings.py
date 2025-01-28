@@ -2,7 +2,6 @@ from django.db import models
 
 
 class Setting(models.Model):
-    # team = models.ForeignKey(Team, on_delete=models.CASCADE, null=True)
     channel_team = models.ForeignKey("ChannelTeam", on_delete=models.CASCADE, related_name="settings")
 
     attr_name = models.CharField(max_length=50)
@@ -19,7 +18,6 @@ class Setting(models.Model):
 
 class SettingsExpiring(models.Model):
     expires = models.DateTimeField()
-    # team = models.OneToOneField(Team, on_delete=models.CASCADE, related_name="settings_expiring")
     channel_team = models.OneToOneField("ChannelTeam", on_delete=models.CASCADE, related_name="settings_expiring")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

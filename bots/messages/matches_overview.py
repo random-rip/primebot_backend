@@ -1,9 +1,10 @@
 import discord
-from discord import Colour, Embed
+from discord import Embed
 from django.db.models import F
 from django.utils.translation import gettext as _
 
 from app_prime_league.models import ChannelTeam, Team
+from bots.discord_interface.utils import COLOR_NOTIFICATION
 from bots.messages.base import MatchesMessage
 
 
@@ -40,7 +41,7 @@ class MatchesOverview(MatchesMessage):
         )
 
     def _generate_discord_embed(self) -> discord.Embed:
-        embed = Embed(color=Colour.gold())
+        embed = Embed(color=COLOR_NOTIFICATION)
         if len(self.matches) == 0:
             embed.title = self.no_matches_found()
         else:

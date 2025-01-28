@@ -2,6 +2,7 @@ import logging
 
 from asgiref.sync import sync_to_async
 from discord import Client, Intents, Message, NotFound, Object, SyncWebhook
+from discord.abc import GuildChannel
 from discord.ext.commands import Bot, NoPrivateMessage, errors
 from django.conf import settings
 from django.utils.translation import gettext as _
@@ -138,6 +139,23 @@ class _DiscordBotV2(Bot):
         await self.load_extensions()
         discord_logger.info("Hooked setup.")
         await self.sync_commands()
+        await self._migrate_channel_names()
+
+    async def _migrate_channel_names(self):
+        channels = Channel.objects.filter(
+            platform=Platforms.DISCORD,
+            name="",
+        )
+        async for channel in channels:
+            try:
+                discord_channel = await self.fetch_channel(channel.discord_channel_id)
+            except NotFound:
+                print(f"Webhook {channel.discord_webhook_id} not found. Deleted...")
+                await channel.adelete()
+            else:
+                print(discord_channel.name)
+                channel.name = discord_channel.name
+                await channel.asave()
 
     async def on_message(self, message: Message, /):
         pass
@@ -147,6 +165,17 @@ class _DiscordBotV2(Bot):
 
     async def on_app_command_completion(self, interaction, command):
         pass
+
+    async def on_guild_channel_update(self, before, after: GuildChannel):
+        channel = await Channel.objects.filter(
+            discord_channel_id=after.id,
+            discord_guild_id=after.guild.id,
+            platform=Platforms.DISCORD,
+        ).afirst()
+        if channel is None or channel.name == after.name:
+            return
+        channel.name = after.name
+        await channel.asave()
 
     async def on_guild_channel_delete(self, discord_channel):
         channel = await Channel.objects.filter(discord_channel_id=discord_channel.id).afirst()

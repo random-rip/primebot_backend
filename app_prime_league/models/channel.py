@@ -55,6 +55,7 @@ class Channel(models.Model):
     platform = models.CharField(max_length=10, choices=Platforms.choices, default=Platforms.DISCORD)
 
     telegram_id = models.CharField(max_length=50, null=True, unique=True, blank=True)
+    name = models.TextField(default="", blank=True)
 
     discord_guild_id = models.CharField(max_length=50, null=True, blank=True)
     discord_webhook_id = models.CharField(max_length=50, null=True, unique=True, blank=True)

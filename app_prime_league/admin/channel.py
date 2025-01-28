@@ -78,6 +78,7 @@ class ChannelAdmin(admin.ModelAdmin):
         "platform",
         "_channel_id",
         "_teams_count",
+        "name",
         "scouting_website",
         "language",
         "created_at",
@@ -98,6 +99,7 @@ class ChannelAdmin(admin.ModelAdmin):
                 "fields": (
                     "platform",
                     "_channel_id",
+                    "name",
                     "_teams_count",
                     "scouting_website",
                     "language",
@@ -138,7 +140,7 @@ class ChannelAdmin(admin.ModelAdmin):
 
     @admin.display(description="Channel ID")
     def _channel_id(self, obj):
-        return obj.telegram_id or obj.discord_channel_id
+        return obj.get_real_channel_id()
 
     @admin.display(description="Subscribed Teams")
     def _teams_count(self, obj):

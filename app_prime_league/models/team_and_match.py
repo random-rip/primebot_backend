@@ -32,35 +32,6 @@ class CurrentSplitTeamManager(models.Manager):
 class TeamManager(models.Manager):
     """Returns all teams, no matter which split."""
 
-    # @atomic
-    # def cleanup(self, teams: Union["Team",QuerySet]) -> list[str]:
-    #     """
-    #     Soft Deletes multiple teams and their related enemy teams and matches.
-    #     That should be called, after channel_team relations or channel instances were deleted.
-    #     """
-    #     if isinstance(teams, Team):
-    #         team_ids = [teams.pk]
-    #         teams = [teams]
-    #     elif isinstance(teams, QuerySet):
-    #         team_ids = list(teams.values_list("id", flat=True))
-    #     else:
-    #         raise ValueError("teams must be a Team instance or a QuerySet of Team instances.")
-    #     # Get all enemy teams of the given teams
-    #     enemy_teams = Team.objects.filter(
-    #         matches_as_enemy_team__in=Match.objects.filter(team__in=team_ids)
-    #     ).distinct()
-    #     enemy_teams = list(enemy_teams)
-    #
-    #     # Soft delete now all given teams
-    #     ret = set()
-    #     deleted_given_team_names = Team.objects.soft_delete_multiple(teams)
-    #     ret.update(deleted_given_team_names)
-    #
-    #     # Soft delete all enemy teams
-    #     deleted_related_team_names = Team.objects.soft_delete_multiple(enemy_teams)
-    #     ret.update(deleted_related_team_names)
-    #     return sorted(ret)
-
     @atomic
     def cleanup(self, channel_teams: Union["ChannelTeam", QuerySet]) -> list[str]:
         """
@@ -154,22 +125,8 @@ class Team(models.Model):
     name = models.CharField(max_length=100, null=True, blank=True)
     team_tag = models.CharField(max_length=100, null=True, blank=True)
     division = models.CharField(max_length=20, null=True, blank=True)
-
-    # telegram_id = models.CharField(max_length=50, null=True, unique=True, blank=True)
-    # discord_guild_id = models.CharField(max_length=50, null=True, blank=True)
-    # discord_webhook_id = models.CharField(max_length=50, null=True, unique=True, blank=True)
-    # discord_webhook_token = models.CharField(max_length=100, null=True, blank=True)
-    # discord_channel_id = models.CharField(max_length=50, unique=True, null=True, blank=True)
-    # discord_role_id = models.CharField(max_length=50, null=True, blank=True)
-    # scouting_website = models.ForeignKey(
-    #     "app_prime_league.ScoutingWebsite",
-    #     on_delete=models.SET_NULL,
-    #     null=True,
-    #     blank=True,
-    # )
-    # language = models.CharField(max_length=2, choices=Languages.choices, default=Languages.GERMAN)
-
     logo_url = models.URLField(max_length=1000, null=True, blank=True)
+
     split = models.ForeignKey(
         "app_prime_league.Split", on_delete=models.SET_NULL, null=True, blank=True, related_name="teams"
     )

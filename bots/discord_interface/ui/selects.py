@@ -19,14 +19,3 @@ class BaseTeamSelect(discord.ui.Select):
     async def callback(self, interaction: discord.Interaction):
         selected_team = await Team.objects.aget(id=int(self.values[0]))
         await self.view.handle_team_select(team=selected_team, interaction=interaction, view=self.view)
-
-
-class MentionSelect(discord.ui.MentionableSelect):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
-    async def callback(self, interaction: discord.Interaction):
-        pass
-        # assert self.view is not None
-        # view: MentionSelectView = self.view
-        # await view.handle_mention_select(self.values[0], interaction)
