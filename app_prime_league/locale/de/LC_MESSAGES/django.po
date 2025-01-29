@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-29 16:25+0100\n"
+"POT-Creation-Date: 2025-01-29 16:49+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,28 +18,28 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\app_prime_league\admin\channel.py:9
+#: .\app_prime_league\admin\channel.py:10
 msgid "Setting"
 msgstr "Einstellung"
 
-#: .\app_prime_league\admin\channel.py:10
+#: .\app_prime_league\admin\channel.py:11
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: .\app_prime_league\admin\channel.py:40
+#: .\app_prime_league\admin\channel.py:41
 msgid "Subscribed Team"
 msgstr "Abonniertes Teams"
 
-#: .\app_prime_league\admin\channel.py:41
-#: .\app_prime_league\admin\channel.py:145
+#: .\app_prime_league\admin\channel.py:42
+#: .\app_prime_league\admin\channel.py:146
 msgid "Subscribed Teams"
 msgstr "Abonnierte Teams"
 
-#: .\app_prime_league\admin\channel.py:97 .\app_prime_league\admin\team.py:189
+#: .\app_prime_league\admin\channel.py:98 .\app_prime_league\admin\team.py:189
 msgid "General"
 msgstr "Allgemein"
 
-#: .\app_prime_league\admin\channel.py:141 .\app_prime_league\admin\team.py:154
+#: .\app_prime_league\admin\channel.py:142 .\app_prime_league\admin\team.py:154
 msgid "Channel ID"
 msgstr "Kanal-ID"
 

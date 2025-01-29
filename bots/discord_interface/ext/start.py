@@ -82,8 +82,7 @@ async def start(ctx: commands.Context, team_id_or_url: TeamIDConverter):
             return await ctx.send(
                 _(
                     "Currently unable to connect to the Prime League website. Try again in a few hours.\n"
-                    "If it still doesn't work later, check our [website]({website}) for help "
-                    "or join our [Discord Server]({discord})."
+                    "If it still doesn't work later, join our [Discord Server]({discord}) for help."
                 ).format(website=settings.SITE_ID, discord=settings.DISCORD_SERVER_LINK)
             )
 
@@ -122,8 +121,8 @@ async def start_error(ctx, error):
     if isinstance(error, commands.BadArgument):
         return await ctx.reply(
             _(
-                "No ID could be found from the passed argument.\nCheck out our [website]({website}) for help "
-                "or join our [Discord Server]({discord})."
+                "No Team ID could be found from the passed argument.\n"
+                "Join our [Discord Server]({discord}) for help or checkout our [Website]({website})."
             ).format(website=settings.SITE_ID, discord=settings.DISCORD_SERVER_LINK)
         )
     elif isinstance(error, Div1orDiv2TeamException):
@@ -136,7 +135,7 @@ async def start_error(ctx, error):
         return await ctx.reply(
             _(
                 "I lack the permission to manage webhooks. Please make sure I have that permission. "
-                "Check our [website]({website}) or join our [Discord Server]({discord}) for help."
+                "Join our [Discord Server]({discord}) for help or checkout our [Website]({website})."
             ).format(website=settings.SITE_ID, discord=settings.DISCORD_SERVER_LINK)
         )
     logging.getLogger("commands").exception(error)
