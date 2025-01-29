@@ -18,7 +18,7 @@ async def bot_help(
         embed = Embed(title=_("Help"), color=COLOR_NOTIFICATION)
         for command in ctx.bot.commands:
             name = f"📌 /{command.qualified_name}"
-            value = command.help
+            value = _(command.help)
             embed.add_field(name=name, value=value, inline=False)
 
         general = _(
