@@ -22,9 +22,7 @@ async def fix(ctx):
         await channel.asave()
     await ctx.send(
         _(
-            "The webhook has been recreated. "
-            "If you still experience problems, check our website {website}/discord/ for help "
-            "or join our Discord Server {discord}."
+            "The webhook has been recreated. " "If you still experience problems, join our [Discord Server]({discord})."
         ).format(website=settings.SITE_ID, discord=settings.DISCORD_SERVER_LINK)
     )
 

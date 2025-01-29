@@ -43,7 +43,7 @@ class StatusView(APIView):
             "telegram_status": self._get_telegram_bot_status(),
             "registered_teams": Team.objects.get_registered_teams().count(),
             "subscribed_teams": ChannelTeam.objects.count(),
-            "total_teams": Team.objects.all().count(),
+            "total_teams": Team.objects.count(),
         }
         return Response(data)
 

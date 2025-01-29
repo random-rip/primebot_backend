@@ -2,13 +2,11 @@
 # Copyright (C) 2025 Janek Mangold
 # This file is distributed under the same license as the primebot_backend package.
 # Janek Mangold <mangold.janek@web.de>, 2025.
-#
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-28 13:15+0100\n"
+"POT-Creation-Date: 2025-01-29 16:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\bots\discord_interface\discord_bot.py:125
+#: .\bots\discord_interface\discord_bot.py:120
 msgid ""
 "There is currently no team registered in this channel. Use `/start` to "
 "register a team."
@@ -26,12 +24,11 @@ msgstr ""
 "Derzeit ist kein Team in diesem Kanal registriert. Verwende /start, um ein "
 "Team zu registrieren."
 
-#: .\bots\discord_interface\discord_bot.py:128
+#: .\bots\discord_interface\discord_bot.py:123
 msgid "This is a channel command."
 msgstr "Das ist ein Befehl, der nur in einem Channel ausgeführt werden kann."
 
-#: .\bots\discord_interface\discord_bot.py:131
-#: .\bots\discord_interface\ext\start.py:145
+#: .\bots\discord_interface\discord_bot.py:126
 #, python-brace-format
 msgid ""
 "An unknown error has occurred. Please contact the developers on Discord at "
@@ -96,12 +93,11 @@ msgstr "Erstelle den Webhook für die Benachrichtigungen neu"
 #: .\bots\discord_interface\ext\fix.py:25
 #, python-brace-format
 msgid ""
-"The webhook has been recreated. If you still experience problems, check our "
-"website {website}/discord/ for help or join our Discord Server {discord}."
+"The webhook has been recreated. If you still experience problems, join our "
+"[Discord Server]({discord})."
 msgstr ""
-"Das Webhook wurde neu erstellt. Wenn weiterhin Probleme auftreten, besuche "
-"unsere Website {website}/discord/ für Hilfe oder tritt unserem Discord-"
-"Server bei {discord}"
+"Der Webhook wurde neu erstellt. Wenn weiterhin Probleme auftreten, tritt "
+"unserem [Discord-Server]({discord}) bei."
 
 #: .\bots\discord_interface\ext\help.py:12
 msgid "Create an overview of the bot and commands"
@@ -111,33 +107,41 @@ msgstr "Erstelle eine Übersicht über den Bot und die Befehle"
 msgid "Help"
 msgstr "Hilfe"
 
-#: .\bots\discord_interface\ext\help.py:22
-msgid ""
-"Disclaimer: This bot was not created in cooperation with Prime League or "
-"Freaks4u Gaming GmbH. This bot was designed and programmed due to missed "
-"matches. The bot was realized to the best of our knowledge, and after a test "
-"phase made available for other teams.\n"
-"Nevertheless all information is without guarantee!"
-msgstr ""
-"Disclaimer: Dieser Bot wurde nicht in Zusammenarbeit mit der Prime League "
-"oder Freaks4u Gaming GmbH erstellt. Dieser Bot wurde aufgrund von versäumten "
-"Matches entworfen und programmiert. Der Bot wurde nach bestem Wissen und "
-"Gewissen realisiert und nach einer Testphase für andere Teams zur Verfügung "
-"gestellt.\n"
-" Trotzdem sind alle Angaben ohne Gewähr!"
-
-#: .\bots\discord_interface\ext\help.py:33
+#: .\bots\discord_interface\ext\help.py:26
 #, python-brace-format
 msgid ""
-"PrimeBot Website for API status and help: {website}\n"
-"Discord Server for help and updates: {discord_url}\n"
-"Checkout our Github for contributions: {github_url}\n"
-"_Version: {version}_\n"
+"ℹ️ **Join our [Discord Server]({discord_url}) for help** ℹ️\n"
+"\n"
+"🌐 Checkout our [Website]({website}) for the Calendar integration 📅 and API "
+"🔥\n"
+"\n"
+"️️🖥️ Checkout our [Github]({github_url}) for contributions ️️and issues 🐞"
 msgstr ""
-"PrimeBot Website für API Status und Hilfe: {website}\n"
-"Discord Server für Hilfe und Updates: {discord_url}\n"
-"Helft uns den PrimeBot zu verbessern: {github_url}\n"
-"_Version: {version}_\n"
+"ℹ️ Tritt unserem [Discord-Server]({discord_url}) für Hilfe bei ℹ️\n"
+"\n"
+"🌐 Besuche unsere [Website]({website}) für die Kalenderintegration 📅 und API "
+"🔥\n"
+"\n"
+"️️🖥️ Schau auf unserem [Github]({github_url}) vorbei für Beiträge und Tickets 🐞"
+
+#: .\bots\discord_interface\ext\help.py:37
+msgid ""
+"_This bot was not created in cooperation with Prime League or Freaks4u "
+"Gaming GmbH. This bot was designed and programmed due to missed matches. The "
+"bot was realized to the best of our knowledge, and after a test phase made "
+"available for other teams.\n"
+"Nevertheless all information is without guarantee!_"
+msgstr ""
+"_Dieser Bot wurde nicht in Zusammenarbeit mit der Prime League oder Freaks4u "
+"Gaming GmbH erstellt. Dieser Bot wurde aufgrund von versäumten Matches "
+"entworfen und programmiert. Der Bot wurde nach bestem Wissen und Gewissen "
+"realisiert und nach einer Testphase für andere Teams zur Verfügung "
+"gestellt.\n"
+" Trotzdem sind alle Angaben ohne Gewähr!_"
+
+#: .\bots\discord_interface\ext\help.py:43
+msgid "Disclaimer"
+msgstr "Rechtlicher Hinweis"
 
 #: .\bots\discord_interface\ext\match.py:61
 msgid "Select a match"
@@ -240,13 +244,13 @@ msgstr ""
 msgid ""
 "Currently unable to connect to the Prime League website. Try again in a few "
 "hours.\n"
-"If it still doesn't work later, check our website {website} for help or join "
-"our Discord Server {discord}."
+"If it still doesn't work later, check our [website]({website}) for help or "
+"join our [Discord Server]({discord})."
 msgstr ""
 "Derzeit kann keine Verbindung zur Prime League Website hergestellt werden."
 "Versucht es in ein paar Stunden erneut. Wenn es dann immer noch nicht "
-"funktioniert, schaut auf unserer Website {website}/discord/ nach Hilfe oder "
-"tretet dem Discord Community Server {discord} bei."
+"funktioniert, schaut auf unserer [website]({website}) nach Hilfe oder tretet "
+"unserem [Discord-Server]({discord}) bei."
 
 #: .\bots\discord_interface\ext\start.py:103
 #, python-brace-format
@@ -278,15 +282,14 @@ msgstr ""
 "werden."
 
 #: .\bots\discord_interface\ext\start.py:125
-#, python-brace-format
 msgid ""
 "No ID could be found from the passed argument.\n"
-"Check out our website {website} for help or join our Discord Server "
-"{discord}."
+"Check out our [website]({website}) for help or join our [Discord Server]"
+"({discord})."
 msgstr ""
 "Es konnte keine ID aus dem übergebenen Argument gefunden werden.\n"
-" Besucht unsere Website {website} für Hilfe oder tretet unserer Discord-"
-"Server {discord}."
+" Besucht unsere [Website]({website}) für Hilfe oder tretet unserem [Discord-"
+"Server]({discord}) bei."
 
 #: .\bots\discord_interface\ext\start.py:130
 msgid "No teams from Division 1 or 2 can be registered."
@@ -304,12 +307,21 @@ msgstr ""
 #, python-brace-format
 msgid ""
 "I lack the permission to manage webhooks. Please make sure I have that "
-"permission. Check our website {website} or join our Discord Server {discord} "
-"for help."
+"permission. Check our [website]({website}) or join our [Discord Server]"
+"({discord}) for help."
 msgstr ""
 "Mir fehlt die Berechtigung, Webhooks zu verwalten. Bitte stelle sicher, dass "
-"ich diese Berechtigung habe. Besuche unsere Website {website} oder tritt "
-"unserem Discord-Server bei {discord} für Hilfe."
+"ich diese Berechtigung habe. Besuche unsere [Website]({website}) oder tritt "
+"unserem [Discord-Server]({discord}) für Hilfe."
+
+#: .\bots\discord_interface\ext\start.py:144
+#, python-brace-format
+msgid ""
+"An unknown error has occurred. Please contact the developers on [Discord]"
+"({discord})."
+msgstr ""
+"Es ist ein unbekannter Fehler aufgetreten. Bitte kontaktiert die Entwickler "
+"auf unserem [Discord-Server]({discord})."
 
 #: .\bots\discord_interface\ext\team_settings.py:60
 msgid "Notification Settings"

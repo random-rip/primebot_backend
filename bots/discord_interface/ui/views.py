@@ -17,7 +17,7 @@ class BaseTeamSelectionView(discord.ui.View):
 
     @property
     def is_select(self):
-        return len(self.teams) > 2
+        return len(self.teams) > 4
 
     async def build(self):
         if self.is_select:

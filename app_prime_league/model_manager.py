@@ -2,13 +2,12 @@ import logging
 from typing import List
 
 from django.db import IntegrityError, models
-from django.db.models import QuerySet
 
 update_logger = logging.getLogger("updates")
 
 
 class PlayerManager(models.Manager):
-    def remove_old_player_relations(self, players_list: list, team: "Team") -> List["Player"]:  # noqa
+    def remove_old_player_relations(self, players_list: list, team: "Team"):  # noqa
         current_account_ids = [account_id for account_id, *_ in players_list]
         for player in team.player_set.all():
             if player.id in current_account_ids:
@@ -16,7 +15,7 @@ class PlayerManager(models.Manager):
             player.team = None
             player.save()
 
-    def create_or_update_players(self, players_list: list, team) -> List["Player"]:  # noqa
+    def create_or_update_players(self, players_list: list, team: "Team") -> List["Player"]:  # noqa
         current_players = []
         for (
             account_id,
@@ -39,7 +38,7 @@ class PlayerManager(models.Manager):
             current_players.append(player)
         return current_players
 
-    def get_active_players(self) -> QuerySet:
+    def get_active_players(self):
         """
         Players with a missing Game-Account have no `summoner_name`.
         :return: Filtered QuerySet with active players

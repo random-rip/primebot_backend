@@ -1,13 +1,14 @@
 from django.contrib import admin
 from django.db.models import Count
+from django.utils.translation import gettext_lazy as _
 
 from app_prime_league.models import Setting, Team
 
 
 class SettingInline(admin.TabularInline):
     model = Setting
-    verbose_name = "Setting"
-    verbose_name_plural = "Settings"
+    verbose_name = _("Setting")
+    verbose_name_plural = _("Settings")
     fields = (
         "attr_name",
         "attr_value",
@@ -37,8 +38,8 @@ class ChannelTeamAdmin(admin.ModelAdmin):
 
 class TeamInline(admin.TabularInline):
     model = Team.channels.through
-    verbose_name = "Subscribed Team"
-    verbose_name_plural = "Subscribed Teams"
+    verbose_name = _("Subscribed Team")
+    verbose_name_plural = _("Subscribed Teams")
     fields = (
         "team",
         "_team_tag",
@@ -94,7 +95,7 @@ class ChannelAdmin(admin.ModelAdmin):
     )
     fieldsets = (
         (
-            "General",
+            _("General"),
             {
                 "fields": (
                     "platform",
@@ -138,11 +139,11 @@ class ChannelAdmin(admin.ModelAdmin):
         TeamInline,
     ]
 
-    @admin.display(description="Channel ID")
+    @admin.display(description=_("Channel ID"))
     def _channel_id(self, obj):
         return obj.get_real_channel_id()
 
-    @admin.display(description="Subscribed Teams")
+    @admin.display(description=_("Subscribed Teams"))
     def _teams_count(self, obj):
         return obj._teams_count
 

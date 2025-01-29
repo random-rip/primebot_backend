@@ -3,12 +3,12 @@ from django.db.models import Count, Q
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
-from app_prime_league.models import Channel, Match, Player, Team
+from app_prime_league.models import Match, Player, Team
 from app_prime_league.models.channel import Platforms
 
 
 class PlatformFilter(admin.SimpleListFilter):
-    title = 'Platform'
+    title = _('Platform')
     parameter_name = 'platform'
 
     def lookups(self, request, model_admin):
@@ -26,13 +26,13 @@ class PlatformFilter(admin.SimpleListFilter):
 
 
 class SubscriptionFilter(admin.SimpleListFilter):
-    title = 'Team hat Abonnements'
+    title = _("Team has Subscriptions")
     parameter_name = 'subscriptions'
 
     def lookups(self, request, model_admin):
         return (
-            ("subscriptions", 'Nur abonnierte Teams'),
-            ("no_subscriptions", 'Nur nicht abonnierte Teams'),
+            ("subscriptions", _("Only subscribed Teams")),
+            ("no_subscriptions", _('Only not subscribed Teams')),
         )
 
     def queryset(self, request, queryset):
@@ -133,8 +133,8 @@ class MatchAsEnemyInline(MatchInline):
 
 
 class ChannelInline(admin.TabularInline):
-    verbose_name = Channel
-    verbose_name_plural = "Channels"
+    verbose_name = _("Channel")
+    verbose_name_plural = _("Channels")
     model = Team.channels.through
     extra = 0
     show_change_link = True
@@ -147,13 +147,13 @@ class ChannelInline(admin.TabularInline):
     )
     readonly_fields = fields
 
-    @admin.display(description="Plattform")
+    @admin.display(description=_("Platform"))
     def channel__platform(self, obj):
         return obj.channel.platform
 
-    @admin.display(description="Channel ID")
+    @admin.display(description=_("Channel ID"))
     def _channel_id(self, obj):
-        return obj.channel.telegram_id or obj.channel.discord_channel_id
+        return obj.channel.get_real_channel_id()
 
     def has_add_permission(self, request, obj=None):
         return False
@@ -186,7 +186,7 @@ class TeamAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (
-            "General",
+            _("General"),
             {
                 "fields": (
                     "name",
@@ -200,7 +200,7 @@ class TeamAdmin(admin.ModelAdmin):
             },
         ),
         (
-            "Subscription Infos",
+            _("Subscription Infos"),
             {
                 "fields": (
                     ("_subscribers",),
@@ -236,15 +236,15 @@ class TeamAdmin(admin.ModelAdmin):
             obj.prime_league_link,
         )
 
-    @admin.display(description='Subscribers on Discord', ordering='_subscribers_on_discord')
+    @admin.display(description=_("Subscribers on Discord"), ordering='_subscribers_on_discord')
     def _subscribers_on_discord(self, obj: Team):
         return obj._subscribers_on_discord
 
-    @admin.display(description='Subscribers on Telegram', ordering='_subscribers_on_telegram')
+    @admin.display(description=_("Subscribers on Telegram"), ordering='_subscribers_on_telegram')
     def _subscribers_on_telegram(self, obj: Team):
         return obj._subscribers_on_telegram
 
-    @admin.display(description='Subscribers', ordering='_subscribers')
+    @admin.display(description=_('Subscribers'), ordering='_subscribers')
     def _subscribers(self, obj: Team):
         return obj._subscribers
 

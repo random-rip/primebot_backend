@@ -37,9 +37,6 @@ class DiscordBot(BotInterface):
             bot=_DiscordBotV2,
         )
 
-    # def _initialize(self):
-    #     self.bot.remove_command("help")
-
     def run(self):
         self.bot.run(settings.DISCORD_BOT_KEY)
 
@@ -106,8 +103,6 @@ class _DiscordBotV2(Bot):
 
     async def on_ready(self):
         discord_logger.info(f"{self.user} has connected to Discord!")
-        # await self.change_presence(activity=None)
-        # await self.change_presence(activity=Game(name='Maintenance Work'))
 
     @translation_override
     async def on_command_error(self, ctx, exception: errors.CommandError, /):
@@ -234,10 +229,9 @@ class _DiscordBotV2(Bot):
         if settings.DEBUG:
             guild = Object(id=settings.DISCORD_GUILD_ID)
             discord_logger.info(f"Debug is true, so commands will be synced to guild {guild.id}...")
-            # self.tree.clear_commands(guild=guild)
             self.tree.copy_global_to(guild=guild)
             synced_commands = self.tree.get_commands(guild=guild)
-            # synced_commands = await self.tree.sync(guild=guild)
+            # synced_commands = await self.tree.sync(guild=guild) # comment temporary in if you change commands
         else:
             discord_logger.info("Debug is false, so commands will be synced globally. This can take up to an hour...")
             synced_commands = await self.tree.sync()

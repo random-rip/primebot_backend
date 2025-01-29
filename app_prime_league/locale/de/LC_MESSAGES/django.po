@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-28 13:15+0100\n"
+"POT-Creation-Date: 2025-01-29 16:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,47 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\app_prime_league\admin\channel.py:9
+msgid "Setting"
+msgstr "Einstellung"
+
+#: .\app_prime_league\admin\channel.py:10
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: .\app_prime_league\admin\channel.py:40
+msgid "Subscribed Team"
+msgstr "Abonniertes Teams"
+
+#: .\app_prime_league\admin\channel.py:41
+#: .\app_prime_league\admin\channel.py:145
+msgid "Subscribed Teams"
+msgstr "Abonnierte Teams"
+
+#: .\app_prime_league\admin\channel.py:97 .\app_prime_league\admin\team.py:189
+msgid "General"
+msgstr "Allgemein"
+
+#: .\app_prime_league\admin\channel.py:141 .\app_prime_league\admin\team.py:154
+msgid "Channel ID"
+msgstr "Kanal-ID"
+
+#: .\app_prime_league\admin\team.py:11 .\app_prime_league\admin\team.py:150
+msgid "Platform"
+msgstr "Plattform"
+
+#: .\app_prime_league\admin\team.py:29
+msgid "Team has Subscriptions"
+msgstr "Team hat Abonnements"
+
+#: .\app_prime_league\admin\team.py:34
+msgid "Only subscribed Teams"
+msgstr "Nur abonnierte Teams"
+
+#: .\app_prime_league\admin\team.py:35
+msgid "Only not subscribed Teams"
+msgstr "Nur nicht abonnierte Teams"
 
 #: .\app_prime_league\admin\team.py:47
 msgid "Players"
@@ -29,6 +70,30 @@ msgstr "Mit Spieler:innen"
 #: .\app_prime_league\admin\team.py:53
 msgid "Without Players"
 msgstr "Ohne Spieler:innen"
+
+#: .\app_prime_league\admin\team.py:136 .\app_prime_league\models\channel.py:81
+msgid "Channel"
+msgstr "Kanal"
+
+#: .\app_prime_league\admin\team.py:137 .\app_prime_league\models\channel.py:82
+msgid "Channels"
+msgstr "Kanäle"
+
+#: .\app_prime_league\admin\team.py:203
+msgid "Subscription Infos"
+msgstr "Abonnement-Infos"
+
+#: .\app_prime_league\admin\team.py:239
+msgid "Subscribers on Discord"
+msgstr "Abonnenten auf Discord"
+
+#: .\app_prime_league\admin\team.py:243
+msgid "Subscribers on Telegram"
+msgstr "Abonnenten auf Telegram"
+
+#: .\app_prime_league\admin\team.py:247
+msgid "Subscribers"
+msgstr "Abonnenten"
 
 #: .\app_prime_league\models\channel.py:20
 msgid "Channel-Team Relation"
@@ -54,23 +119,15 @@ msgstr "Discord"
 msgid "Telegram"
 msgstr "Telegram"
 
-#: .\app_prime_league\models\channel.py:81
-msgid "Channel"
-msgstr "Kanal"
-
-#: .\app_prime_league\models\channel.py:82
-msgid "Channels"
-msgstr "Kanäle"
-
-#: .\app_prime_league\models\scouting_website.py:20
+#: .\app_prime_league\models\scouting_website.py:21
 msgid "Scouting Website"
 msgstr "Scouting-Website"
 
-#: .\app_prime_league\models\scouting_website.py:21
+#: .\app_prime_league\models\scouting_website.py:22
 msgid "Scouting Websites"
 msgstr "Scouting Websites"
 
-#: .\app_prime_league\models\team_and_match.py:278
-#: .\app_prime_league\models\team_and_match.py:279
+#: .\app_prime_league\models\team_and_match.py:280
+#: .\app_prime_league\models\team_and_match.py:281
 msgid "Deleted Team/TBD"
 msgstr "Gelöschtes Team/Team noch festzulegen"
