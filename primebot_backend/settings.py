@@ -12,11 +12,9 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import errno
 import os
-from datetime import datetime
 from pathlib import Path
 
 import environ
-import pytz
 from django.utils.translation import gettext_lazy as _
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,7 +29,7 @@ DEBUG = env.bool('DJANGO_DEBUG', default=False)
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", cast=str, default=[])
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
+    "http://127.0.0.1:3000",
 ]
 
 CSRF_TRUSTED_ORIGINS = env.list("DJANGO_CSRF_TRUSTED_ORIGINS", cast=str, default=[])
@@ -150,7 +148,6 @@ TIME_ZONE = 'Europe/Berlin'
 
 USE_I18N = True
 
-
 USE_TZ = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -173,8 +170,6 @@ SPLIT_URI = "splits/"
 
 SITE_ID = env.str("SITE_ID", None)
 
-CURRENT_SPLIT_START = datetime(2024, 1, 29).astimezone(pytz.timezone("Europe/Berlin"))
-
 STORAGE_DIR = os.path.join(BASE_DIR, "storage")
 
 TELEGRAM_BOT_KEY = env.str("TELEGRAM_BOT_API_KEY", None)
@@ -185,6 +180,7 @@ DISCORD_BOT_KEY = env.str("DISCORD_API_KEY", None)
 DISCORD_APP_CLIENT_ID = env.int("DISCORD_APP_CLIENT_ID", None)
 DISCORD_SERVER_LINK = "https://discord.gg/K8bYxJMDzu"
 DISCORD_GUILD_ID = env.int("DISCORD_GUILD_ID", None)  # Only used for development
+EXAMPLE_CHANNEL_IDS = env.str("EXAMPLE_CHANNEL_IDS", "")
 
 IMAGE_STATIC_DIR = BASE_DIR / "bots" / "static"
 LOGIN_URL = "/.admin/login/"

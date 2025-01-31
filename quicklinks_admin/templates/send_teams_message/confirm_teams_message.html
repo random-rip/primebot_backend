@@ -24,8 +24,8 @@
 
     <form method="post">
         {% csrf_token %}
-        <label for="team_ids">{% translate "Team-IDs for Test Message (comma separated):" %}
-            <input type="text" name="team_ids" value="105959">
+        <label for="channel_ids">{% translate "Channel-IDs for Test Message (comma separated):" %}
+            <input type="text" name="channel_ids" value="{{ example_channel_ids }}">
         </label>
         <input type="submit" value="{% trans "Send Test Message" %}">
     </form>

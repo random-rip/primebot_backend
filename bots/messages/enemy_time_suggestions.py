@@ -3,7 +3,7 @@ import datetime
 import discord
 from django.utils.translation import gettext, ngettext
 
-from app_prime_league.models import Match, Team
+from app_prime_league.models import ChannelTeam, Match
 from app_prime_league.models.team_and_match import SettingIsFalseException
 from bots.messages.base import MatchMessage
 from utils.utils import format_datetime
@@ -14,8 +14,8 @@ class EnemyNewTimeSuggestionsNotificationMessage(MatchMessage):
     settings_key_poll = "ENEMY_SCHEDULING_SUGGESTION_POLL"
     mentionable = True
 
-    def __init__(self, team: Team, match: Match):
-        super().__init__(team=team, match=match)
+    def __init__(self, channel_team: ChannelTeam, match: Match):
+        super().__init__(channel_team=channel_team, match=match)
         self.details = list(self.match.suggestion_set.all().values_list("begin", flat=True))
 
     def _generate_title(self):
@@ -45,7 +45,7 @@ class EnemyNewTimeSuggestionsNotificationMessage(MatchMessage):
         )
 
     def _generate_poll(self) -> discord.Poll:
-        if self.team.value_of_setting(self.settings_key_poll) is False:
+        if self.channel_team.value_of_setting(self.settings_key_poll) is False:
             raise SettingIsFalseException(self.settings_key_poll)
         poll = discord.Poll(
             question="📆 "

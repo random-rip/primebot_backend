@@ -3,6 +3,7 @@ from unittest import mock
 
 from django.test import TestCase
 
+from app_prime_league.factories import SplitFactory
 from app_prime_league.management.commands.updates_between_calibration_and_group_stage import (
     Command as UpdatesBetweenCalibrationAndGroupStage,
 )
@@ -11,13 +12,13 @@ from app_prime_league.management.commands.updates_in_calibration_stage import Co
 from app_prime_league.management.commands.updates_in_group_stage_and_playoffs import (
     Command as UpdatesInGroupStageAndPlayoffs,
 )
-from core.test_utils import CompareModelObjectsMixin, SplitBuilder
+from core.test_utils import CompareModelObjectsMixin
 
 
 class UpdateDependencyTest(TestCase, CompareModelObjectsMixin):
     @classmethod
     def setUpTestData(cls):
-        SplitBuilder().build()
+        SplitFactory()
 
     def test_updates_between_splits(self):
         with mock.patch("django.utils.timezone.now") as mock_now:

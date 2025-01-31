@@ -88,10 +88,11 @@ async def log_from_discord(interaction: Interaction, optional=None):
     params = {
         "user": author.name,
         "user_locale": html.escape(str(interaction.locale)),
-        "command": html.escape(str(interaction.command.name)),
         "channel": html.escape(str(interaction.channel_id)),
         "channel_type": html.escape(str(interaction.channel.type.name)),
     }
+    if interaction.command is not None:
+        params["command"] = html.escape(str(interaction.command.name))
     if "options" in interaction.data:
         readable_parameters = [f"{x['name']}: {html.escape(str(x['value']))}" for x in interaction.data["options"]]
         params["parameters"] = str(readable_parameters)
@@ -117,7 +118,6 @@ def log_exception(fn):
             print(e)
             logging.getLogger("updates").exception(e)
             # text = f"Error in Updates: <code>{e}</code>\n. See <code>update.log</code> for more information."
-            # send_message_to_devs(text) # TODO Nur einen Log senden und nicht 1000 alle 15 Minuten"
 
     return wrapper
 

@@ -68,7 +68,7 @@ class SplitAdmin(admin.ModelAdmin):
     search_fields = ("name",)
     list_display_links = ("id", "name")
 
-    @admin.display(description='#teams', ordering="_teams_count")
+    @admin.display(description='#Teams', ordering="_teams_count")
     def teams_count(self, obj: Split) -> int:
         return obj._teams_count
 

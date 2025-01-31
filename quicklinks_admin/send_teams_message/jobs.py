@@ -1,63 +1,77 @@
 import logging
 from typing import Any, Callable, Dict
 
-from app_prime_league.models import Team
-from bots.message_dispatcher import MessageCreatorJob
-from bots.messages import NotificationToTeamMessage
+from django.conf import settings
+
+from app_prime_league.models import Channel
+from bots.message_dispatcher import MessageDispatcherJob
+from bots.messages import NotificationToChannelMessage
 from core.cluster_job import Job
 from core.github import GitHub
 
 
-class VersionUpdateMessage(NotificationToTeamMessage):
-    template = """Hallo {team.name},
+class VersionUpdateMessage(NotificationToChannelMessage):
+    template = """Hallo Team(s),
 
 🔥 Version {github.version} ist draußen 🔥
 
 {github.body}
 
-Alle weiteren Änderungen findet ihr auf unserer Website: https://www.primebot.me/information/changelog
+Alle weiteren Änderungen findet ihr auf unserer Website: {website}/information/changelog
 
 Sternige Grüße
 – PrimeBot devs
 """
 
-    def __init__(self, team: Team, custom_message=None, **message_elements):
+    def __init__(self, channel: Channel, custom_message=None, **message_elements):
         super().__init__(
-            team=team,
+            channel=channel,
             custom_message=custom_message or self.template,
-            github=GitHub.latest_version(),
             **message_elements,
         )
 
 
-def enqueue_messages(message_template: str, team_ids: list[int] = None):
+def create_and_dispatch_message_to_channel(msg_class: type[VersionUpdateMessage], channel: Channel, **kwargs):
+    """
+    Creates a message and enqueues a `MessageDispatcherJob` for each subscribed channel
+    """
+    assert issubclass(msg_class, VersionUpdateMessage)
+    msg = msg_class(channel=channel, **kwargs)
+    MessageDispatcherJob(msg=msg).enqueue()
+    return f"Message created and dispatched to Channel {channel}"
+
+
+def enqueue_messages(message_template: str, channel_ids: list[int] = None):
     """
     Enqueues a version update message to all registered teams or a subset of registered teams.
     Recursively enqueues the message for failed teams.
+    :param message_template: The message template to send
+    :param channel_ids: A list of primary keys of the channels to send the message to
     """
-    teams = Team.objects.get_registered_teams()
-    if team_ids:
-        teams = teams.filter(id__in=team_ids)
-    failed_team_ids = []
-    for team in teams:
+    channels = Channel.objects.all()
+    if channel_ids:
+        channels = channels.filter(
+            id__in=channel_ids,
+        )
+    github = GitHub.latest_version()
+    for channel in channels:
         try:
-            collector = MessageCreatorJob(
+            create_and_dispatch_message_to_channel(
                 msg_class=VersionUpdateMessage,
-                team=team,
+                channel=channel,
                 custom_message=message_template,
+                github=github,
+                website=settings.SITE_ID,
             )
-            collector.enqueue()
         except Exception as e:
-            failed_team_ids.append(team.id)
             logger = logging.getLogger("notifications")
             logger.exception(e)
-    if failed_team_ids:
-        EnqueueMessagesJob(message_template=message_template, team_ids=failed_team_ids).enqueue()
+            continue
 
 
 class EnqueueMessagesJob(Job):
     """
-    Enqueues a version update message to all registered teams.
+    Enqueues a version update message to all channels or a subset of channels.
     """
 
     __name__ = 'EnqueueMessage'
@@ -65,14 +79,14 @@ class EnqueueMessagesJob(Job):
     def function_to_execute(self) -> Callable:
         return enqueue_messages
 
-    def __init__(self, message_template, team_ids: list[int] = None):
+    def __init__(self, message_template, channel_ids: list[int] = None):
         self.message_template = message_template
-        self.team_ids = team_ids
+        self.channel_ids = channel_ids
 
     def get_kwargs(self) -> dict:
         return {
             "message_template": self.message_template,
-            "team_ids": self.team_ids,
+            "channel_ids": self.channel_ids,
         }
 
     def q_options(self) -> Dict[str, Any]:

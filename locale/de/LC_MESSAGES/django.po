@@ -1,14 +1,14 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# English Translation for primebot.
+# Copyright (C) 2025 Janek Mangold
+# This file is distributed under the same license as the primebot_backend package.
+# Janek Mangold <mangold.janek@web.de>, 2022.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-22 17:20+0100\n"
+"POT-Creation-Date: 2025-01-27 22:13+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,36 +18,40 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\primebot_backend\settings.py:145
+#: .\primebot_backend\settings.py:143
 msgid "German"
 msgstr "Deutsch"
 
-#: .\primebot_backend\settings.py:146
+#: .\primebot_backend\settings.py:144
 msgid "English"
 msgstr "Englisch"
 
 #: .\quicklinks_admin\admin.py:54
 msgid "Links"
-msgstr ""
+msgstr "Links"
 
 #: .\quicklinks_admin\templates\send_teams_message\confirm_teams_message.html:5
 #: .\quicklinks_admin\templates\send_teams_message\confirm_teams_message.html:14
 #: .\quicklinks_admin\templates\send_teams_message\confirm_teams_message.html:19
 msgid "Confirm Version Update Message"
-msgstr "Nachricht bestätigen"
+msgstr "Versionsaktualisierungsnachricht bestätigen"
 
 #: .\quicklinks_admin\templates\send_teams_message\confirm_teams_message.html:13
 #: .\quicklinks_admin\templates\send_teams_message\send_teams_message.html:13
 msgid "Home"
-msgstr "Start"
+msgstr "Startseite"
 
 #: .\quicklinks_admin\templates\send_teams_message\confirm_teams_message.html:23
 msgid "Number of characters"
-msgstr "Zeichenanzahl"
+msgstr "Anzahl der Zeichen"
 
 #: .\quicklinks_admin\templates\send_teams_message\confirm_teams_message.html:27
-msgid "Team-IDs for Test Message (comma separated):"
-msgstr "Team-IDs für Testnachricht (komma separiert)"
+msgid "Channel-IDs for Test Message (comma separated):"
+msgstr "Kanal-IDs für Testnachricht (durch Kommas getrennt):"
+
+#: .\quicklinks_admin\templates\send_teams_message\confirm_teams_message.html:30
+msgid "Send Test Message"
+msgstr "Testnachricht senden"
 
 #: .\quicklinks_admin\templates\send_teams_message\confirm_teams_message.html:34
 msgid "Send messages"
@@ -57,36 +61,26 @@ msgstr "Nachrichten senden"
 #: .\quicklinks_admin\templates\send_teams_message\send_teams_message.html:14
 #: .\quicklinks_admin\templates\send_teams_message\send_teams_message.html:19
 msgid "Send Version Update Message"
-msgstr "Versionsupdate senden"
+msgstr "Versionsaktualisierungsnachricht senden"
 
 #: .\quicklinks_admin\templates\send_teams_message\send_teams_message.html:24
 msgid "The following attributes can be used:"
 msgstr "Die folgenden Attribute können verwendet werden:"
 
-#: .\quicklinks_admin\templates\send_teams_message\send_teams_message.html:27
-msgid "All team attributes, for example:"
-msgstr "Alle Teamattribute, zum Beispiel:"
-
-#: .\quicklinks_admin\templates\send_teams_message\send_teams_message.html:36
+#: .\quicklinks_admin\templates\send_teams_message\send_teams_message.html:33
 msgid "Next"
 msgstr "Weiter"
 
-#: .\utils\utils.py:33
+#: .\utils\utils.py:35
 #, python-format
 msgid "%d hr"
 msgid_plural "%d hrs"
 msgstr[0] "%d Std"
 msgstr[1] "%d Std"
 
-#: .\utils\utils.py:34
+#: .\utils\utils.py:36
 #, python-format
 msgid "%d min"
 msgid_plural "%d min"
 msgstr[0] "%d Min"
 msgstr[1] "%d Min"
-
-#~ msgid "Toggle navigation"
-#~ msgstr "Navigation Ein-/Ausblenden"
-
-#~ msgid "Confirm"
-#~ msgstr "Bestätigen"

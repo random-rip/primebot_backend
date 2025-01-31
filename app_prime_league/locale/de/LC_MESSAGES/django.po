@@ -1,14 +1,14 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# English Translation for primebot.
+# Copyright (C) 2025 Janek Mangold
+# This file is distributed under the same license as the primebot_backend package.
+# Janek Mangold <mangold.janek@web.de>, 2022.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-22 17:20+0100\n"
+"POT-Creation-Date: 2025-01-29 16:49+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,29 +18,116 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\app_prime_league\admin_sites\team.py:53
+#: .\app_prime_league\admin\channel.py:10
+msgid "Setting"
+msgstr "Einstellung"
+
+#: .\app_prime_league\admin\channel.py:11
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: .\app_prime_league\admin\channel.py:41
+msgid "Subscribed Team"
+msgstr "Abonniertes Teams"
+
+#: .\app_prime_league\admin\channel.py:42
+#: .\app_prime_league\admin\channel.py:146
+msgid "Subscribed Teams"
+msgstr "Abonnierte Teams"
+
+#: .\app_prime_league\admin\channel.py:98 .\app_prime_league\admin\team.py:189
+msgid "General"
+msgstr "Allgemein"
+
+#: .\app_prime_league\admin\channel.py:142 .\app_prime_league\admin\team.py:154
+msgid "Channel ID"
+msgstr "Kanal-ID"
+
+#: .\app_prime_league\admin\team.py:11 .\app_prime_league\admin\team.py:150
+msgid "Platform"
+msgstr "Plattform"
+
+#: .\app_prime_league\admin\team.py:29
+msgid "Team has Subscriptions"
+msgstr "Team hat Abonnements"
+
+#: .\app_prime_league\admin\team.py:34
+msgid "Only subscribed Teams"
+msgstr "Nur abonnierte Teams"
+
+#: .\app_prime_league\admin\team.py:35
+msgid "Only not subscribed Teams"
+msgstr "Nur nicht abonnierte Teams"
+
+#: .\app_prime_league\admin\team.py:47
 msgid "Players"
 msgstr "Spieler:innen"
 
-#: .\app_prime_league\admin_sites\team.py:58
+#: .\app_prime_league\admin\team.py:52
 msgid "With Players"
 msgstr "Mit Spieler:innen"
 
-#: .\app_prime_league\admin_sites\team.py:59
+#: .\app_prime_league\admin\team.py:53
 msgid "Without Players"
 msgstr "Ohne Spieler:innen"
 
-#: .\app_prime_league\models\team_and_match.py:55
+#: .\app_prime_league\admin\team.py:136 .\app_prime_league\models\channel.py:81
+msgid "Channel"
+msgstr "Kanal"
+
+#: .\app_prime_league\admin\team.py:137 .\app_prime_league\models\channel.py:82
+msgid "Channels"
+msgstr "Kanäle"
+
+#: .\app_prime_league\admin\team.py:203
+msgid "Subscription Infos"
+msgstr "Abonnement-Infos"
+
+#: .\app_prime_league\admin\team.py:239
+msgid "Subscribers on Discord"
+msgstr "Abonnenten auf Discord"
+
+#: .\app_prime_league\admin\team.py:243
+msgid "Subscribers on Telegram"
+msgstr "Abonnenten auf Telegram"
+
+#: .\app_prime_league\admin\team.py:247
+msgid "Subscribers"
+msgstr "Abonnenten"
+
+#: .\app_prime_league\models\channel.py:20
+msgid "Channel-Team Relation"
+msgstr "Kanal-Team Relation"
+
+#: .\app_prime_league\models\channel.py:21
+msgid "Channel-Team Relations"
+msgstr "Kanal-Team Relationen"
+
+#: .\app_prime_league\models\channel.py:34
 msgid "german"
 msgstr "deutsch"
 
-#: .\app_prime_league\models\team_and_match.py:56
+#: .\app_prime_league\models\channel.py:35
 msgid "english"
 msgstr "englisch"
 
-#: .\app_prime_league\models\team_and_match.py:290
-#: .\app_prime_league\models\team_and_match.py:291
-#, fuzzy
-#| msgid "Deleted Team"
+#: .\app_prime_league\models\channel.py:39
+msgid "Discord"
+msgstr "Discord"
+
+#: .\app_prime_league\models\channel.py:40
+msgid "Telegram"
+msgstr "Telegram"
+
+#: .\app_prime_league\models\scouting_website.py:21
+msgid "Scouting Website"
+msgstr "Scouting-Website"
+
+#: .\app_prime_league\models\scouting_website.py:22
+msgid "Scouting Websites"
+msgstr "Scouting Websites"
+
+#: .\app_prime_league\models\team_and_match.py:280
+#: .\app_prime_league\models\team_and_match.py:281
 msgid "Deleted Team/TBD"
-msgstr "Gelöschtes Team/TBD"
+msgstr "Gelöschtes Team/Team noch festzulegen"

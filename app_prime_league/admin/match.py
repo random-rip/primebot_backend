@@ -38,6 +38,10 @@ class MatchAdmin(admin.ModelAdmin):
         "match_type",
         "team",
         "enemy_team",
+        "team_made_latest_suggestion",
+        "match_begin_confirmed",
+        "datetime_until_auto_confirmation",
+        "has_side_choice",
         "begin",
         "closed",
         "result",
@@ -51,7 +55,7 @@ class MatchAdmin(admin.ModelAdmin):
     @admin.display(description="Prime League")
     def prime_league_link(self, obj):
         return format_html(
-            '<a class="button" href="{}" target="_blank">Zur PL</a>&nbsp;',
+            '<a class="button" href="{}" target="_blank">Zur PRM</a>&nbsp;',
             obj.prime_league_link,
         )
 

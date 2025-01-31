@@ -1,10 +1,10 @@
-from datetime import datetime
+from datetime import date, datetime
 from unittest import mock
 
 from django.test import TestCase
 from django.utils.timezone import make_aware
 
-from core.test_utils import SplitBuilder
+from app_prime_league.factories import SplitFactory
 from utils.utils import count_weeks
 
 
@@ -12,7 +12,7 @@ class MatchDayTest(TestCase):
     @mock.patch('django.utils.timezone.now')
     def test_current(self, timezone_mock):
         timezone_mock.return_value = make_aware(datetime(2024, 3, 25))  # Monday Week 9
-        split = SplitBuilder(group_stage_start=datetime(2024, 1, 25)).build()
+        split = SplitFactory(group_stage_start=date(2024, 1, 25))
         match_day = split.get_current_match_day()
         self.assertEqual(9, match_day)
 

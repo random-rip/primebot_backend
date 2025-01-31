@@ -3,7 +3,6 @@ import logging
 import sys
 import traceback
 from itertools import repeat
-from typing import Union
 
 from django.conf import settings
 
@@ -15,17 +14,14 @@ from core.updater.matches_check_executor import update_match
 from utils.messages_logger import log_exception
 
 
-def register_team(*, team_id: int, **kwargs) -> Union[Team, None]:
+def register_team(*, team_id: int) -> Team:
     """
     This Function should be used in Bot commands!
     Add or Update a Team, Add or Update Matches.
-    **kwargs will be directly parsed to the Team model, usually the telegram ID or discord IDs.
     :raises PrimeLeagueConnectionException, TeamWebsite404Exception:
     """
     processor = TeamDataProcessor(team_id=team_id, provider=get_provider(priority=0, force=True))
-    team = create_or_update_team(processor=processor, **kwargs)
-    if team is None:
-        return None
+    team = create_or_update_team(processor=processor)
     try:
         create_matches(processor.get_matches(), team, notify=False, use_concurrency=False)  # TODO speedup again?
     except Exception as e:
@@ -38,11 +34,10 @@ def register_team(*, team_id: int, **kwargs) -> Union[Team, None]:
     return team
 
 
-def create_or_update_team(*, processor, **kwargs) -> Union[Team, None]:
+def create_or_update_team(*, processor) -> Team:
     """
     Create or Update a Team. If team has matches and there is a current split the split will be set, else None.
     :param processor: processor object
-    :param kwargs: kwargs for team model
     :return: team or None
     :raises: PrimeLeagueConnectionException, TeamWebsite404Exception
     """
@@ -53,9 +48,9 @@ def create_or_update_team(*, processor, **kwargs) -> Union[Team, None]:
         "logo_url": processor.get_logo(),
         "split": processor.get_split(),
     }
-    defaults = {**defaults, **kwargs}
 
     team, created = Team.objects.update_or_create(id=processor.team_id, defaults=defaults)
+
     return team
 
 

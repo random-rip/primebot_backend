@@ -1,75 +1,94 @@
-import typing
-
 import discord
 from asgiref.sync import sync_to_async
 from discord.ext import commands
-from django.conf import settings
 from django.utils.translation import gettext as _
 
-from bots.discord_interface.utils import COLOR_SETTINGS, DiscordHelper, check_channel_in_use, translation_override
+from app_prime_league.models import Channel, Team
+from app_prime_league.models.channel import ChannelTeam
+from bots.discord_interface.ui.buttons import BaseTeamButton, CloseButton
+from bots.discord_interface.ui.selects import BaseTeamSelect
+from bots.discord_interface.ui.views import BaseTeamSelectionView
+from bots.discord_interface.utils import channel_is_registered, translation_override
 from core.settings_maker import SettingsMaker
 
 
-@commands.hybrid_command(name="role", help="Sets a Discord role that will be used in notifications.")
-@commands.guild_only()
-@check_channel_in_use()
-@translation_override
-async def set_role(
-    ctx,
-    role: typing.Optional[discord.Role],
-):
-    async with ctx.typing():
-        channel_id = ctx.message.channel.id
-        team = await DiscordHelper.get_registered_team_by_channel_id(channel_id=channel_id)
-        if role is None:
-            team.discord_role_id = None
-            await sync_to_async(team.save)()
-            await ctx.send(
-                _(
-                    "All right, I've removed the role mention. "
-                    "You can turn it back on if needed, just use `/role ROLE_NAME`."
+class ExternalLinkButton(BaseTeamButton):
+    def __init__(self, url, **kwargs):
+        super().__init__(style=discord.ButtonStyle.link, url=url, **kwargs)
+
+
+class TeamSelectionView(BaseTeamSelectionView):
+
+    async def build(self):
+        if self.is_select:
+            self.add_item(
+                BaseTeamSelect(
+                    options=self.teams,
+                    default=self.selected_team,
+                    row=0,
                 )
             )
-            return
-        if role.name == "@everyone":
-            await ctx.send(_("You can't use role **everyone**. Please choose a different role."))
-            return
+        else:
+            channel_teams = ChannelTeam.objects.filter(channel=self.channel).select_related("channel", "team")
+            async for channel_team in channel_teams:
+                maker = SettingsMaker(channel_team=channel_team)
+                url = await sync_to_async(maker.generate_expiring_link)(platform="discord", expiring_at=None)
+                self.add_item(
+                    ExternalLinkButton(
+                        url=url,
+                        team=channel_team.team,
+                        channel=self.channel,
+                        row=0,
+                    )
+                )
+        self.add_item(CloseButton(row=4))
 
-        team.discord_role_id = role.id
-        await sync_to_async(team.save)()
-    await ctx.send(
-        _("Okay, I'll inform the role **{role_name}** for new notifications from now on. 📯").format(
-            role_name=role.name
+    @translation_override
+    async def handle_team_select(self, team: Team, interaction: discord.Interaction, view: "TeamSelectionView"):
+        channel_team = await ChannelTeam.objects.aget(channel=self.channel, team=team)
+        maker = SettingsMaker(channel_team=channel_team)
+        url = await sync_to_async(maker.generate_expiring_link)(platform="discord", expiring_at=None)
+
+        view.clear_items()
+        view.selected_team = team
+        await view.build()
+        view.add_item(
+            ExternalLinkButton(
+                url=url,
+                team=team,
+                channel=self.channel,
+                label=_("Notification Settings"),
+                row=1,
+            )
         )
-    )
+        await interaction.response.edit_message(
+            content=None,
+            view=view,
+        )
 
 
 @commands.hybrid_command(
     name="settings",
-    help="Creates a temporary link to make notification settings",
+    help=_("Create a temporary link to make notification settings"),
 )
 @commands.guild_only()
-@check_channel_in_use()
+@channel_is_registered()
 @translation_override
 async def team_settings(
     ctx,
 ):
-    async with ctx.typing(ephemeral=True):
-        channel_id = ctx.message.channel.id
-        team = await DiscordHelper.get_registered_team_by_channel_id(channel_id=channel_id)
-        maker = await sync_to_async(SettingsMaker)(team=team)
-        link = await sync_to_async(maker.generate_expiring_link)(platform="discord")
-        embed = discord.Embed(
-            title=_("Change settings for {team}").format(team=team.name),
-            url=link,
-            description=_(
-                "The link is only valid for {minutes} minutes. After that, a new link must be generated."
-            ).format(minutes=settings.TEMP_LINK_TIMEOUT_MINUTES),
-            color=COLOR_SETTINGS,
-        )
-    await ctx.send(embed=embed)
+    channel = await Channel.objects.aget(discord_channel_id=ctx.message.channel.id)
+    teams = await sync_to_async(list)(Team.objects.filter(channels=channel).order_by("name"))
+    selected_team = teams[0] if len(teams) == 1 else None
+    view = TeamSelectionView(teams=teams, channel=channel, selected_team=selected_team)
+    await view.build()
+    await ctx.send(
+        content=_("Select a team"),
+        view=view,
+        ephemeral=True,
+        delete_after=60 * 10,
+    )
 
 
 async def setup(bot: commands.Bot) -> None:
-    bot.add_command(set_role)
     bot.add_command(team_settings)

@@ -2,8 +2,8 @@ import hashlib
 import re
 from datetime import date, datetime
 from typing import Tuple, Union
+from zoneinfo import ZoneInfo
 
-import pytz
 from babel import dates as babel
 from django.conf import settings
 from django.utils import translation
@@ -14,14 +14,16 @@ from utils.exceptions import CouldNotParseURLException, Div1orDiv2TeamException
 
 def string_to_datetime(x, timestamp_format='%a, %d %b %Y %H:%M:%S %z'):
     return (
-        datetime.strptime(x, timestamp_format).astimezone(pytz.utc) if isinstance(x, str) else timestamp_to_datetime(x)
+        datetime.strptime(x, timestamp_format).astimezone(ZoneInfo("UTC"))
+        if isinstance(x, str)
+        else timestamp_to_datetime(x)
     )
 
 
 def timestamp_to_datetime(x):
     if not isinstance(x, int):
         x = int(x)
-    return datetime.fromtimestamp(x).astimezone(pytz.utc)
+    return datetime.fromtimestamp(x).astimezone(ZoneInfo("UTC"))
 
 
 def diff_to_hh_mm(lower_dt, upper_dt):
@@ -58,7 +60,7 @@ def get_valid_team_id(value: Union[str, int]) -> int:
     """
     if is_url(value=value):
         if "/leagues/" not in value:
-            raise Div1orDiv2TeamException()
+            raise Div1orDiv2TeamException
         try:
             return int(value.split("/teams/")[-1].split("-")[0])
         except Exception:

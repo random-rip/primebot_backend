@@ -5,7 +5,7 @@ from django.utils import timezone
 from django_q.models import Schedule
 
 from app_prime_league.models import Team
-from bots.message_dispatcher import MessageCreatorJob
+from bots.message_dispatcher import CreateMessagesJob
 from bots.messages import WeeklyNotificationMessage
 from core.commands import ScheduleCommand
 
@@ -29,7 +29,7 @@ class Command(ScheduleCommand):
         for team in teams:
             try:
                 logger.info(f"Sending Weekly Notification to {team}...")
-                MessageCreatorJob(msg_class=WeeklyNotificationMessage, team=team).enqueue()
+                CreateMessagesJob(msg_class=WeeklyNotificationMessage, team=team).enqueue()
             except Exception as e:
                 logger.exception(f"Error sending weekly notification to team {team}: {e}")
 

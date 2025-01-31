@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
-from typing import List
 
 import discord
 from django.conf import settings
 from django.utils import translation
 
 from app_prime_league.models import Match, Team
+from app_prime_league.models.channel import Channel, ChannelTeam
 from bots.messages.helpers import MatchDisplayHelper
 from utils import emojis
 from utils.emojis import EMOJI_RAUTE
@@ -33,8 +33,10 @@ class BaseMessage:
     settings_key = None  # Message kann über die Settings gesteuert werden, ob sie gesendet wird, oder nicht
     mentionable = False  # Rollenerwähnung bei discord falls Rolle gesetzt
 
-    def __init__(self, team: Team, **kwargs):
-        self.team = team
+    def __init__(self, channel_team: ChannelTeam):
+        self.channel_team = channel_team
+        self.channel = channel_team.channel
+        self.team = channel_team.team
         self.match_helper = MatchDisplayHelper
 
     @abstractmethod
@@ -42,7 +44,7 @@ class BaseMessage:
         pass
 
     def generate_title(self) -> str:
-        with translation.override(self.team.language):
+        with translation.override(self.channel.language):
             return self._generate_title()
 
     @abstractmethod
@@ -50,38 +52,52 @@ class BaseMessage:
         pass
 
     def generate_message(self) -> str:
-        with translation.override(self.team.language):
+        with translation.override(self.channel.language):
             return self._generate_message()
 
     def _generate_discord_embed(self) -> discord.Embed:
         raise MessageNotImplementedError()
 
     def generate_poll(self) -> discord.Poll:
-        with translation.override(self.team.language):
+        with translation.override(self.channel.language):
             return self._generate_poll()
 
     def _generate_poll(self) -> discord.Poll:
         raise MessageNotImplementedError()
 
     def generate_discord_embed(self) -> discord.Embed:
-        with translation.override(self.team.language):
+        with translation.override(self.channel.language):
             return self._generate_discord_embed()
+
+    def discord_hooks(self):
+        """
+        This method is called after the message was sent.
+        For example, you can create a discord event.
+        """
+        pass
 
     def team_wants_notification(self):
         key = type(self).settings_key
         if key is None:
             return True
-        return self.team.value_of_setting(key)
+        return self.channel_team.value_of_setting(key)
 
     @property
     def scouting_website(self):
-        return settings.DEFAULT_SCOUTING_NAME if not self.team.scouting_website else self.team.scouting_website.name
+        return (
+            settings.DEFAULT_SCOUTING_NAME if not self.channel.scouting_website else self.channel.scouting_website.name
+        )
 
     def _get_number_as_emojis(self, number: int) -> str:
         return "".join([NUMBER_TO_EMOJI.get(int(d), EMOJI_RAUTE) for d in str(number)])
 
     def __repr__(self):
         return self.__class__.__name__
+
+
+class ChannelMessage(BaseMessage, ABC):
+    def __init__(self, channel: Channel):
+        super().__init__(channel_team=ChannelTeam(channel=channel, team=Team()))
 
 
 class MatchMixin:
@@ -92,15 +108,17 @@ class MatchMixin:
         return f"{settings.TEAM_URI}{match.enemy_team_id}"
 
     def get_enemy_team_scouting_url(self, match: Match):
-        return self.team.get_scouting_url(match=match, lineup=False)
+        scouting_website = self.channel.get_scouting_website()  # noqa
+        return match.get_enemy_scouting_url(scouting_website=scouting_website, lineup=False)
 
     def get_enemy_lineup_scouting_url(self, match: Match):
-        return self.team.get_scouting_url(match=match, lineup=True)
+        scouting_website = self.channel.get_scouting_website()  # noqa
+        return match.get_enemy_scouting_url(scouting_website=scouting_website, lineup=True)
 
 
-class MatchMessage(BaseMessage, ABC, MatchMixin):
-    def __init__(self, team: Team, match: Match):
-        super().__init__(team=team)
+class MatchMessage(BaseMessage, MatchMixin, ABC):
+    def __init__(self, channel_team: ChannelTeam, match: Match):
+        super().__init__(channel_team=channel_team)
         self.match = match
 
     @property
@@ -120,9 +138,9 @@ class MatchMessage(BaseMessage, ABC, MatchMixin):
         return self.get_enemy_lineup_scouting_url(self.match)
 
 
-class MatchesMessage(BaseMessage, ABC, MatchMixin):
-    def __init__(self, team: Team, matches: List[Match]):
-        super().__init__(team=team)
+class MatchesMessage(BaseMessage, MatchMixin, ABC):
+    def __init__(self, channel_team, matches: list[Match]):
+        super().__init__(channel_team=channel_team)
         self.matches = matches
 
     @abstractmethod

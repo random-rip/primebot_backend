@@ -1,9 +1,10 @@
 import discord
-from discord import Colour, Embed
+from discord import Embed
 from django.db.models import F
 from django.utils.translation import gettext as _
 
-from app_prime_league.models import Team
+from app_prime_league.models import ChannelTeam, Team
+from bots.discord_interface.utils import COLOR_NOTIFICATION
 from bots.messages.base import MatchesMessage
 
 
@@ -11,9 +12,9 @@ class MatchesOverview(MatchesMessage):
     settings_key = "NEW_MATCHES_NOTIFICATION"
     mentionable = True
 
-    def __init__(self, team: Team, match_ids: list = None):
-        matches = self._get_relevant_matches(team, match_ids)
-        super().__init__(team=team, matches=matches)
+    def __init__(self, channel_team: ChannelTeam, match_ids: list = None):
+        matches = self._get_relevant_matches(channel_team.team, match_ids)
+        super().__init__(channel_team, matches=matches)
 
     def _get_relevant_matches(self, team: Team, match_ids=None):
         if match_ids is None:
@@ -40,7 +41,7 @@ class MatchesOverview(MatchesMessage):
         )
 
     def _generate_discord_embed(self) -> discord.Embed:
-        embed = Embed(color=Colour.gold())
+        embed = Embed(color=COLOR_NOTIFICATION)
         if len(self.matches) == 0:
             embed.title = self.no_matches_found()
         else:
@@ -63,5 +64,5 @@ class MatchesOverview(MatchesMessage):
                 )
 
             embed.add_field(name=name, value=value, inline=False)
-        embed.set_footer(text=_("To get more information about a match, use /match MATCH_DAY."))
+        embed.set_footer(text=_("To get more information about a match, use /match."))
         return embed

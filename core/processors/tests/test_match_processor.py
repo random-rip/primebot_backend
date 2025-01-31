@@ -1,7 +1,7 @@
 from datetime import datetime
 from unittest.mock import patch
+from zoneinfo import ZoneInfo
 
-import pytz
 from django.test import TestCase
 
 from core.processors.match_processor import MatchDataProcessor
@@ -353,7 +353,7 @@ class DatetimeUntilAutoConfirmationTest(TestCase):
         }
         processor = MatchDataProcessor(1, 1)
         self.assertEqual(
-            datetime(2022, 1, 26, 16, tzinfo=pytz.utc),
+            datetime(2022, 1, 26, 16, tzinfo=ZoneInfo("UTC")),
             processor.get_datetime_until_auto_confirmation(),
         )
 
@@ -379,7 +379,7 @@ class DatetimeUntilAutoConfirmationTest(TestCase):
         }
         processor = MatchDataProcessor(1, 1)
         self.assertEqual(
-            datetime(2022, 1, 26, 16, tzinfo=pytz.utc),
+            datetime(2022, 1, 26, 16, tzinfo=ZoneInfo("UTC")),
             processor.get_datetime_until_auto_confirmation(),
         )
 
@@ -395,7 +395,7 @@ class DatetimeUntilAutoConfirmationTest(TestCase):
         }
         processor = MatchDataProcessor(1, 1)
         self.assertEqual(
-            datetime(2022, 1, 28, 15, tzinfo=pytz.utc),
+            datetime(2022, 1, 28, 15, tzinfo=ZoneInfo("UTC")),
             processor.get_datetime_until_auto_confirmation(),
         )
 
@@ -411,7 +411,7 @@ class DatetimeUntilAutoConfirmationTest(TestCase):
         }
         processor = MatchDataProcessor(1, 1)
         self.assertIsNone(processor.get_datetime_until_auto_confirmation())
-        # self.assertEqual(datetime(2022, 1, 26, 16, tzinfo=pytz.utc), processor.get_datetime_until_auto_confirmation(), )
+        # self.assertEqual(datetime(2022, 1, 26, 16, tzinfo=ZoneInfo("UTC")), processor.get_datetime_until_auto_confirmation(), )
 
 
 class EnemyTeamIDTest(TestCase):

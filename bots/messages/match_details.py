@@ -1,11 +1,12 @@
 import re
 from typing import List
 
-from discord import Colour, Embed
+from discord import Embed
 from django.conf import settings
 from django.utils.translation import gettext as _
 
-from app_prime_league.models import Champion, Match, ScoutingWebsite, Team
+from app_prime_league.models import Champion, ChannelTeam, Match, ScoutingWebsite
+from bots.discord_interface.utils import COLOR_NOTIFICATION
 from bots.messages.base import MatchMessage
 from bots.messages.helpers import fmt_dt
 from utils.emojis import EMJOI_MAGN_GLASS
@@ -13,16 +14,12 @@ from utils.utils import format_datetime, timestamp_to_datetime
 
 
 class MatchOverview(MatchMessage):
+    def __init__(self, channel_team: ChannelTeam, match: Match):
+        super().__init__(channel_team=channel_team, match=match)
+        self.embed = Embed(color=COLOR_NOTIFICATION)
+
     def _generate_title(self) -> str:
         return "🔥 " + _("Match overview")
-
-    def __init__(
-        self,
-        team: Team,
-        match: Match,
-    ):
-        super().__init__(team=team, match=match)
-        self.embed = Embed(color=Colour.gold())
 
     def _generate_message(self):
         self.generate_discord_embed()

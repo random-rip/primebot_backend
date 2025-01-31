@@ -1,5 +1,5 @@
 from .comments import NewCommentsNotificationMessage
-from .custom_notification import NotificationToTeamMessage
+from .custom_notification import NotificationToChannelMessage
 from .enemy_lineup import NewLineupNotificationMessage
 from .enemy_time_suggestions import EnemyNewTimeSuggestionsNotificationMessage
 from .match_details import MatchOverview

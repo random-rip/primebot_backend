@@ -20,6 +20,7 @@ django-q2==1.6.2
 django-request==1.6.3
 djangorestframework==3.15.2
 drf-spectacular==0.27.2
+factory-boy==3.3.1
 hiredis==3.0.0
 niquests==3.9.1
 psutil==6.1.0
@@ -28,6 +29,5 @@ pymemcache==4.0.0
 pymongo==4.10.1
 python-dateutil==2.8.2
 python-telegram-bot==13.15
-pytz~=2022.7.1
 redis==5.1.1
 requests==2.32.3

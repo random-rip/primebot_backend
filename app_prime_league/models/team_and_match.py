@@ -3,12 +3,14 @@ from typing import Union
 
 from django.conf import settings
 from django.db import models
-from django.db.models import F, Q
+from django.db.models import F, Q, QuerySet
+from django.db.transaction import atomic
 from django.template.defaultfilters import truncatechars
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from app_prime_league.model_manager import PlayerManager
+from app_prime_league.models.channel import ChannelTeam
 from utils.utils import count_weeks
 
 from .player import Player
@@ -30,12 +32,81 @@ class CurrentSplitTeamManager(models.Manager):
 class TeamManager(models.Manager):
     """Returns all teams, no matter which split."""
 
+    @atomic
+    def cleanup(self, channel_teams: Union["ChannelTeam", QuerySet]) -> list[str]:
+        """
+        Deletes the given channel_team relations.
+        Soft Deletes multiple teams and their related enemy teams and matches.
+        """
+        if isinstance(channel_teams, ChannelTeam):
+            channel_teams = ChannelTeam.objects.filter(pk=channel_teams.pk)
+        elif isinstance(channel_teams, QuerySet):
+            pass
+        else:
+            raise ValueError("channel_teams must be a ChannelTeam instance or a QuerySet.")
+
+        # Primary teams are the teams of the given channel_teams
+        primary_teams = Team.objects.filter(channel_teams__in=channel_teams).distinct()
+
+        # Get all enemy teams of the given teams
+        enemy_teams = Team.objects.filter(
+            matches_as_enemy_team__in=Match.objects.filter(team__in=primary_teams)
+        ).distinct()
+
+        # Force evaluation of QuerySet
+        primary_teams = list(primary_teams)
+        enemy_teams = list(enemy_teams)
+
+        # Delete all channel_teams so that the soft delete of the teams is possible
+        channel_teams.delete()
+
+        # Soft delete now all given teams
+        ret = set()
+        deleted_given_team_names = Team.objects.soft_delete_multiple(primary_teams)
+        ret.update(deleted_given_team_names)
+
+        # Soft delete all enemy teams
+        deleted_related_team_names = Team.objects.soft_delete_multiple(enemy_teams)
+        ret.update(deleted_related_team_names)
+        return sorted(ret)
+
+    @atomic
+    def soft_delete_multiple(self, teams: list["Team"]) -> list[str]:
+        """
+        Soft deletes multiple teams.
+        That should be called, after a channel_team relation or a channel was deleted.
+        """
+        deleted_team_names = []
+        for team in teams:
+            is_deleted = self.soft_delete(team)
+            if is_deleted:
+                deleted_team_names.append(team.name)
+        return deleted_team_names
+
+    @atomic
+    def soft_delete(self, team: "Team") -> bool:
+        """
+        Checks if the team can be deleted and deletes it if possible.
+        That should be called, after a channel_team relation or a channel was deleted.
+        """
+        if team.channels.exists():
+            # Some channels have still subscribed to the team
+            return False
+        # No channels are subscribed to the team, let's check if the team is an enemy team in a match
+        if team.matches_as_enemy_team.exists():
+            # It's an enemy team in a match, so we cannot delete the team, but we can delete the matches
+            team.matches_against.all().delete()
+            return False
+        # The team is not an enemy team in any match, so we can delete it and the matches
+        team.delete()
+        return True
+
     def get_registered_teams(self):
         """
-        Gibt alle Teams zurück, die entweder in einer Telegram-Gruppe oder in einem Discord-Channel registriert wurden.
+        Gibt alle Teams zurück, die mindestens in einem Channel registriert wurden.
         :return: Queryset of Team Model
         """
-        return self.model.objects.filter(Q(telegram_id__isnull=False) | Q(discord_channel_id__isnull=False))
+        return self.model.objects.filter(channels__gt=0)
 
     def get_teams_to_update(self):
         """Returns all teams that are registered and all enemy teams of matches that are not closed."""
@@ -51,27 +122,11 @@ class TeamManager(models.Manager):
 
 
 class Team(models.Model):
-    class Languages(models.TextChoices):
-        GERMAN = "de", _("german")
-        ENGLISH = "en", _("english")
-
     name = models.CharField(max_length=100, null=True, blank=True)
     team_tag = models.CharField(max_length=100, null=True, blank=True)
     division = models.CharField(max_length=20, null=True, blank=True)
-    telegram_id = models.CharField(max_length=50, null=True, unique=True, blank=True)
-    discord_guild_id = models.CharField(max_length=50, null=True, blank=True)
-    discord_webhook_id = models.CharField(max_length=50, null=True, unique=True, blank=True)
-    discord_webhook_token = models.CharField(max_length=100, null=True, blank=True)
-    discord_channel_id = models.CharField(max_length=50, unique=True, null=True, blank=True)
-    discord_role_id = models.CharField(max_length=50, null=True, blank=True)
     logo_url = models.URLField(max_length=1000, null=True, blank=True)
-    scouting_website = models.ForeignKey(
-        "app_prime_league.ScoutingWebsite",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-    )
-    language = models.CharField(max_length=2, choices=Languages.choices, default=Languages.GERMAN)
+
     split = models.ForeignKey(
         "app_prime_league.Split", on_delete=models.SET_NULL, null=True, blank=True, related_name="teams"
     )
@@ -94,89 +149,25 @@ class Team(models.Model):
         name = self.name or ""
         return f"{self.id}  - {truncatechars(name, 15)}"
 
-    def value_of_setting(self, setting: str, default=True):
-        return self.settings_dict().get(setting, default)
-
-    def settings_dict(self):
-        return dict(self.setting_set.all().values_list("attr_name", "attr_value"))
-
-    def is_registered(self):
-        return self.telegram_id or self.discord_channel_id
+    def has_subscriptions(self):
+        return self.channels.exists()
 
     def get_next_open_match(self):
         return self.get_open_matches_ordered().first()
 
-    def set_telegram_null(self):
-        self.telegram_id = None
-        self.save(update_fields=["telegram_id"])
-        self.soft_delete()
-
-    def set_discord_null(self):
-        self.discord_webhook_id = None
-        self.discord_webhook_token = None
-        self.discord_guild_id = None
-        self.discord_channel_id = None
-        self.discord_role_id = None
-        self.save(
-            update_fields=[
-                "discord_webhook_id",
-                "discord_guild_id",
-                "discord_channel_id",
-                "discord_webhook_token",
-                "discord_role_id",
-            ]
-        )
-        self.soft_delete()
-
-    def soft_delete(self):
-        if self.telegram_id is None and self.discord_channel_id is None:
-            for match in self.matches_against.all():
-                match.suggestion_set.all().delete()
-                match.enemy_lineup.all().delete()
-                match.delete()
-            self.setting_set.all().delete()
-            # TODO: team auf standardeinstellungen zurücksetzen (scouting website, sprache)
-
-    def get_scouting_url(self, match: "Match", lineup=True):
-        """
-        Creates a link of the enemy team of the given match. if `lineup=True` and lineup is available of the
-        match, creates the link of the enemy lineup instead.
-        :param match: `Match`
-        :param lineup: If lineup=True and a lineup is available a link of the lineup is created
-        :return: Urlencoded string of team
-        """
-        if lineup and match.enemy_lineup_available:
-            qs = match.enemy_lineup
-        else:
-            enemy_team = match.get_enemy_team()
-            if enemy_team.id is None:
-                return ""
-            else:
-                qs = enemy_team.player_set
-
-        names = list(qs.get_active_players().values_list("summoner_name", flat=True))
-        if self.scouting_website:
-            website = self.scouting_website
-        else:
-            website = ScoutingWebsite.default()
-
-        return website.generate_url(names=names)
-
     def get_open_matches_ordered(self):
         return self.matches_against.filter(closed=False).order_by(F('match_day').asc(nulls_last=True))
 
-    def get_obvious_matches_based_on_stage(self, match_day: int):
+    def get_obvious_matches_based_on_stage(self, match_day: int | None = None):
         """
         Get ``Match`` queryset, where match_type will be set based on the current stage of the split.
-        Args:
-            match_day: Match day
-
-        Returns: Matches Queryset based on current stage
-
+        :param match_day: Filter for optional match_day
+        :return: Matches Queryset based on current stage
         """
-        qs_filter = {
-            "match_day": match_day,
-        }
+        qs_filter = {}
+        if match_day is not None:
+            qs_filter["match_day"] = match_day
+
         current_split = Split.objects.get_current_split()
         current_stage = current_split.get_current_stage()
         if current_stage == Match.MATCH_TYPE_PLAYOFF:
@@ -236,17 +227,17 @@ class Match(models.Model):
     MATCH_DAY_PLAYOFF = 0
 
     match_id = models.IntegerField()
-    match_day = models.IntegerField(null=True)
-    match_type = models.CharField(max_length=15, null=True, choices=MATCH_TYPES)
+    match_day = models.IntegerField(null=True, blank=True)
+    match_type = models.CharField(max_length=15, null=True, choices=MATCH_TYPES, blank=True)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="matches_against")
-    enemy_team = models.ForeignKey(Team, on_delete=models.SET_NULL, related_name="matches_as_enemy_team", null=True)
+    enemy_team = models.ForeignKey(
+        Team, on_delete=models.SET_NULL, related_name="matches_as_enemy_team", null=True, blank=True
+    )
     team_made_latest_suggestion = models.BooleanField(null=True, blank=True)
     match_begin_confirmed = models.BooleanField(default=False, blank=True)
-    datetime_until_auto_confirmation = models.DateTimeField(
-        null=True, blank=True
-    )  # TODO change to auto_confirmation_at
+    datetime_until_auto_confirmation = models.DateTimeField(null=True, blank=True)
     has_side_choice = models.BooleanField(null=True)  # Team has side choice in first game
-    begin = models.DateTimeField(null=True)
+    begin = models.DateTimeField(null=True, blank=True)
     enemy_lineup = models.ManyToManyField(Player, related_name="matches_as_enemy", blank=True)
     team_lineup = models.ManyToManyField(Player, related_name="matches", blank=True)
     closed = models.BooleanField(null=True)
@@ -262,7 +253,7 @@ class Match(models.Model):
 
     class Meta:
         db_table = "matches"
-        unique_together = [("match_id", "team")]
+        constraints = [models.UniqueConstraint(fields=["match_id", "team"], name="unique_match_team")]
         verbose_name = "Match"
         verbose_name_plural = "Matches"
 
@@ -283,8 +274,7 @@ class Match(models.Model):
     def get_enemy_team(self) -> Team:
         """
         Safe Method to get a `Team` object even if the enemy_team is None.
-        Returns: Enemy Team  or dummy Team object
-
+        :return: Enemy Team  or dummy Team object
         """
         return self.enemy_team or Team(
             name=_("Deleted Team/TBD"),
@@ -294,6 +284,24 @@ class Match(models.Model):
     @property
     def prime_league_link(self) -> str:
         return f"{settings.MATCH_URI}{self.match_id}"
+
+    def get_enemy_scouting_url(self, scouting_website: ScoutingWebsite = None, lineup=True) -> str:
+        """
+        Creates an url of the enemy team of the given match. if `lineup=True` and lineup is available of the
+        enemy team, the url only contains the lineup of the enemy team.
+        :param scouting_website: ScoutingWebsite
+        :param lineup: Boolean
+        :return: String
+        """
+        scouting_website = scouting_website or ScoutingWebsite.default()
+        if lineup and self.enemy_lineup_available:
+            qs = self.enemy_lineup
+        else:
+            enemy_team = self.get_enemy_team()
+            qs = Player.objects.none() if enemy_team.id is None else enemy_team.player_set
+
+        names = list(qs.get_active_players().order_by("summoner_name").values_list("summoner_name", flat=True))
+        return scouting_website.generate_url(names=names)
 
 
 class Suggestion(models.Model):
@@ -388,7 +396,7 @@ class Split(models.Model):
         verbose_name_plural = "Splits"
 
     def __str__(self):
-        return f"{self.name} ({self.id})"
+        return self.name
 
     def in_range(self, d: datetime) -> bool:
         """
