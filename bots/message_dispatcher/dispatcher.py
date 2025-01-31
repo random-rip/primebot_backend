@@ -15,6 +15,7 @@ def send_message(msg: BaseMessage):
         return "Team does not want notifications"
     if msg.channel.platform == Platforms.DISCORD:
         DiscordBot.send_message(msg=msg)
+        msg.discord_hooks()
     elif msg.channel.platform == Platforms.TELEGRAM:
         TelegramBot.send_message(msg=msg)
     else:
@@ -24,8 +25,7 @@ def send_message(msg: BaseMessage):
 
 class MessageDispatcherJob(Job):
     """
-    Wrapper for creating an async task for Q cluster. Call `MessageDispatcher(Message).enqueue()` to
-    create an async_task.
+    Enqueues a message to the correct platform.
     """
 
     __name__ = 'MessageDispatcher'

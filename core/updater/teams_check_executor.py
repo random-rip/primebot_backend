@@ -11,7 +11,7 @@ from django_q.models import Schedule
 
 from app_prime_league.models import Player, Team
 from app_prime_league.teams import create_matches
-from bots.message_dispatcher import MessageCreatorJob
+from bots.message_dispatcher import CreateMessagesJob
 from bots.messages import MatchesOverview
 from bots.messages.team_deleted import TeamDeletedMessage
 from bots.telegram_interface.tg_singleton import send_message_to_devs
@@ -43,7 +43,7 @@ def update_team(team: Team, notify: bool):
         if not team.has_subscriptions():
             team.delete()
         else:
-            MessageCreatorJob(
+            CreateMessagesJob(
                 msg_class=TeamDeletedMessage,
                 team=team,
             ).enqueue()
@@ -87,7 +87,7 @@ def update_team(team: Team, notify: bool):
         if missing_ids := cmp.compare_new_matches():
             notifications_logger.info(f"{log_message}Neue Matches")
             create_matches(missing_ids, team=team, notify=True, use_concurrency=False)
-            MessageCreatorJob(msg_class=MatchesOverview, team=team, match_ids=missing_ids).enqueue()
+            CreateMessagesJob(msg_class=MatchesOverview, team=team, match_ids=missing_ids).enqueue()
     except Exception as e:
         trace = "".join(traceback.format_tb(sys.exc_info()[2]))
         send_message_to_devs(

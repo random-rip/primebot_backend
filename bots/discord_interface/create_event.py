@@ -9,7 +9,7 @@ from django.conf import settings
 from niquests import AsyncSession
 from PIL import Image, ImageDraw
 
-from app_prime_league.models import Match, Team
+from app_prime_league.models import ChannelTeam, Match, Team
 from bots.discord_interface.discord_bot import DiscordBot
 from bots.messages.helpers import MatchDisplayHelper
 from core.cluster_job import Job
@@ -71,15 +71,21 @@ async def create_cover_image(team1_url, team2_url):
     return img_byte_arr.getvalue()
 
 
-async def create_discord_event(match: Match):
+async def create_discord_event(channel_team: ChannelTeam, match: Match):
+    if not await sync_to_async(channel_team.value_of_setting)(
+        "CREATE_DISCORD_EVENT_ON_SCHEDULING_CONFIRMATION",
+        default=False,
+    ):
+        return "Event creation disabled"
+
     client = await DiscordBot().client
 
-    team = await sync_to_async(Team.objects.get)(id=match.team_id)
-    enemy_team = await sync_to_async(Team.objects.get)(id=match.enemy_team_id)
+    team = await Team.objects.aget(id=match.team_id)
+    enemy_team = await Team.objects.aget(id=match.enemy_team_id)
     title = f"{team.name} vs. {enemy_team.name}"
     image = await create_cover_image(team.logo_url, enemy_team.logo_url)
 
-    guild = await client.fetch_guild(team.discord_guild_id)
+    guild = await client.fetch_guild(channel_team.channel.discord_guild_id)
     try:
         event = await guild.create_scheduled_event(
             name=title,
@@ -99,11 +105,15 @@ async def create_discord_event(match: Match):
 
 
 class CreateDiscordEventJob(Job):
-    def __init__(self, match: Match):
+    def __init__(self, channel_team: ChannelTeam, match: Match):
         self.match = match
+        self.channel_team = channel_team
 
     def get_kwargs(self) -> Dict:
-        return {"match": self.match}
+        return {
+            "channel_team": self.channel_team,
+            "match": self.match,
+        }
 
     def function_to_execute(self) -> Callable:
         return async_to_sync(create_discord_event)

@@ -7,7 +7,7 @@ from core.cluster_job import Job
 from .dispatcher import MessageDispatcherJob
 
 
-def create_and_dispatch_message(msg_class: Type[BaseMessage], team: Team, **kwargs):
+def create_messages(msg_class: Type[BaseMessage], team: Team, **kwargs):
     """
     Creates a message and enqueues a `MessageDispatcherJob` for each subscribed channel
     """
@@ -20,7 +20,7 @@ def create_and_dispatch_message(msg_class: Type[BaseMessage], team: Team, **kwar
     return f"Message created and dispatched to {team.channel_teams.count()} channels"
 
 
-class MessageCreatorJob(Job):
+class CreateMessagesJob(Job):
     """Instantiate a message and enqueues a `MessageDispatcherJob` for each subscribed channel."""
 
     def __init__(self, msg_class: Type[BaseMessage], team: Team, **kwargs):
@@ -29,7 +29,7 @@ class MessageCreatorJob(Job):
         self.kwargs = kwargs
 
     def function_to_execute(self) -> Callable:
-        return create_and_dispatch_message
+        return create_messages
 
     def get_kwargs(self) -> Dict:
         return {

@@ -69,6 +69,13 @@ class BaseMessage:
         with translation.override(self.channel.language):
             return self._generate_discord_embed()
 
+    def discord_hooks(self):
+        """
+        This method is called after the message was sent.
+        For example, you can create a discord event.
+        """
+        pass
+
     def team_wants_notification(self):
         key = type(self).settings_key
         if key is None:

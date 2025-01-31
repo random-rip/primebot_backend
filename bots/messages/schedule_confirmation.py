@@ -5,6 +5,7 @@ from django.utils.translation import gettext as _
 from telegram import ParseMode
 
 from app_prime_league.models import ChannelTeam, Match
+from bots.discord_interface.create_event import CreateDiscordEventJob
 from bots.messages.base import MatchMessage
 from bots.telegram_interface.tg_singleton import send_message_to_devs
 from core.parsing.logs import LogChangeTime, LogSchedulingAutoConfirmation
@@ -57,3 +58,10 @@ class ScheduleConfirmationNotification(MatchMessage):
             enemy_team_url=f"{settings.TEAM_URI}{self.match.enemy_team.id}",
             match_day=self.match_helper.display_match_day(self.match),
         )
+
+    def discord_hooks(self):
+        if self.channel_team.value_of_setting(
+            "CREATE_DISCORD_EVENT_ON_SCHEDULING_CONFIRMATION",
+            default=False,
+        ):
+            CreateDiscordEventJob(self.channel_team, self.match).enqueue()

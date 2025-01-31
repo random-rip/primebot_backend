@@ -181,7 +181,7 @@ class MatchDataProcessor(__MatchDataMethods):
         status = self.data_match.get("match_scheduling_status")
         if status == 0:
             return None
-        status = True if status == 1 else False  # status can be 1 or 2
+        status = True if status == 1 else False  # status can be 1 or 2 (team 1 or team 2)
         return status == self.team_is_team_1
 
     def get_match_begin(self):

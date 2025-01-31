@@ -2,8 +2,7 @@ import logging
 from abc import abstractmethod
 
 from app_prime_league.models import Comment, Match, Player, Suggestion, Team
-from bots.discord_interface.create_event import CreateDiscordEventJob
-from bots.message_dispatcher.creator import MessageCreatorJob
+from bots.message_dispatcher.creator import CreateMessagesJob
 from bots.messages import (
     EnemyNewTimeSuggestionsNotificationMessage,
     NewCommentsNotificationMessage,
@@ -25,14 +24,26 @@ class Comparer:
         self.log_message = f"New notification for {match=} ({match.team=}): "
 
     @abstractmethod
-    def compare(self):
+    def compare(self) -> bool:
+        """
+        Compares the match object with the new data and returns True if changes were made.
+        :return: True if changes were made else False
+        """
         pass
 
     @abstractmethod
     def update(self):
+        """
+        Updates the match object with the new data.
+        :return:
+        """
         pass
 
     def notify(self):
+        """
+        Sends a notification to subscribed channels.
+        :return:
+        """
         pass
 
     def log(self, msg):
@@ -77,7 +88,7 @@ class NewSuggestionComparer(Comparer):
             log_msg = "Eigener neuer Terminvorschlag"
             msg_class = OwnNewTimeSuggestionsNotificationMessage
         self.log(log_msg)
-        MessageCreatorJob(msg_class=msg_class, team=self.match.team, match=self.match).enqueue()
+        CreateMessagesJob(msg_class=msg_class, team=self.match.team, match=self.match).enqueue()
 
 
 class SchedulingConfirmationComparer(Comparer):
@@ -91,16 +102,12 @@ class SchedulingConfirmationComparer(Comparer):
 
     def notify(self):
         self.log("Termin wurde festgelegt")
-        MessageCreatorJob(
+        CreateMessagesJob(
             msg_class=ScheduleConfirmationNotification,
             team=self.match.team,
             match=self.match,
             latest_confirmation_log=self.tmd.latest_confirmation_log,
         ).enqueue()
-        if self.match.team.discord_channel_id is not None and self.match.team.value_of_setting(
-            "CREATE_DISCORD_EVENT_ON_SCHEDULING_CONFIRMATION", default=False
-        ):
-            CreateDiscordEventJob(self.match).enqueue()
 
 
 class LineupConfirmationComparer(Comparer):
@@ -135,7 +142,7 @@ class LineupConfirmationComparer(Comparer):
     def notify(self):
         if self.of_enemy_team:
             self.log("Neues Lineup des gegnerischen Teams")
-            MessageCreatorJob(
+            CreateMessagesJob(
                 msg_class=NewLineupNotificationMessage,
                 team=self.match.team,
                 match=self.match,
@@ -173,7 +180,7 @@ class NewCommentsComparer(Comparer):
 
     def notify(self):
         self.log(f"Neue Kommentare: {self._new_ids}")
-        MessageCreatorJob(
+        CreateMessagesJob(
             msg_class=NewCommentsNotificationMessage,
             team=self.match.team,
             match=self.match,

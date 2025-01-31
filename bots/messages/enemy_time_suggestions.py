@@ -45,7 +45,7 @@ class EnemyNewTimeSuggestionsNotificationMessage(MatchMessage):
         )
 
     def _generate_poll(self) -> discord.Poll:
-        if self.team.value_of_setting(self.settings_key_poll) is False:
+        if self.channel_team.value_of_setting(self.settings_key_poll) is False:
             raise SettingIsFalseException(self.settings_key_poll)
         poll = discord.Poll(
             question="📆 "
