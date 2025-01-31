@@ -148,5 +148,7 @@ class MatchesTest(TestCase):
         MatchFactory(match_id=2000, team=self.team_a, match_type=Match.MATCH_TYPE_PLAYOFF, match_day=0)
         MatchFactory(match_id=3000, team=self.team_a, match_type=Match.MATCH_TYPE_PLAYOFF, match_day=0)
 
-        result = list(self.team_a.get_obvious_matches_based_on_stage(0).values_list("match_id", flat=True))
+        result = list(
+            self.team_a.get_obvious_matches_based_on_stage(0).values_list("match_id", flat=True).order_by("match_id")
+        )
         self.assertListEqual([1000, 2000, 3000], result)
