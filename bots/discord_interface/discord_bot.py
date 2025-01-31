@@ -1,7 +1,7 @@
 import logging
 
 from asgiref.sync import sync_to_async
-from discord import Client, Intents, Message, NotFound, Object, SyncWebhook
+from discord import Client, Forbidden, Intents, Message, NotFound, Object, SyncWebhook
 from discord.abc import GuildChannel
 from discord.ext.commands import Bot, NoPrivateMessage, errors
 from django.conf import settings
@@ -145,8 +145,9 @@ class _DiscordBotV2(Bot):
             try:
                 discord_channel = await self.fetch_channel(channel.discord_channel_id)
             except NotFound:
-                print(f"Webhook {channel.discord_webhook_id} not found. Deleted...")
-                await channel.adelete()
+                print(f"Webhook {channel.discord_webhook_id} not found. Skipping...")
+            except Forbidden:
+                print(f"Webhook {channel.discord_webhook_id} forbidden. Skipping...")
             else:
                 print(discord_channel.name)
                 channel.name = discord_channel.name
