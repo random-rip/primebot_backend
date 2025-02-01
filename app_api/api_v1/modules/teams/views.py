@@ -86,9 +86,7 @@ class MatchEvent:
         )
 
     def get_description(self):
-        scouting_website = (
-            settings.DEFAULT_SCOUTING_NAME if not self.team.scouting_website else self.team.scouting_website.name
-        )
+        scouting_website = settings.DEFAULT_SCOUTING_NAME
         description = "{match_day}\n" "{match_schedule}\n" "🔍 {scouting_website}: {enemy_scouting_url}\n"
         if self.match.enemy_lineup_available:
             description += "📋 Enemy lineup available: {enemy_lineup_url}\n"
