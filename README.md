@@ -95,15 +95,16 @@ For further information have a look at **Contributing** section at the end of th
 - ``app_prime_league`` contains models, commands and model communications (for example `register_team`)
     - Model ``Match``: Relevant information about a match
     - Model ``Player``: Relevant information about a player (e.g. UserID, summoner_name)
-    - Model ``Team``: Relevant information about a team and registered communication platform(e.g. name, tag, picture,
-      discord_channel_id, )
+    - Model ``Team``: Relevant information about a team (e.g. name, tag, picture, discord_channel_id, )
+    - Model ``Channel`` and ``ChannelTeam``: A Channel can be a telegram or discord channel. A ChannelTeam is the
+      connection between a team and a channel.
     - Model ``ScoutingWebsite``: Holds all possible scouting websites (currently: op.gg, u.gg, xdx.gg,
       leagueofgraphs.com)
     - Model ``Suggestion``: Suggestions of matches
     - Model ``Setting``: settings of teams for notifications, language, etc.
     - Model ``Comment``: comments on matches
-- ``bots`` contains all relevant Discord and Telegram scripts, Language files and the messages framework (MessageCreator
-  and MessageDispatcher)
+- ``bots`` contains all relevant Discord and Telegram scripts and the messages framework (``CreateMessagesJob``
+  and ``MessageDispatcherJob``)
 - ``core`` contains the Prime League communication, parsing, comparing and updating
     - Module ``comparers``: These classes take over the comparison between the database, `TeamDataProcessor`
       and `TemporaryMatchData`.
@@ -111,12 +112,14 @@ For further information have a look at **Contributing** section at the end of th
     - Module ``processors``: The classes take over the interface between the data processing in python and
       the `provider` classes.
     - Module `providers`: The classes take over the communication with the filesystem, the Prime League API (and the
-      differentiation between filesystem and API) and the JSON parsing.
+      differentiation between filesystem and API), the currently used  ``RequestQueueProvider`` and the JSON parsing.
     - Module `updater`: The classes take over updating matches and teams. In production, the updates take place in
       parallel.
     - Module `api.py`: The class provides a low level Prime League api
     - Module `temporary_match_data.py`: The class provides methods for converting the API data into ``Comparer``
       -friendly data and takes care of the data enrichment of opposing teams to a match
+- ``request_queue`` contains the ``RequestQueue`` for the limit of API requests (currently 1 request per second) that was given by the Prime League. The Data is temporary stored in MongoDB.
+-
 - ``storage`` holds the API data as JSON files for development
 
 ### Manage.py Commands
@@ -126,6 +129,7 @@ For further information have a look at **Contributing** section at the end of th
 - `python manage.py create_link` - Generates a settings link for the first team of the database
 - `python manage.py seed_scouting` - Seed Scouting Websites: op.gg, u.gg and xdx.gg
 - `python manage.py weekly_notifications` - start weekly notifications
+- `python manage.py requestqueue` - start request queue for rate limited API requests to the Prime League API
 
 #### Update Commands
 
