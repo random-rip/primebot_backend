@@ -1,6 +1,7 @@
-from discord import Color, Embed
+import discord
 from django.utils.translation import gettext as _
 
+from bots.discord_interface.utils import COLOR_NOTIFICATION
 from bots.messages.base import MatchMessage
 
 
@@ -23,8 +24,8 @@ class NewLineupNotificationMessage(MatchMessage):
             scouting_url=self.enemy_lineup_scouting_url,
         )
 
-    def _generate_discord_embed(self):
-        embed = Embed(color=Color.gold())
+    def _generate_discord_embed(self) -> discord.Embed:
+        embed = discord.Embed(color=COLOR_NOTIFICATION)
         embed.add_field(name="", value=self._generate_message(), inline=False)
         embed.set_footer(text=_("To get more information about the match, use /match."))
         return embed

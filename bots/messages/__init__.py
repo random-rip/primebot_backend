@@ -3,6 +3,7 @@ from .custom_notification import NotificationToChannelMessage
 from .enemy_lineup import NewLineupNotificationMessage
 from .enemy_time_suggestions import EnemyNewTimeSuggestionsNotificationMessage
 from .match_details import MatchOverview
+from .match_result import MatchResultMessage
 from .matches_overview import MatchesOverview
 from .own_time_suggestions import OwnNewTimeSuggestionsNotificationMessage
 from .schedule_confirmation import ScheduleConfirmationNotification
