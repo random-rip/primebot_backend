@@ -10,6 +10,7 @@ from app_prime_league.models import Match
 from core.comparers.match_comparer import (
     LineupConfirmationComparer,
     MatchComparer,
+    MatchResultComparer,
     NewCommentsComparer,
     NewEnemyTeamComparer,
     NewSuggestionComparer,
@@ -73,6 +74,7 @@ def update_match(match: Match, notify=True, priority=2):
             LineupConfirmationComparer(match=match, tmd=tmd, of_enemy_team=True),
             LineupConfirmationComparer(match=match, tmd=tmd, of_enemy_team=False),  # GLOBALLY SILENCED
             NewCommentsComparer(match=match, tmd=tmd),
+            MatchResultComparer(match=match, tmd=tmd),
         ],
     )
     comparer.run()

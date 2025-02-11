@@ -59,17 +59,20 @@ class DiscordHelper:
     @staticmethod
     def create_msg_arguments(*, msg: BaseMessage, discord_role_id: str | None, color=COLOR_NOTIFICATION, **kwargs):
         arguments = kwargs
+        title = msg.generate_title()
         try:
             arguments["embed"] = msg.generate_discord_embed()
         except MessageNotImplementedError:
-            arguments["embed"] = Embed(description=msg.generate_message(), color=color)
+            arguments["embed"] = Embed(
+                title=title,
+                description=msg.generate_message(),
+                color=color,
+            )
         try:
             arguments["poll"] = msg.generate_poll()
         except (MessageNotImplementedError, SettingIsFalseException):
             pass
-        arguments["content"] = DiscordHelper.mask_message_with_mention(
-            discord_role_id=discord_role_id, message=msg.generate_title()
-        )
+        arguments["content"] = DiscordHelper.mask_message_with_mention(discord_role_id=discord_role_id, message=title)
         return arguments
 
     @staticmethod

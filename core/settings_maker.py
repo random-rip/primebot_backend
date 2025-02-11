@@ -128,6 +128,7 @@ class SettingsMaker(Encoder):
                     "SCHEDULING_CONFIRMATION",
                     "SCOUTING_WEBSITE",
                     "CREATE_DISCORD_EVENT_ON_SCHEDULING_CONFIRMATION",
+                    "MATCH_RESULT",
                     "LANGUAGE",
                     "NEW_COMMENTS_OF_UNKNOWN_USERS",
                     "NEW_MATCHES_NOTIFICATION",
