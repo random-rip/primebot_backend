@@ -5,6 +5,7 @@ from app_prime_league.models import Comment, Match, Player, Suggestion, Team
 from bots.message_dispatcher.creator import CreateMessagesJob
 from bots.messages import (
     EnemyNewTimeSuggestionsNotificationMessage,
+    MatchResultMessage,
     NewCommentsNotificationMessage,
     NewLineupNotificationMessage,
     OwnNewTimeSuggestionsNotificationMessage,
@@ -188,6 +189,27 @@ class NewCommentsComparer(Comparer):
         ).enqueue()
 
 
+class MatchResultComparer(Comparer):
+    def compare(self):
+        """
+        Check if a new match result is available.
+        """
+        if self.tmd.result is None:
+            return False
+        return self.tmd.result != self.match.result
+
+    def update(self):
+        self.match.result = self.tmd.result
+
+    def notify(self):
+        self.log(f"New Match result: {self.tmd.result}")
+        CreateMessagesJob(
+            msg_class=MatchResultMessage,
+            team=self.match.team,
+            match=self.match,
+        ).enqueue()
+
+
 class NewEnemyTeamComparer(Comparer):
     def __init__(self, match: Match, tmd: TemporaryMatchData, priority: int):
         super().__init__(match, tmd)
@@ -242,7 +264,6 @@ class MatchComparer:
         self.match.match_begin_confirmed = self.tmd.match_begin_confirmed
         self.match.datetime_until_auto_confirmation = self.tmd.datetime_until_auto_confirmation
         self.match.closed = self.tmd.closed
-        self.match.result = self.tmd.result
         self.match.has_side_choice = self.tmd.has_side_choice
         self.match.split = self.tmd.split
         self.match.save()

@@ -46,6 +46,7 @@ def create_settings_json(channel_team: ChannelTeam):
         "SCHEDULING_CONFIRMATION",
         "NEW_COMMENTS_OF_UNKNOWN_USERS",
         "NEW_MATCHES_NOTIFICATION",
+        "MATCH_RESULT",
     ]
     _settings = [
         {

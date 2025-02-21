@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-29 16:53+0100\n"
+"POT-Creation-Date: 2025-02-11 13:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -367,11 +367,11 @@ msgstr[1] ""
 msgid "Developer notification"
 msgstr "Entwicklerbenachrichtigung"
 
-#: .\bots\messages\enemy_lineup.py:12
+#: .\bots\messages\enemy_lineup.py:13
 msgid "New lineup"
 msgstr "Neues Lineup"
 
-#: .\bots\messages\enemy_lineup.py:16
+#: .\bots\messages\enemy_lineup.py:17
 #, python-brace-format
 msgid ""
 "[{enemy_team_tag}]({enemy_team_url}) ([{match_day}]({match_url})) submitted "
@@ -380,7 +380,7 @@ msgstr ""
 "[{enemy_team_tag}]({enemy_team_url}) ([{match_day}]({match_url})) hat ein "
 "neues [Lineup]({scouting_url}) aufgestellt."
 
-#: .\bots\messages\enemy_lineup.py:29
+#: .\bots\messages\enemy_lineup.py:30 .\bots\messages\match_result.py:38
 msgid "To get more information about the match, use /match."
 msgstr "Um mehr Informationen über das Match zu erhalten, verwende /match."
 
@@ -503,7 +503,7 @@ msgstr "Gegnerteam"
 msgid "Opposing players (leagueofgraphs.com)"
 msgstr "Gegnerische Spieler:innen (leagueofgraphs.com)"
 
-#: .\bots\messages\match_details.py:140
+#: .\bots\messages\match_details.py:140 .\bots\messages\match_result.py:13
 msgid "Match result"
 msgstr "Matchergebnis"
 
@@ -538,6 +538,19 @@ msgid ""
 msgstr ""
 "Wenn es veraltete Scouting-Links gibt, verwende einfach /match nochmal nach "
 "15 Minuten."
+
+#: .\bots\messages\match_result.py:18
+#, python-brace-format
+msgid ""
+"The match against [{enemy_team_tag}]({enemy_team_url}) ended with **{result}"
+"**."
+msgstr ""
+"Das Match gegen [{enemy_team_tag}]({enemy_team_url}) wurde mit **{result}** "
+"beendet."
+
+#: .\bots\messages\match_result.py:42
+msgid "Sad, but maybe /bop will cheer you up."
+msgstr "Schade, aber vielleicht muntert /bop euch auf."
 
 #: .\bots\messages\matches_overview.py:26
 msgid "New matches"
