@@ -7,7 +7,7 @@ from django.utils.translation import gettext as _
 from app_prime_league.models import Channel, ChannelTeam, Team
 from bots.discord_interface.ui.buttons import BackButton, CloseButton
 from bots.discord_interface.ui.utils import shorten_team_name
-from bots.discord_interface.ui.views import BaseTeamSelectionView
+from bots.discord_interface.ui.views import BaseTeamSelectionView, BaseView
 from bots.discord_interface.utils import DiscordHelper, channel_is_registered, check_channel_type, translation_override
 
 
@@ -51,9 +51,9 @@ class DeleteButton(discord.ui.Button):
         )
 
 
-class ConfirmView(discord.ui.View):
-    def __init__(self, channel: Channel, team: Team, teams=None):
-        super().__init__()
+class ConfirmView(BaseView):
+    def __init__(self, channel: Channel, team: Team, teams=None, **kwargs):
+        super().__init__(**kwargs)
         self.channel = channel
         self.team = team
         self.teams = teams
@@ -65,20 +65,27 @@ class ConfirmView(discord.ui.View):
 
     @translation_override
     async def _back(self, interaction: discord.Interaction):
-        view = DeleteView(teams=self.teams, channel=self.channel)
-        await view.build()
-        await interaction.response.edit_message(content=_("Select a team"), view=view)
+        self.stop()
+        delete_view = DeleteTeamSelectionView(teams=self.teams, channel=self.channel, message=self.message)
+        await delete_view.build()
+        await interaction.response.edit_message(content=_("Select a team"), view=delete_view)
 
 
-class DeleteView(BaseTeamSelectionView):
+class DeleteTeamSelectionView(BaseTeamSelectionView):
 
     @translation_override
-    async def handle_team_select(self, team: Team | None, interaction: discord.Interaction, view):
-        view = ConfirmView(channel=self.channel, team=team, teams=self.teams)
-        await view.build()
+    async def handle_team_select(self, team: Team | None, interaction: discord.Interaction):
+        self.stop()
+        confirm_view = ConfirmView(
+            channel=self.channel,
+            team=team,
+            teams=self.teams,
+            message=self.message,
+        )
+        await confirm_view.build()
         await interaction.response.edit_message(
             content=None,
-            view=view,
+            view=confirm_view,
         )
 
 
@@ -92,14 +99,15 @@ async def delete(ctx):
     channel = await Channel.objects.aget(discord_channel_id=channel_id)
     teams = await sync_to_async(list)(Team.objects.filter(channels=channel).order_by("name"))
     selected_team = teams[0] if len(teams) == 1 else None
-    view = DeleteView(teams=teams, channel=channel, selected_team=selected_team)
+    view = DeleteTeamSelectionView(teams=teams, channel=channel, selected_team=selected_team)
     await view.build()
-    await ctx.send(
+    message = await ctx.send(
         content=_("Select a team"),
         view=view,
         ephemeral=True,
         delete_after=60 * 5,
     )
+    view.message = message
 
 
 async def setup(bot: commands.Bot) -> None:

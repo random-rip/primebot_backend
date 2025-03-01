@@ -1,4 +1,4 @@
-import typing
+from typing import Callable, Coroutine, Iterable
 
 import discord
 from asgiref.sync import sync_to_async
@@ -9,12 +9,12 @@ from django.utils.translation import gettext as _
 
 from app_prime_league.models import Channel, ChannelTeam, Team
 from bots.discord_interface.ui.buttons import BackButton, CloseButton
-from bots.discord_interface.ui.views import BaseTeamSelectionView
+from bots.discord_interface.ui.views import BaseTeamSelectionView, BaseView
 from bots.discord_interface.utils import channel_has_at_least_one_team, channel_is_registered, translation_override
 
 
 class RoleSelect(discord.ui.RoleSelect):
-    def __init__(self, callback: typing.Callable, **kwargs):
+    def __init__(self, callback: Callable[[Iterable, discord.Interaction], Coroutine], **kwargs):
         self._callback = callback
         super().__init__(placeholder=_("Select a role"), min_values=0, max_values=1, **kwargs)
 
@@ -22,9 +22,9 @@ class RoleSelect(discord.ui.RoleSelect):
         await self._callback(self.values, interaction)
 
 
-class RoleSelectionView(discord.ui.View):
-    def __init__(self, channel_team: ChannelTeam, teams: list[Team] | None = None):
-        super().__init__()
+class RoleSelectionView(BaseView):
+    def __init__(self, channel_team: ChannelTeam, teams: list[Team] | None = None, **kwargs):
+        super().__init__(**kwargs)
         self.channel_team = channel_team
         self.channel = channel_team.channel
         self.teams = teams
@@ -70,7 +70,8 @@ class RoleSelectionView(discord.ui.View):
 
     @translation_override
     async def _back(self, interaction: discord.Interaction):
-        view = TeamSelectionView(teams=self.teams, channel=self.channel)
+        self.stop()
+        view = RoleTeamSelectionView(teams=self.teams, channel=self.channel, message=self.message)
         await view.build()
         await interaction.response.edit_message(
             content=_("Select a team for which you want to set a role or update the role for all teams."),
@@ -79,9 +80,9 @@ class RoleSelectionView(discord.ui.View):
         )
 
 
-class BulkRoleSelectionView(discord.ui.View):
-    def __init__(self, channel: Channel, teams: list[Team]):
-        super().__init__()
+class BulkRoleSelectionView(BaseView):
+    def __init__(self, channel: Channel, teams: list[Team], **kwargs):
+        super().__init__(**kwargs)
         self.channel = channel
         self.teams = teams
 
@@ -97,7 +98,8 @@ class BulkRoleSelectionView(discord.ui.View):
 
     @translation_override
     async def _back(self, interaction: discord.Interaction):
-        view = TeamSelectionView(teams=self.teams, channel=self.channel)
+        self.stop()
+        view = RoleTeamSelectionView(teams=self.teams, channel=self.channel, message=self.message)
         await view.build()
         await interaction.response.edit_message(
             content=_("Select a team for which you want to set a role or update the role for all teams."),
@@ -126,8 +128,9 @@ class BulkUpdateRoleButton(discord.ui.Button):
         super().__init__(**kwargs)
 
     async def callback(self, interaction: discord.Interaction):
+        self.view.stop()
         teams = await sync_to_async(list)(Team.objects.filter(channels=self.channel).order_by("name"))
-        view = BulkRoleSelectionView(channel=self.channel, teams=teams)
+        view = BulkRoleSelectionView(channel=self.channel, teams=teams, message=self.view.message)
         await view.build()
         await interaction.response.edit_message(
             content=_("Select a role or remove the roles for all teams."),
@@ -135,16 +138,17 @@ class BulkUpdateRoleButton(discord.ui.Button):
         )
 
 
-class TeamSelectionView(BaseTeamSelectionView):
+class RoleTeamSelectionView(BaseTeamSelectionView):
 
     async def build(self):
         await super().build()
         self.add_item(BulkUpdateRoleButton(self.channel, row=3))
 
     @translation_override
-    async def handle_team_select(self, team: Team | None, interaction: discord.Interaction, view):
+    async def handle_team_select(self, team: Team | None, interaction: discord.Interaction):
+        self.stop()
         channel_team = await ChannelTeam.objects.select_related("channel", "team").aget(channel=self.channel, team=team)
-        view = RoleSelectionView(channel_team=channel_team, teams=self.teams)
+        view = RoleSelectionView(channel_team=channel_team, teams=self.teams, message=self.message)
         await view.build()
         await interaction.response.edit_message(
             content=_("Select a role or remove the role for the team **{team_name}**.").format(team_name=team.name),
@@ -166,17 +170,19 @@ async def set_role(
         channel_team = await ChannelTeam.objects.select_related("channel", "team").aget(channel=channel, team=teams[0])
         view = RoleSelectionView(channel_team=channel_team)
         await view.build()
-        await ctx.send(view=view)
+        message = await ctx.send(view=view)
+        view.message = message
         return
 
-    view = TeamSelectionView(teams=teams, channel=channel)
+    view = RoleTeamSelectionView(teams=teams, channel=channel)
     await view.build()
-    await ctx.send(
+    message = await ctx.send(
         content=_("Select a team for which you want to set a role or update the role for all teams."),
         view=view,
         ephemeral=True,
         delete_after=60 * 10,
     )
+    view.message = message
 
 
 async def setup(bot: commands.Bot) -> None:

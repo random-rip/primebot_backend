@@ -44,15 +44,15 @@ class TeamSelectionView(BaseTeamSelectionView):
         self.add_item(CloseButton(row=4))
 
     @translation_override
-    async def handle_team_select(self, team: Team, interaction: discord.Interaction, view: "TeamSelectionView"):
+    async def handle_team_select(self, team: Team, interaction: discord.Interaction):
         channel_team = await ChannelTeam.objects.aget(channel=self.channel, team=team)
         maker = SettingsMaker(channel_team=channel_team)
         url = await sync_to_async(maker.generate_expiring_link)(platform="discord", expiring_at=None)
 
-        view.clear_items()
-        view.selected_team = team
-        await view.build()
-        view.add_item(
+        self.clear_items()
+        self.selected_team = team
+        await self.build()
+        self.add_item(
             ExternalLinkButton(
                 url=url,
                 team=team,
@@ -63,7 +63,7 @@ class TeamSelectionView(BaseTeamSelectionView):
         )
         await interaction.response.edit_message(
             content=None,
-            view=view,
+            view=self,
         )
 
 
@@ -82,12 +82,13 @@ async def team_settings(
     selected_team = teams[0] if len(teams) == 1 else None
     view = TeamSelectionView(teams=teams, channel=channel, selected_team=selected_team)
     await view.build()
-    await ctx.send(
+    message = await ctx.send(
         content=_("Select a team"),
         view=view,
         ephemeral=True,
         delete_after=60 * 10,
     )
+    view.message = message
 
 
 async def setup(bot: commands.Bot) -> None:
