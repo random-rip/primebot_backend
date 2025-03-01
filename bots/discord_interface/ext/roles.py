@@ -1,5 +1,4 @@
-import typing
-from typing import Iterable
+from typing import Callable, Coroutine, Iterable
 
 import discord
 from asgiref.sync import sync_to_async
@@ -15,7 +14,7 @@ from bots.discord_interface.utils import channel_has_at_least_one_team, channel_
 
 
 class RoleSelect(discord.ui.RoleSelect):
-    def __init__(self, callback: typing.Callable[[Iterable, discord.Interaction], typing.Coroutine], **kwargs):
+    def __init__(self, callback: Callable[[Iterable, discord.Interaction], Coroutine], **kwargs):
         self._callback = callback
         super().__init__(placeholder=_("Select a role"), min_values=0, max_values=1, **kwargs)
 

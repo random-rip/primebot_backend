@@ -172,7 +172,9 @@ def match(update: Update, context: CallbackContext) -> int:
         )
         return ConversationHandler.END
 
-    found_matches = channel_team.team.get_obvious_matches_based_on_stage(match_day=match_day).order_by("match_day")
+    found_matches = channel_team.team.get_obvious_matches_based_on_stage(match_day=match_day).order_by(
+        "match_day", "begin"
+    )
 
     if not found_matches:
         update.message.reply_markdown(

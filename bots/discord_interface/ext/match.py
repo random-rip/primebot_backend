@@ -55,7 +55,7 @@ class MatchTeamSelectionView(BaseTeamSelectionView):
     async def handle_team_select(self, team: Team | None, interaction: discord.Interaction):
         self.stop()
         found_matches_query = await sync_to_async(team.get_obvious_matches_based_on_stage)(match_day=None)
-        found_matches = await sync_to_async(list)(found_matches_query.order_by("match_day"))
+        found_matches = await sync_to_async(list)(found_matches_query.order_by("match_day", "begin"))
         channel_team = await ChannelTeam.objects.select_related("channel", "team").aget(channel=self.channel, team=team)
         view = MatchSelectionView(
             _matches=found_matches, channel_team=channel_team, teams=self.teams, message=self.message
@@ -75,7 +75,7 @@ async def match(ctx):
     teams = await sync_to_async(list)(Team.objects.filter(channels=channel).order_by("name"))
     if len(teams) == 1:
         found_matches_query = await sync_to_async(teams[0].get_obvious_matches_based_on_stage)(match_day=None)
-        found_matches = await sync_to_async(list)(found_matches_query.order_by("match_day"))
+        found_matches = await sync_to_async(list)(found_matches_query.order_by("match_day", "begin"))
         channel_team = await ChannelTeam.objects.select_related("channel", "team").aget(channel=channel, team=teams[0])
         view = MatchSelectionView(_matches=found_matches, channel_team=channel_team)
         await view.build()
