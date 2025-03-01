@@ -79,7 +79,8 @@ async def match(ctx):
         channel_team = await ChannelTeam.objects.select_related("channel", "team").aget(channel=channel, team=teams[0])
         view = MatchSelectionView(_matches=found_matches, channel_team=channel_team)
         await view.build()
-        await ctx.send(view=view)
+        message = await ctx.send(view=view)
+        view.message = message
         return
 
     view = MatchTeamSelectionView(teams=teams, channel=channel)
