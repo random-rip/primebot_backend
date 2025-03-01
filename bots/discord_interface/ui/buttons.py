@@ -1,4 +1,4 @@
-from typing import Any, Callable
+from typing import Any, Callable, Coroutine
 
 import discord
 from discord import Interaction
@@ -31,11 +31,11 @@ class BaseTeamButton(discord.ui.Button):
         super().__init__(**kwargs)
 
     async def callback(self, interaction: Interaction) -> Any:
-        await self.view.handle_team_select(self.team, interaction, self.view)
+        await self.view.handle_team_select(self.team, interaction)
 
 
 class BackButton(discord.ui.Button):
-    def __init__(self, teams, callback: Callable, **kwargs):
+    def __init__(self, teams, callback: Callable[[discord.Interaction], Coroutine], **kwargs):
         kwargs["style"] = discord.ButtonStyle.primary
         kwargs["label"] = _("Back")
         self.teams = teams

@@ -9,17 +9,14 @@ from bots.discord_interface.utils import channel_has_at_least_one_team, channel_
 from bots.messages import MatchesOverview
 
 
-class TeamSelectionView(BaseTeamSelectionView):
+class MatchesTeamSelectionView(BaseTeamSelectionView):
     @translation_override
-    async def handle_team_select(self, team: Team, interaction: discord.Interaction, view):
+    async def handle_team_select(self, team: Team, interaction: discord.Interaction):
         channel_team = await ChannelTeam.objects.aget(channel=self.channel, team=team)
         msg = await sync_to_async(MatchesOverview)(channel_team=channel_team, match_ids=None)
         embed = await sync_to_async(msg.generate_discord_embed)()
-        view = TeamSelectionView(teams=self.teams, channel=self.channel, selected_team=team)
-        await view.build()
         await interaction.response.edit_message(
             content=None,
-            view=view,
             embed=embed,
         )
 
@@ -40,9 +37,10 @@ async def matches(ctx):
         await ctx.send(embed=embed)
         return
 
-    view = TeamSelectionView(teams=teams, channel=channel)
+    view = MatchesTeamSelectionView(teams=teams, channel=channel)
     await view.build()
-    await ctx.send(content=_("Select a team"), view=view)
+    message = await ctx.send(content=_("Select a team"), view=view)
+    view.message = message
 
 
 async def setup(bot: commands.Bot) -> None:
