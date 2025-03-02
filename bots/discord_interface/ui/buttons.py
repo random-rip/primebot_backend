@@ -53,6 +53,7 @@ class CloseButton(discord.ui.Button):
         super().__init__(*args, **kwargs)
 
     async def callback(self, interaction: discord.Interaction):
+        self.view.stop()
         await interaction.response.edit_message(
             content=_("Done."),
             view=None,
