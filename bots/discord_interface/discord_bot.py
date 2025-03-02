@@ -1,7 +1,7 @@
 import logging
 
 from asgiref.sync import sync_to_async
-from discord import Client, Forbidden, Intents, Message, NotFound, Object, SyncWebhook
+from discord import Client, Forbidden, Intents, Interaction, InteractionType, Message, NotFound, Object, SyncWebhook
 from discord.abc import GuildChannel
 from discord.ext.commands import Bot, NoPrivateMessage, errors
 from django.conf import settings
@@ -156,7 +156,9 @@ class _DiscordBotV2(Bot):
     async def on_message(self, message: Message, /):
         pass
 
-    async def on_interaction(self, interaction):
+    async def on_interaction(self, interaction: Interaction):
+        if interaction.type != InteractionType.application_command:
+            return
         await log_from_discord(interaction)
 
     async def on_app_command_completion(self, interaction, command):

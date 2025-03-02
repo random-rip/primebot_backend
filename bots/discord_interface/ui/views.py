@@ -8,7 +8,7 @@ from app_prime_league.models import Channel, Team
 from .buttons import BaseTeamButton, CloseButton
 from .selects import BaseTeamSelect
 
-VIEW_TIMEOUT = 60
+VIEW_TIMEOUT_SECONDS = 60
 
 
 class BaseView(discord.ui.View, ABC):
@@ -32,7 +32,7 @@ class BaseView(discord.ui.View, ABC):
     """
 
     def __init__(self, message=None, **kwargs):
-        kwargs.setdefault("timeout", VIEW_TIMEOUT)
+        kwargs.setdefault("timeout", VIEW_TIMEOUT_SECONDS)
         super().__init__(**kwargs)
         self.message = message
 
