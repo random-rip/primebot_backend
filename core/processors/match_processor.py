@@ -157,6 +157,9 @@ class MatchDataProcessor(__MatchDataMethods):
         Returns:
             `None`, if match_score_1 and match_score_2 are None else String
         """
+        if not self.get_match_closed():
+            return None
+
         match_score_1 = self.data_match.get('match_score_1', None)
         match_score_2 = self.data_match.get('match_score_2', None)
         if not match_score_1 and not match_score_2:
