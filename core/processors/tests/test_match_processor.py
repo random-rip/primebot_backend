@@ -112,30 +112,54 @@ class MatchResultTest(TestCase):
         self.assertIsNone(processor.get_match_result())
 
     @patch.object(PrimeLeagueProvider, 'get_match')
-    def test_get_win(self, get_match):
-        get_match.return_value = {"match": {"team_id_1": 1, "match_score_1": 2, "match_score_2": 0}}
-        processor = MatchDataProcessor(1, 1)
-        self.assertEqual(processor.get_match_result(), "2:0")
-
-        get_match.return_value = {"match": {"team_id_1": 2, "match_score_1": 0, "match_score_2": 2}}
+    def test_get_win_team1(self, get_match):
+        get_match.return_value = {
+            "match": {"team_id_1": 1, "match_score_1": 2, "match_score_2": 0, "match_status": "finished"}
+        }
         processor = MatchDataProcessor(1, 1)
         self.assertEqual(processor.get_match_result(), "2:0")
 
     @patch.object(PrimeLeagueProvider, 'get_match')
-    def test_get_lose(self, get_match):
-        get_match.return_value = {"match": {"team_id_1": 2, "match_score_1": 2, "match_score_2": 0}}
+    def test_get_win_team2(self, get_match):
+        get_match.return_value = {
+            "match": {"team_id_1": 2, "match_score_1": 0, "match_score_2": 2, "match_status": "finished"}
+        }
+        processor = MatchDataProcessor(1, 1)
+        self.assertEqual(processor.get_match_result(), "2:0")
+
+    @patch.object(PrimeLeagueProvider, 'get_match')
+    def test_get_lose_team1(self, get_match):
+        get_match.return_value = {
+            "match": {"team_id_1": 2, "match_score_1": 2, "match_score_2": 0, "match_status": "finished"}
+        }
         processor = MatchDataProcessor(1, 1)
         self.assertEqual(processor.get_match_result(), "0:2")
 
-        get_match.return_value = {"match": {"team_id_1": 1, "match_score_1": 0, "match_score_2": 2}}
+    @patch.object(PrimeLeagueProvider, 'get_match')
+    def test_get_lose_team2(self, get_match):
+        get_match.return_value = {
+            "match": {"team_id_1": 1, "match_score_1": 0, "match_score_2": 2, "match_status": "finished"}
+        }
         processor = MatchDataProcessor(1, 1)
         self.assertEqual(processor.get_match_result(), "0:2")
 
     @patch.object(PrimeLeagueProvider, 'get_match')
     def test_get_draw(self, get_match):
-        get_match.return_value = {"match": {"team_id_1": 1, "match_score_1": 1, "match_score_2": 1}}
+        get_match.return_value = {
+            "match": {"team_id_1": 1, "match_score_1": 1, "match_score_2": 1, "match_status": "finished"}
+        }
         processor = MatchDataProcessor(1, 1)
         self.assertEqual(processor.get_match_result(), "1:1")
+
+    @patch.object(PrimeLeagueProvider, 'get_match')
+    def test_get_not_finished(self, get_match):
+        get_match.side_effect = [
+            {"match": {"match_status": "pending"}},
+            {"match": {"match_status": "upcoming"}},
+        ]
+        processor = MatchDataProcessor(1, 1)
+        self.assertIsNone(processor.get_match_result())
+        self.assertIsNone(processor.get_match_result())
 
 
 class LatestSuggestionsTest(TestCase):

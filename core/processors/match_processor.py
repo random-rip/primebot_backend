@@ -160,8 +160,8 @@ class MatchDataProcessor(__MatchDataMethods):
         if not self.get_match_closed():
             return None
 
-        match_score_1 = self.data_match.get('match_score_1', None)
-        match_score_2 = self.data_match.get('match_score_2', None)
+        match_score_1 = self.data_match.get('match_score_1')
+        match_score_2 = self.data_match.get('match_score_2')
         if not match_score_1 and not match_score_2:
             return None
         return f"{match_score_1}:{match_score_2}" if self.team_is_team_1 else f"{match_score_2}:{match_score_1}"
