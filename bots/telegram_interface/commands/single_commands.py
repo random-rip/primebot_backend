@@ -11,7 +11,7 @@ from telegram.ext import CallbackContext, ConversationHandler
 
 from app_prime_league.models import Channel, ChannelTeam, Team
 from app_prime_league.models.channel import Platforms
-from bots.base.bop import GIFinator
+from bots.base.bop import Gifinator
 from bots.messages import MatchesOverview, MatchOverview
 from bots.telegram_interface.validation_messages import channel_not_registered
 from core.settings_maker import SettingsMaker
@@ -78,9 +78,12 @@ def bop(update: Update, context: CallbackContext):
     chat_id = update.message.chat.id
     bot = context.bot
     try:
-        url = GIFinator.get_gif()
+        url = Gifinator.get_gif()
+    except ValueError:
+        bot.send_message(chat_id=chat_id, text="I don't know that animal. :(")
+        return
     except ConnectionError:
-        bot.send_message(chat_id=chat_id, text="It's not my fault but I can't give you your surprise. :(")
+        bot.send_message(chat_id=chat_id, text="Something went wrong this time, but just try again. :)")
         return
     try:
         bot.send_animation(chat_id=chat_id, animation=url)
