@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-11 13:34+0100\n"
+"POT-Creation-Date: 2025-03-22 17:16+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,13 +37,17 @@ msgstr ""
 "Es ist ein unbekannter Fehler aufgetreten. Bitte kontaktiert die Entwickler "
 "auf Discord unter {discord_link}."
 
-#: .\bots\discord_interface\ext\bop.py:12
+#: .\bots\discord_interface\ext\bop.py:22
 msgid "What's boppin'?"
 msgstr "Alles für die Katz?"
 
-#: .\bots\discord_interface\ext\bop.py:19
-msgid "It's not my fault, but I can't get you your surprise. :("
-msgstr ""
+#: .\bots\discord_interface\ext\bop.py:30
+msgid "I don't know that animal. :("
+msgstr "Dieses Tier kenne ich nicht. :("
+
+#: .\bots\discord_interface\ext\bop.py:33
+msgid "Something went wrong this time, but just try again. :)"
+msgstr "Diesmal ist etwas schief gegangen, aber versuche es einfach noch einmal. :)"
 
 #: .\bots\discord_interface\ext\delete.py:18
 #, python-brace-format
@@ -72,17 +76,17 @@ msgstr ""
 "Alles gelöscht. Gib uns gerne Feedback unter {discord_link}, wenn dir "
 "irgendwelche Funktionen fehlen oder nicht gefallen. Tschüss! ✌\n"
 
-#: .\bots\discord_interface\ext\delete.py:70
-#: .\bots\discord_interface\ext\delete.py:98
-#: .\bots\discord_interface\ext\match.py:45
-#: .\bots\discord_interface\ext\match.py:86
-#: .\bots\discord_interface\ext\matches.py:45
+#: .\bots\discord_interface\ext\delete.py:71
+#: .\bots\discord_interface\ext\delete.py:105
+#: .\bots\discord_interface\ext\match.py:46
+#: .\bots\discord_interface\ext\match.py:89
+#: .\bots\discord_interface\ext\matches.py:42
 #: .\bots\discord_interface\ext\team_settings.py:86
 #: .\bots\discord_interface\ui\selects.py:15
 msgid "Select a team"
 msgstr "Wähle ein Team aus"
 
-#: .\bots\discord_interface\ext\delete.py:85
+#: .\bots\discord_interface\ext\delete.py:92
 msgid "Remove the team from the channel"
 msgstr "Entferne das Team aus dem Kanal"
 
@@ -143,19 +147,19 @@ msgstr ""
 msgid "Disclaimer"
 msgstr "Rechtlicher Hinweis"
 
-#: .\bots\discord_interface\ext\match.py:61
+#: .\bots\discord_interface\ext\match.py:64
 msgid "Select a match"
 msgstr "Wähle ein Match aus"
 
-#: .\bots\discord_interface\ext\match.py:61
+#: .\bots\discord_interface\ext\match.py:64
 msgid "No matches found"
 msgstr "Keine Matches gefunden"
 
-#: .\bots\discord_interface\ext\match.py:65
+#: .\bots\discord_interface\ext\match.py:68
 msgid "Create an overview for a specific match day"
 msgstr "Erstelle eine Übersicht für einen bestimmten Spieltag"
 
-#: .\bots\discord_interface\ext\matches.py:27
+#: .\bots\discord_interface\ext\matches.py:24
 msgid "Create an overview for open matches"
 msgstr "Erstelle eine Übersicht der offenen Matches"
 
@@ -176,9 +180,9 @@ msgstr ""
 "Okay, ich werde das Team **{team_name}** mit der Rolle **{role_name}** "
 "informieren 📯"
 
-#: .\bots\discord_interface\ext\roles.py:76
-#: .\bots\discord_interface\ext\roles.py:103
-#: .\bots\discord_interface\ext\roles.py:175
+#: .\bots\discord_interface\ext\roles.py:77
+#: .\bots\discord_interface\ext\roles.py:105
+#: .\bots\discord_interface\ext\roles.py:180
 msgid ""
 "Select a team for which you want to set a role or update the role for all "
 "teams."
@@ -186,30 +190,30 @@ msgstr ""
 "Wähle ein Team aus, für das du eine Rolle festlegen möchtest, oder "
 "aktualisiere die Rolle für alle Teams."
 
-#: .\bots\discord_interface\ext\roles.py:112
+#: .\bots\discord_interface\ext\roles.py:114
 msgid "Alright, I've removed the roles for all teams."
 msgstr "Alles klar, ich habe die Rollen für alle Teams entfernt."
 
-#: .\bots\discord_interface\ext\roles.py:117
+#: .\bots\discord_interface\ext\roles.py:119
 #, python-brace-format
 msgid "Okay, I'll inform all teams with the role **{role_name}** 📯"
 msgstr "Okay, ich werde alle Teams mit der Rolle **{role_name}** informieren 📯"
 
-#: .\bots\discord_interface\ext\roles.py:124
+#: .\bots\discord_interface\ext\roles.py:126
 msgid "Update all teams at once"
 msgstr "Alle Teams gleichzeitig aktualisieren"
 
-#: .\bots\discord_interface\ext\roles.py:133
+#: .\bots\discord_interface\ext\roles.py:136
 msgid "Select a role or remove the roles for all teams."
 msgstr "Wähle eine Rolle aus oder entferne die Rollen für alle Teams."
 
-#: .\bots\discord_interface\ext\roles.py:150
+#: .\bots\discord_interface\ext\roles.py:154
 #, python-brace-format
 msgid "Select a role or remove the role for the team **{team_name}**."
 msgstr ""
 "Wähle eine Rolle aus oder entferne die Rolle für das Team **{team_name}**."
 
-#: .\bots\discord_interface\ext\roles.py:155
+#: .\bots\discord_interface\ext\roles.py:159
 msgid "Set a Discord role that will be used in notifications"
 msgstr "Lege eine Discord-Rolle fest, die in Benachrichtigungen verwendet wird"
 
@@ -340,7 +344,7 @@ msgstr "Zurück"
 msgid "Close"
 msgstr "Schließen"
 
-#: .\bots\discord_interface\ui\buttons.py:57
+#: .\bots\discord_interface\ui\buttons.py:58
 msgid "Done."
 msgstr "Erledigt."
 
@@ -380,7 +384,7 @@ msgstr ""
 "[{enemy_team_tag}]({enemy_team_url}) ([{match_day}]({match_url})) hat ein "
 "neues [Lineup]({scouting_url}) aufgestellt."
 
-#: .\bots\messages\enemy_lineup.py:30 .\bots\messages\match_result.py:38
+#: .\bots\messages\enemy_lineup.py:30 .\bots\messages\match_result.py:35
 msgid "To get more information about the match, use /match."
 msgstr "Um mehr Informationen über das Match zu erhalten, verwende /match."
 
@@ -539,7 +543,7 @@ msgstr ""
 "Wenn es veraltete Scouting-Links gibt, verwende einfach /match nochmal nach "
 "15 Minuten."
 
-#: .\bots\messages\match_result.py:18
+#: .\bots\messages\match_result.py:17
 #, python-brace-format
 msgid ""
 "The match against [{enemy_team_tag}]({enemy_team_url}) ended with **{result}"
@@ -548,7 +552,7 @@ msgstr ""
 "Das Match gegen [{enemy_team_tag}]({enemy_team_url}) wurde mit **{result}** "
 "beendet."
 
-#: .\bots\messages\match_result.py:42
+#: .\bots\messages\match_result.py:37
 msgid "Sad, but maybe /bop will cheer you up."
 msgstr "Schade, aber vielleicht muntert /bop euch auf."
 
@@ -649,7 +653,7 @@ msgstr "Wochenübersicht"
 msgid "Invalid match day. Try using /match 1."
 msgstr "Invalider Spieltag. Versuche es mit `/match 1`."
 
-#: .\bots\telegram_interface\commands\single_commands.py:179
+#: .\bots\telegram_interface\commands\single_commands.py:181
 #: .\bots\telegram_interface\tests\commands\test_match.py:51
 msgid "Sadly there is no match on the given match day."
 msgstr "Leider existieren für diesen Spieltag keine Matches."
