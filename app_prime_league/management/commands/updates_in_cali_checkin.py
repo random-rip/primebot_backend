@@ -1,7 +1,7 @@
 import logging
 from datetime import datetime
-from datetime import timezone as dt_timezone
 
+from django.utils import timezone
 from django.utils.timezone import make_aware
 
 from app_prime_league.models import Split
@@ -35,10 +35,9 @@ class Command(UpdateScheduleCommand):
             day=start.day,
             hour=13,
             minute=45,
-            tzinfo=dt_timezone.utc,
         )
         with_time = make_aware(with_time)
-        now = datetime.now()
+        now = timezone.now()
         is_exceeded = with_time <= now
         logger.info(
             f"Calibration stage start: {with_time} --- " f"Current time: {now} --- " f"Time exceeded: {is_exceeded}"
