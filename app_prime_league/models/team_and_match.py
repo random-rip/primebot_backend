@@ -200,14 +200,15 @@ class CurrentSplitMatchManager(models.Manager):
         qs = super().get_queryset()
         return qs.filter(split=Split.objects.get_current_split())
 
-    def get_matches_to_update(self):
+    def get_matches_to_update(self, buffer: timedelta = None):
         """
         Gibt alle Matches zurück die nicht `closed` oder `NULL` sind oder deren Spielbeginn weniger als 2 Tage her ist.
         :returns: queryset
 
         """
+        buffer = buffer or timedelta(days=2)
         qs = self.model.objects.filter(
-            Q(closed=False) | Q(closed__isnull=True) | Q(closed=True, begin__gte=timezone.now() - timedelta(days=2))
+            Q(closed=False) | Q(closed__isnull=True) | Q(closed=True, begin__gte=timezone.now() - buffer)
         )
         return qs
 

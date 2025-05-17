@@ -14,7 +14,7 @@ logger = logging.getLogger("updates")
 
 class Command(UpdateScheduleCommand):
     help = """Update teams that are registered (usually between splits)."""
-    next_command = "updates_in_calibration_stage"
+    next_command = "updates_in_cali_checkin"
     name = "Updates between splits"
 
     @staticmethod
@@ -39,4 +39,4 @@ class Command(UpdateScheduleCommand):
         return calibration_start <= current_date
 
     def cron(self):
-        return "0/30 * * * *"
+        return "0/20 * * * *"
