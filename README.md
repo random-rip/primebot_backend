@@ -141,7 +141,8 @@ the matches. See each command for more detailed information.
 Each update command tests for itself whether it has expired and should be replaced by the following update command.
 
 1. `python manage.py updates_between_splits`
-2. `python manage.py updates_in_calibration_stage`
+2. `python manage.py updates_in_cali_checkin`
+2. `python manage.py updates_in_cali_live`
 3. `python manage.py updates_between_calibration_and_group_stage`
 4. `python manage.py updates_in_group_stage_and_playoffs` - (After Expiring: the first update command replaces this one)
 

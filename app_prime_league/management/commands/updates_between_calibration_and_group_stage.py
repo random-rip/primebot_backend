@@ -13,7 +13,7 @@ class Command(UpdateScheduleCommand):
     def func(notify=True):
         from core.updater.call_executors import update_teams_and_matches
 
-        update_teams_and_matches(notify=notify)
+        return update_teams_and_matches(notify=notify)
 
     @staticmethod
     def is_time_exceeded() -> bool:

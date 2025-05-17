@@ -23,9 +23,7 @@ def update_teams_and_matches(notify: bool):
     logger.info(f"Checking {len(uncompleted_matches)} uncompleted matches...")
     update_uncompleted_matches(matches=uncompleted_matches, notify=notify)
     logger.info(f"Checked {len(uncompleted_matches)} uncompleted matches in {time.time() - start_time:.2f} seconds")
-    updated_teams = [x.id for x in teams]
-    updated_matches = [x.match_id for x in uncompleted_matches]
     return {
-        "TEAMS": updated_teams,
-        "MATCHES": updated_matches,
+        "TEAMS": [str(x) for x in teams],
+        "MATCHES": [str(x) for x in uncompleted_matches],
     }
