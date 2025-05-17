@@ -22,7 +22,7 @@ class Command(UpdateScheduleCommand):
         return update_teams_and_matches(notify=notify)
 
     @staticmethod
-    def is_time_exceeded() -> bool:
+    def is_time_exceeded() -> bool:  # FIXME
         """
         Returns True if the calibration stage checkin
         :return: True if its passed 2 PM
