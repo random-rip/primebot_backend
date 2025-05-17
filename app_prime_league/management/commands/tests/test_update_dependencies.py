@@ -8,7 +8,7 @@ from app_prime_league.management.commands.updates_between_calibration_and_group_
     Command as UpdatesBetweenCalibrationAndGroupStage,
 )
 from app_prime_league.management.commands.updates_between_splits import Command as UpdatesBetweenSplits
-from app_prime_league.management.commands.updates_in_calibration_stage import Command as UpdatesInCalibrationStage
+from app_prime_league.management.commands.updates_in_cali_checkin import Command as UpdatesInCalibrationStage
 from app_prime_league.management.commands.updates_in_group_stage_and_playoffs import (
     Command as UpdatesInGroupStageAndPlayoffs,
 )
