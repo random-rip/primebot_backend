@@ -22,7 +22,7 @@ class Command(UpdateScheduleCommand):
     def func(notify=True):
 
         teams = (
-            Team.objects.annotate(matches_count=Count("matches"))
+            Team.objects.annotate(matches_count=Count("matches_against"))
             .filter(
                 matches_count__gt=0,
             )
