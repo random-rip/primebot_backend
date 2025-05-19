@@ -22,7 +22,7 @@ class Command(UpdateScheduleCommand):
         return update_teams_and_matches(notify=notify)
 
     @staticmethod
-    def is_time_exceeded() -> bool:  # FIXME
+    def is_time_exceeded() -> bool:
         """
         Returns True if the calibration stage checkin
         :return: True if its passed 2 PM
@@ -38,7 +38,7 @@ class Command(UpdateScheduleCommand):
         )
         with_time = make_aware(with_time)
         now = timezone.now()
-        is_exceeded = with_time <= now
+        is_exceeded = with_time <= now  # FIXME: this raises a cannot compare naive datetime with aware datetime
         logger.info(
             f"Calibration stage start: {with_time} --- " f"Current time: {now} --- " f"Time exceeded: {is_exceeded}"
         )

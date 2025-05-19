@@ -1,7 +1,15 @@
+import logging
+import threading
+import time
+
 from django.utils import timezone
 
-from app_prime_league.models import Split
+from app_prime_league.models import Split, Team
 from core.update_schedule_command import UpdateScheduleCommand
+from core.updater.teams_check_executor import update_teams
+
+thread_local = threading.local()
+logger = logging.getLogger("updates")
 
 
 class Command(UpdateScheduleCommand):
@@ -11,9 +19,11 @@ class Command(UpdateScheduleCommand):
 
     @staticmethod
     def func(notify=True):
-        from core.updater.call_executors import update_teams_and_matches
-
-        return update_teams_and_matches(notify=notify)
+        start_time = time.time()
+        teams = Team.objects.get_teams_to_update()
+        logger.info(f"Updating {len(teams)} teams...")
+        update_teams(teams=teams, notify=notify)
+        logger.info(f"Updated {len(teams)} teams in {time.time() - start_time:.2f} seconds")
 
     @staticmethod
     def is_time_exceeded() -> bool:
@@ -21,7 +31,9 @@ class Command(UpdateScheduleCommand):
         Returns True if the group stage starts
         """
         group_stage_start = Split.objects.get_current_split().group_stage_start
-        return group_stage_start <= timezone.now().date()
+        is_exceeded = group_stage_start <= timezone.now().date()
+        logger.info(f"Checking if group stage started: {is_exceeded}")
+        return is_exceeded
 
     def cron(self) -> str:
         return "5/15 * * * *"

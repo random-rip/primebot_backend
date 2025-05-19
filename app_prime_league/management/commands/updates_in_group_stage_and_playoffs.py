@@ -93,8 +93,8 @@ class Command(UpdateScheduleCommand):
         update_uncompleted_matches(matches=uncompleted_matches, notify=notify)
         logger.info(f"Checked {len(uncompleted_matches)} uncompleted matches in {time.time() - start_time:.2f} seconds")
         return {
-            "TEAMS": teams,
-            "MATCHES": uncompleted_matches,
+            "TEAMS": [str(x) for x in teams],
+            "MATCHES": [str(x) for x in uncompleted_matches],
         }
 
     @staticmethod
@@ -103,10 +103,19 @@ class Command(UpdateScheduleCommand):
         Returns True if the playoffs ended (two days after playoffs end because of completed matches).
         If there are still open matches, it returns False.
         """
+        logger.debug("Checking if group stage and playoffs ended...")
         if Match.current_split_objects.filter(closed=False).exists():
+            logger.debug("There are still open matches. Group stage and playoffs not ended.")
             return False
-        playoffs_end = Split.objects.get_current_split().playoffs_end + timezone.timedelta(days=2)
-        return playoffs_end < timezone.now().date()
+        playoffs_end = Split.objects.get_current_split().playoffs_end + timedelta(days=2)
+        now = timezone.now().date()
+        is_exceeded = playoffs_end < now
+        logger.debug(
+            f"Playoffs end with puffer: {playoffs_end} --- "
+            f"Current date: {now} --- "
+            f"Group stage and playoffs ended: {is_exceeded}"
+        )
+        return is_exceeded
 
     def cron(self) -> str:
         return "5/15 * * * *"

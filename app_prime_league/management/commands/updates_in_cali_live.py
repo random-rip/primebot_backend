@@ -56,7 +56,7 @@ class Command(UpdateScheduleCommand):
         # We use a different calibration end here because the calibration stage ends 2 days after the calibration
         # stage start. The default one from the Split model is the same as the registration end
         # (and one day before group stage start).
-        logger.info("Checking if calibration stage ended")
+        logger.debug("Checking if calibration stage ended")
         now_date = timezone.now().date()
         calibration_end_with_puffer = Split.objects.get_current_split().calibration_stage_start + timedelta(days=2)
         has_ended = calibration_end_with_puffer <= now_date
