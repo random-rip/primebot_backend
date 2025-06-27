@@ -64,7 +64,7 @@ class TelegramMatchTestCase(TestCase):
             team=team_1,
             enemy_team=team_2,
             match_day=2,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             begin=datetime(2022, 1, 16, 19, 0, tzinfo=ZoneInfo("UTC")),
         )
 

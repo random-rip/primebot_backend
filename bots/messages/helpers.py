@@ -33,7 +33,7 @@ class MatchDisplayHelper:
             msg = _("playoff match {match_day}")
         elif match.match_day == Match.MATCH_DAY_TIEBREAKER:
             msg = _("tiebreaker match {match_day}")
-        elif match.match_type == Match.MATCH_TYPE_GROUP:
+        elif match.match_type == Match.MatchType.GROUP:
             msg = _("match {match_day}")
         else:
             msg = _("gameday {match_day}")
