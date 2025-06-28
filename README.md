@@ -63,16 +63,16 @@ Requirements:
 
 - Python 3.10
 - PostgreSQL 16
-- virtualenv (pip package):  `pip install virtualenv`
+- uv as project-, virtual-environment- and package-manager
 
 
 1. Clone repository `git clone https://github.com/random-rip/primebot_backend.git`
 2. Go into cloned directory `cd primebot_backend` and checkout branch develop ``git checkout develop``
-3. Create a virtual environment, for example `virtualenv venv`
+3. Create a virtual environment, for example `uv venv`
 4. Activate created venv
     - Linux: `source venv/Scripts/activate`
     - Windows powershell: `.\venv\Scripts\activate`
-5. Install requirements `pip install -r requirements.txt`
+5. Install requirements `uv sync`
 6. Create `.env` file from `.env.example` at the root folder and set variables according to your setup
     - ``DJANGO_SECRET_KEY``
     - ``DJANGO_DEBUG``
@@ -86,7 +86,7 @@ Requirements:
     - Optional: ``FERNET_SECRET_KEY``
     - Optional: ``SITE_ID``
 7. Create a database according to your ``.env``
-8. Apply migrations `python manage.py migrate`
+8. Apply migrations `uv run manage.py migrate`
 
 For further information have a look at **Contributing** section at the end of the README.
 
@@ -124,12 +124,12 @@ For further information have a look at **Contributing** section at the end of th
 
 ### Manage.py Commands
 
-- `python manage.py discord_bot` - start Discordbot
-- `python manage.py telegram_bot` - start Telegrambot
-- `python manage.py create_link` - Generates a settings link for the first team of the database
-- `python manage.py seed_scouting` - Seed Scouting Websites: op.gg, u.gg and xdx.gg
-- `python manage.py weekly_notifications` - start weekly notifications
-- `python manage.py requestqueue` - start request queue for rate limited API requests to the Prime League API
+- `uv run manage.py discord_bot` - start Discordbot
+- `uv run manage.py telegram_bot` - start Telegrambot
+- `uv run manage.py create_link` - Generates a settings link for the first team of the database
+- `uv run manage.py seed_scouting` - Seed Scouting Websites: op.gg, u.gg and xdx.gg
+- `uv run manage.py weekly_notifications` - start weekly notifications
+- `uv run manage.py requestqueue` - start request queue for rate limited API requests to the Prime League API
 
 #### Update Commands
 
@@ -140,25 +140,25 @@ the matches. See each command for more detailed information.
 
 Each update command tests for itself whether it has expired and should be replaced by the following update command.
 
-1. `python manage.py updates_between_splits`
-2. `python manage.py updates_in_cali_checkin`
-2. `python manage.py updates_in_cali_live`
-3. `python manage.py updates_between_calibration_and_group_stage`
-4. `python manage.py updates_in_group_stage_and_playoffs` - (After Expiring: the first update command replaces this one)
+1. `uv run manage.py updates_between_splits`
+2. `uv run manage.py updates_in_cali_checkin`
+2. `uv run manage.py updates_in_cali_live`
+3. `uv run manage.py updates_between_calibration_and_group_stage`
+4. `uv run manage.py updates_in_group_stage_and_playoffs` - (After Expiring: the first update command replaces this one)
 
 ### Testing
 
 ```
-python manage.py test
+uv run manage.py test
 ```
 
 Some tests refer to I18n and T10n and require compiled ``django.mo`` files. These must be created
-with ``python manage.py compilemessages``. This requires the external program gettext:
+with ``uv run manage.py compilemessages``. This requires the external program gettext:
 
 - [Windows installation](https://www.gnu.org/software/gettext/)
 - [Ubuntu installation](https://installati.one/ubuntu/20.04/gettext/)
 
-After that ``python manage.py test`` can be executed.
+After that ``uv run manage.py test`` can be executed.
 
 ### Alternative to Prime League API
 
@@ -192,7 +192,7 @@ teams. Don't hesitate to start a discussion below feature requests.
 If you create a pull request, make sure that
 
 - you create one from branch ``develop`` and
-- ``python manage.py test`` does not fail.
+- ``uv run manage.py test`` does not fail.
 
 ### Help
 
