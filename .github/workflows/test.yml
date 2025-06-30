@@ -46,14 +46,11 @@ jobs:
       - name: install gettext
         run: apt-get install gettext -y
 
-      - name: Install deps
-        run: python -m pip install -r requirements.txt
-
       - name: Compile messages
-        run: python manage.py compilemessages
+        run: uv run manage.py compilemessages
 
       - name: Run tests
-        run: python manage.py test --shuffle
+        run: uv run manage.py test --shuffle --parallel
 
   precommit:
     runs-on: ubuntu-latest

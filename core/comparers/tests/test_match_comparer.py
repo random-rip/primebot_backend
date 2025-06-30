@@ -19,7 +19,7 @@ class SuggestionsTest(TestCase):
         match = Match.objects.create(
             match_id=1,
             match_day=1,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team,
             enemy_team=self.enemy_team,
             has_side_choice=True,
@@ -38,7 +38,7 @@ class SuggestionsTest(TestCase):
         match = Match.objects.create(
             match_id=1,
             match_day=1,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team,
             enemy_team=self.enemy_team,
             team_made_latest_suggestion=False,
@@ -58,7 +58,7 @@ class SuggestionsTest(TestCase):
         match = Match.objects.create(
             match_id=1,
             match_day=1,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team,
             enemy_team=self.enemy_team,
             team_made_latest_suggestion=True,
@@ -78,7 +78,7 @@ class SuggestionsTest(TestCase):
         match = Match.objects.create(
             match_id=1,
             match_day=1,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team,
             enemy_team=self.enemy_team,
             has_side_choice=True,
@@ -97,7 +97,7 @@ class SuggestionsTest(TestCase):
         match = Match.objects.create(
             match_id=1,
             match_day=1,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team,
             enemy_team=self.enemy_team,
             team_made_latest_suggestion=True,
@@ -117,7 +117,7 @@ class SuggestionsTest(TestCase):
         match = Match.objects.create(
             match_id=1,
             match_day=1,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team,
             enemy_team=self.enemy_team,
             team_made_latest_suggestion=False,
@@ -137,7 +137,7 @@ class SuggestionsTest(TestCase):
         match = Match.objects.create(
             match_id=1,
             match_day=1,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team,
             enemy_team=self.enemy_team,
             team_made_latest_suggestion=None,
@@ -156,7 +156,7 @@ class SuggestionsTest(TestCase):
         match = Match.objects.create(
             match_id=1,
             match_day=1,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team,
             enemy_team=self.enemy_team,
             team_made_latest_suggestion=True,
@@ -181,7 +181,7 @@ class SuggestionsTest(TestCase):
         match = Match.objects.create(
             match_id=1,
             match_day=1,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team,
             enemy_team=self.enemy_team,
             team_made_latest_suggestion=False,
@@ -212,7 +212,7 @@ class CompareConfirmationTest(TestCase):
         match = Match.objects.create(
             match_id=1,
             match_day=1,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team,
             enemy_team=self.enemy_team,
             team_made_latest_suggestion=True,
@@ -227,7 +227,7 @@ class CompareConfirmationTest(TestCase):
         match = Match.objects.create(
             match_id=1,
             match_day=1,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team,
             enemy_team=self.enemy_team,
             match_begin_confirmed=True,
@@ -242,7 +242,7 @@ class CompareConfirmationTest(TestCase):
         match = Match.objects.create(
             match_id=1,
             match_day=1,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team,
             enemy_team=self.enemy_team,
             team_made_latest_suggestion=False,
@@ -263,7 +263,7 @@ class CompareNewLineupTest(TestCase):
         match = Match.objects.create(
             match_id=1,
             match_day=1,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team,
             enemy_team=self.enemy_team,
             has_side_choice=True,
@@ -277,7 +277,7 @@ class CompareNewLineupTest(TestCase):
         match = Match.objects.create(
             match_id=1,
             match_day=1,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team,
             enemy_team=self.enemy_team,
             has_side_choice=True,
@@ -301,7 +301,7 @@ class CompareNewLineupTest(TestCase):
         match = Match.objects.create(
             match_id=1,
             match_day=1,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team,
             enemy_team=self.enemy_team,
             has_side_choice=True,
@@ -331,7 +331,7 @@ class CompareNewLineupTest(TestCase):
         match = Match.objects.create(
             match_id=1,
             match_day=1,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team,
             enemy_team=self.enemy_team,
             has_side_choice=True,
@@ -367,7 +367,7 @@ class CompareEnemyTeamIDTest(TestCase):
         match = Match.objects.create(
             match_id=1,
             match_day=1,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team,
             has_side_choice=True,
             enemy_team=None,
@@ -381,7 +381,7 @@ class CompareEnemyTeamIDTest(TestCase):
         match = Match.objects.create(
             match_id=1,
             match_day=1,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team,
             has_side_choice=True,
             enemy_team=self.enemy_team,
@@ -395,7 +395,7 @@ class CompareEnemyTeamIDTest(TestCase):
         match = Match.objects.create(
             match_id=1,
             match_day=1,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team,
             has_side_choice=True,
             enemy_team=None,
@@ -409,7 +409,7 @@ class CompareEnemyTeamIDTest(TestCase):
         match = Match.objects.create(
             match_id=1,
             match_day=1,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team,
             has_side_choice=True,
             enemy_team=self.enemy_team,

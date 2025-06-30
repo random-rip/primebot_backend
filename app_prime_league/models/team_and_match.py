@@ -112,7 +112,7 @@ class TeamManager(models.Manager):
         """Returns all teams that are registered and all enemy teams of matches that are not closed."""
         teams = self.get_registered_teams()
         matches = Match.objects.filter(
-            Q(closed=False) | Q(closed__isnull=True) | Q(closed=True, begin__gte=timezone.now() - timedelta(days=2))
+            Q(closed=False) | Q(closed__isnull=True) | Q(closed=True, begin__gte=timezone.now() - timedelta(days=1))
         )
         enemy_teams = Team.objects.filter(matches_as_enemy_team__in=matches)
         return teams.union(enemy_teams)
@@ -170,9 +170,9 @@ class Team(models.Model):
 
         current_split = Split.objects.get_current_split()
         current_stage = current_split.get_current_stage()
-        if current_stage == Match.MATCH_TYPE_PLAYOFF:
-            if self.matches_against.filter(match_type=Match.MATCH_TYPE_PLAYOFF).exists():
-                qs_filter["match_type"] = Match.MATCH_TYPE_PLAYOFF
+        if current_stage == Match.MatchType.PLAYOFF:
+            if self.matches_against.filter(match_type=Match.MatchType.PLAYOFF).exists():
+                qs_filter["match_type"] = Match.MatchType.PLAYOFF
         else:
             if current_stage is None:
                 return self.matches_against.none()
@@ -214,22 +214,18 @@ class CurrentSplitMatchManager(models.Manager):
 
 
 class Match(models.Model):
-    MATCH_TYPE_GROUP = "group"  # Pro Div und Kalibrierungsphase, Kein Divisionssystem
-    MATCH_TYPE_LEAGUE = "league"  # Gruppenphase Divisionssystem
-    MATCH_TYPE_PLAYOFF = "playoff"  # Playoffs
 
-    MATCH_TYPES = (
-        (MATCH_TYPE_GROUP, "Kalibrierung"),
-        (MATCH_TYPE_LEAGUE, "Gruppenphase"),
-        (MATCH_TYPE_PLAYOFF, "Playoffs"),
-    )
+    class MatchType(models.TextChoices):
+        GROUP = "group", _("Kalibrierung")  # Pro Div und Kalibrierungsphase, Kein Divisionssystem
+        LEAGUE = "league", _("Gruppenphase")  # Gruppenphase Divisionssystem
+        PLAYOFF = "playoff", _("Playoffs")  # Playoffs
 
     MATCH_DAY_TIEBREAKER = 99
     MATCH_DAY_PLAYOFF = 0
 
     match_id = models.IntegerField()
     match_day = models.IntegerField(null=True, blank=True)
-    match_type = models.CharField(max_length=15, null=True, choices=MATCH_TYPES, blank=True)
+    match_type = models.CharField(max_length=15, null=True, choices=MatchType.choices, blank=True)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="matches_against")
     enemy_team = models.ForeignKey(
         Team, on_delete=models.SET_NULL, related_name="matches_as_enemy_team", null=True, blank=True
@@ -407,16 +403,16 @@ class Split(models.Model):
         """
         return self.registration_start <= d.date() <= self.playoffs_end
 
-    def get_current_stage(self) -> Union[str, None]:
+    def get_current_stage(self) -> Union[Match.MatchType, None]:
         current_date = timezone.now().date()
         if self.registration_start < current_date > self.playoffs_end:
             return None
         if self.playoffs_start <= current_date <= self.playoffs_end:
-            return Match.MATCH_TYPE_PLAYOFF
+            return Match.MatchType.PLAYOFF
         if self.group_stage_start <= current_date <= self.group_stage_end:
-            return Match.MATCH_TYPE_LEAGUE
+            return Match.MatchType.LEAGUE
         if self.calibration_stage_start <= current_date <= self.calibration_stage_end:
-            return Match.MATCH_TYPE_GROUP
+            return Match.MatchType.GROUP
 
     def get_current_match_day(self):
         current_date = timezone.now().date()

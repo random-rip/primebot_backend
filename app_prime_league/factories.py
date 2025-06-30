@@ -103,11 +103,7 @@ class MatchFactory(DjangoModelFactory):
     match_day = factory.LazyFunction(lambda: random.choice([0, 99] + list(range(1, 10))))
     match_type = factory.Faker(
         "word",
-        ext_word_list=[
-            Match.MATCH_TYPE_PLAYOFF,
-            Match.MATCH_TYPE_LEAGUE,
-            Match.MATCH_TYPE_GROUP,
-        ],
+        ext_word_list=Match.MatchType.values,
     )
     team = factory.SubFactory(TeamFactory)
     enemy_team = factory.SubFactory(TeamFactory)
