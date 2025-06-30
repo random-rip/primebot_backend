@@ -12,6 +12,10 @@ RUN apt-get update
 RUN apt-get install lsb-release -y
 RUN apt-get -y install apt-utils
 
+COPY pyproject.toml uv.lock ./
+
+RUN uv sync --no-dev
+
 COPY . .
 
 RUN apt-get install gettext -y
