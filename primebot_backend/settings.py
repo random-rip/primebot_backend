@@ -54,7 +54,6 @@ INSTALLED_APPS = [
     "corsheaders",
     "django_q",
     'drf_spectacular',
-    "debug_toolbar",
     'django_filters',
     "request",
     # own
@@ -65,7 +64,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -151,6 +149,17 @@ TIME_ZONE = 'Europe/Berlin'
 USE_I18N = True
 
 USE_TZ = True
+
+
+# DEBUG TOOLBAR
+
+if DEBUG:
+    INSTALLED_APPS += [
+        "debug_toolbar",
+    ]
+    MIDDLEWARE = [
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+    ] + MIDDLEWARE
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

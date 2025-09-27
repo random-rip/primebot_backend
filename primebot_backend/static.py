@@ -28,7 +28,6 @@ INSTALLED_APPS = [
     "corsheaders",
     "django_q",
     'drf_spectacular',
-    "debug_toolbar",
     'django_filters',
     "request",
     # own
