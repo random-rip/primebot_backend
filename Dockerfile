@@ -7,6 +7,7 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV DEBIAN_FRONTEND noninteractive
+ENV UV_NO_DEV 1
 
 RUN apt-get update
 RUN apt-get install lsb-release -y
@@ -14,7 +15,7 @@ RUN apt-get -y install apt-utils
 
 COPY pyproject.toml uv.lock ./
 
-RUN uv sync --no-dev
+RUN uv sync
 
 COPY . .
 

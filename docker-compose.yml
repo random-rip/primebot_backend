@@ -35,7 +35,7 @@ services:
       - POSTGRES_PORT
       - POSTGRES_HOST
       - CACHE_LOCATION
-    command: [ 'python', 'manage.py', 'migrate' ]
+    command: [ 'uv', 'run', 'manage.py', 'migrate' ]
 
   app:
     networks:
@@ -90,7 +90,7 @@ services:
     restart: unless-stopped
     volumes:
       - media:/var/opt/prime_bot_backend/media/
-    command: [ "gunicorn", "-b", ":8000", "--workers=3", "--timeout=180", "--enable-stdio-inheritance", "primebot_backend.wsgi:application" ]
+    command: [ 'uv', 'run', "gunicorn", "-b", ":8000", "--workers=3", "--timeout=180", "--enable-stdio-inheritance", "primebot_backend.wsgi:application" ]
 
   queue-cluster:
     image: orbisk/primebot
@@ -129,7 +129,7 @@ services:
       - POSTGRES_PORT
       - POSTGRES_HOST
       - CACHE_LOCATION
-    command: [ 'python', 'manage.py', 'qcluster' ]
+    command: [ 'uv', 'run', 'manage.py', 'qcluster' ]
 
   messages-cluster:
     image: orbisk/primebot
@@ -169,12 +169,12 @@ services:
       - POSTGRES_HOST
       - CACHE_LOCATION
       - Q_CLUSTER_NAME=messages
-    command: [ 'python', 'manage.py', 'qcluster' ]
+    command: [ 'uv', 'run', 'manage.py', 'qcluster' ]
 
   discord-bot:
     image: orbisk/primebot
     restart: unless-stopped
-    command: [ 'python', 'manage.py', 'discord_bot' ]
+    command: [ 'uv', 'run', 'manage.py', 'discord_bot' ]
     depends_on:
       postgres:
         condition: service_healthy
@@ -213,7 +213,7 @@ services:
   telegram-bot:
     image: orbisk/primebot
     restart: unless-stopped
-    command: [ 'python', 'manage.py', 'telegram_bot' ]
+    command: [ 'uv', 'run', 'manage.py', 'telegram_bot' ]
     depends_on:
       postgres:
         condition: service_healthy
@@ -252,7 +252,7 @@ services:
   request_queue:
     image: orbisk/primebot
     restart: unless-stopped
-    command: [ 'python', 'manage.py', 'requestqueue' ]
+    command: [ 'uv', 'run', 'manage.py', 'requestqueue' ]
     depends_on:
       postgres:
         condition: service_healthy
