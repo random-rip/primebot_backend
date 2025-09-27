@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from unittest import mock
 from zoneinfo import ZoneInfo
 
@@ -63,12 +63,12 @@ class GetTeamsToUpdateTest(TestCase, CompareModelObjectsMixin):
         ]
         self.assertModelObjectsListEqual(expected, result)
 
-    def test_closed_match_with_begin_within_two_days_after(self):
+    def test_closed_match_with_begin_within_one_day_after(self):
         MatchFactory(
-            team=self.team, enemy_team=self.enemy_team, closed=True, begin=datetime(2024, 2, 4, tzinfo=ZoneInfo("UTC"))
+            team=self.team, enemy_team=self.enemy_team, closed=True, begin=datetime(2024, 2, 4, tzinfo=timezone.utc)
         )
         with mock.patch("django.utils.timezone.now") as mock_now:
-            mock_now.return_value = make_aware(datetime(2024, 2, 6))
+            mock_now.return_value = datetime(2024, 2, 5, tzinfo=timezone.utc)
             result = Team.objects.get_teams_to_update().order_by("id")
         expected = [
             {"name": "Team registered"},

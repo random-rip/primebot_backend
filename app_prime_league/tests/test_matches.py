@@ -16,25 +16,25 @@ class MatchesTest(TestCase):
         MatchFactory(
             match_id=1,
             match_day=1,
-            match_type=Match.MATCH_TYPE_GROUP,
+            match_type=Match.MatchType.GROUP,
             team=self.team_a,
         )
         MatchFactory(
             match_id=2,
             match_day=2,
-            match_type=Match.MATCH_TYPE_GROUP,
+            match_type=Match.MatchType.GROUP,
             team=self.team_a,
         )
         MatchFactory(
             match_id=3,
             match_day=3,
-            match_type=Match.MATCH_TYPE_GROUP,
+            match_type=Match.MatchType.GROUP,
             team=self.team_a,
         )
         MatchFactory(
             match_id=4,
             match_day=4,
-            match_type=Match.MATCH_TYPE_GROUP,
+            match_type=Match.MatchType.GROUP,
             team=self.team_a,
         )
 
@@ -42,25 +42,25 @@ class MatchesTest(TestCase):
         MatchFactory(
             match_id=10,
             match_day=1,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team_a,
         )
         MatchFactory(
             match_id=20,
             match_day=2,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team_a,
         )
         MatchFactory(
             match_id=30,
             match_day=3,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team_a,
         )
         MatchFactory(
             match_id=40,
             match_day=4,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team_a,
         )
 
@@ -68,19 +68,19 @@ class MatchesTest(TestCase):
         MatchFactory(
             match_id=100,
             match_day=Match.MATCH_DAY_TIEBREAKER,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team_a,
         )
         MatchFactory(
             match_id=200,
             match_day=Match.MATCH_DAY_TIEBREAKER,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team_a,
         )
         MatchFactory(
             match_id=300,
             match_day=Match.MATCH_DAY_TIEBREAKER,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team_a,
         )
 
@@ -144,9 +144,9 @@ class MatchesTest(TestCase):
     def test_playoffs(self, timezone_mock):
         timezone_mock.return_value = make_aware(datetime(2022, 8, 21))
         # Playoffs start on 2022-08-21
-        MatchFactory(match_id=1000, team=self.team_a, match_type=Match.MATCH_TYPE_PLAYOFF, match_day=0)
-        MatchFactory(match_id=2000, team=self.team_a, match_type=Match.MATCH_TYPE_PLAYOFF, match_day=0)
-        MatchFactory(match_id=3000, team=self.team_a, match_type=Match.MATCH_TYPE_PLAYOFF, match_day=0)
+        MatchFactory(match_id=1000, team=self.team_a, match_type=Match.MatchType.PLAYOFF, match_day=0)
+        MatchFactory(match_id=2000, team=self.team_a, match_type=Match.MatchType.PLAYOFF, match_day=0)
+        MatchFactory(match_id=3000, team=self.team_a, match_type=Match.MatchType.PLAYOFF, match_day=0)
 
         result = list(
             self.team_a.get_obvious_matches_based_on_stage(0).values_list("match_id", flat=True).order_by("match_id")

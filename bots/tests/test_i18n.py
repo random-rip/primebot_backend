@@ -14,7 +14,7 @@ class DiscordMessageTests(TestCase):
         self.team_a = TeamFactory(team_tag="abc", channels=ChannelFactory(platform=Platforms.DISCORD))
         self.team_b = TeamFactory(team_tag="xyz")
         self.match = MatchFactory(
-            team=self.team_a, enemy_team=self.team_b, match_day=1, match_id=1, match_type=Match.MATCH_TYPE_LEAGUE
+            team=self.team_a, enemy_team=self.team_b, match_day=1, match_id=1, match_type=Match.MatchType.LEAGUE
         )
 
     def test_i18n(self):

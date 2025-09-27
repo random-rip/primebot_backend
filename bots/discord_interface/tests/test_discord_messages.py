@@ -31,7 +31,7 @@ class SpecialCharacterTests(TestCase):
             team=self.team_a,
             enemy_team=self.team_b,
             match_day=1,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             closed=False,
             begin=datetime(2023, 3, 15, 12, tzinfo=ZoneInfo(settings.TIME_ZONE)),
             enemy_lineup=[
@@ -72,7 +72,7 @@ class DiscordMessageTests(TestCase):
         )
         self.match = MatchFactory(
             match_id=1,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             team=self.team_a,
             enemy_team=self.team_b,
             match_day=1,
@@ -305,7 +305,7 @@ class WeeklyNotificationTests(TestCase):
             team=self.team_a,
             enemy_team=self.team_b,
             match_day=1,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             begin=datetime(2023, 3, 8, 12, tzinfo=ZoneInfo(settings.TIME_ZONE)),
             closed=False,
         )
@@ -313,7 +313,7 @@ class WeeklyNotificationTests(TestCase):
             team=self.team_a,
             enemy_team=self.team_b,
             match_day=1,
-            match_type=Match.MATCH_TYPE_LEAGUE,
+            match_type=Match.MatchType.LEAGUE,
             begin=datetime(2023, 3, 25, 12, tzinfo=ZoneInfo(settings.TIME_ZONE)),
             closed=False,
         )

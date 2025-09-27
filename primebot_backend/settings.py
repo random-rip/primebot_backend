@@ -335,11 +335,9 @@ if not DEBUG:
                 'formatter': 'to_file',
             },
             'updates': {
-                'level': "INFO",
-                'class': 'logging.handlers.TimedRotatingFileHandler',
-                'filename': os.path.join(LOGGING_DIR, 'updates.log'),
-                'when': 'midnight',
-                'formatter': 'to_file',
+                'level': "DEBUG",
+                'formatter': 'to_console',
+                'class': 'logging.StreamHandler',
             },
             'discord': {
                 'level': "INFO",
