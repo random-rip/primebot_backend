@@ -6,6 +6,7 @@ from typing import Any, Callable, Dict, Optional
 from asgiref.sync import async_to_sync, sync_to_async
 from discord import EntityType, HTTPException, PrivacyLevel
 from django.conf import settings
+from django.utils import timezone
 from niquests import AsyncSession
 from PIL import Image, ImageDraw
 
@@ -77,6 +78,8 @@ async def create_discord_event(channel_team: ChannelTeam, match: Match):
         default=False,
     ):
         return "Event creation disabled"
+    if match.begin < timezone.now():
+        return "Match already started, not creating event"
 
     client = await DiscordBot().client
 
@@ -89,7 +92,7 @@ async def create_discord_event(channel_team: ChannelTeam, match: Match):
     try:
         event = await guild.create_scheduled_event(
             name=title,
-            start_time=match.begin - timedelta(minutes=15),
+            start_time=match.begin,
             end_time=match.begin + timedelta(hours=2),
             privacy_level=PrivacyLevel.guild_only,
             entity_type=EntityType.external,
@@ -121,5 +124,5 @@ class CreateDiscordEventJob(Job):
     def q_options(self) -> Dict[str, Any]:
         return {
             "cluster": "messages",
-            "group": f"POLL {self.match}",
+            "group": f"EVENT {self.match}",
         }

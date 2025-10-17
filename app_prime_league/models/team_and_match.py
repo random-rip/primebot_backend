@@ -284,8 +284,9 @@ class Match(models.Model):
 
     def get_enemy_scouting_url(self, scouting_website: ScoutingWebsite = None, lineup=True) -> str:
         """
-        Creates an url of the enemy team of the given match. if `lineup=True` and lineup is available of the
+        Creates a url of the enemy team of the given match. if `lineup=True` and lineup is available of the
         enemy team, the url only contains the lineup of the enemy team.
+        Returns a valid url even if no enemy team is set.
         :param scouting_website: ScoutingWebsite
         :param lineup: Boolean
         :return: String
@@ -295,10 +296,12 @@ class Match(models.Model):
             qs = self.enemy_lineup
         else:
             enemy_team = self.get_enemy_team()
-            qs = Player.objects.none() if enemy_team.id is None else enemy_team.player_set
+            if enemy_team.id is None:
+                return scouting_website.generate_url(names=[])
+            qs = enemy_team.player_set
 
-        names = list(qs.get_active_players().order_by("summoner_name").values_list("summoner_name", flat=True))
-        return scouting_website.generate_url(names=names)
+        names = qs.get_active_players().order_by("summoner_name").values_list("summoner_name", flat=True)
+        return scouting_website.generate_url(names=list(names))
 
 
 class Suggestion(models.Model):
