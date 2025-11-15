@@ -34,7 +34,10 @@ class BaseLog:
         }
         LogClass = log_dict.get(action, None)
         if LogClass is None:
-            return
+            return None
+        # LogScheduleReset has the same action as LogSchedulingConfirmation but '' details
+        if LogClass is LogSchedulingConfirmation and details == "":
+            LogClass = LogSchedulingReset
         try:
             return LogClass(
                 timestamp=timestamp,
@@ -60,6 +63,11 @@ class LogSchedulingConfirmation(BaseLog):
     def __init__(self, timestamp, user_id, details):
         super().__init__(timestamp, user_id, details)
         self.details = string_to_datetime(self.details)
+
+
+class LogSchedulingReset(BaseLog):
+    def __init__(self, timestamp, user_id, details):
+        super().__init__(timestamp, user_id, details)
 
 
 class LogSchedulingAutoConfirmation(BaseLog):
