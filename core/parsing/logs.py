@@ -35,7 +35,7 @@ class BaseLog:
         LogClass = log_dict.get(action, None)
         if LogClass is None:
             return None
-        # LogScheduleReset has the same action as LogSchedulingConfirmation but '' details
+        # LogSchedulingReset has the same action as LogSchedulingConfirmation but '' details
         if LogClass is LogSchedulingConfirmation and details == "":
             LogClass = LogSchedulingReset
         try:
@@ -66,38 +66,34 @@ class LogSchedulingConfirmation(BaseLog):
 
 
 class LogSchedulingReset(BaseLog):
-    def __init__(self, timestamp, user_id, details):
-        super().__init__(timestamp, user_id, details)
+    """
+    This log is raised when a new suggestion is made after a suggestion was already made from the same team.
+    This log has the same action as LogSchedulingConfirmation but empty details ("scheduling_confirm").
+    """
 
 
 class LogSchedulingAutoConfirmation(BaseLog):
-    def __init__(self, timestamp, user_id, details):
-        super().__init__(timestamp, user_id, details)
+    pass
 
 
 class LogPlayed(BaseMatchIsOverLog):
-    def __init__(self, timestamp, user_id, details):
-        super().__init__(timestamp, user_id, details)
+    pass
 
 
 class LogLineupMissing(BaseMatchIsOverLog):
-    def __init__(self, timestamp, user_id, details):
-        super().__init__(timestamp, user_id, details)
+    pass
 
 
 class LogLineupNotReady(BaseMatchIsOverLog):
-    def __init__(self, timestamp, user_id, details):
-        super().__init__(timestamp, user_id, details)
+    pass
 
 
 class LogDisqualified(BaseMatchIsOverLog):
-    def __init__(self, timestamp, user_id, details):
-        super().__init__(timestamp, user_id, details)
+    pass
 
 
 class LogLineupFail(BaseMatchIsOverLog):
-    def __init__(self, timestamp, user_id, details):
-        super().__init__(timestamp, user_id, details)
+    pass
 
 
 class LogChangeScoreStatus(BaseMatchIsOverLog):
@@ -133,9 +129,6 @@ class LogScoreReport(BaseLog):
     """
     Currently deprecated
     """
-
-    def __init__(self, timestamp, user_id, details):
-        super().__init__(timestamp, user_id, details)
 
 
 class LogLineupSubmit(BaseLog):
