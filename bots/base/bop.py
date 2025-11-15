@@ -1,6 +1,5 @@
 import random
 from abc import abstractmethod
-from typing import Iterable
 
 import niquests
 
@@ -9,6 +8,7 @@ from bots.telegram_interface.tg_singleton import send_message_to_devs
 
 class AnimalAPI:
     animal = None
+    label = None
 
     @classmethod
     @abstractmethod
@@ -18,15 +18,16 @@ class AnimalAPI:
 
 class CatAPI(AnimalAPI):
     animal = 'cat'
+    label = "Cats"
 
     @classmethod
     def get_url(cls):
-        url = 'https://cataas.com/cat/gif'
-        return url
+        return "https://cataas.com/cat/gif"
 
 
 class DogAPI(AnimalAPI):
     animal = 'dog'
+    label = "Dogs"
 
     @classmethod
     def get_url(cls):
@@ -37,6 +38,7 @@ class DogAPI(AnimalAPI):
 
 class FoxAPI(AnimalAPI):
     animal = 'fox'
+    label = "Foxes"
 
     @classmethod
     def get_url(cls):
@@ -46,7 +48,8 @@ class FoxAPI(AnimalAPI):
 
 
 class DuckAPI(AnimalAPI):
-    animal = 'duck'
+    animal = 'duc'
+    label = "Ducks"
 
     @classmethod
     def get_url(cls):
@@ -56,7 +59,8 @@ class DuckAPI(AnimalAPI):
 
 
 class RabbitAPI(AnimalAPI):
-    animal = 'rabbit'
+    animal = 'rab'
+    label = "Rabbits"
 
     @classmethod
     def get_url(cls):
@@ -65,12 +69,28 @@ class RabbitAPI(AnimalAPI):
         return url
 
 
-class Gifinator:
-    apis: dict[str, AnimalAPI] = {api.animal: api for api in [CatAPI, DogAPI, FoxAPI, DuckAPI]}
+class OtterAPI(AnimalAPI):
+    animal = 'ott'
+    label = "Otters"
 
     @classmethod
-    def animals(cls) -> Iterable[str]:
-        return cls.apis.keys()
+    def get_url(cls):
+        return "https://i.imgflip.com/ac80s7.jpg"
+
+
+class InvalidAnimalException(Exception):
+    pass
+
+
+class Gifinator:
+    available_apis: dict[str, AnimalAPI] = {
+        api.animal: api for api in [CatAPI, DogAPI, FoxAPI, DuckAPI, RabbitAPI, OtterAPI]
+    }
+    random_animals: dict[str, AnimalAPI] = {api.animal: api for api in [CatAPI, DogAPI, DuckAPI]}
+
+    @classmethod
+    def get_choices(cls) -> list[tuple[str, str]]:
+        return [(api.label, api.animal) for api in cls.available_apis.values()]
 
     @classmethod
     def get_gif(cls, animal=None) -> str:
@@ -84,8 +104,8 @@ class Gifinator:
     @classmethod
     def get_api(cls, animal=None):
         if animal is None:
-            return random.choice(list(cls.apis.values()))
+            return random.choice(list(cls.random_animals.values()))
         try:
-            return cls.apis[animal]
+            return cls.available_apis[animal]
         except KeyError:
-            raise ValueError("No such animal")
+            raise InvalidAnimalException
