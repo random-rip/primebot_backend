@@ -18,7 +18,7 @@ class AnimalAPI:
 
 class CatAPI(AnimalAPI):
     animal = 'cat'
-    label = "Cats"
+    label = "cat"
 
     @classmethod
     def get_url(cls):
@@ -27,7 +27,7 @@ class CatAPI(AnimalAPI):
 
 class DogAPI(AnimalAPI):
     animal = 'dog'
-    label = "Dogs"
+    label = "dog"
 
     @classmethod
     def get_url(cls):
@@ -38,7 +38,7 @@ class DogAPI(AnimalAPI):
 
 class FoxAPI(AnimalAPI):
     animal = 'fox'
-    label = "Foxes"
+    label = "fox"
 
     @classmethod
     def get_url(cls):
@@ -49,7 +49,7 @@ class FoxAPI(AnimalAPI):
 
 class DuckAPI(AnimalAPI):
     animal = 'duc'
-    label = "Ducks"
+    label = "duck"
 
     @classmethod
     def get_url(cls):
@@ -60,7 +60,7 @@ class DuckAPI(AnimalAPI):
 
 class RabbitAPI(AnimalAPI):
     animal = 'rab'
-    label = "Rabbits"
+    label = "rabbit"
 
     @classmethod
     def get_url(cls):
@@ -71,7 +71,7 @@ class RabbitAPI(AnimalAPI):
 
 class OtterAPI(AnimalAPI):
     animal = 'ott'
-    label = "Otters"
+    label = "otter"
 
     @classmethod
     def get_url(cls):
