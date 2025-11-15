@@ -1,12 +1,12 @@
 import random
-from abc import abstractmethod
+from abc import ABCMeta, abstractmethod
 
 import niquests
 
 from bots.telegram_interface.tg_singleton import send_message_to_devs
 
 
-class AnimalAPI:
+class AnimalAPI(metaclass=ABCMeta):
     animal = None
     label = None
 
