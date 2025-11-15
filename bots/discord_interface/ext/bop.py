@@ -52,8 +52,6 @@ async def get_content(animal) -> BytesIO:
         current_iteration += 1
         try:
             url = Gifinator.get_gif(animal=animal)
-        except InvalidAnimalException:
-            raise
         except ConnectionError:
             if current_iteration >= max_iterations:
                 raise
