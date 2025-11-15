@@ -35,8 +35,38 @@ class DogAPI(AnimalAPI):
         return url
 
 
+class FoxAPI(AnimalAPI):
+    animal = 'fox'
+
+    @classmethod
+    def get_url(cls):
+        contents = niquests.get('https://randomfox.ca/floof/').json()
+        url = contents['image']
+        return url
+
+
+class DuckAPI(AnimalAPI):
+    animal = 'duck'
+
+    @classmethod
+    def get_url(cls):
+        contents = niquests.get('https://random-d.uk/api/v2/random?type=gif').json()
+        url = contents['url']
+        return url
+
+
+class RabbitAPI(AnimalAPI):
+    animal = 'rabbit'
+
+    @classmethod
+    def get_url(cls):
+        contents = niquests.get('https://api.bunnies.io/v2/loop/random/?media=gif').json()
+        url = contents['media']['gif']
+        return url
+
+
 class Gifinator:
-    apis: dict[str, AnimalAPI] = {api.animal: api for api in [CatAPI, DogAPI]}
+    apis: dict[str, AnimalAPI] = {api.animal: api for api in [CatAPI, DogAPI, FoxAPI, DuckAPI]}
 
     @classmethod
     def animals(cls) -> Iterable[str]:
