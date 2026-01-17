@@ -147,9 +147,9 @@ class MatchDataProcessor(__MatchDataMethods):
 
     def get_match_closed(self):
         """
-        possible match_status: ["upcoming", "pending", "finished"]
+        possible match_status: ["upcoming", "pending", "finished", "defwin"]
         """
-        return self.data_match.get("match_status", None) == "finished"
+        return self.data_match.get("match_status", None) in ["finished", "defwin"]
 
     def get_match_result(self):
         """
