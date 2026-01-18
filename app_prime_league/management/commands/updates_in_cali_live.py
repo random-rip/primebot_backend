@@ -35,8 +35,12 @@ class Command(UpdateScheduleCommand):
         logger.info(f"Updated {len(top_50_teams)} teams in {time.time() - start_time:.2f} seconds")
 
         start_time = time.time()
-        matches = Match.current_split_objects.get_matches_to_update(buffer=timedelta(hours=1, minutes=15)).order_by(
-            "updated_at"
+        matches = (
+            Match.current_split_objects.get_matches_to_update(buffer=timedelta(hours=1, minutes=15))
+            .order_by("updated_at")
+            .filter(
+                match_type=Match.MatchType.GROUP,
+            )
         )
         top_50_matches = matches[:50]
         logger.info(f"Checking {len(top_50_matches)} (of {len(matches)}) uncompleted matches...")
