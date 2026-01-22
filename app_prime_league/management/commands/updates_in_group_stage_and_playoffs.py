@@ -20,7 +20,7 @@ def get_priority_teams_and_matches() -> Tuple[set[Team], set[Match]]:
     """
     Retrieve relevant teams and matches to update.
     If it is between 2 and 4 AM on any day, all teams are updated (max 400 per run).
-    If it is between 2 and 5 AM on any day, all matches are updated (max 400 per run).
+    If it is between 4 and 6 AM on any day, all matches are updated (max 400 per run).
     Otherwise, it iterates over matches within the next 3 Weeks (+ last 2 days) and sort by updated_at. Then
     it iterates over the matches and adds the team and enemy team to the set of teams to update (max 100 teams) and
     in summation the matches to update (max 400). If 400 is not reached, it takes also matches with a begin date
