@@ -1,12 +1,12 @@
 import logging
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from typing import Any, Callable, Dict, Optional, Tuple, Union
 
 from django_q.conf import Conf
 from django_q.tasks import async_task
 
 
-class Job:
+class Job(ABC):
     """
     Job class to inherit from for creating a job to be executed in a cluster.
     Call `.enqueue()` to push the job to the broker. Call `.execute()` to execute the job synchronously.

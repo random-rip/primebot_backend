@@ -1,3 +1,5 @@
+from typing import Callable, Dict
+
 from django.contrib import admin
 from django.db.models import Count, Q
 from django.utils.html import format_html
@@ -5,6 +7,22 @@ from django.utils.translation import gettext_lazy as _
 
 from app_prime_league.models import Match, Player, Team
 from app_prime_league.models.channel import Platforms
+from core.cluster_job import Job
+from core.updater.teams_check_executor import update_teams
+
+
+class UpdateTeamsJob(Job):
+    """Admin Job to update selected Teams"""
+
+    def __init__(self, queryset, notify: bool):
+        self.queryset = queryset
+        self.notify = notify
+
+    def function_to_execute(self) -> Callable:
+        return update_teams
+
+    def get_kwargs(self) -> Dict:
+        return {"teams": self.queryset, "notify": self.notify}
 
 
 class PlatformFilter(admin.SimpleListFilter):
@@ -228,6 +246,17 @@ class TeamAdmin(admin.ModelAdmin):
         "prime_league_link",
     )
     search_fields = ['id', 'name', 'team_tag']
+    actions = ['update_teams', 'update_teams_no_notify']
+
+    @admin.action(description="Update selected Teams")
+    def update_teams(self, request, queryset):
+        UpdateTeamsJob(queryset=queryset, notify=True).enqueue()
+        self.message_user(request, f"Enqueued update for {queryset.count()} teams.")
+
+    @admin.action(description="Update selected Teams (no notifications)")
+    def update_teams_no_notify(self, request, queryset):
+        UpdateTeamsJob(queryset=queryset, notify=False).enqueue()
+        self.message_user(request, f"Enqueued update for {queryset.count()} teams (no notifications).")
 
     @admin.display(description="Prime League")
     def prime_league_link(self, obj):
