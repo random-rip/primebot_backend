@@ -35,3 +35,4 @@ INSTALLED_APPS = [
     'core',
     'bots',
 ]
+GAME_SPORTS_BASE_URL = None
