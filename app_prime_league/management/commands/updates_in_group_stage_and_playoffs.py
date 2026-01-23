@@ -19,8 +19,8 @@ MAX_UPDATES = 400
 def get_priority_teams_and_matches() -> Tuple[set[Team], set[Match]]:
     """
     Retrieve relevant teams and matches to update.
-    If it is between 0 and 2 AM on a Monday, Thursday or Sunday, all teams are updated (max 700).
-    If it is between 3 and 5 AM, all matches are updated (max 700).
+    If it is between 2 and 4 AM on any day, all teams are updated (max 400 per run).
+    If it is between 4 and 6 AM on any day, all matches are updated (max 400 per run).
     Otherwise, it iterates over matches within the next 3 Weeks (+ last 2 days) and sort by updated_at. Then
     it iterates over the matches and adds the team and enemy team to the set of teams to update (max 100 teams) and
     in summation the matches to update (max 400). If 400 is not reached, it takes also matches with a begin date
@@ -28,20 +28,20 @@ def get_priority_teams_and_matches() -> Tuple[set[Team], set[Match]]:
     """
     now = timezone.now()
 
-    if now.weekday() in [0, 3, 6] and 0 <= now.hour < 2:  # Monday, Thursday, Sunday
-        logger.info("It is monday between 0 and 2: Updating all teams...")
-        # If the time is between 0 and 2 AM on a Monday, Thursday or Sunday, we update all teams for potential
+    if 2 <= now.hour < 4:
+        logger.info("It is 2 to 4 AM: Updating all teams...")
+        # If the time is between 2 and 4 AM, we update all teams for potential
         # new matches and general team updates like the name
         teams_to_update = Team.objects.get_teams_to_update().order_by('updated_at')[:MAX_UPDATES]
         return set(teams_to_update), set()
 
-    if 2 <= now.hour < 5:
-        # If the time is between 3 and 5 AM on a Monday, we update all matches
-        logger.info("It is between 3 and 5 AM: Updating all matches...")
+    if 4 <= now.hour < 6:
+        # If the time is between 4 and 6 AM, we update all matches
+        logger.info("It is between 4 and 6 AM: Updating all matches...")
         matches_to_update = Match.current_split_objects.get_matches_to_update().order_by('updated_at')[:MAX_UPDATES]
         return set(), set(matches_to_update)
 
-    logger.info("It is not between 3 and 5 AM: Updating priority matches and teams...")
+    logger.info("It is not between 2 and 6 AM: Updating priority matches and teams...")
     update_count = 0
     matches_to_update = set()
     teams_to_update = set()

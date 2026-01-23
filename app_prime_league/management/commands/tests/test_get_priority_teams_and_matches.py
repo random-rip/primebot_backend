@@ -12,9 +12,9 @@ from app_prime_league.models import Match, Team
 class GetPriorityTeamsAndMatchesTest(TestCase):
     @patch("app_prime_league.management.commands.updates_in_group_stage_and_playoffs.timezone.now")
     def test_update_all_teams(self, mock_now):
-        now = make_aware(datetime(2024, 10, 14, 0, 0))
-        # Mock the current time to be 0 AM on a Monday
-        mock_now.return_value = now  # Monday
+        now = make_aware(datetime(2024, 10, 14, 2, 0))
+        # Mock the current time to be 2 AM
+        mock_now.return_value = now
 
         registered_team = TeamFactory(name="Registered Team", channels=ChannelFactory())
         Team.objects.filter(id=registered_team.id).update(updated_at=now - timedelta(hours=1))
@@ -34,7 +34,7 @@ class GetPriorityTeamsAndMatchesTest(TestCase):
 
     @patch("app_prime_league.management.commands.updates_in_group_stage_and_playoffs.timezone.now")
     def test_update_all_matches(self, mock_now):
-        # Mock the current time to be 4 AM on a Monday
+        # Mock the current time to be 4 AM
         now = make_aware(datetime(2024, 10, 14, 4, 0))
         mock_now.return_value = now
 
@@ -52,8 +52,8 @@ class GetPriorityTeamsAndMatchesTest(TestCase):
 
     @patch("app_prime_league.management.commands.updates_in_group_stage_and_playoffs.timezone.now")
     def test_update_priority_teams_and_matches(self, mock_now):
-        # Mock the current time to be 5 AM on a Monday
-        now = make_aware(datetime(2024, 10, 14, 5, 0))
+        # Mock the current time to be 6 AM
+        now = make_aware(datetime(2024, 10, 14, 6, 0))
         mock_now.return_value = now
 
         registered_team = TeamFactory(name="Registered Team", channels=ChannelFactory())
@@ -72,8 +72,8 @@ class GetPriorityTeamsAndMatchesTest(TestCase):
 
     @patch("app_prime_league.management.commands.updates_in_group_stage_and_playoffs.timezone.now")
     def test_update_no_duplicates(self, mock_now):
-        # Mock the current time to be 5 AM on a Monday
-        now = make_aware(datetime(2024, 10, 14, 5, 0))
+        # Mock the current time to be 6 AM
+        now = make_aware(datetime(2024, 10, 14, 6, 0))
         mock_now.return_value = now
 
         registered_team = TeamFactory(name="Registered Team", channels=ChannelFactory())
