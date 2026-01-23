@@ -36,3 +36,4 @@ INSTALLED_APPS = [
     'bots',
 ]
 GAME_SPORTS_BASE_URL = None
+FILES_FROM_STORAGE = None
