@@ -79,7 +79,7 @@ async def create_discord_event(channel_team: ChannelTeam, match: Match):
     ):
         return "Event creation disabled"
     if match.begin < timezone.now():
-        return "Match already started, not creating event"
+        return "Match start time is in the past, not creating event"
 
     client = await DiscordBot().client
 
