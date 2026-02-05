@@ -13,7 +13,7 @@ class MatchResultMessage(MatchMessage):
         return "🏆 " + gettext('Match result')
 
     def _generate_message(self):
-        enemy_team_tag = self.match.enemy_team.team_tag
+        enemy_team_tag = self.match.get_enemy_team().team_tag
         message = gettext("The match against [{enemy_team_tag}]({enemy_team_url}) ended with **{result}**.")
 
         return message.format(

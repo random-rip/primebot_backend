@@ -102,6 +102,8 @@ class SchedulingConfirmationComparer(Comparer):
         self.match.datetime_until_auto_confirmation = self.tmd.datetime_until_auto_confirmation
 
     def notify(self):
+        if self.match.enemy_team is None or self.tmd.enemy_team_id is None:
+            return
         self.log("Termin wurde festgelegt")
         CreateMessagesJob(
             msg_class=ScheduleConfirmationNotification,
@@ -202,6 +204,8 @@ class MatchResultComparer(Comparer):
         self.match.result = self.tmd.result
 
     def notify(self):
+        if self.match.enemy_team is None or self.tmd.enemy_team_id is None:
+            return
         self.log(f"New Match result: {self.tmd.result}")
         CreateMessagesJob(
             msg_class=MatchResultMessage,
