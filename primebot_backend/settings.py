@@ -173,6 +173,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = env.str("MEDIA_ROOT", None)
 
 GAME_SPORTS_BASE_URL = env.str("GAME_SPORTS_BASE_URL", None)
+HEARTBASE_CDN_HOSTNAME = "cdn0.heartbase.gg"
 
 PRM_BASE_URI = "https://www.primeleague.gg/de/leagues/"
 MATCH_URI = PRM_BASE_URI + "matches/"

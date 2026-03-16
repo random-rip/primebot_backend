@@ -1,4 +1,7 @@
 from abc import abstractmethod
+from urllib.parse import urlsplit, urlunsplit
+
+from django.conf import settings
 
 from app_prime_league.models import Split
 from core.providers.base import Provider
@@ -95,7 +98,21 @@ class TeamDataProcessor(__TeamDataMethods):
         return self.data_current_stage.get("group_title", None)
 
     def get_logo(self):
-        return self.data_team.get("team_logo_img_url")
+        url = self.data_team.get("team_logo_img_url")
+        if url is None:
+            return None
+        result = urlsplit(url)
+        heartbase_hostname = settings.HEARTBASE_CDN_HOSTNAME
+        new_url = urlunsplit(
+            (
+                result.scheme,
+                heartbase_hostname,
+                result.path,
+                result.query,
+                result.fragment,
+            )
+        )
+        return new_url
 
     def get_split(self):
         """Currently we don't get the split from the API, so we have to get it from our own database."""
