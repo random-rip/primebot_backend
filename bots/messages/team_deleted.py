@@ -11,7 +11,7 @@ class TeamDeletedMessage(BaseMessage):
         return gettext(
             "The registered team {team_name} has been deleted from the Prime League system. "
             "All information about this team and the link to the channel will be deleted."
-        ).format(team=self.team.name)
+        ).format(team_name=self.team.name)
 
     def _generate_title(self):
         return "🚫 " + _("Team deleted")

@@ -6,14 +6,11 @@ import traceback
 from itertools import repeat
 
 from django.conf import settings
-from django.utils import timezone
-from django_q.models import Schedule
 
 from app_prime_league.models import Player, Team
 from app_prime_league.teams import create_matches
 from bots.message_dispatcher import CreateMessagesJob
 from bots.messages import MatchesOverview
-from bots.messages.team_deleted import TeamDeletedMessage
 from bots.telegram_interface.tg_singleton import send_message_to_devs
 from core.comparers.team_comparer import TeamComparer
 from core.processors.team_processor import TeamDataProcessor
@@ -26,34 +23,21 @@ update_logger = logging.getLogger("updates")
 notifications_logger = logging.getLogger("notifications")
 
 
-def delete_team(team: Team):
+def delete_team(team_id: int):
     """scheduled function to delete a team"""
     try:
-        team.delete()
+        Team.objects.get(id=team_id).delete()
     except Team.DoesNotExist:  # noqa
         # Team does not exist anymore
         pass
 
 
 @log_exception
-def update_team(team: Team, notify: bool):
+def update_team(team: Team, notify: bool) -> None:
     try:
         processor = TeamDataProcessor(team.id, provider=get_provider(priority=2))
     except TeamWebsite404Exception:
-        if not team.has_subscriptions():
-            team.delete()
-        else:
-            CreateMessagesJob(
-                msg_class=TeamDeletedMessage,
-                team=team,
-            ).enqueue()
-            Schedule.objects.create(
-                name=f"Delete team {team.id}",
-                schedule_type=Schedule.ONCE,
-                next_run=timezone.now() + timezone.timedelta(hours=1),
-                func="core.updater.teams_check_executor.delete_team",
-                args=team,
-            )
+        send_message_to_devs(msg=f"Team website returned 404 for team {team.id}.")
         return
     except Exception as e:
         update_logger.exception(e)
@@ -79,7 +63,7 @@ def update_team(team: Team, notify: bool):
         )
 
     if not notify or not team.has_subscriptions():
-        return team
+        return
 
     try:
         cmp = TeamComparer(team, processor=processor)
@@ -95,7 +79,7 @@ def update_team(team: Team, notify: bool):
             code=f"{trace}\n{e}",
         )
         update_logger.exception(e)
-    return team
+    return
 
 
 def update_teams(teams, notify: bool, use_concurrency=not settings.DEBUG):
