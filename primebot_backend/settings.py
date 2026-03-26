@@ -292,7 +292,7 @@ SPECTACULAR_SETTINGS = {
 }
 
 # Django Request
-REQUEST_LOG_IP = True
+REQUEST_LOG_IP = False
 REQUEST_LOG_USER = False
 REQUEST_IGNORE_PATHS = (
     r"^\.admin",
