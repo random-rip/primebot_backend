@@ -212,6 +212,7 @@ class TeamAdmin(admin.ModelAdmin):
                     ("team_tag",),
                     ("division",),
                     ("split",),
+                    ("logo_url",),
                     ("created_at",),
                     ("updated_at",),
                 ),
