@@ -15,6 +15,7 @@ class Command(ScheduleCommand):
             func=self.func_path,
             args="6, 'months'",
             schedule_type=Schedule.DAILY,
+            cluster="messages",
         )
         s.next_run = s.calculate_next_run()
         s.save()
