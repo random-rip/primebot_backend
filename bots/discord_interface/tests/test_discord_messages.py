@@ -12,6 +12,7 @@ from bots.messages import (
     EnemyNewTimeSuggestionsNotificationMessage,
     NewCommentsNotificationMessage,
     NewLineupNotificationMessage,
+    NotificationToChannelMessage,
     OwnNewTimeSuggestionsNotificationMessage,
     ScheduleConfirmationNotification,
     WeeklyNotificationMessage,
@@ -20,7 +21,7 @@ from core.parsing.logs import LogChangeTime, LogSchedulingAutoConfirmation, LogS
 from core.test_utils import string_to_datetime
 
 
-class SpecialCharacterTests(TestCase):
+class TestSpecialCharacters(TestCase):
     def setUp(self):
         self.team_a = TeamFactory(name="ÄÖÜ", team_tag="äöü", channels=ChannelFactory(platform=Platforms.DISCORD))
         self.team_b = TeamFactory(
@@ -64,7 +65,7 @@ class SpecialCharacterTests(TestCase):
         self.assertEqual(expected, result)
 
 
-class DiscordMessageTests(TestCase):
+class TestDiscordMessages(TestCase):
     def setUp(self):
         self.team_a = TeamFactory(name="ABC", team_tag="abc", channels=ChannelFactory(platform=Platforms.DISCORD))
         self.team_b = TeamFactory(
@@ -333,4 +334,81 @@ class WeeklyNotificationTests(TestCase):
         self.assertEqual(
             expected,
             msg.generate_message(),
+        )
+
+
+class TestTitleGeneration(TestCase):
+    def setUp(self):
+        self.channel = ChannelFactory(platform=Platforms.DISCORD)
+        self.team_a = TeamFactory(name="ABC", team_tag="abc", channels=self.channel)
+        self.team_b = TeamFactory(
+            name="XYZ", team_tag="xyz", players=PlayerFactory(name="player 6", summoner_name="player6")
+        )
+        self.match = MatchFactory(
+            match_id=1,
+            match_type=Match.MatchType.LEAGUE,
+            team=self.team_a,
+            enemy_team=self.team_b,
+            match_day=1,
+            has_side_choice=True,
+            begin=datetime(2023, 3, 15, 12, tzinfo=ZoneInfo(settings.TIME_ZONE)),
+            closed=False,
+            enemy_lineup=[
+                PlayerFactory(name="player 1", summoner_name="player1", team=self.team_b),
+                PlayerFactory(name="player 2", summoner_name="player2", team=self.team_b),
+                PlayerFactory(name="player 3", summoner_name="player3", team=self.team_b),
+                PlayerFactory(name="player 4", summoner_name="player4", team=self.team_b),
+                PlayerFactory(name="player 5", summoner_name="player5", team=self.team_b),
+            ],
+        )
+
+    def test_scheduling_confirmation(self):
+        log = LogSchedulingConfirmation(1645120288, "", 1645120288)
+        msg = ScheduleConfirmationNotification(
+            channel_team=ChannelTeam.objects.first(), match=self.match, latest_confirmation_log=log
+        )
+
+        self.assertEqual(
+            "⚔ Terminbestätigung",
+            msg.generate_title(),
+        )
+
+    def test_scheduling_confirmation_multiple_teams_in_channel(self):
+        team_c = TeamFactory(name="DEF", team_tag="def", channels=self.channel)
+        self.channel.teams.add(team_c)
+
+        log = LogSchedulingConfirmation(1645120288, "", 1645120288)
+        msg = ScheduleConfirmationNotification(
+            channel_team=team_c.channel_teams.first(), match=self.match, latest_confirmation_log=log
+        )
+
+        self.assertEqual(
+            "⚔ Terminbestätigung [DEF]",
+            msg.generate_title(),
+        )
+
+        msg = ScheduleConfirmationNotification(
+            channel_team=self.team_a.channel_teams.first(), match=self.match, latest_confirmation_log=log
+        )
+
+        self.assertEqual(
+            "⚔ Terminbestätigung [ABC]",
+            msg.generate_title(),
+        )
+
+    def test_channel_message(self):
+        msg = NotificationToChannelMessage(self.channel, "Test message")
+        self.assertEqual(
+            "🛠️ Entwicklerbenachrichtigung",
+            msg.generate_title(),
+        )
+
+    def test_channel_message_multiple_teams_in_channel(self):
+        team_c = TeamFactory(name="DEF", team_tag="def", channels=self.channel)
+        self.channel.teams.add(team_c)
+
+        msg = NotificationToChannelMessage(self.channel, "Test message")
+        self.assertEqual(
+            "🛠️ Entwicklerbenachrichtigung",
+            msg.generate_title(),
         )

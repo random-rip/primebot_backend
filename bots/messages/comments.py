@@ -16,7 +16,7 @@ class NewCommentsNotificationMessage(MatchMessage):
         return "💬 " + gettext('New comments')
 
     def _generate_message(self):
-        enemy_team_tag = self.match.enemy_team.team_tag
+        enemy_team_tag = self.match.get_enemy_team().team_tag
         message = ngettext(
             "There is [a new comment]({comment_url}) for [{match_day}]({match_url}) "
             "against [{enemy_team_tag}]({enemy_team_url}).",

@@ -45,7 +45,10 @@ class BaseMessage:
 
     def generate_title(self) -> str:
         with translation.override(self.channel.language):
-            return self._generate_title()
+            title = self._generate_title()
+        if self.channel.teams.count() > 1:
+            title += f" [{self.team.name}]"
+        return title
 
     @abstractmethod
     def _generate_message(self) -> str:
@@ -98,6 +101,12 @@ class BaseMessage:
 class ChannelMessage(BaseMessage, ABC):
     def __init__(self, channel: Channel):
         super().__init__(channel_team=ChannelTeam(channel=channel, team=Team()))
+
+    def generate_title(self) -> str:
+        """Don't append team name to the title, since this message is not related to a specific team."""
+        with translation.override(self.channel.language):
+            title = self._generate_title()
+        return title
 
 
 class MatchMixin:
