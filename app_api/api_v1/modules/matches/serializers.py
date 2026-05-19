@@ -52,4 +52,5 @@ class MatchDetailSerializer(serializers.ModelSerializer):
             'enemy_lineup',
             'team',
             'enemy_team',
+            'match_begin_confirmed',
         ]
