@@ -143,7 +143,7 @@ class ChannelAdmin(admin.ModelAdmin):
     def _channel_id(self, obj):
         return obj.get_real_channel_id()
 
-    @admin.display(description=_("Subscribed Teams"))
+    @admin.display(description=_("Subscribed Teams"), ordering="_teams_count")
     def _teams_count(self, obj):
         return obj._teams_count
 

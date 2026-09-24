@@ -11,9 +11,8 @@ logger = logging.getLogger("updates")
 
 
 class Command(UpdateScheduleCommand):
-    help = """Update teams and matches that are in the calibration phase."""
     next_command = "updates_in_cali_live"
-    name = "Update Teams and Matches in Calibration Stage"
+    name = "Update T+M in Calibration - Check In"
 
     @staticmethod
     def func(notify=True):

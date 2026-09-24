@@ -76,9 +76,8 @@ def get_priority_teams_and_matches() -> Tuple[set[Team], set[Match]]:
 
 
 class Command(UpdateScheduleCommand):
-    help = """Update teams and matches that are in the group stage and playoffs."""
     next_command = "updates_between_splits"
-    name = "Update Teams and Matches in Group Stage and Playoffs"
+    name = "Update T+M in Group Stage and Playoffs"
 
     @staticmethod
     def func(notify=True):

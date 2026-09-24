@@ -13,9 +13,8 @@ logger = logging.getLogger("updates")
 
 
 class Command(UpdateScheduleCommand):
-    help = """Update teams that are registered (usually between splits)."""
     next_command = "updates_in_cali_checkin"
-    name = "Updates between splits"
+    name = "Update teams between splits"
 
     @staticmethod
     def func(notify=True):

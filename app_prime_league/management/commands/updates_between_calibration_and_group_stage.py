@@ -5,9 +5,8 @@ from core.update_schedule_command import UpdateScheduleCommand
 
 
 class Command(UpdateScheduleCommand):
-    help = """Update teams that are registered and matches ."""
     next_command = "updates_in_group_stage_and_playoffs"
-    name = "Update Teams and Matches between Calibration and Group Stage"
+    name = "Update T+M between Calibration and Group Stage"
 
     @staticmethod
     def func(notify=True):
