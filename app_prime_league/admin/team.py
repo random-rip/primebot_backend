@@ -249,15 +249,36 @@ class TeamAdmin(admin.ModelAdmin):
     search_fields = ['id', 'name', 'team_tag']
     actions = ['update_teams', 'update_teams_no_notify']
 
+    def _update_teams(self, queryset, notify: bool):
+        batch_size = 100
+        team_ids = list(queryset.order_by("pk").values_list("pk", flat=True))
+        teams_count = len(team_ids)
+        for start in range(0, teams_count, batch_size):
+            batch_ids = team_ids[start : start + batch_size]
+            UpdateTeamsJob(
+                queryset=Team.objects.filter(pk__in=batch_ids),
+                notify=notify,
+            ).enqueue()
+
+        batch_count = -(-teams_count // batch_size)  # summed up ceil division
+
+        return teams_count, batch_count
+
     @admin.action(description="Update selected Teams")
     def update_teams(self, request, queryset):
-        UpdateTeamsJob(queryset=queryset, notify=True).enqueue()
-        self.message_user(request, f"Enqueued update for {queryset.count()} teams.")
+        teams_count, batch_count = self._update_teams(queryset, notify=True)
+        self.message_user(
+            request,
+            f"Enqueued update for {teams_count} teams in {batch_count} batches.",
+        )
 
     @admin.action(description="Update selected Teams (no notifications)")
     def update_teams_no_notify(self, request, queryset):
-        UpdateTeamsJob(queryset=queryset, notify=False).enqueue()
-        self.message_user(request, f"Enqueued update for {queryset.count()} teams (no notifications).")
+        teams_count, batch_count = self._update_teams(queryset, notify=False)
+        self.message_user(
+            request,
+            f"Enqueued update for {teams_count} teams in {batch_count} batches (no notifications).",
+        )
 
     @admin.display(description="Prime League")
     def prime_league_link(self, obj):
