@@ -23,9 +23,10 @@ def activate_correct_update_schedule(task: Task):
         return
     next_command = klass.next_command
     name = klass.name
-    logger.info(f"Creating schedule '{next_command}' and deleting schedule '{name}'...")
-    call_command(next_command, "--schedule")
+    logger.info(f"Deleting schedule '{name}'")
     Schedule.objects.get(name=name).delete()
+    logger.info(f"Creating schedule '{next_command}'")
+    call_command(next_command, "--schedule")
     logger.info(f"Created schedule '{next_command}' and deleted schedule '{name}'.")
 
 
