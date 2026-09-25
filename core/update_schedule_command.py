@@ -3,7 +3,8 @@ import pydoc
 from abc import ABC, abstractmethod
 from typing import Type
 
-from django.core.management import call_command, get_commands
+from django.core.management import get_commands
+from django.db import IntegrityError, transaction
 from django_q.models import Schedule, Task
 
 from core.commands import ScheduleCommand
@@ -16,17 +17,25 @@ def activate_correct_update_schedule(task: Task):
         logger.warning(f"Task {task} was not successful. Aborting...")
         return
 
-    klass_path: str = task.func.rpartition('.')[0]
-    klass: Type[UpdateScheduleCommand] = pydoc.locate(klass_path)
-    if not klass.is_time_exceeded():
-        logger.info(f"Time of Schedule {klass.name} not exceeded yet.")
+    current_command_path: str = task.func.rpartition('.')[0]
+    CurrentCommand: Type[UpdateScheduleCommand] = pydoc.locate(current_command_path)
+    if not CurrentCommand.is_time_exceeded():
+        logger.info(f"Time of Schedule {CurrentCommand.name} not exceeded yet.")
         return
-    next_command = klass.next_command
-    name = klass.name
-    logger.info(f"Creating schedule '{next_command}' and deleting schedule '{name}'...")
-    call_command(next_command, "--schedule")
-    Schedule.objects.get(name=name).delete()
-    logger.info(f"Created schedule '{next_command}' and deleted schedule '{name}'.")
+
+    NextCommand: Type[UpdateScheduleCommand] = pydoc.locate(
+        f"app_prime_league.management.commands.{CurrentCommand.next_command}.Command"
+    )
+
+    try:
+        with transaction.atomic():
+            Schedule.objects.get(name=CurrentCommand.name).delete()
+            NextCommand()._schedule()
+    except IntegrityError as e:
+        logger.error(f"Failed to create schedule '{NextCommand.name}' and delete schedule '{CurrentCommand.name}': {e}")
+        return
+    else:
+        logger.info(f"Created schedule '{NextCommand.name}' and deleted schedule '{CurrentCommand.name}'.")
 
 
 class UpdateScheduleCommand(ScheduleCommand, ABC):
@@ -61,7 +70,7 @@ class UpdateScheduleCommand(ScheduleCommand, ABC):
         :return:
         """
 
-    def _schedule(self):
+    def _schedule(self) -> Schedule:
         s = Schedule(
             name=self.name,
             func=self.func_path,
@@ -71,3 +80,4 @@ class UpdateScheduleCommand(ScheduleCommand, ABC):
         )
         s.next_run = s.calculate_next_run()
         s.save()
+        return s
