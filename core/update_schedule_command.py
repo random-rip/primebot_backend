@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from typing import Type
 
 from django.core.management import get_commands
-from django.db.transaction import atomic
+from django.db import IntegrityError, transaction
 from django_q.models import Schedule, Task
 
 from core.commands import ScheduleCommand
@@ -12,7 +12,6 @@ from core.commands import ScheduleCommand
 logger = logging.getLogger("updates")
 
 
-@atomic
 def activate_correct_update_schedule(task: Task):
     if not task.success:
         logger.warning(f"Task {task} was not successful. Aborting...")
@@ -24,30 +23,19 @@ def activate_correct_update_schedule(task: Task):
         logger.info(f"Time of Schedule {CurrentCommand.name} not exceeded yet.")
         return
 
-    next_command = CurrentCommand.next_command
     NextCommand: Type[UpdateScheduleCommand] = pydoc.locate(
-        f"app_prime_league.management.commands.{next_command}.Command"
+        f"app_prime_league.management.commands.{CurrentCommand.next_command}.Command"
     )
-    try:
-        new_schedule = NextCommand()._schedule()
-    except Exception as e:
-        logger.error(f"Failed to create schedule '{next_command}': {e}")
-        return
 
     try:
-        Schedule.objects.get(name=CurrentCommand.name).delete()
-    except Schedule.DoesNotExist:
-        logger.warning(
-            f"Schedule '{CurrentCommand.name}' does not exist. Reverting creation of schedule '{next_command}'."
-        )
-        new_schedule.delete()
-    except Exception as e:
-        logger.error(
-            f"Failed to delete schedule '{CurrentCommand.name}': {e}. Reverting creation of schedule '{next_command}'."
-        )
-        new_schedule.delete()
+        with transaction.atomic():
+            Schedule.objects.get(name=CurrentCommand.name).delete()
+            NextCommand()._schedule()
+    except IntegrityError as e:
+        logger.error(f"Failed to create schedule '{NextCommand.name}' and delete schedule '{CurrentCommand.name}': {e}")
+        return
     else:
-        logger.info(f"Created schedule '{next_command}' and deleted schedule '{CurrentCommand.name}'.")
+        logger.info(f"Created schedule '{NextCommand.name}' and deleted schedule '{CurrentCommand.name}'.")
 
 
 class UpdateScheduleCommand(ScheduleCommand, ABC):
