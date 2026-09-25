@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 from typing import Type
 
 from django.core.management import get_commands
+from django.db.transaction import atomic
 from django_q.models import Schedule, Task
 
 from core.commands import ScheduleCommand
@@ -11,6 +12,7 @@ from core.commands import ScheduleCommand
 logger = logging.getLogger("updates")
 
 
+@atomic
 def activate_correct_update_schedule(task: Task):
     if not task.success:
         logger.warning(f"Task {task} was not successful. Aborting...")
@@ -23,10 +25,10 @@ def activate_correct_update_schedule(task: Task):
         return
 
     next_command = CurrentCommand.next_command
+    NextCommand: Type[UpdateScheduleCommand] = pydoc.locate(
+        f"app_prime_league.management.commands.{next_command}.Command"
+    )
     try:
-        NextCommand: Type[UpdateScheduleCommand] = pydoc.locate(
-            f"app_prime_league.management.commands.{next_command}.Command"
-        )
         new_schedule = NextCommand()._schedule()
     except Exception as e:
         logger.error(f"Failed to create schedule '{next_command}': {e}")
