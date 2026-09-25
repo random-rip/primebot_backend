@@ -33,7 +33,7 @@ class Command(ScheduleCommand):
             except Exception as e:
                 logger.exception(f"Error sending weekly notification to team {team}: {e}")
 
-    def _schedule(self):
+    def _schedule(self) -> Schedule:
         s = Schedule(
             name="Weekly Notifications",
             func=self.func_path,
@@ -43,3 +43,4 @@ class Command(ScheduleCommand):
         )
         s.next_run = s.calculate_next_run()
         s.save()
+        return s

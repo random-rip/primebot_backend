@@ -9,7 +9,7 @@ class Command(ScheduleCommand):
     Command to prune old requests from the database. By default, it prunes requests that are older than 6 months.
     """
 
-    def _schedule(self):
+    def _schedule(self) -> Schedule:
         s = Schedule(
             name="Prune requests",
             func=self.func_path,
@@ -19,6 +19,7 @@ class Command(ScheduleCommand):
         )
         s.next_run = s.calculate_next_run()
         s.save()
+        return s
 
     @staticmethod
     def func(amount: int = 6, unit: str = "months") -> None:

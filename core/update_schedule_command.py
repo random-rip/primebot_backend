@@ -3,7 +3,7 @@ import pydoc
 from abc import ABC, abstractmethod
 from typing import Type
 
-from django.core.management import call_command, get_commands
+from django.core.management import get_commands
 from django_q.models import Schedule, Task
 
 from core.commands import ScheduleCommand
@@ -16,30 +16,36 @@ def activate_correct_update_schedule(task: Task):
         logger.warning(f"Task {task} was not successful. Aborting...")
         return
 
-    klass_path: str = task.func.rpartition('.')[0]
-    klass: Type[UpdateScheduleCommand] = pydoc.locate(klass_path)
-    if not klass.is_time_exceeded():
-        logger.info(f"Time of Schedule {klass.name} not exceeded yet.")
+    current_command_path: str = task.func.rpartition('.')[0]
+    CurrentCommand: Type[UpdateScheduleCommand] = pydoc.locate(current_command_path)
+    if not CurrentCommand.is_time_exceeded():
+        logger.info(f"Time of Schedule {CurrentCommand.name} not exceeded yet.")
         return
-    next_command = klass.next_command
-    name = klass.name
 
+    next_command = CurrentCommand.next_command
     try:
-        new_schedule = call_command(next_command, schedule=True)
+        NextCommand: Type[UpdateScheduleCommand] = pydoc.locate(
+            f"app_prime_league.management.commands.{next_command}.Command"
+        )
+        new_schedule = NextCommand()._schedule()
     except Exception as e:
         logger.error(f"Failed to create schedule '{next_command}': {e}")
         return
 
     try:
-        Schedule.objects.get(name=name).delete()
+        Schedule.objects.get(name=CurrentCommand.name).delete()
     except Schedule.DoesNotExist:
-        logger.warning(f"Schedule '{name}' does not exist. Reverting creation of schedule '{next_command}'.")
+        logger.warning(
+            f"Schedule '{CurrentCommand.name}' does not exist. Reverting creation of schedule '{next_command}'."
+        )
         new_schedule.delete()
     except Exception as e:
-        logger.error(f"Failed to delete schedule '{name}': {e}. Reverting creation of schedule '{next_command}'.")
+        logger.error(
+            f"Failed to delete schedule '{CurrentCommand.name}': {e}. Reverting creation of schedule '{next_command}'."
+        )
         new_schedule.delete()
     else:
-        logger.info(f"Created schedule '{next_command}' and deleted schedule '{name}'.")
+        logger.info(f"Created schedule '{next_command}' and deleted schedule '{CurrentCommand.name}'.")
 
 
 class UpdateScheduleCommand(ScheduleCommand, ABC):

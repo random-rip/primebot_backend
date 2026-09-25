@@ -49,14 +49,10 @@ class ScheduleCommand(BaseCommand, ABC):
     def _schedule(self) -> Schedule:
         pass
 
-    def handle(self, *args, **options) -> Schedule | None:
-        """
-        Returns a Schedule object if the command is called with --schedule, otherwise it executes the function directly.
-        """
+    def handle(self, *args, **options) -> None:
         if options['schedule']:
-            schedule = self._schedule()
+            self._schedule()
             self.stdout.write("Created a schedule")
-            return schedule
         else:
             func = pydoc.locate(self._func_path())
             func()
