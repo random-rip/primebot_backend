@@ -23,11 +23,23 @@ def activate_correct_update_schedule(task: Task):
         return
     next_command = klass.next_command
     name = klass.name
-    logger.info(f"Deleting schedule '{name}'")
-    Schedule.objects.get(name=name).delete()
-    logger.info(f"Creating schedule '{next_command}'")
-    call_command(next_command, "--schedule")
-    logger.info(f"Created schedule '{next_command}' and deleted schedule '{name}'.")
+
+    try:
+        new_schedule = call_command(next_command, schedule=True)
+    except Exception as e:
+        logger.error(f"Failed to create schedule '{next_command}': {e}")
+        return
+
+    try:
+        Schedule.objects.get(name=name).delete()
+    except Schedule.DoesNotExist:
+        logger.warning(f"Schedule '{name}' does not exist. Reverting creation of schedule '{next_command}'.")
+        new_schedule.delete()
+    except Exception as e:
+        logger.error(f"Failed to delete schedule '{name}': {e}. Reverting creation of schedule '{next_command}'.")
+        new_schedule.delete()
+    else:
+        logger.info(f"Created schedule '{next_command}' and deleted schedule '{name}'.")
 
 
 class UpdateScheduleCommand(ScheduleCommand, ABC):
@@ -62,7 +74,7 @@ class UpdateScheduleCommand(ScheduleCommand, ABC):
         :return:
         """
 
-    def _schedule(self):
+    def _schedule(self) -> Schedule:
         s = Schedule(
             name=self.name,
             func=self.func_path,
@@ -72,3 +84,4 @@ class UpdateScheduleCommand(ScheduleCommand, ABC):
         )
         s.next_run = s.calculate_next_run()
         s.save()
+        return s

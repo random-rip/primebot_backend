@@ -3,6 +3,7 @@ import pydoc
 from abc import ABC, abstractmethod
 
 from django.core.management import BaseCommand
+from django_q.models import Schedule
 
 
 class ScheduleCommand(BaseCommand, ABC):
@@ -45,14 +46,17 @@ class ScheduleCommand(BaseCommand, ABC):
         raise NotImplementedError("func has to be implemented or _func_path has to be overwritten")
 
     @abstractmethod
-    def _schedule(self):
+    def _schedule(self) -> Schedule:
         pass
 
-    def handle(self, *args, **options):
+    def handle(self, *args, **options) -> Schedule | None:
+        """
+        Returns a Schedule object if the command is called with --schedule, otherwise it executes the function directly.
+        """
         if options['schedule']:
-            self._schedule()
+            schedule = self._schedule()
             self.stdout.write("Created a schedule")
-            return
+            return schedule
         else:
             func = pydoc.locate(self._func_path())
             func()
